@@ -197,11 +197,20 @@ namespace SWF.UIComponent.Form
                 Marshal.StructureToPtr(minMaxInfo, m.LParam, true);
             }
 
-            var dwmHandled = WinApiMembers.DwmDefWindowProc(m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
-            if (dwmHandled == 1)
+            if (m.Msg == WinApiMembers.WM_NCPAINT ||
+                m.Msg == WinApiMembers.WM_NCACTIVATE ||
+                m.Msg == WinApiMembers.WM_NCHITTEST ||
+                m.Msg == WinApiMembers.WM_SETREDRAW ||
+                m.Msg == WinApiMembers.WM_DPICHANGED ||
+                m.Msg >= WinApiMembers.WM_DWM_FIRST && m.Msg <= WinApiMembers.WM_DWM_LAST)
             {
-                m.Result = result;
-                return;
+                var dwmHandled = WinApiMembers.DwmDefWindowProc(
+                    m.HWnd, m.Msg, m.WParam, m.LParam, out var result);
+                if (dwmHandled == 1)
+                {
+                    m.Result = result;
+                    return;
+                }
             }
 
             base.WndProc(ref m);

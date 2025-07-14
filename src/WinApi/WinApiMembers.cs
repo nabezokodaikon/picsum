@@ -242,6 +242,8 @@ namespace WinApi
         public const int WM_APP = 0x8000;
         public const int WM_DPICHANGED = 0x02E0;
         public const int WS_EX_COMPOSITED = 0x02000000;
+        public const int WM_DWM_FIRST = 0x0317; // DWM関連メッセージの開始（Windows 7以降で導入）
+        public const int WM_DWM_LAST = 0x031A;  // DWM関連メッセージの終了（WM_DWMWINDOWMAXIMIZEDCHANGEなどを含む）
 
         public static readonly IntPtr HWND_TOP = IntPtr.Zero;
         public const UInt32 SWP_NOSIZE = 0x0001;
