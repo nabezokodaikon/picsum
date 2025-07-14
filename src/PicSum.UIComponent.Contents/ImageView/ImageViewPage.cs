@@ -576,11 +576,13 @@ namespace PicSum.UIComponent.Contents.ImageView
                 previewFiles.Add(files[previewIndex]);
             }
 
+            string[] targets = [files[currentIndex], .. nextFiles, .. previewFiles];
+
             return new ThumbnailsGetParameter
             {
-                FilePathList = [.. nextFiles, .. previewFiles],
+                FilePathList = targets,
                 FirstIndex = 0,
-                LastIndex = NEXT_COUNT + PREVIEW_COUNT - 1,
+                LastIndex = targets.Length - 1,
                 ThumbnailWidth = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
                 ThumbnailHeight = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE,
                 IsExecuteCallback = false,
