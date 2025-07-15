@@ -35,61 +35,6 @@ namespace PicSum.Main
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
 
-                    AssemblyPreloader.OptimizeStartup(
-                        typeof(Accessibility.AnnoScope),
-                        typeof(Microsoft.Win32.SystemEvents),
-                        typeof(System.Data.Common.CatalogLocation),
-                        typeof(System.Data.SQLite.AssemblySourceIdAttribute),
-                        typeof(System.Diagnostics.Process),
-                        typeof(System.Diagnostics.TraceSource),
-                        typeof(System.IO.DriveInfo),
-                        typeof(System.IO.MemoryMappedFiles.MemoryMappedFile),
-                        typeof(System.Resources.Extensions.DeserializingResourceReader),
-                        typeof(System.Threading.Channels.BoundedChannelFullMode),
-                        typeof(System.Threading.ThreadPool),
-                        typeof(System.Transactions.CommittableTransaction),
-                        typeof(System.Text.RegularExpressions.Capture),
-                        typeof(System.Xml.ConformanceLevel),
-
-#if UWP
-                        typeof(Windows.Storage.AppDataPaths),
-#endif
-
-                        typeof(MessagePack.CompositeResolverAttribute),
-                        typeof(NLog.Attributes.LogLevelTypeConverter),
-
-                        typeof(HeyRed.ImageSharp.Heif.DecodingMode),
-                        typeof(ImageMagick.AlphaOption),
-                        typeof(LibHeifSharp.AuxiliaryImageType),
-                        typeof(OpenCvSharp.AccessFlag),
-                        typeof(OpenCvSharp.Extensions.BitmapConverter),
-                        typeof(SixLabors.ImageSharp.Advanced.AdvancedImageExtensions),
-                        typeof(Svg.AttributeEventArgs),
-                        typeof(ZLinq.DropInGenerateTypes),
-                        typeof(ZLinq.FileSystemInfoExtensions),
-
-                        typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
-                        typeof(PicSum.Job.Common.IThumbnailCacher),
-                        typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                        typeof(PicSum.UIComponent.Contents.Common.BrowsePage),
-                        typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
-
-                        typeof(SWF.Core.DatabaseAccessor.AbstractDatabase),
-                        typeof(SWF.Core.FileAccessor.CacheFileController),
-                        typeof(SWF.Core.ImageAccessor.CvImage),
-                        typeof(SWF.Core.Job.AbstractAsyncJob),
-                        typeof(SWF.Core.ResourceAccessor.ResourceFiles),
-                        typeof(SWF.Core.StringAccessor.NaturalStringComparer),
-
-                        typeof(SWF.UIComponent.Core.CheckPatternPanel),
-                        typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
-                        typeof(SWF.UIComponent.Form.GrassForm),
-                        typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),
-                        typeof(SWF.UIComponent.WideDropDown.AddItemEventArgs),
-
-                        typeof(WinApi.WinApiMembers)
-                    );
-
                     AppFiles.CreateApplicationDirectories();
 
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
