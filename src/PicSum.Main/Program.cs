@@ -35,6 +35,7 @@ namespace PicSum.Main
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
 
+#if UWP
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
                         typeof(Microsoft.Win32.SystemEvents),
@@ -51,9 +52,7 @@ namespace PicSum.Main
                         typeof(System.Text.RegularExpressions.Capture),
                         typeof(System.Xml.ConformanceLevel),
 
-#if UWP
                         typeof(Windows.Storage.AppDataPaths),
-#endif
 
                         typeof(MessagePack.CompositeResolverAttribute),
                         typeof(NLog.Attributes.LogLevelTypeConverter),
@@ -89,6 +88,7 @@ namespace PicSum.Main
 
                         typeof(WinApi.WinApiMembers)
                     );
+#endif
 
                     AppFiles.CreateApplicationDirectories();
 
