@@ -551,6 +551,7 @@ namespace PicSum.UIComponent.InfoPanel
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
                 e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
