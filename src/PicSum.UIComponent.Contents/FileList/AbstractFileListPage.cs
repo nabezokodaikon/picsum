@@ -213,7 +213,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public override void StopPageDraw()
         {
-            Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
+
         }
 
         protected override void Dispose(bool disposing)
@@ -226,8 +226,6 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.fileContextMenu.Close();
-                Instance<JobCaller>.Value.ThumbnailsGetJob.Value.BeginCancel();
-
                 this.components?.Dispose();
             }
 
