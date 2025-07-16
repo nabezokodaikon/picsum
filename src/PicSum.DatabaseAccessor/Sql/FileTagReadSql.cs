@@ -24,7 +24,7 @@ SELECT tt.tag
         {
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            base.ParameterList.AddRange(SqlUtil.CreateParameter("file_path", filePathList));
+            base.Parameters = SqlUtil.CreateParameter("file_path", filePathList);
         }
     }
 }

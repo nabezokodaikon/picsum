@@ -29,11 +29,11 @@ SELECT mf.file_id
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            base.ParameterList.AddRange([
+            base.Parameters = [
                 SqlUtil.CreateParameter("file_path", filePath),
                 SqlUtil.CreateParameter("rating", rating),
                 SqlUtil.CreateParameter("registration_date", registrationDate)
-            ]);
+            ];
         }
     }
 }

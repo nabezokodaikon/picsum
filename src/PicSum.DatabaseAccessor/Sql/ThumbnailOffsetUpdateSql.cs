@@ -16,9 +16,9 @@ UPDATE m_thumbnail_id
         public ThumbnailOffsetUpdateSql(int offset)
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange([
+            base.Parameters = [
                 SqlUtil.CreateParameter(nameof(offset), offset),
-            ]);
+            ];
         }
     }
 }

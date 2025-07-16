@@ -24,7 +24,9 @@ SELECT mf.file_id
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            base.ParameterList.Add(SqlUtil.CreateParameter("file_path", directoryPath));
+            base.Parameters = [
+                SqlUtil.CreateParameter("file_path", directoryPath)
+            ];
         }
     }
 }

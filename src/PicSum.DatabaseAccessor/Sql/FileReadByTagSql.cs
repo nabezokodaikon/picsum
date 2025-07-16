@@ -28,7 +28,9 @@ SELECT mf.file_path
         {
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            base.ParameterList.Add(SqlUtil.CreateParameter("tag", tag));
+            base.Parameters = [
+                SqlUtil.CreateParameter("tag", tag)
+            ];
         }
     }
 }

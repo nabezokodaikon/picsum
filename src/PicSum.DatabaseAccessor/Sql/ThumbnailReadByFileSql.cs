@@ -31,7 +31,9 @@ SELECT tt.file_path
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            base.ParameterList.Add(SqlUtil.CreateParameter("file_path", filePath));
+            base.Parameters = [
+                SqlUtil.CreateParameter("file_path", filePath)
+            ];
         }
     }
 }

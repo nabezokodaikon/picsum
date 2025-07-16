@@ -26,9 +26,10 @@ DELETE FROM t_tag
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            base.ParameterList.AddRange(
-                [SqlUtil.CreateParameter("file_path", filePath),
-                    SqlUtil.CreateParameter("tag", tag)]);
+            base.Parameters = [
+                SqlUtil.CreateParameter("file_path", filePath),
+                SqlUtil.CreateParameter("tag", tag)
+            ];
         }
     }
 }

@@ -28,7 +28,9 @@ SELECT mf.file_path
         public DirectoryViewHistoryReadSql(int param)
             : base(SQL_TEXT)
         {
-            base.ParameterList.Add(SqlUtil.CreateParameter("limit", param));
+            base.Parameters = [
+                SqlUtil.CreateParameter("limit", param)
+            ];
         }
     }
 }

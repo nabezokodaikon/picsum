@@ -34,9 +34,9 @@ DELETE FROM t_tag
         public FileInfoDBCleanupSql(long fileID)
             : base(SQL_TEXT)
         {
-            base.ParameterList.AddRange([
+            base.Parameters = [
                 SqlUtil.CreateParameter("file_id", fileID),
-            ]);
+            ];
         }
     }
 }

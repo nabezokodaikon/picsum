@@ -24,10 +24,10 @@ SELECT mf.file_id
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            base.ParameterList.AddRange(
-                [SqlUtil.CreateParameter("file_path", filePath),
-                    SqlUtil.CreateParameter("registration_date", registrationDate)
-                ]);
+            base.Parameters = [
+                SqlUtil.CreateParameter("file_path", filePath),
+                SqlUtil.CreateParameter("registration_date", registrationDate)
+            ];
         }
     }
 }

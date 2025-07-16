@@ -30,11 +30,11 @@ SELECT mf.file_id
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            base.ParameterList.AddRange(
-                [SqlUtil.CreateParameter("file_path", filePath),
-                    SqlUtil.CreateParameter("tag", tag),
-                    SqlUtil.CreateParameter("registration_date", registrationDate)
-                ]);
+            base.Parameters = [
+                SqlUtil.CreateParameter("file_path", filePath),
+                SqlUtil.CreateParameter("tag", tag),
+                SqlUtil.CreateParameter("registration_date", registrationDate)
+            ];
         }
     }
 }

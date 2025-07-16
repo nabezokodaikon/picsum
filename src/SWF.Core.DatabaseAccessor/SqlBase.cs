@@ -8,7 +8,7 @@ namespace SWF.Core.DatabaseAccessor
     {
         private readonly string _sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
-        public List<IDbDataParameter> ParameterList { get; protected set; } = [];
+        public IDbDataParameter[] Parameters { get; protected set; } = [];
 
         /// <summary>
         /// 実行するSQLを取得します。
@@ -16,7 +16,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this._sqlText, [.. this.ParameterList]);
+            return SqlUtil.GetExecuteSql(this._sqlText, this.Parameters);
         }
     }
 
@@ -26,7 +26,7 @@ namespace SWF.Core.DatabaseAccessor
     {
         private readonly string sqlText = sqlText ?? throw new ArgumentNullException(nameof(sqlText));
 
-        public List<IDbDataParameter> ParameterList { get; private set; } = [];
+        public IDbDataParameter[] Parameters { get; protected set; } = [];
 
         /// <summary>
         /// 実行するSQLを取得します。
@@ -34,7 +34,7 @@ namespace SWF.Core.DatabaseAccessor
         /// <returns>SQL文</returns>
         public string GetExecuteSql()
         {
-            return SqlUtil.GetExecuteSql(this.sqlText, [.. this.ParameterList]);
+            return SqlUtil.GetExecuteSql(this.sqlText, this.Parameters);
         }
     }
 }

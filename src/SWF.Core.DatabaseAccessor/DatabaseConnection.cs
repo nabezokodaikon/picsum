@@ -106,9 +106,9 @@ namespace SWF.Core.DatabaseAccessor
             {
                 cmd.CommandText = sql.GetExecuteSql();
 
-                if (sql.ParameterList.Count > 0)
+                if (sql.Parameters.Length > 0)
                 {
-                    cmd.Parameters.AddRange(sql.ParameterList.ToArray());
+                    cmd.Parameters.AddRange(sql.Parameters);
                 }
 
                 var result = cmd.ExecuteNonQuery();
@@ -134,9 +134,9 @@ namespace SWF.Core.DatabaseAccessor
             {
                 cmd.CommandText = sql.GetExecuteSql();
 
-                if (sql.ParameterList.Count > 0)
+                if (sql.Parameters.Length > 0)
                 {
-                    cmd.Parameters.AddRange(sql.ParameterList.ToArray());
+                    cmd.Parameters.AddRange(sql.Parameters);
                 }
 
                 using (var reader = cmd.ExecuteReader(CommandBehavior.Default))
@@ -171,9 +171,9 @@ namespace SWF.Core.DatabaseAccessor
             {
                 cmd.CommandText = sql.GetExecuteSql();
 
-                if (sql.ParameterList.Count > 0)
+                if (sql.Parameters.Length > 0)
                 {
-                    cmd.Parameters.AddRange(sql.ParameterList.ToArray());
+                    cmd.Parameters.AddRange(sql.Parameters);
                 }
 
                 using (var reader = cmd.ExecuteReader(CommandBehavior.SingleRow))
@@ -201,9 +201,9 @@ namespace SWF.Core.DatabaseAccessor
             {
                 cmd.CommandText = sql.GetExecuteSql();
 
-                if (sql.ParameterList.Count > 0)
+                if (sql.Parameters.Length > 0)
                 {
-                    cmd.Parameters.AddRange(sql.ParameterList.ToArray());
+                    cmd.Parameters.AddRange(sql.Parameters);
                 }
 
                 var result = cmd.ExecuteScalar();
