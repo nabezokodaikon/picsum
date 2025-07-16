@@ -9,11 +9,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 {
     partial class ImageViewPage
     {
-        /// <summary> 
-        /// 必要なデザイナ変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナで生成されたコード
 
         /// <summary> 
@@ -22,8 +17,6 @@ namespace PicSum.UIComponent.Contents.ImageView
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageViewPage));
             this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();

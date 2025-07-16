@@ -226,7 +226,6 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.fileContextMenu.Close();
-                this.components?.Dispose();
             }
 
             this._disposed = true;

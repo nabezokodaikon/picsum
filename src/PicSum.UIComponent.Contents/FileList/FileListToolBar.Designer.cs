@@ -6,11 +6,6 @@ namespace PicSum.UIComponent.Contents.FileList
 {
     partial class FileListToolBar
     {
-        /// <summary> 
-        /// 必要なデザイナー変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナーで生成されたコード
 
         /// <summary> 
@@ -19,14 +14,13 @@ namespace PicSum.UIComponent.Contents.FileList
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.viewButton = new SWF.UIComponent.Core.ToolTextButton();
             this.nameSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.pathSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.timestampSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.registrationSortButton = new SWF.UIComponent.Core.ToolTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
-            this.viewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
             this.directoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otherFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();

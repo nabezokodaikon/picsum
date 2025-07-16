@@ -7,11 +7,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 {
     partial class ImageViewToolBar
     {
-        /// <summary> 
-        /// 必要なデザイナー変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナーで生成されたコード
 
         /// <summary> 
@@ -20,8 +15,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.viewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
             this.singleViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spreadLeftFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spreadRightFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -32,7 +26,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.indexSlider = new SWF.UIComponent.Core.Slider();
             this.viewButton = new SWF.UIComponent.Core.ToolTextButton();
             this.sizeButton = new SWF.UIComponent.Core.ToolTextButton();
-            this.sizeMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.sizeMenu = new System.Windows.Forms.ContextMenuStrip();
             this.originalSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fitWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fitWindowLargeOnlyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +48,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.zoomMenuItem14 = new ZoomMenuItem(20f, "2000%");
             this.zoomMenuItem15 = new ZoomMenuItem(30f, "3000%");
 
-            this.filePathToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.filePathToolTip = new System.Windows.Forms.ToolTip();
             this.viewMenu.SuspendLayout();
             this.sizeMenu.SuspendLayout();
             this.SuspendLayout();

@@ -266,8 +266,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
-
-                this.components?.Dispose();
             }
 
             this._disposed = true;

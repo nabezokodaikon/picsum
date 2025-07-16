@@ -292,7 +292,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (disposing)
             {
-                this.components?.Dispose();
+
             }
 
             this._disposed = true;

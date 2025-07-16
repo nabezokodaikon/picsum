@@ -8,11 +8,6 @@ namespace PicSum.UIComponent.Contents.FileList
 {
     partial class AbstractFileListPage
     {
-        /// <summary> 
-        /// 必要なデザイナ変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナで生成されたコード
 
         /// <summary> 
@@ -21,8 +16,6 @@ namespace PicSum.UIComponent.Contents.FileList
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbstractFileListPage));
             this.flowList = new SWF.UIComponent.FlowList.FlowList();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.toolBar = new PicSum.UIComponent.Contents.FileList.FileListToolBar();

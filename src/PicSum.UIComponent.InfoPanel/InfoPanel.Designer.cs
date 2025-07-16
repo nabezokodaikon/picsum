@@ -6,11 +6,6 @@ namespace PicSum.UIComponent.InfoPanel
 {
     partial class InfoPanel
     {
-        /// <summary> 
-        /// 必要なデザイナ変数です。
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
         #region コンポーネント デザイナで生成されたコード
 
         /// <summary> 
@@ -19,9 +14,8 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.thumbnailPictureBox = new SWF.UIComponent.Core.PictureBoxEx();
-            this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ratingBar = new SWF.UIComponent.Core.RatingBar();

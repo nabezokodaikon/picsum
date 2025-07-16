@@ -303,8 +303,6 @@ namespace PicSum.UIComponent.InfoPanel
                     icon.Dispose();
                 }
                 this._tagIconCache.Clear();
-
-                this.components?.Dispose();
             }
 
             this.disposed = true;
