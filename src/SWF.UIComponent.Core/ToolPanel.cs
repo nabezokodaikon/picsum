@@ -5,7 +5,7 @@ namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public class ToolPanel
-        : UserControl
+        : Control
     {
         private const float BORDER_LINE_WIDTH = 1f;
 
@@ -33,8 +33,7 @@ namespace SWF.UIComponent.Core
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint |
-                ControlStyles.ContainerControl,
+                ControlStyles.UserPaint,
                 true);
             this.SetStyle(
                 ControlStyles.Selectable,
