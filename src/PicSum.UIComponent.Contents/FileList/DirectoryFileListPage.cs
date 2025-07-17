@@ -51,11 +51,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             base.toolBar.RegistrationSortButtonEnabled = false;
 
-            this.Load += this.DirectoryFileListPage_Load;
+            this.HandleCreated += this.DirectoryFileListPage_HandleCreated;
             this.DrawTabPage += this.DirectoryFileListPage_DrawTabPage;
         }
 
-        private void DirectoryFileListPage_Load(object sender, EventArgs e)
+        private void DirectoryFileListPage_HandleCreated(object sender, EventArgs e)
         {
             var param = new FilesGetByDirectoryParameter()
             {

@@ -274,7 +274,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        private void ImageViewPage_Load(object sender, EventArgs e)
+        private void ImageViewPage_HandleCreated(object sender, EventArgs e)
         {
             if (this._disposed)
             {
