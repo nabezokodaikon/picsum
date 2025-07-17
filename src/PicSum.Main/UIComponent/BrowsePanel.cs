@@ -107,7 +107,7 @@ namespace PicSum.Main.UIComponent
             this.pageContainer = new PageContainer();
             this.infoPanel = new InfoPanel();
             this.tabSwitch = new TabSwitch();
-            this.toolPanel = new Panel();
+            this.toolPanel = new Control();
             this.reloadToolButton = new ToolIconButton();
             this.nextPageHistoryButton = new ToolIconButton();
             this.previewPageHistoryButton = new ToolIconButton();

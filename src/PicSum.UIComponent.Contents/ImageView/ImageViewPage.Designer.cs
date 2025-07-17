@@ -68,7 +68,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.checkPatternPanel.Controls.AddRange(
                 this.leftImagePanel,
                 this.rightImagePanel);
-            this.checkPatternPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             // 
             // toolBar
             // 

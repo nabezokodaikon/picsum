@@ -112,7 +112,7 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
-        private System.Windows.Forms.Panel toolPanel;
+        private System.Windows.Forms.Control toolPanel;
         private SWF.UIComponent.Core.ToolPanel toolPanel2;
         private SWF.UIComponent.Core.ToolIconButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;

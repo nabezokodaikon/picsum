@@ -6,7 +6,8 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class CheckPatternPanel : Panel
+    public partial class CheckPatternPanel
+        : Control
     {
         private const int RECTANGLE_DEFAULT_SIZE = 24;
         private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(48, 48, 48));
