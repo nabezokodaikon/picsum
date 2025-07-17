@@ -9,7 +9,7 @@ namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class WideComboBox
-        : UserControl
+        : Control
     {
         private static readonly Rectangle INPUT_TEXT_BOX_DEFAULT_BOUNDS
             = new(0, 1, 569, 36);
