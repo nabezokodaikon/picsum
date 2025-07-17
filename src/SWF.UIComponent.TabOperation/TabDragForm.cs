@@ -99,7 +99,7 @@ namespace SWF.UIComponent.TabOperation
                 ControlStyles.UserPaint,
                 true);
             this.SetStyle(
-                ControlStyles.Selectable,
+                ControlStyles.ContainerControl,
                 false);
             this.UpdateStyles();
 

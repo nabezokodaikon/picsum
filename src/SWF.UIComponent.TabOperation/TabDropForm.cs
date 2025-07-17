@@ -18,6 +18,11 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDropForm()
         {
+            this.SetStyle(
+                ControlStyles.ContainerControl,
+                false);
+            this.UpdateStyles();
+
             this.FormBorderStyle = FormBorderStyle.None;
             this.MaximumSize = this._dropLeftImage.Size;
             this.MinimumSize = this.MaximumSize;

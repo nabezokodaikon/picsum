@@ -135,6 +135,9 @@ namespace SWF.UIComponent.Form
                 ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
+            this.SetStyle(
+                ControlStyles.ContainerControl,
+                false);
             this.UpdateStyles();
 
             //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
