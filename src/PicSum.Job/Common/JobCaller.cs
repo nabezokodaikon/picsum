@@ -13,7 +13,7 @@ namespace PicSum.Job.Common
     {
         private bool _disposed = false;
 
-        private readonly Lazy<OneWayJobQueue> _oneWayQueue = new(
+        private readonly Lazy<OneWayJobQueue> _oneWayJobQueue = new(
             () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         private readonly Lazy<TwoWayJobQueue> _twoWayJobQueue = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
@@ -44,7 +44,7 @@ namespace PicSum.Job.Common
                 return;
             }
 
-            await this._oneWayQueue.Value.DisposeAsync();
+            await this._oneWayJobQueue.Value.DisposeAsync();
             await this._twoWayJobQueue.Value.DisposeAsync();
 
             await this.ImageFileReadJob.Value.DisposeAsync();
@@ -66,21 +66,21 @@ namespace PicSum.Job.Common
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }
 
         public void EnqueueDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -88,7 +88,7 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this._oneWayQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
@@ -96,28 +96,28 @@ namespace PicSum.Job.Common
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            this._oneWayQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
         public void EnqueueFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueTagsGetJob(
