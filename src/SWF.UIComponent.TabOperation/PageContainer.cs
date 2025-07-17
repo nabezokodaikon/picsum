@@ -32,7 +32,8 @@ namespace SWF.UIComponent.TabOperation
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw,
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
                 true);
             this.SetStyle(
                 ControlStyles.Selectable,

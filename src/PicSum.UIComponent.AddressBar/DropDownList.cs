@@ -295,6 +295,7 @@ namespace PicSum.UIComponent.AddressBar
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
                 ControlStyles.UserPaint,
                 true);
             this.SetStyle(

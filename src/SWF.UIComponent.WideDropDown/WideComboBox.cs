@@ -55,7 +55,8 @@ namespace SWF.UIComponent.WideDropDown
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw,
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
                 true);
             this.SetStyle(
                 ControlStyles.Selectable,
