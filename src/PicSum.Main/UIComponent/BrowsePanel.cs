@@ -23,7 +23,7 @@ namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class BrowsePanel
-        : ContainerControl, ISender
+        : Control, ISender
     {
         private const int INFOPANEL_WIDTH = 240;
         private const int TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN = 28;
@@ -64,6 +64,21 @@ namespace PicSum.Main.UIComponent
                         });
                 };
             };
+        }
+
+        private static bool HasControl(object target, Control parent)
+        {
+            foreach (Control child in parent.Controls)
+            {
+                if (child == target)
+                {
+                    return true;
+                }
+
+                return HasControl(target, child);
+            }
+
+            return false;
         }
 
         private bool _disposed = false;
@@ -824,7 +839,7 @@ namespace PicSum.Main.UIComponent
             if (e.Data.GetDataPresent(typeof(DragEntity)))
             {
                 var entity = (DragEntity)e.Data.GetData(typeof(DragEntity));
-                if (entity.Sender != this.ActiveControl)
+                if (!HasControl(entity.Sender, this))
                 {
                     e.Effect = DragDropEffects.Copy;
                     return;

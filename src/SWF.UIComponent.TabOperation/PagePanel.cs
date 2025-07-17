@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// コンテンツコントロール
     /// </summary>
     public partial class PagePanel
-        : ContainerControl
+        : Control
     {
 
         public event EventHandler Activated;
