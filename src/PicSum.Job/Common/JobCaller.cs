@@ -30,6 +30,8 @@ namespace PicSum.Job.Common
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(
@@ -51,6 +53,7 @@ namespace PicSum.Job.Common
             await this.ThumbnailsGetJob.Value.DisposeAsync();
             await this.FileDeepInfoGetJob.Value.DisposeAsync();
             await this.FileDeepInfoLoadingJob.Value.DisposeAsync();
+            await this.AddressInfoGetJob.Value.DisposeAsync();
             await this.PipeServerJob.Value.DisposeAsync();
             await this.GCCollectRunJob.Value.DisposeAsync();
 
@@ -157,22 +160,6 @@ namespace PicSum.Job.Common
                     DirectoryViewHistoryGetJob,
                     ListResult<FileShallowInfoEntity>>(
                 sender, callback);
-        }
-
-        public void EnqueueAddressInfoGetJob(
-            ISender sender,
-            ValueParameter<string> parameter,
-            Action<AddressInfoGetResult> callback)
-        {
-            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
-            ArgumentNullException.ThrowIfNull(sender, nameof(callback));
-
-            this._twoWayJobQueue.Value
-                .Enqueue<
-                    AddressInfoGetJob,
-                    ValueParameter<string>,
-                    AddressInfoGetResult>(
-                sender, parameter, callback);
         }
 
         public void EnqueueNextDirectoryGetJob(

@@ -107,7 +107,8 @@ namespace PicSum.UIComponent.AddressBar
 
             var param = new ValueParameter<string>(filePath);
 
-            Instance<JobCaller>.Value.EnqueueAddressInfoGetJob(this, param, _ =>
+            Instance<JobCaller>.Value.AddressInfoGetJob.Value
+                .StartJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {
