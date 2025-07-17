@@ -14,7 +14,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FlowList
-        : UserControl
+        : Control
     {
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
@@ -137,19 +137,6 @@ namespace SWF.UIComponent.FlowList
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new BorderStyle BorderStyle
-        {
-            get
-            {
-                return base.BorderStyle;
-            }
-            private set
-            {
-                base.BorderStyle = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new ContextMenuStrip ContextMenuStrip
         {
             get
@@ -186,7 +173,6 @@ namespace SWF.UIComponent.FlowList
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
-            base.BorderStyle = BorderStyle.None;
             this.Controls.Add(this._scrollBar);
 
             this.KeyDown += this.FlowList_KeyDown;
