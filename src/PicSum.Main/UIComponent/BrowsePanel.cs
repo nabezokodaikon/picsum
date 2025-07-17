@@ -23,7 +23,7 @@ namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class BrowsePanel
-        : UserControl, ISender
+        : ContainerControl, ISender
     {
         private const int INFOPANEL_WIDTH = 240;
         private const int TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN = 28;
@@ -454,7 +454,7 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        private void BrowsePanel_Load(object sender, EventArgs e)
+        private void BrowsePanel_HandleCreated(object sender, EventArgs e)
         {
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
         }

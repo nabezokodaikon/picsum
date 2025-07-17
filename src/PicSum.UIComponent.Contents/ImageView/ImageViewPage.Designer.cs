@@ -95,7 +95,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.Controls.AddRange(
                 this.checkPatternPanel,
                 this.toolBar);
-            this.Load += this.ImageViewPage_Load;
+            this.HandleCreated += this.ImageViewPage_HandleCreated;
             this.MouseWheel += this.ImageViewPage_MouseWheel;
             this.DrawTabPage += this.ImageViewPage_DrawTabPage;
             this.checkPatternPanel.ResumeLayout(false);
