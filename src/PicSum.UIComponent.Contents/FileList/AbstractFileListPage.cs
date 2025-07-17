@@ -233,7 +233,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private void AbstractFileListPage_HandleCreated(object sender, EventArgs e)
+        private void AbstractFileListPage_Load(object sender, EventArgs e)
         {
             this._isLoaded = true;
 

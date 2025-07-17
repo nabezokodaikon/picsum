@@ -84,7 +84,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Controls.AddRange(
                 this.flowList,
                 this.toolBar);
-            this.HandleCreated += this.AbstractFileListPage_HandleCreated;
+            this.Load += this.AbstractFileListPage_Load;
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
         }

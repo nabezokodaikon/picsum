@@ -36,11 +36,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
 
-            this.HandleCreated += this.TagFileListPage_HandleCreated;
+            this.Load += this.TagFileListPage_Load;
             this.DrawTabPage += this.TagFileListPage_DrawTabPage;
         }
 
-        private void TagFileListPage_HandleCreated(object sender, EventArgs e)
+        private void TagFileListPage_Load(object sender, EventArgs e)
         {
             var param = new FilesGetByTagParameter()
             {

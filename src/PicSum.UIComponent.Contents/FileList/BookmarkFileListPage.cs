@@ -33,11 +33,11 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
 
-            this.HandleCreated += this.BookmarkFileListPage_HandleCreated;
+            this.Load += this.BookmarkFileListPage_Load;
             this.DrawTabPage += this.BookmarkFileListPage_DrawTabPage;
         }
 
-        private void BookmarkFileListPage_HandleCreated(object sender, EventArgs e)
+        private void BookmarkFileListPage_Load(object sender, EventArgs e)
         {
             Instance<JobCaller>.Value.EnqueueBookmarksGetJob(this, _ =>
                 {
