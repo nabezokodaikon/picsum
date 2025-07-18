@@ -270,6 +270,10 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.singlePreviewButton.Font = buttonFont;
             this.singleNextButton.Font = buttonFont;
             this.doubleNextButton.Font = buttonFont;
+
+            var menuFont = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            this.viewMenu.Font = menuFont;
+            this.sizeMenu.Font = menuFont;
         }
 
         protected override void Dispose(bool disposing)
