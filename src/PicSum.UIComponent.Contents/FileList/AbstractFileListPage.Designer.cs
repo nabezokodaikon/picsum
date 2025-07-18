@@ -85,6 +85,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.flowList,
                 this.toolBar);
             this.HandleCreated += this.AbstractFileListPage_HandleCreated;
+            this.ParentChanged += this.AbstractFileListPage_ParentChanged;
             this.toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
         }

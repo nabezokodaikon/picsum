@@ -285,7 +285,10 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this._parameter.GetImageFiles += this.Parameter_GetImageFiles;
             this._parameter.ImageFilesGetAction(this._parameter)(this);
+        }
 
+        private void ImageViewPage_ParentChanged(object sender, EventArgs e)
+        {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
         }

@@ -54,8 +54,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.SuspendLayout();
             // 
             // viewMenu
-            // 
-            this.viewMenu.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
+            //
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
@@ -74,19 +73,23 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.spreadRightFeedMenuItem.Click += this.SpreadRightFeedMenuItem_Click;
             // 
             // doublePreviewButton
-            // 
+            //
+            this.doublePreviewButton.Text = "<<-";
             this.doublePreviewButton.MouseClick += this.DoublePreviewButton_MouseClick;
             // 
             // singlePreviewButton
-            // 
+            //
+            this.singlePreviewButton.Text = "<-";
             this.singlePreviewButton.MouseClick += this.SinglePreviewButton_MouseClick;
             // 
             // doubleNextButton
-            // 
+            //
+            this.doubleNextButton.Text = "->>";
             this.doubleNextButton.MouseClick += this.DoubleNextButton_MouseClick;
             // 
             // singleNextButton
-            // 
+            //
+            this.singleNextButton.Text = "->";
             this.singleNextButton.MouseClick += this.SingleNextButton_MouseClick;
             // 
             // indexSlider
@@ -97,11 +100,13 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.indexSlider.MouseUp += this.IndexSlider_MouseUp;
             // 
             // viewButton
-            // 
+            //
+            this.viewButton.Text = "View";
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // sizeButton
-            // 
+            //
+            this.sizeButton.Text = "Size";
             this.sizeButton.MouseClick += this.SizeButton_MouseClick;
             // 
             // sizeMenu

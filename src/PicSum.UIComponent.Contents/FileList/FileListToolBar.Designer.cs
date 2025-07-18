@@ -32,26 +32,31 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SuspendLayout();
             // 
             // viewButton
-            // 
+            //
+            this.viewButton.Text = "View";
             this.viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // nameSortButton
-            // 
+            //
+            this.nameSortButton.Text = "Name";
             this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.nameSortButton.MouseClick += this.NameSortButton_MouseClick;
             // 
             // pathSortButton
-            // 
+            //
+            this.pathSortButton.Text = "Path";
             this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
             // 
             // timestampSortButton
-            // 
+            //
+            this.timestampSortButton.Text = "Time stamp";
             this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
-            // 
+            //
+            this.registrationSortButton.Text = "Registration";
             this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
@@ -63,7 +68,6 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             //
-            this.viewMenu.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             // 
             // directoryMenuItem
@@ -87,11 +91,13 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileNameMenuItem.Click += this.FileNameMenuItem_Click;
             // 
             // movePreviewButton
-            // 
+            //
+            this.movePreviewButton.Text = "<-";
             this.movePreviewButton.MouseClick += this.MovePreviewButton_MouseClick;
             // 
             // moveNextButton
-            // 
+            //
+            this.moveNextButton.Text = "->";
             this.moveNextButton.MouseClick += this.MoveNextButton_MouseClick;
             // 
             // FileListToolBar

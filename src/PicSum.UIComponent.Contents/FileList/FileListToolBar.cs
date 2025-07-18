@@ -216,8 +216,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public void SetControlsBounds(float scale)
         {
-            this.SuspendLayout();
-
             this.viewButton.SetBounds(
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
@@ -274,16 +272,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.registrationSortButton.Font = buttonFont;
             this.movePreviewButton.Font = buttonFont;
             this.moveNextButton.Font = buttonFont;
-
-            this.viewButton.Text = "View";
-            this.nameSortButton.Text = "Name";
-            this.pathSortButton.Text = "Path";
-            this.timestampSortButton.Text = "Time stamp";
-            this.registrationSortButton.Text = "Registration";
-            this.movePreviewButton.Text = "<-";
-            this.moveNextButton.Text = "->";
-
-            this.ResumeLayout(false);
         }
 
         public ToolTextButton GetSortToolStripButton(SortTypeID sortType)

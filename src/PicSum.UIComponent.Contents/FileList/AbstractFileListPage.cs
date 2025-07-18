@@ -236,7 +236,10 @@ namespace PicSum.UIComponent.Contents.FileList
         private void AbstractFileListPage_HandleCreated(object sender, EventArgs e)
         {
             this._isHandleCreated = true;
+        }
 
+        private void AbstractFileListPage_ParentChanged(object sender, EventArgs e)
+        {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
         }

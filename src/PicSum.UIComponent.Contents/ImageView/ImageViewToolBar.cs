@@ -216,8 +216,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public void SetControlsBounds(float scale)
         {
-            this.SuspendLayout();
-
             this.viewButton.SetBounds(
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
@@ -272,15 +270,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.singlePreviewButton.Font = buttonFont;
             this.singleNextButton.Font = buttonFont;
             this.doubleNextButton.Font = buttonFont;
-
-            this.viewButton.Text = "View";
-            this.sizeButton.Text = "Size";
-            this.doublePreviewButton.Text = "<<-";
-            this.singlePreviewButton.Text = "<-";
-            this.singleNextButton.Text = "->";
-            this.doubleNextButton.Text = "->>";
-
-            this.ResumeLayout(false);
         }
 
         protected override void Dispose(bool disposing)
