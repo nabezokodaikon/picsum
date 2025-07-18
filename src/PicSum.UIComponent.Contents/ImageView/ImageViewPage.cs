@@ -371,11 +371,13 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 action();
 
-                this.leftImagePanel.ResumeLayout(false);
+                this.leftImagePanel.ResumeLayout(true);
                 this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
 
-                this.rightImagePanel.ResumeLayout(false);
+                this.rightImagePanel.ResumeLayout(true);
                 this.rightImagePanel.Invalidate();
+                this.rightImagePanel.Update();
             }
             else if (isLeft)
             {
@@ -383,8 +385,9 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 action();
 
-                this.leftImagePanel.ResumeLayout(false);
+                this.leftImagePanel.ResumeLayout(true);
                 this.leftImagePanel.Invalidate();
+                this.leftImagePanel.Update();
             }
             else if (isRight)
             {
@@ -392,8 +395,9 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 action();
 
-                this.rightImagePanel.ResumeLayout(false);
+                this.rightImagePanel.ResumeLayout(true);
                 this.rightImagePanel.Invalidate();
+                this.rightImagePanel.Update();
             }
         }
 
@@ -404,9 +408,11 @@ namespace PicSum.UIComponent.Contents.ImageView
             var x = 0;
             var y = 0;
 
+            this.leftImagePanel.SuspendLayout();
             this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
             this.leftImagePanel.ImageAlign = ImageAlign.Center;
             this.leftImagePanel.Visible = true;
+            this.leftImagePanel.ResumeLayout(true);
             this.leftImagePanel.Invalidate();
 
             this.rightImagePanel.Visible = false;
@@ -431,14 +437,18 @@ namespace PicSum.UIComponent.Contents.ImageView
             var rx = this.checkPatternPanel.Width - lw;
             var y = 0;
 
+            this.leftImagePanel.SuspendLayout();
             this.leftImagePanel.SetBounds(lx, y, lw, h, BoundsSpecified.All);
             this.leftImagePanel.ImageAlign = ImageAlign.Right;
             this.leftImagePanel.Visible = true;
+            this.leftImagePanel.ResumeLayout(true);
             this.leftImagePanel.Invalidate();
 
+            this.rightImagePanel.SuspendLayout();
             this.rightImagePanel.SetBounds(rx, y, rw, h, BoundsSpecified.All);
             this.rightImagePanel.ImageAlign = ImageAlign.Left;
             this.rightImagePanel.Visible = true;
+            this.rightImagePanel.ResumeLayout(true);
             this.rightImagePanel.Invalidate();
         }
 
