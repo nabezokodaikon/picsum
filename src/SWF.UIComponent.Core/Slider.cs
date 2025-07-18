@@ -8,7 +8,8 @@ namespace SWF.UIComponent.Core
     /// スライダーコントロール
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class Slider : Control
+    public partial class Slider
+        : BaseControl
     {
 
         private const int BAR_HEIGHT = 4;
@@ -24,32 +25,6 @@ namespace SWF.UIComponent.Core
         private int _minimumValue = 0;
         private int _sliderValue = 0;
         private bool _isValueChanging = false;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool TabStop
-        {
-            get
-            {
-                return base.TabStop;
-            }
-            private set
-            {
-                base.TabStop = value;
-            }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
@@ -119,18 +94,6 @@ namespace SWF.UIComponent.Core
 
         public Slider()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this._sliderValue = this._minimumValue;
 
             this.Paint += this.Slider_Paint;

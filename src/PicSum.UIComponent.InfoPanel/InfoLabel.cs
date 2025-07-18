@@ -1,3 +1,4 @@
+using SWF.UIComponent.Core;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -7,7 +8,7 @@ namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class FileInfoLabel
-        : Control
+        : BaseControl
     {
         private static readonly Color TEXT_COLOR = Color.FromArgb(
             SystemColors.ControlText.A,
@@ -26,19 +27,6 @@ namespace PicSum.UIComponent.InfoPanel
         private string _timestamp = string.Empty;
         private string _fileType = string.Empty;
         private string _fileSize = string.Empty;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FileName
@@ -106,18 +94,6 @@ namespace PicSum.UIComponent.InfoPanel
 
         public FileInfoLabel()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.Paint += this.FileInfoLabel_Paint;
         }
 

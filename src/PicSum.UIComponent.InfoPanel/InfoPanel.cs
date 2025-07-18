@@ -51,19 +51,6 @@ namespace PicSum.UIComponent.InfoPanel
         private readonly StringFormat _stringFormat;
         private bool _isLoading = false;
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
-
         private string[] FilePathList
         {
             get
@@ -136,17 +123,6 @@ namespace PicSum.UIComponent.InfoPanel
 
         public InfoPanel()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.InitializeComponent();
 
             this._foreColorBrush = new SolidBrush(this.ForeColor);

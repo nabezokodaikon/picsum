@@ -6,7 +6,8 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal partial class RatingButton : Control
+    internal partial class RatingButton
+        : BaseControl
     {
         private static readonly Size DEFAULT_SIZE = new(48, 48);
 
@@ -44,18 +45,6 @@ namespace SWF.UIComponent.Core
 
         public RatingButton()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.Size = DEFAULT_SIZE;
 
             this.Paint += this.RatingButton_Paint;

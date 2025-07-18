@@ -19,7 +19,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class AddressBar
-        : Control, ISender
+        : BaseControl, ISender
     {
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
@@ -44,17 +44,6 @@ namespace PicSum.UIComponent.AddressBar
         {
             this._overflowItem.AddressBar = this;
             this._directoryHistoryItem.AddressBar = this;
-
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
 
             this._overflowItem.DropDownOpened += new(this.DrawItem_DropDownOpened);
             this._overflowItem.DropDownClosed += new(this.DrawItem_DropDownClosed);

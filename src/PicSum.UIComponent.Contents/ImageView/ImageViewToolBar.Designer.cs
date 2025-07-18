@@ -180,7 +180,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.doubleNextButton,
                 this.singlePreviewButton,
                 this.doublePreviewButton);
-            this.DoubleBuffered = true;
             this.viewMenu.ResumeLayout(false);
             this.sizeMenu.ResumeLayout(false);
             this.ResumeLayout(false);

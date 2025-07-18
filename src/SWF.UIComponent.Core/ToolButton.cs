@@ -4,7 +4,8 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class ToolButton : Button
+    public partial class ToolButton
+        : Button
     {
         private const int REGION_OFFSET = 4;
 
@@ -46,6 +47,31 @@ namespace SWF.UIComponent.Core
             private set
             {
                 base.BackColor = value;
+            }
+        }
+
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+            private set
+            {
+                base.Name = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool DoubleBuffered
+        {
+            get
+            {
+                return base.DoubleBuffered;
+            }
+            private set
+            {
+                base.DoubleBuffered = value;
             }
         }
 
@@ -149,7 +175,12 @@ namespace SWF.UIComponent.Core
                 ControlStyles.UserPaint |
                 ControlStyles.SupportsTransparentBackColor,
                 true);
+            this.SetStyle(
+                ControlStyles.ContainerControl,
+                false);
             this.UpdateStyles();
+
+            this.DoubleBuffered = true;
 
             this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
             this.Region = this.GetRegion();

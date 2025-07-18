@@ -14,7 +14,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FlowList
-        : Control
+        : BaseControl
     {
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
@@ -161,14 +161,6 @@ namespace SWF.UIComponent.FlowList
 
         public FlowList()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);

@@ -792,7 +792,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_MouseClick(object sender, MouseEventArgs e)
         {
-            base.OnMouseClick(e);
+            this.flowList.Focus();
         }
 
         private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)

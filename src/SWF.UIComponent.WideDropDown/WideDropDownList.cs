@@ -23,6 +23,57 @@ namespace SWF.UIComponent.WideDropDown
         private readonly Control _owner;
         private readonly List<string> _itemList = [];
 
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+            private set
+            {
+                base.Name = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool DoubleBuffered
+        {
+            get
+            {
+                return base.DoubleBuffered;
+            }
+            private set
+            {
+                base.DoubleBuffered = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
+
         /// <summary>
         /// 項目テキスト色
         /// </summary>
@@ -190,14 +241,6 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        private int ItemTextHeight
-        {
-            get
-            {
-                return this.FontHeight * 2;
-            }
-        }
-
         public WideDropDownList(Control owner)
         {
             ArgumentNullException.ThrowIfNull(owner, nameof(owner));
@@ -208,12 +251,17 @@ namespace SWF.UIComponent.WideDropDown
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
+                ControlStyles.StandardClick |
+                ControlStyles.UserPaint |
+                ControlStyles.SupportsTransparentBackColor,
                 true);
             this.SetStyle(
+                ControlStyles.ContainerControl |
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
+
+            this.DoubleBuffered = true;
 
             this.Items.Add(new ToolStripControlHost(new FlowList.FlowList()));
             this.Padding = new Padding(2, 1, 2, 0);

@@ -14,7 +14,7 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.thumbnailPictureBox = new SWF.UIComponent.Core.PictureBoxEx();
+            this.thumbnailPictureBox = new SWF.UIComponent.Core.BaseControl();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,7 +90,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Core.PictureBoxEx thumbnailPictureBox;
+        private SWF.UIComponent.Core.BaseControl thumbnailPictureBox;
         private SWF.UIComponent.Core.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;

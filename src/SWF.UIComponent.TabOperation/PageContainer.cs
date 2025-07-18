@@ -1,7 +1,6 @@
 using SWF.Core.Base;
 using SWF.UIComponent.Core;
 using System;
-using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
 
@@ -12,33 +11,11 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class PageContainer
-        : Control
+        : BaseControl
     {
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
-
         public PageContainer()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
+
         }
 
         /// <summary>

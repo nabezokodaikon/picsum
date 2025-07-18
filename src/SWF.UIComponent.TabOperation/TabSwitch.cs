@@ -18,21 +18,8 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class TabSwitch
-        : Control
+        : BaseControl
     {
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Text
         {
@@ -235,17 +222,6 @@ namespace SWF.UIComponent.TabOperation
 
         public TabSwitch()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
 

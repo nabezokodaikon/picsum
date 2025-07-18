@@ -1,7 +1,7 @@
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
@@ -9,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
     /// コンテンツコントロール
     /// </summary>
     public partial class PagePanel
-        : Control
+        : BaseControl
     {
 
         public event EventHandler Activated;

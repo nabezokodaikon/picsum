@@ -26,17 +26,6 @@ namespace PicSum.UIComponent.Contents.Common
 
         public BrowsePage(IPageParameter parameter)
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 

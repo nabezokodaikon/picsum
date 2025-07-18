@@ -4,26 +4,14 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class RatingBar : Control
+    public partial class RatingBar
+        : BaseControl
     {
         public event EventHandler<MouseEventArgs>? RatingButtonMouseClick;
 
         private int _maximumValue = 5;
         private int _ratingValue = 0;
         private readonly List<RatingButton> _ratingButtonList = [];
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int MaximumValue
@@ -59,17 +47,7 @@ namespace SWF.UIComponent.Core
 
         public RatingBar()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
+
         }
 
         public void SetControlsBounds(float scale)

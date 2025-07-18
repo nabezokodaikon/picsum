@@ -14,10 +14,60 @@ namespace PicSum.UIComponent.AddressBar
     public sealed partial class DropDownList
         : ToolStripDropDown
     {
-
         public event EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs> Drawitem;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler ItemExecute;
+
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+            private set
+            {
+                base.Name = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int TabIndex
+        {
+            get
+            {
+                return base.TabIndex;
+            }
+            private set
+            {
+                base.TabIndex = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool DoubleBuffered
+        {
+            get
+            {
+                return base.DoubleBuffered;
+            }
+            private set
+            {
+                base.DoubleBuffered = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new bool TabStop
+        {
+            get
+            {
+                return base.TabStop;
+            }
+            private set
+            {
+                base.TabStop = value;
+            }
+        }
 
         /// <summary>
         /// 項目数
@@ -296,12 +346,16 @@ namespace PicSum.UIComponent.AddressBar
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
+                ControlStyles.StandardClick |
                 ControlStyles.UserPaint,
                 true);
             this.SetStyle(
+                ControlStyles.ContainerControl |
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
+
+            this.DoubleBuffered = true;
 
             this.Items.Add(new ToolStripControlHost(new FlowList()));
             this.Padding = new Padding(2, 1, 2, 0);

@@ -105,7 +105,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.pathSortButton,
                 this.nameSortButton,
                 this.viewButton);
-            this.DoubleBuffered = true;
             this.IsDrawBottomBorderLine = true;
             this.viewMenu.ResumeLayout(false);
             this.ResumeLayout(false);

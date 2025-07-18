@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
@@ -7,38 +6,14 @@ namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class CheckPatternPanel
-        : Control
+        : BaseControl
     {
         private const int RECTANGLE_DEFAULT_SIZE = 24;
         private static readonly SolidBrush BRUSH_A = new(Color.FromArgb(48, 48, 48));
         private static readonly SolidBrush BRUSH_B = new(Color.FromArgb(24, 24, 24));
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
-
         public CheckPatternPanel()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             //this.BackColor = BRUSH_A.Color;
 
             this.Paint += this.CheckPatternPanel_Paint;

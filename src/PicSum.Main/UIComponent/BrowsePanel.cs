@@ -23,7 +23,7 @@ namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class BrowsePanel
-        : Control, ISender
+        : BaseControl, ISender
     {
         private const int INFOPANEL_WIDTH = 240;
         private const int TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN = 28;
@@ -108,17 +108,6 @@ namespace PicSum.Main.UIComponent
 
         public BrowsePanel()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.pageContainer = new PageContainer();
             this.infoPanel = new InfoPanel();
             this.tabSwitch = new TabSwitch();

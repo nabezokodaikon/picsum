@@ -1,5 +1,6 @@
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;
@@ -8,7 +9,7 @@ namespace SWF.UIComponent.TabOperation
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class TabDropForm
-        : Form
+        : BaseForm
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
@@ -18,11 +19,6 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDropForm()
         {
-            this.SetStyle(
-                ControlStyles.ContainerControl,
-                false);
-            this.UpdateStyles();
-
             this.FormBorderStyle = FormBorderStyle.None;
             this.MaximumSize = this._dropLeftImage.Size;
             this.MinimumSize = this.MaximumSize;

@@ -13,7 +13,7 @@ namespace SWF.UIComponent.Form
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class GrassForm
-        : System.Windows.Forms.Form
+        : BaseForm
     {
         private const int TOP_OFFSET = 37;
         private const int RESIZE_MARGIN = 8;
@@ -128,17 +128,6 @@ namespace SWF.UIComponent.Form
         public GrassForm()
         {
             this.AutoScaleMode = AutoScaleMode.Dpi;
-
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.ContainerControl,
-                false);
-            this.UpdateStyles();
 
             //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
 

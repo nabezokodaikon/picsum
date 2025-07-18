@@ -1,4 +1,5 @@
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +10,7 @@ namespace SWF.UIComponent.WideDropDown
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class WideComboBox
-        : Control
+        : BaseControl
     {
         private static readonly Rectangle INPUT_TEXT_BOX_DEFAULT_BOUNDS
             = new(0, 1, 569, 36);
@@ -23,19 +24,6 @@ namespace SWF.UIComponent.WideDropDown
 
         private bool _isShowingDropDown = false;
         private readonly WideDropDownList _dropDownList;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Image Icon
@@ -52,17 +40,6 @@ namespace SWF.UIComponent.WideDropDown
 
         public WideComboBox()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
             this.InitializeComponent();
 
             this.inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;

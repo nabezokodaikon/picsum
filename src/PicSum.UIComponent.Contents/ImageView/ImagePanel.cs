@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.Contents.ImageView
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImagePanel
-        : Control
+        : BaseControl
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
@@ -59,19 +59,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             LineAlignment = StringAlignment.Center,
             Trimming = StringTrimming.EllipsisCharacter,
         };
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new int TabIndex
-        {
-            get
-            {
-                return base.TabIndex;
-            }
-            private set
-            {
-                base.TabIndex = value;
-            }
-        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FilePath { get; private set; } = string.Empty;
@@ -153,15 +140,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public ImagePanel()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.SupportsTransparentBackColor |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.UpdateStyles();
-
             this.MouseLeave += this.ImagePanel_MouseLeave;
             this.MouseDown += this.ImagePanel_MouseDown;
             this.MouseUp += this.ImagePanel_MouseUp;

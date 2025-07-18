@@ -15,7 +15,7 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class TabDragForm
-        : Form
+        : BaseForm
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
@@ -91,17 +91,6 @@ namespace SWF.UIComponent.TabOperation
         public TabDragForm()
         {
             this.AutoScaleMode = AutoScaleMode.Dpi;
-
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.ContainerControl,
-                false);
-            this.UpdateStyles();
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
