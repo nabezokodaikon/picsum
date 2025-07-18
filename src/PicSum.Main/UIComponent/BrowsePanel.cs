@@ -112,15 +112,15 @@ namespace PicSum.Main.UIComponent
             this.infoPanel = new InfoPanel();
             this.tabSwitch = new TabSwitch();
             this.toolPanel = new Control();
-            this.reloadToolButton = new ToolIconButton();
-            this.nextPageHistoryButton = new ToolIconButton();
-            this.previewPageHistoryButton = new ToolIconButton();
-            this.showInfoToolButton = new ToolIconButton();
+            this.reloadToolButton = new BaseIconButton();
+            this.nextPageHistoryButton = new BaseIconButton();
+            this.previewPageHistoryButton = new BaseIconButton();
+            this.showInfoToolButton = new BaseIconButton();
             this.addressBar = new AddressBar();
-            this.searchBookmarkToolButton = new ToolIconButton();
+            this.searchBookmarkToolButton = new BaseIconButton();
             this.tagDropToolButton = new WideDropToolButton();
-            this.homeToolButton = new ToolIconButton();
-            this.searchRatingToolButton = new ToolIconButton();
+            this.homeToolButton = new BaseIconButton();
+            this.searchRatingToolButton = new BaseIconButton();
             this.toolPanel2 = new ToolPanel();
 
             this.toolPanel.SuspendLayout();

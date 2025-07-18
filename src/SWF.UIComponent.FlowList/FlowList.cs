@@ -14,7 +14,7 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class FlowList
-        : BaseControl
+        : BasePaintingControl
     {
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;

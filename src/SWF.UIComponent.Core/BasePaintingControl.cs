@@ -1,15 +1,11 @@
 using System.ComponentModel;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.Core
 {
-    /// <summary>
-    /// 垂直スクロールバー拡張
-    /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed partial class VScrollBarEx
-        : VScrollBar
+    public class BasePaintingControl
+        : Control
     {
         public new string Name
         {
@@ -62,31 +58,15 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        /// <summary>
-        /// 最大値
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        /// <summary>
-        /// 最大値
-        /// </summary>
-        public new int Maximum
-        {
-            get
-            {
-                return base.Maximum - this.GetMargin();
-            }
-            set
-            {
-                base.Maximum = value + this.GetMargin();
-            }
-        }
-
-        public VScrollBarEx()
+        public BasePaintingControl()
         {
             this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick,
+                ControlStyles.StandardClick |
+                ControlStyles.UserPaint |
+                ControlStyles.SupportsTransparentBackColor,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl |
@@ -95,11 +75,6 @@ namespace SWF.UIComponent.FlowList
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
-        }
-
-        private int GetMargin()
-        {
-            return this.LargeChange - 1;
         }
     }
 }

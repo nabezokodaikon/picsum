@@ -274,7 +274,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.moveNextButton.Font = buttonFont;
         }
 
-        public ToolTextButton GetSortToolStripButton(SortTypeID sortType)
+        public BaseTextButton GetSortToolStripButton(SortTypeID sortType)
         {
             return sortType switch
             {

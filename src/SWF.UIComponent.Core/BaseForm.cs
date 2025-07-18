@@ -9,12 +9,9 @@ namespace SWF.UIComponent.Core
         public BaseForm()
         {
             this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
+                ControlStyles.StandardClick,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl |

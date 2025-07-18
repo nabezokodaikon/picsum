@@ -42,7 +42,7 @@
     <Compile Update="RatingBar.cs" />
     <Compile Update="RatingButton.cs" />
     <Compile Update="Slider.cs" />
-    <Compile Update="ToolButton.cs" />
+    <Compile Update="BaseButton.cs" />
     <Compile Update="ToolStripSlider.cs" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public partial class ToolButton
+    public partial class BaseButton
         : Button
     {
         private const int REGION_OFFSET = 4;
@@ -165,15 +165,12 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        public ToolButton()
+        public BaseButton()
         {
             this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
+                ControlStyles.StandardClick,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl,

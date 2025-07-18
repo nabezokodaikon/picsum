@@ -7,7 +7,7 @@ namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class RatingButton
-        : BaseControl
+        : BasePaintingControl
     {
         private static readonly Size DEFAULT_SIZE = new(48, 48);
 

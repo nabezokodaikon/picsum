@@ -7,8 +7,8 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal partial class FileInfoLabel
-        : BaseControl
+    internal partial class InfoLabel
+        : BasePaintingControl
     {
         private static readonly Color TEXT_COLOR = Color.FromArgb(
             SystemColors.ControlText.A,
@@ -92,9 +92,9 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        public FileInfoLabel()
+        public InfoLabel()
         {
-            this.Paint += this.FileInfoLabel_Paint;
+            this.Paint += this.InfoLabel_Paint;
         }
 
         protected override void Dispose(bool disposing)
@@ -107,7 +107,7 @@ namespace PicSum.UIComponent.InfoPanel
             base.Dispose(disposing);
         }
 
-        private void FileInfoLabel_Paint(object sender, PaintEventArgs e)
+        private void InfoLabel_Paint(object sender, PaintEventArgs e)
         {
             const float MARGIN = 8;
             var textSize = e.Graphics.MeasureString("あ", this.Font);

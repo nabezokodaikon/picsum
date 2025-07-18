@@ -9,7 +9,7 @@ namespace SWF.UIComponent.Core
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class Slider
-        : BaseControl
+        : BasePaintingControl
     {
 
         private const int BAR_HEIGHT = 4;

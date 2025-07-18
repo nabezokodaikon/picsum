@@ -18,7 +18,7 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class TabSwitch
-        : BaseControl
+        : BasePaintingControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Text

@@ -17,9 +17,9 @@ namespace SWF.UIComponent.WideDropDown
         /// </summary>
         private void InitializeComponent()
         {
-            this.addButton = new SWF.UIComponent.Core.ToolIconButton();
+            this.addButton = new SWF.UIComponent.Core.BaseIconButton();
             this.inputTextBox = new InputTextBox();
-            this.arrowPictureBox = new ToolIconButton();
+            this.arrowPictureBox = new BaseIconButton();
             this.SuspendLayout();
             // 
             // addButton
@@ -42,8 +42,8 @@ namespace SWF.UIComponent.WideDropDown
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Core.ToolIconButton addButton;
-        private ToolIconButton arrowPictureBox;
+        private SWF.UIComponent.Core.BaseIconButton addButton;
+        private BaseIconButton arrowPictureBox;
         private InputTextBox inputTextBox;
 
         #endregion

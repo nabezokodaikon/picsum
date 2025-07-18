@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.Contents.ImageView
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImagePanel
-        : BaseControl
+        : BasePaintingControl
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;

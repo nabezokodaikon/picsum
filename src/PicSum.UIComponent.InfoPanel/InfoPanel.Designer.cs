@@ -14,14 +14,14 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.thumbnailPictureBox = new SWF.UIComponent.Core.BaseControl();
+            this.thumbnailPictureBox = new SWF.UIComponent.Core.BasePaintingControl();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ratingBar = new SWF.UIComponent.Core.RatingBar();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
-            this.fileInfoLabel = new FileInfoLabel();
+            this.fileInfoLabel = new InfoLabel();
             this.tagContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,14 +90,14 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Core.BaseControl thumbnailPictureBox;
+        private SWF.UIComponent.Core.BasePaintingControl thumbnailPictureBox;
         private SWF.UIComponent.Core.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;
         private SWF.UIComponent.WideDropDown.WideComboBox wideComboBox;
-        private FileInfoLabel fileInfoLabel;
+        private InfoLabel fileInfoLabel;
 
         #endregion
     }

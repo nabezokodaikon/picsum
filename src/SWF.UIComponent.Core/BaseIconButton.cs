@@ -6,8 +6,8 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public class ToolIconButton
-        : ToolButton
+    public class BaseIconButton
+        : BaseButton
     {
         private static readonly SolidBrush DEFAULT_BRUSH = new(Color.FromArgb(250, 250, 250));
         private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(220, 220, 220));
@@ -35,7 +35,7 @@ namespace SWF.UIComponent.Core
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush DefaultBrush { get; set; } = DEFAULT_BRUSH;
 
-        public ToolIconButton()
+        public BaseIconButton()
         {
             this.MouseEnter += this.ToolIconButton_MouseEnter;
             this.MouseLeave += this.ToolIconButton_MouseLeave;

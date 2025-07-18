@@ -5,7 +5,7 @@ namespace SWF.UIComponent.Core
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public class ToolPanel
-        : BaseControl
+        : BasePaintingControl
     {
         private const float BORDER_LINE_WIDTH = 1f;
 
