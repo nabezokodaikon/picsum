@@ -1,6 +1,8 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageView
@@ -55,6 +57,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // viewMenu
             //
+            this.viewMenu.Renderer = new CustomDropDownRenderer(this.viewMenu);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
@@ -110,7 +113,8 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.sizeButton.MouseClick += this.SizeButton_MouseClick;
             // 
             // sizeMenu
-            // 
+            //
+            this.sizeMenu.Renderer = new CustomDropDownRenderer(this.sizeMenu);
             this.sizeMenu.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
@@ -192,7 +196,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         #endregion
 
-        private System.Windows.Forms.ContextMenuStrip viewMenu;
+        private System.Windows.Forms.ToolStripDropDown viewMenu;
         private SWF.UIComponent.Core.ToolTextButton doublePreviewButton;
         private SWF.UIComponent.Core.ToolTextButton singlePreviewButton;
         private SWF.UIComponent.Core.ToolTextButton doubleNextButton;
@@ -203,7 +207,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private System.Windows.Forms.ToolStripMenuItem spreadLeftFeedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spreadRightFeedMenuItem;
         private SWF.UIComponent.Core.ToolTextButton sizeButton;
-        private System.Windows.Forms.ContextMenuStrip sizeMenu;
+        private System.Windows.Forms.ToolStripDropDown sizeMenu;
         private System.Windows.Forms.ToolStripMenuItem originalSizeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fitWindowMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fitWindowLargeOnlyMenuItem;

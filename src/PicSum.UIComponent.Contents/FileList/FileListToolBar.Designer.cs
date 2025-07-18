@@ -1,5 +1,8 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -68,6 +71,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             //
+            this.viewMenu.Renderer = new CustomDropDownRenderer(this.viewMenu);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             // 
             // directoryMenuItem
@@ -120,7 +124,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private SWF.UIComponent.Core.ToolTextButton viewButton;
         private SWF.UIComponent.Core.Slider thumbnailSizeSlider;
-        private System.Windows.Forms.ContextMenuStrip viewMenu;
+        private System.Windows.Forms.ToolStripDropDown viewMenu;
         private System.Windows.Forms.ToolStripMenuItem directoryMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imageFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem otherFileMenuItem;

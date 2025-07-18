@@ -272,9 +272,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.registrationSortButton.Font = buttonFont;
             this.movePreviewButton.Font = buttonFont;
             this.moveNextButton.Font = buttonFont;
-
-            var menuFont = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
-            this.viewMenu.Font = menuFont;
         }
 
         public ToolTextButton GetSortToolStripButton(SortTypeID sortType)
