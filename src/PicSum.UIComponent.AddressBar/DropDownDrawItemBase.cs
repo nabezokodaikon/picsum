@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.AddressBar
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     abstract class DropDownDrawItemBase
-        : DrawItemBase
+        : DrawItemBase, IDisposable
     {
         private DropDownList _dropDownList = null;
         private DirectoryEntity _mousePointItem = null;
