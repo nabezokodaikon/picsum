@@ -17,7 +17,6 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class SeparatorDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        private bool _disposed = false;
         private readonly Image _mousePointImage = ResourceFiles.SmallArrowRightIcon.Value;
         private readonly Image _mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
 
@@ -45,6 +44,11 @@ namespace PicSum.UIComponent.AddressBar
         public override void Draw(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._disposed)
+            {
+                return;
+            }
 
             var rect = this.GetRectangle();
 

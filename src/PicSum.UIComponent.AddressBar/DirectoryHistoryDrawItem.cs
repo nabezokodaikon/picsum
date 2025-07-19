@@ -16,7 +16,6 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class DirectoryHistoryDrawItem
         : DropDownDrawItemBase, IDisposable
     {
-        private bool _disposed = false;
         private readonly Image _drawImage = ResourceFiles.SmallArrowDownIcon.Value;
 
         public DirectoryHistoryDrawItem()
@@ -31,15 +30,20 @@ namespace PicSum.UIComponent.AddressBar
                 return;
             }
 
+            base.Dispose();
             this._disposed = true;
 
-            base.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public override void Draw(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._disposed)
+            {
+                return;
+            }
 
             var rect = this.GetRectangle();
 

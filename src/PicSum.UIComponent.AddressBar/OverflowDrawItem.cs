@@ -29,6 +29,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
+            if (this._disposed)
+            {
+                return;
+            }
+
             var rect = this.GetRectangle();
 
             if (base.IsMouseDown || this.IsDropDown)
