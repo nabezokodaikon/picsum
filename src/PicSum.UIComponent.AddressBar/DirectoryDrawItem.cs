@@ -12,7 +12,6 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class DirectoryDrawItem
         : DrawItemBase, IDisposable
     {
-
         private DirectoryEntity _directory = null;
 
         public DirectoryEntity Directory
@@ -35,12 +34,18 @@ namespace PicSum.UIComponent.AddressBar
         public new void Dispose()
         {
             base.Dispose();
+            this._disposed = true;
             GC.SuppressFinalize(this);
         }
 
         public override void Draw(Graphics g)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._disposed)
+            {
+                return;
+            }
 
             if (this._directory == null)
             {

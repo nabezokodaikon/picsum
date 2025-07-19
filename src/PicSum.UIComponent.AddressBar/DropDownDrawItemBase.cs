@@ -72,6 +72,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             base.Dispose();
+            this._disposed = true;
             GC.SuppressFinalize(this);
         }
 
@@ -116,6 +117,11 @@ namespace PicSum.UIComponent.AddressBar
 
         private void DropDownList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
+            if (this._disposed)
+            {
+                return;
+            }
+
             if (this._items.Count > 0)
             {
                 this.DrawDropDownItem(e);

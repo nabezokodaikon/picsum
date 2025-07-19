@@ -16,6 +16,7 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler DropDownClosed;
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
+        protected bool _disposed = false;
         private AddressBar _addressBar = null;
         private bool _isMousePoint = false;
         private bool _isMouseDown = false;
