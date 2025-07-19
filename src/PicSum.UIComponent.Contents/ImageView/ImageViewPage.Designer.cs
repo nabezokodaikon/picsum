@@ -89,7 +89,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // ImageViewPage
             //
-            this.Width = 800;
+            this.Size = new System.Drawing.Size(800, 600);
             this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.AddRange(
                 this.checkPatternPanel,
