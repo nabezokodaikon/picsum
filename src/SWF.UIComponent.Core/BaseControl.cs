@@ -66,8 +66,7 @@ namespace SWF.UIComponent.Core
                 ControlStyles.StandardClick,
                 true);
             this.SetStyle(
-                ControlStyles.ContainerControl |
-                ControlStyles.Selectable,
+                ControlStyles.ContainerControl,
                 false);
             this.UpdateStyles();
 

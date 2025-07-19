@@ -69,8 +69,7 @@ namespace SWF.UIComponent.Core
                 ControlStyles.SupportsTransparentBackColor,
                 true);
             this.SetStyle(
-                ControlStyles.ContainerControl |
-                ControlStyles.Selectable,
+                ControlStyles.ContainerControl,
                 false);
             this.UpdateStyles();
 

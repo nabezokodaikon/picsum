@@ -367,7 +367,7 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_MouseDown(object sender, MouseEventArgs e)
         {
-            this.Select();
+            this.Focus();
 
             if (this._itemCount < 1)
             {

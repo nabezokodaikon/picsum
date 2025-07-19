@@ -54,6 +54,7 @@ namespace PicSum.UIComponent.AddressBar
             this._directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
 
             this.Invalidated += this.AddressBar_Invalidated;
+            this.LostFocus += this.AddressBar_LostFocus;
             this.MouseLeave += this.AddressBar_MouseLeave;
             this.MouseDown += this.AddressBar_MouseDown;
             this.MouseUp += this.AddressBar_MouseUp;
@@ -164,18 +165,33 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
+        private void AddressBar_LostFocus(object sender, EventArgs e)
+        {
+            this.DropDownDirectory = string.Empty;
+            this.IsOverflowDropDown = false;
+            this.IsHistoryDropDown = false;
+
+            this.SetMousePointItem(null);
+            this.SetMouseDownItem(null);
+            this.Invalidate();
+        }
+
         private void AddressBar_MouseLeave(object sender, EventArgs e)
         {
             this.DropDownDirectory = string.Empty;
             this.IsOverflowDropDown = false;
             this.IsHistoryDropDown = false;
 
+            this.SetMousePointItem(null);
             this.SetMouseDownItem(null);
             this.Invalidate();
         }
 
         private void AddressBar_MouseDown(object sender, MouseEventArgs e)
         {
+            this.Focus();
+            this.SetMousePointItem(null);
+
             var drawItem = this.GetItemFromPoint(e.X, e.Y);
             if (drawItem is DirectoryDrawItem &&
                 (e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle))
@@ -199,6 +215,7 @@ namespace PicSum.UIComponent.AddressBar
 
         private void AddressBar_MouseUp(object sender, MouseEventArgs e)
         {
+            this.SetMousePointItem(null);
             this.SetMouseDownItem(null);
             this.Invalidate();
         }
