@@ -37,7 +37,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);
 
         private bool _disposed = false;
-        private bool _isHandleCreated = false;
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
@@ -233,12 +232,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private void AbstractFileListPage_HandleCreated(object sender, EventArgs e)
-        {
-            this._isHandleCreated = true;
-        }
-
-        private void AbstractFileListPage_ParentChanged(object sender, EventArgs e)
+        protected override void Loaded()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
@@ -566,11 +560,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFlowListItemSize()
         {
-            if (!this._isHandleCreated)
-            {
-                return;
-            }
-
             if (this.IsShowFileName)
             {
                 this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.GetItemTextHeight());
@@ -773,6 +762,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ToolBar_ThumbnailSizeSliderValueChanged(object sender, EventArgs e)
         {
+            if (!this.IsLoaded)
+            {
+                return;
+            }
+
             this.SetFlowListItemSize();
         }
 

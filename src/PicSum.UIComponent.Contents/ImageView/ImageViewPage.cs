@@ -112,7 +112,8 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.SetThumbnailPanelVisible();
 
             this._parameter = parameter;
-            this.SelectedFilePath = parameter.SelectedFilePath;
+            this._parameter.GetImageFiles += this.Parameter_GetImageFiles;
+            this.SelectedFilePath = this._parameter.SelectedFilePath;
         }
 
         public override void RedrawPage(float scale)
@@ -274,23 +275,11 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        private void ImageViewPage_HandleCreated(object sender, EventArgs e)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            this._isInitializing = true;
-
-            this._parameter.GetImageFiles += this.Parameter_GetImageFiles;
-            this._parameter.ImageFilesGetAction(this._parameter)(this);
-        }
-
-        private void ImageViewPage_ParentChanged(object sender, EventArgs e)
+        protected override void Loaded()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
+            this._parameter.ImageFilesGetAction(this._parameter)(this);
         }
 
         private void ImageViewPage_MouseWheel(object sender, MouseEventArgs e)

@@ -36,7 +36,6 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = false;
 
-            this.HandleCreated += this.FavoriteDirectoryListPage_HandleCreated;
             this.DrawTabPage += this.FavoriteDirectoryListPage_DrawTabPage;
         }
 
@@ -58,8 +57,10 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private void FavoriteDirectoryListPage_HandleCreated(object sender, EventArgs e)
+        protected override void Loaded()
         {
+            base.Loaded();
+
             var param = new FavoriteDirectoriesGetParameter
             {
                 IsOnlyDirectory = true,
@@ -67,14 +68,14 @@ namespace PicSum.UIComponent.Contents.FileList
             };
 
             Instance<JobCaller>.Value.EnqueueFavoriteDirectoriesGetJob(this, param, _ =>
+            {
+                if (this._disposed)
                 {
-                    if (this._disposed)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    this.SearchJob_Callback(_);
-                });
+                this.SearchJob_Callback(_);
+            });
         }
 
         private void FavoriteDirectoryListPage_DrawTabPage(object sender, DrawTabEventArgs e)

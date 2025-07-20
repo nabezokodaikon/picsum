@@ -23,10 +23,12 @@ namespace PicSum.UIComponent.Contents.Common
         public abstract string SelectedFilePath { get; protected set; }
 
         protected IPageParameter Parameter { get; private set; }
+        protected bool IsLoaded { get; private set; }
 
         public BrowsePage(IPageParameter parameter)
         {
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
+            this.ParentChanged += this.BrowsePage_ParentChanged;
         }
 
         public abstract override void StopPageDraw();
@@ -67,5 +69,17 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
 
+        protected abstract void Loaded();
+
+        private void BrowsePage_ParentChanged(object sender, EventArgs e)
+        {
+            if (this.IsLoaded)
+            {
+                return;
+            }
+
+            this.IsLoaded = true;
+            this.Loaded();
+        }
     }
 }

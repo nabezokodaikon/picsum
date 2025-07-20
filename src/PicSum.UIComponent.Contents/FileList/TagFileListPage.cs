@@ -36,27 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
 
-            this.HandleCreated += this.TagFileListPage_HandleCreated;
             this.DrawTabPage += this.TagFileListPage_DrawTabPage;
-        }
-
-        private void TagFileListPage_HandleCreated(object sender, EventArgs e)
-        {
-            var param = new FilesGetByTagParameter()
-            {
-                Tag = this._parameter.Tag,
-                IsGetThumbnail = true,
-            };
-
-            Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(this, param, _ =>
-                {
-                    if (this._disposed)
-                    {
-                        return;
-                    }
-
-                    this.SearchJob_Callback(_);
-                });
         }
 
         protected override void Dispose(bool disposing)
@@ -75,6 +55,27 @@ namespace PicSum.UIComponent.Contents.FileList
             this._disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        protected override void Loaded()
+        {
+            base.Loaded();
+
+            var param = new FilesGetByTagParameter()
+            {
+                Tag = this._parameter.Tag,
+                IsGetThumbnail = true,
+            };
+
+            Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(this, param, _ =>
+            {
+                if (this._disposed)
+                {
+                    return;
+                }
+
+                this.SearchJob_Callback(_);
+            });
         }
 
         private void TagFileListPage_DrawTabPage(object sender, DrawTabEventArgs e)

@@ -36,27 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
 
-            this.HandleCreated += this.RatingFileListPage_HandleCreated;
             this.DrawTabPage += this.RatingFileListPage_DrawTabPage;
-        }
-
-        private void RatingFileListPage_HandleCreated(object sender, EventArgs e)
-        {
-            var param = new FilesGetByRatingParameter()
-            {
-                RatingValue = this._parameter.RatingValue,
-                IsGetThumbnail = true,
-            };
-
-            Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
-                {
-                    if (this._disposed)
-                    {
-                        return;
-                    }
-
-                    this.SearchJob_Callback(_);
-                });
         }
 
         protected override void Dispose(bool disposing)
@@ -75,6 +55,27 @@ namespace PicSum.UIComponent.Contents.FileList
             this._disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        protected override void Loaded()
+        {
+            base.Loaded();
+
+            var param = new FilesGetByRatingParameter()
+            {
+                RatingValue = this._parameter.RatingValue,
+                IsGetThumbnail = true,
+            };
+
+            Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
+            {
+                if (this._disposed)
+                {
+                    return;
+                }
+
+                this.SearchJob_Callback(_);
+            });
         }
 
         private void RatingFileListPage_DrawTabPage(object sender, DrawTabEventArgs e)

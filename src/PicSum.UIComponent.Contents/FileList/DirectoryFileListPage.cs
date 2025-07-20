@@ -51,27 +51,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             base.toolBar.RegistrationSortButtonEnabled = false;
 
-            this.HandleCreated += this.DirectoryFileListPage_HandleCreated;
             this.DrawTabPage += this.DirectoryFileListPage_DrawTabPage;
-        }
-
-        private void DirectoryFileListPage_HandleCreated(object sender, EventArgs e)
-        {
-            var param = new FilesGetByDirectoryParameter()
-            {
-                DirectoryPath = this._parameter.DirectoryPath,
-                IsGetThumbnail = true,
-            };
-
-            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, param, _ =>
-                {
-                    if (this._disposed)
-                    {
-                        return;
-                    }
-
-                    this.SearchJob_Callback(_);
-                });
         }
 
         protected override void Dispose(bool disposing)
@@ -89,6 +69,27 @@ namespace PicSum.UIComponent.Contents.FileList
             this._disposed = true;
 
             base.Dispose(disposing);
+        }
+
+        protected override void Loaded()
+        {
+            base.Loaded();
+
+            var param = new FilesGetByDirectoryParameter()
+            {
+                DirectoryPath = this._parameter.DirectoryPath,
+                IsGetThumbnail = true,
+            };
+
+            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, param, _ =>
+            {
+                if (this._disposed)
+                {
+                    return;
+                }
+
+                this.SearchJob_Callback(_);
+            });
         }
 
         private void DirectoryFileListPage_DrawTabPage(object sender, DrawTabEventArgs e)
