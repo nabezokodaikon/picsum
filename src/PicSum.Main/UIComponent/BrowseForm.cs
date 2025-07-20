@@ -77,7 +77,7 @@ namespace PicSum.Main.UIComponent
             this.ResumeLayout(false);
         }
 
-        public void AddPageEventHandler(BrowsePage page)
+        public void AddPageEventHandler(AbstractBrowsePage page)
         {
             ArgumentNullException.ThrowIfNull(page, nameof(page));
 

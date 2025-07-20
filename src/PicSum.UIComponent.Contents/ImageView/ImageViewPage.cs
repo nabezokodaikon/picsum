@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.ImageView
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class ImageViewPage
-        : BrowsePage, ISender
+        : AbstractBrowsePage, ISender
     {
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle CHECK_PATTERN_PANEL_DEFAULT_BOUNDS = new(0, 29, 767, 0);

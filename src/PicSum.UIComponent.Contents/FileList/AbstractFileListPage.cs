@@ -31,7 +31,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract partial class AbstractFileListPage
-        : BrowsePage, ISender
+        : AbstractBrowsePage, ISender
     {
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle FLOW_LIST_DEFAULT_BOUNDS = new(0, 29, 767, 0);

@@ -10,7 +10,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// コンテンツ基底クラス
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public abstract class BrowsePage
+    public abstract class AbstractBrowsePage
         : PagePanel
     {
         private bool _disposed = false;
@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.Common
         protected IPageParameter Parameter { get; private set; }
         protected bool IsLoaded { get; private set; }
 
-        public BrowsePage(IPageParameter parameter)
+        public AbstractBrowsePage(IPageParameter parameter)
         {
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
             this.ParentChanged += this.BrowsePage_ParentChanged;
