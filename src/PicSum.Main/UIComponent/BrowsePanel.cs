@@ -82,7 +82,6 @@ namespace PicSum.Main.UIComponent
         }
 
         private bool _disposed = false;
-        private bool _isLoaded = false;
 
         public event EventHandler<TabDropoutedEventArgs> TabDropouted;
         public event EventHandler<BrowsePageOpenEventArgs> NewWindowPageOpen;
@@ -459,14 +458,8 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        private void BrowsePanel_ParentChanged(object sender, EventArgs e)
+        private void BrowsePanel_Loaded(object sender, EventArgs e)
         {
-            if (this._isLoaded)
-            {
-                return;
-            }
-
-            this._isLoaded = true;
             this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
         }
 

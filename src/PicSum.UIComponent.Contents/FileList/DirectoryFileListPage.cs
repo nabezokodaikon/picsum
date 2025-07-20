@@ -51,6 +51,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
             base.toolBar.RegistrationSortButtonEnabled = false;
 
+            this.Loaded += this.DirectoryFileListPage_Loaded;
             this.DrawTabPage += this.DirectoryFileListPage_DrawTabPage;
         }
 
@@ -71,10 +72,8 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void Loaded()
+        private void DirectoryFileListPage_Loaded(object sender, EventArgs e)
         {
-            base.Loaded();
-
             var param = new FilesGetByDirectoryParameter()
             {
                 DirectoryPath = this._parameter.DirectoryPath,

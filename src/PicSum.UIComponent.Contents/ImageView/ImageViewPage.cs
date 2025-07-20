@@ -275,7 +275,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        protected override void Loaded()
+        private void ImageViewPage_Loaded(object sender, EventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);

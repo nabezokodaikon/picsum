@@ -1,6 +1,7 @@
 using PicSum.UIComponent.Contents.ContextMenu;
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.Core;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Windows.Forms;
@@ -94,6 +95,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.Controls.AddRange(
                 this.checkPatternPanel,
                 this.toolBar);
+            this.Loaded += this.ImageViewPage_Loaded;
             this.MouseWheel += this.ImageViewPage_MouseWheel;
             this.DrawTabPage += this.ImageViewPage_DrawTabPage;
             this.checkPatternPanel.ResumeLayout(false);

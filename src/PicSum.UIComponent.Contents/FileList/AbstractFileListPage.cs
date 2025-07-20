@@ -232,12 +232,6 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void Loaded()
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            this.RedrawPage(scale);
-        }
-
         protected abstract void OnRemoveFile(string[] filePathList);
 
         protected abstract void OnMovePreviewButtonClick(EventArgs e);
@@ -697,6 +691,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.flowList.InvalidateFromItemIndex(index);
                 }
             }
+        }
+
+        private void AbstractFileListPage_Loaded(object sender, EventArgs e)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            this.RedrawPage(scale);
         }
 
         private void ToolBar_DirectoryMenuItemClick(object sender, EventArgs e)

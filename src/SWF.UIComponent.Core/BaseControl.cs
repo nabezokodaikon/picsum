@@ -7,6 +7,12 @@ namespace SWF.UIComponent.Core
     public class BaseControl
         : Control
     {
+        public event EventHandler? Loaded = null;
+
+        private bool _isLoaded = false;
+        private bool _isHandleCreated = false;
+        private bool _isParentChanged = false;
+
         public new string Name
         {
             get
@@ -71,6 +77,46 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
+
+            this.HandleCreated += this.BaseControl_HandleCreated;
+            this.ParentChanged += this.BaseControl_ParentChanged;
+        }
+
+        protected virtual void OnLoaded(EventArgs e)
+        {
+            this.Loaded?.Invoke(this, e);
+        }
+
+        private void BaseControl_HandleCreated(object? sender, EventArgs e)
+        {
+            if (this._isLoaded)
+            {
+                return;
+            }
+
+            this._isHandleCreated = true;
+
+            if (this._isParentChanged)
+            {
+                this._isLoaded = true;
+                this.OnLoaded(EventArgs.Empty);
+            }
+        }
+
+        private void BaseControl_ParentChanged(object? sender, EventArgs e)
+        {
+            if (this._isLoaded)
+            {
+                return;
+            }
+
+            this._isParentChanged = true;
+
+            if (this._isHandleCreated)
+            {
+                this._isLoaded = true;
+                this.OnLoaded(EventArgs.Empty);
+            }
         }
     }
 }

@@ -106,7 +106,7 @@ namespace PicSum.Main.UIComponent
             // BrowsePanel
             // 
             this.BackColor = Color.FromArgb(64, 68, 71);
-            this.ParentChanged += this.BrowsePanel_ParentChanged;
+            this.Loaded += this.BrowsePanel_Loaded;
         }
 
         private SWF.UIComponent.TabOperation.PageContainer pageContainer;

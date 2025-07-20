@@ -225,7 +225,7 @@ namespace SWF.UIComponent.TabOperation
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
 
-            this.HandleCreated += this.TabSwitch_HandleCreated;
+            this.Loaded += this.TabSwitch_Loaded;
             this.Invalidated += this.TabSwitch_Invalidated;
             this.Paint += this.TabSwitch_Paint;
             this.LostFocus += this.TabSwitch_LostFocus;
@@ -619,7 +619,7 @@ namespace SWF.UIComponent.TabOperation
             return this.GetTabsRectangle();
         }
 
-        private void TabSwitch_HandleCreated(object sender, EventArgs e)
+        private void TabSwitch_Loaded(object sender, EventArgs e)
         {
             var form = this.GetForm();
             TabDragOperation.AddForm(form);

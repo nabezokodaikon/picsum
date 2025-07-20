@@ -36,6 +36,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
             base.toolBar.RegistrationSortButtonEnabled = true;
 
+            this.Loaded += this.TagFileListPage_Loaded;
             this.DrawTabPage += this.TagFileListPage_DrawTabPage;
         }
 
@@ -57,10 +58,8 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected override void Loaded()
+        private void TagFileListPage_Loaded(object sender, EventArgs e)
         {
-            base.Loaded();
-
             var param = new FilesGetByTagParameter()
             {
                 Tag = this._parameter.Tag,

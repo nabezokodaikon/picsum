@@ -7,6 +7,12 @@ namespace SWF.UIComponent.Core
     public class BasePaintingControl
         : Control
     {
+        public event EventHandler? Loaded = null;
+
+        private bool _isLoaded = false;
+        private bool _isHandleCreated = false;
+        private bool _isParentChanged = false;
+
         public new string Name
         {
             get
@@ -74,6 +80,46 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
+
+            this.HandleCreated += this.BasePaintingControl_HandleCreated;
+            this.ParentChanged += this.BasePaintingControl_ParentChanged;
+        }
+
+        protected virtual void OnLoaded(EventArgs e)
+        {
+            this.Loaded?.Invoke(this, e);
+        }
+
+        private void BasePaintingControl_HandleCreated(object? sender, EventArgs e)
+        {
+            if (this._isLoaded)
+            {
+                return;
+            }
+
+            this._isHandleCreated = true;
+
+            if (this._isParentChanged)
+            {
+                this._isLoaded = true;
+                this.OnLoaded(EventArgs.Empty);
+            }
+        }
+
+        private void BasePaintingControl_ParentChanged(object? sender, EventArgs e)
+        {
+            if (this._isLoaded)
+            {
+                return;
+            }
+
+            this._isParentChanged = true;
+
+            if (this._isHandleCreated)
+            {
+                this._isLoaded = true;
+                this.OnLoaded(EventArgs.Empty);
+            }
         }
     }
 }
