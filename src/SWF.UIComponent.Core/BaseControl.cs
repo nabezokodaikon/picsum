@@ -9,7 +9,6 @@ namespace SWF.UIComponent.Core
     {
         public event EventHandler? Loaded = null;
 
-        private readonly new bool IsHandleCreated = false;
         private bool _isHandleCreated = false;
         private bool _isParentChanged = false;
 
