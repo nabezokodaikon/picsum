@@ -9,7 +9,7 @@ namespace SWF.UIComponent.Core
     {
         public event EventHandler? Loaded = null;
 
-        private bool _isLoaded = false;
+        private readonly new bool IsHandleCreated = false;
         private bool _isHandleCreated = false;
         private bool _isParentChanged = false;
 
@@ -64,6 +64,8 @@ namespace SWF.UIComponent.Core
             }
         }
 
+        public bool IsLoaded { get; private set; } = false;
+
         public BaseControl()
         {
             this.SetStyle(
@@ -89,7 +91,7 @@ namespace SWF.UIComponent.Core
 
         private void BaseControl_HandleCreated(object? sender, EventArgs e)
         {
-            if (this._isLoaded)
+            if (this.IsLoaded)
             {
                 return;
             }
@@ -98,14 +100,14 @@ namespace SWF.UIComponent.Core
 
             if (this._isParentChanged)
             {
-                this._isLoaded = true;
+                this.IsLoaded = true;
                 this.OnLoaded(EventArgs.Empty);
             }
         }
 
         private void BaseControl_ParentChanged(object? sender, EventArgs e)
         {
-            if (this._isLoaded)
+            if (this.IsLoaded)
             {
                 return;
             }
@@ -114,7 +116,7 @@ namespace SWF.UIComponent.Core
 
             if (this._isHandleCreated)
             {
-                this._isLoaded = true;
+                this.IsLoaded = true;
                 this.OnLoaded(EventArgs.Empty);
             }
         }

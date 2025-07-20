@@ -19,8 +19,8 @@ namespace PicSum.Main
         private readonly ResourceManager _resourceManager;
         private readonly BrowseManager _browseManager = new();
 
-        public bool IsHandleCreated { get; private set; } = true;
-        public bool IsDisposed { get; private set; }
+        public bool IsLoaded { get; private set; } = true;
+        public bool IsDisposed { get; private set; } = false;
 
         public Context()
         {

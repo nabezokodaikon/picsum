@@ -23,7 +23,6 @@ namespace PicSum.UIComponent.Contents.Common
         public abstract string SelectedFilePath { get; protected set; }
 
         protected IPageParameter Parameter { get; private set; }
-        protected bool IsLoaded { get; private set; }
 
         public AbstractBrowsePage(IPageParameter parameter)
         {

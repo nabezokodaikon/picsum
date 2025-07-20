@@ -6,6 +6,8 @@ namespace SWF.UIComponent.Core
     public class BaseForm
         : Form
     {
+        public bool IsLoaded { get; private set; } = false;
+
         public BaseForm()
         {
             this.SetStyle(
@@ -20,6 +22,13 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
+
+            this.Load += this.BaseForm_Load;
+        }
+
+        private void BaseForm_Load(object? sender, EventArgs e)
+        {
+            this.IsLoaded = true;
         }
     }
 }

@@ -992,7 +992,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1013,7 +1013,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1034,7 +1034,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1055,7 +1055,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1077,7 +1077,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1099,7 +1099,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
@@ -1121,7 +1121,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.leftImagePanel.Focus();
 
-            if (!this.IsHandleCreated)
+            if (!this.IsLoaded)
             {
                 return;
             }
