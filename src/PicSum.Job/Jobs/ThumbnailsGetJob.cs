@@ -19,10 +19,7 @@ namespace PicSum.Job.Jobs
     public sealed class ThumbnailsGetJob
         : AbstractTwoWayJob<ThumbnailsGetParameter, ThumbnailImageResult>
     {
-        private static readonly ParallelOptions PARALLEL_OPTIONS = new()
-        {
-            MaxDegreeOfParallelism = 4,
-        };
+        private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
         protected override Task Execute(ThumbnailsGetParameter param)
         {
@@ -37,55 +34,67 @@ namespace PicSum.Job.Jobs
                 .Take(param.LastIndex - param.FirstIndex + 1)
                 .ToArray();
 
-            Parallel.ForEach(
-                filePathList,
-                PARALLEL_OPTIONS,
-                filePath =>
+            using (var cts = new CancellationTokenSource())
+            {
+                try
                 {
-                    try
-                    {
-                        if (this.IsJobCancel)
+                    Parallel.ForEach(
+                        filePathList,
+                        new ParallelOptions
                         {
-                            return;
-                        }
-
-                        var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                            filePath, param.ThumbnailWidth, param.ThumbnailHeight);
-                        if (param.IsExecuteCallback
-                            && bf != ThumbnailCacheEntity.EMPTY
-                            && bf.ThumbnailBuffer != null)
+                            CancellationToken = cts.Token,
+                            MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                        },
+                        filePath =>
                         {
-                            Instance<IImageFileSizeCacher>.Value.Set(
-                                bf.FilePath,
-                                new Size(bf.SourceWidth, bf.SourceHeight),
-                                bf.FileUpdatedate);
-
-                            var img = new ThumbnailImageResult
+                            try
                             {
-                                FilePath = bf.FilePath,
-                                ThumbnailImage = new CvImage(
-                                    bf.FilePath,
-                                    ThumbnailUtil.ToImage(bf.ThumbnailBuffer)),
-                                ThumbnailWidth = bf.ThumbnailWidth,
-                                ThumbnailHeight = bf.ThumbnailHeight,
-                                SourceWidth = bf.SourceWidth,
-                                SourceHeight = bf.SourceHeight,
-                                FileUpdatedate = bf.FileUpdatedate
-                            };
+                                if (this.IsJobCancel)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
 
-                            this.Callback(img);
+                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight);
+                                if (param.IsExecuteCallback
+                                    && bf != ThumbnailCacheEntity.EMPTY
+                                    && bf.ThumbnailBuffer != null)
+                                {
+                                    Instance<IImageFileSizeCacher>.Value.Set(
+                                        bf.FilePath,
+                                        new Size(bf.SourceWidth, bf.SourceHeight),
+                                        bf.FileUpdatedate);
+
+                                    var img = new ThumbnailImageResult
+                                    {
+                                        FilePath = bf.FilePath,
+                                        ThumbnailImage = new CvImage(
+                                            bf.FilePath,
+                                            ThumbnailUtil.ToImage(bf.ThumbnailBuffer)),
+                                        ThumbnailWidth = bf.ThumbnailWidth,
+                                        ThumbnailHeight = bf.ThumbnailHeight,
+                                        SourceWidth = bf.SourceWidth,
+                                        SourceHeight = bf.SourceHeight,
+                                        FileUpdatedate = bf.FileUpdatedate
+                                    };
+
+                                    this.Callback(img);
+                                }
+                            }
+                            catch (FileUtilException ex)
+                            {
+                                this.WriteErrorLog(ex);
+                            }
+                            catch (ImageUtilException ex)
+                            {
+                                this.WriteErrorLog(ex);
+                            }
                         }
-                    }
-                    catch (FileUtilException ex)
-                    {
-                        this.WriteErrorLog(ex);
-                    }
-                    catch (ImageUtilException ex)
-                    {
-                        this.WriteErrorLog(ex);
-                    }
+                    );
                 }
-            );
+                catch (OperationCanceledException) { }
+            }
 
             return Task.CompletedTask;
         }
