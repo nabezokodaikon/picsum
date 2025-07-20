@@ -15,38 +15,34 @@ namespace PicSum.Job.Jobs
     {
         protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
-
             var fileList = this.GetOrCreateFileList();
-
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ListResult<FileShallowInfoEntity>();
-            foreach (var file in fileList)
+
+            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob FileShallowInfoGetLogic"))
             {
-                this.ThrowIfJobCancellationRequested();
-
-                if (infoList.Count >= param.Count)
+                foreach (var file in fileList)
                 {
-                    break;
-                }
+                    this.ThrowIfJobCancellationRequested();
 
-                if (param.IsOnlyDirectory
-                    && string.IsNullOrEmpty(file))
-                {
-                    continue;
-                }
-
-                try
-                {
-                    var info = getInfoLogic.Get(file, true);
-                    if (info != FileShallowInfoEntity.EMPTY)
+                    if (infoList.Count >= param.Count)
                     {
-                        infoList.Add(info);
+                        break;
                     }
-                }
-                catch (FileUtilException ex)
-                {
-                    this.WriteErrorLog(ex);
-                    continue;
+
+                    try
+                    {
+                        var info = getInfoLogic.Get(file, true);
+                        if (info != FileShallowInfoEntity.EMPTY)
+                        {
+                            infoList.Add(info);
+                        }
+                    }
+                    catch (FileUtilException ex)
+                    {
+                        this.WriteErrorLog(ex);
+                        continue;
+                    }
                 }
             }
 

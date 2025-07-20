@@ -62,7 +62,6 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var param = new FavoriteDirectoriesGetParameter
             {
-                IsOnlyDirectory = true,
                 Count = FileListPageConfig.INSTANCE.FavoriteDirectoryCount
             };
 

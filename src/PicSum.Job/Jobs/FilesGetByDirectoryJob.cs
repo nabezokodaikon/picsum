@@ -6,6 +6,7 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
+using System.Collections.Concurrent;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -17,6 +18,8 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByDirectoryJob
         : AbstractTwoWayJob<FilesGetByDirectoryParameter, DirectoryGetResult>
     {
+        private const int MAX_DEGREE_OF_PARALLELISM = 8;
+
         protected override Task Execute(FilesGetByDirectoryParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
@@ -38,23 +41,44 @@ namespace PicSum.Job.Jobs
 
             var files = FileUtil.GetFileSystemEntriesArray(param.DirectoryPath);
             var getInfoLogic = new FileShallowInfoGetLogic(this);
-            var infoList = new ListEntity<FileShallowInfoEntity>(files.Length);
-            foreach (var file in files)
-            {
-                this.ThrowIfJobCancellationRequested();
+            var infoList = new ConcurrentBag<FileShallowInfoEntity>();
 
-                try
+            using (TimeMeasuring.Run(true, "FilesGetByDirectoryJob FileShallowInfoGetLogic"))
+            {
+                using (var cts = new CancellationTokenSource())
                 {
-                    var info = getInfoLogic.Get(file, param.IsGetThumbnail);
-                    if (info != FileShallowInfoEntity.EMPTY)
+                    try
                     {
-                        infoList.Add(info);
+                        Parallel.ForEach(
+                            files,
+                            new ParallelOptions
+                            {
+                                CancellationToken = cts.Token,
+                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                            },
+                            file =>
+                            {
+                                if (this.IsJobCancel)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
+
+                                try
+                                {
+                                    var info = getInfoLogic.Get(file, param.IsGetThumbnail);
+                                    if (info != FileShallowInfoEntity.EMPTY)
+                                    {
+                                        infoList.Add(info);
+                                    }
+                                }
+                                catch (FileUtilException ex)
+                                {
+                                    this.WriteErrorLog(ex);
+                                }
+                            });
                     }
-                }
-                catch (FileUtilException ex)
-                {
-                    this.WriteErrorLog(ex);
-                    continue;
+                    catch (OperationCanceledException) { }
                 }
             }
 
