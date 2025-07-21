@@ -1,3 +1,4 @@
+using PicSum.DatabaseAccessor.Dto;
 using SWF.Core.DatabaseAccessor;
 using System.Runtime.Versioning;
 
@@ -9,11 +10,12 @@ namespace PicSum.DatabaseAccessor.Sql
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FavoriteDirectoriesReadSql
-        : SqlBase<SingleValueDto<string>>
+        : SqlBase<FavoriteDirecotryDto>
     {
         const string SQL_TEXT =
 @"
 SELECT mf.file_path
+      ,t.cnt
   FROM m_file mf
        INNER JOIN (SELECT tfvc.file_id
                          ,tfvc.view_count AS cnt

@@ -1,10 +1,12 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.DatabaseAccessor.Dto;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
+using System.Collections.Concurrent;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -13,53 +15,76 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
+        private const int MAX_DEGREE_OF_PARALLELISM = 8;
+
         protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
-            var fileList = this.GetOrCreateFileList();
+            var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
-            var infoList = new ListResult<FileShallowInfoEntity>();
+            var infoList = new ConcurrentBag<(long ViewCount, FileShallowInfoEntity info)>();
 
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob FileShallowInfoGetLogic"))
             {
-                foreach (var file in fileList)
+                using (var cts = new CancellationTokenSource())
                 {
-                    this.ThrowIfJobCancellationRequested();
-
-                    if (infoList.Count >= param.Count)
-                    {
-                        break;
-                    }
-
                     try
                     {
-                        var info = getInfoLogic.Get(file, true);
-                        if (info != FileShallowInfoEntity.EMPTY)
-                        {
-                            infoList.Add(info);
-                        }
+                        Parallel.ForEach(
+                            dtos,
+                            new ParallelOptions
+                            {
+                                CancellationToken = cts.Token,
+                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                            },
+                            dto =>
+                            {
+                                if (this.IsJobCancel)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
+
+                                if (infoList.Count >= param.Count)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
+
+                                try
+                                {
+                                    var info = getInfoLogic.Get(dto.DirectoryPath, true);
+                                    if (info != FileShallowInfoEntity.EMPTY)
+                                    {
+                                        infoList.Add((dto.ViewCount, info));
+                                    }
+                                }
+                                catch (FileUtilException ex)
+                                {
+                                    this.WriteErrorLog(ex);
+                                }
+                            });
                     }
-                    catch (FileUtilException ex)
-                    {
-                        this.WriteErrorLog(ex);
-                        continue;
-                    }
+                    catch (OperationCanceledException) { }
                 }
             }
 
-            this.Callback(infoList);
+            this.Callback([.. infoList
+                .AsEnumerable()
+                .OrderByDescending(info => info.ViewCount)
+                .Select(info => info.info)]);
 
             return Task.CompletedTask;
         }
 
-        private string[] GetOrCreateFileList()
+        private FavoriteDirecotryDto[] GetOrCreateFileList()
         {
             using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
-                var fileList = logic.Execute(con);
-                if (fileList.Length > 0)
+                var dtos = logic.Execute(con);
+                if (dtos.Length > 0)
                 {
-                    return fileList;
+                    return dtos;
                 }
             }
 
