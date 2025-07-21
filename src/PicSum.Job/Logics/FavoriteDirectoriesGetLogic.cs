@@ -1,5 +1,6 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
@@ -11,21 +12,24 @@ namespace PicSum.Job.Logics
     internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public FavoriteDirecotryDto[] Execute(IDatabaseConnection con, int count)
+        public FavoriteDirecotryDto[] Execute(IDatabaseConnection con)
         {
-            var sql = new FavoriteDirectoriesReadSql(count);
-            var dtoList = con.ReadList<FavoriteDirecotryDto>(sql);
+            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetLogic.Execute"))
+            {
+                var sql = new FavoriteDirectoriesReadSql();
+                var dtoList = con.ReadList<FavoriteDirecotryDto>(sql);
 
-            return [
-                .. dtoList
+                return [
+                    .. dtoList
                     .AsEnumerable()
                     .Where(dto =>
                         !FileUtil.IsSystemRoot(dto.DirectoryPath)
-                        && !FileUtil.IsExistsDrive(dto.DirectoryPath))
+                        && !FileUtil.IsExistsDrive(dto.DirectoryPath)
+                        && FileUtil.IsExistsDirectory(dto.DirectoryPath))
                     .OrderBy(dto => dto.DirectoryPath)
                     .OrderByDescending(dto => dto.ViewCount)
-                    .Take(count)
-                    ];
+                        ];
+            }
         }
     }
 }

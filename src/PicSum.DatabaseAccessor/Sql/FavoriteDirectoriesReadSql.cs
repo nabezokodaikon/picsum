@@ -20,18 +20,14 @@ SELECT mf.file_path
        INNER JOIN (SELECT tfvc.file_id
                          ,tfvc.view_count AS cnt
                      FROM t_directory_view_counter tfvc
-                 ORDER BY tfvc.view_count DESC
-                    LIMIT :limit
                   ) t
           ON t.file_id = mf.file_id
 ";
 
-        public FavoriteDirectoriesReadSql(int limit)
+        public FavoriteDirectoriesReadSql()
             : base(SQL_TEXT)
         {
-            base.Parameters = [
-                SqlUtil.CreateParameter("limit", limit)
-            ];
+
         }
     }
 }

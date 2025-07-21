@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
 
         protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
-            var dtos = this.GetOrCreateFileList(param.Count * 2);
+            var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<(long ViewCount, FileShallowInfoEntity info)>();
 
@@ -30,7 +30,9 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         Parallel.ForEach(
-                            dtos,
+                            dtos.AsEnumerable()
+                                .OrderBy(dto => dto.DirectoryPath)
+                                .OrderByDescending(dto => dto.ViewCount),
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
@@ -39,6 +41,12 @@ namespace PicSum.Job.Jobs
                             dto =>
                             {
                                 if (this.IsJobCancel)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
+
+                                if (infoList.Count >= param.Count)
                                 {
                                     cts.Cancel();
                                     cts.Token.ThrowIfCancellationRequested();
@@ -72,12 +80,12 @@ namespace PicSum.Job.Jobs
             return Task.CompletedTask;
         }
 
-        private FavoriteDirecotryDto[] GetOrCreateFileList(int count)
+        private FavoriteDirecotryDto[] GetOrCreateFileList()
         {
             using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
-                var dtos = logic.Execute(con, count);
+                var dtos = logic.Execute(con);
                 if (dtos.Length > 0)
                 {
                     return dtos;
@@ -111,7 +119,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return this.GetOrCreateFileList(count);
+            return this.GetOrCreateFileList();
         }
     }
 }
