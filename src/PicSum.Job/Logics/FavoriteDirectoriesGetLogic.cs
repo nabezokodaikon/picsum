@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     {
         public FavoriteDirecotryDto[] Execute(IDatabaseConnection con, int count)
         {
-            var sql = new FavoriteDirectoriesReadSql();
+            var sql = new FavoriteDirectoriesReadSql(count);
             var dtoList = con.ReadList<FavoriteDirecotryDto>(sql);
 
             return [
