@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
 
         protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
-            var dtos = this.GetOrCreateFileList();
+            var dtos = this.GetOrCreateFileList(param.Count * 2);
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<(long ViewCount, FileShallowInfoEntity info)>();
 
@@ -39,12 +39,6 @@ namespace PicSum.Job.Jobs
                             dto =>
                             {
                                 if (this.IsJobCancel)
-                                {
-                                    cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
-                                }
-
-                                if (infoList.Count >= param.Count)
                                 {
                                     cts.Cancel();
                                     cts.Token.ThrowIfCancellationRequested();
@@ -70,18 +64,20 @@ namespace PicSum.Job.Jobs
 
             this.Callback([.. infoList
                 .AsEnumerable()
+                .OrderBy(info => info.info.FilePath)
                 .OrderByDescending(info => info.ViewCount)
+                .Take(param.Count)
                 .Select(info => info.info)]);
 
             return Task.CompletedTask;
         }
 
-        private FavoriteDirecotryDto[] GetOrCreateFileList()
+        private FavoriteDirecotryDto[] GetOrCreateFileList(int count)
         {
             using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
-                var dtos = logic.Execute(con);
+                var dtos = logic.Execute(con, count);
                 if (dtos.Length > 0)
                 {
                     return dtos;
@@ -115,7 +111,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return this.GetOrCreateFileList();
+            return this.GetOrCreateFileList(count);
         }
     }
 }

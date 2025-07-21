@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public FavoriteDirecotryDto[] Execute(IDatabaseConnection con)
+        public FavoriteDirecotryDto[] Execute(IDatabaseConnection con, int count)
         {
             var sql = new FavoriteDirectoriesReadSql();
             var dtoList = con.ReadList<FavoriteDirecotryDto>(sql);
@@ -23,6 +23,9 @@ namespace PicSum.Job.Logics
                         !FileUtil.IsSystemRoot(dto.DirectoryPath)
                         && !FileUtil.IsExistsDrive(dto.DirectoryPath)
                         && FileUtil.IsExistsDirectory(dto.DirectoryPath))
+                    .OrderBy(dto => dto.DirectoryPath)
+                    .OrderByDescending(dto => dto.ViewCount)
+                    .Take(count)
                     ];
         }
     }
