@@ -21,8 +21,7 @@ namespace PicSum.Job.Logics
                     .AsEnumerable()
                     .Where(dto =>
                         !FileUtil.IsSystemRoot(dto.DirectoryPath)
-                        && !FileUtil.IsExistsDrive(dto.DirectoryPath)
-                        && FileUtil.IsExistsDirectory(dto.DirectoryPath))
+                        && !FileUtil.IsExistsDrive(dto.DirectoryPath))
                     .OrderBy(dto => dto.DirectoryPath)
                     .OrderByDescending(dto => dto.ViewCount)
                     .Take(count)
