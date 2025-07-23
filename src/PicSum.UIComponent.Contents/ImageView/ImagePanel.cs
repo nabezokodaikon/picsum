@@ -30,6 +30,14 @@ namespace PicSum.UIComponent.Contents.ImageView
         private static readonly Pen THUMBNAIL_VIEW_BORDER_PEN
             = new(Color.FromArgb(250, 0, 0));
 
+        private static readonly Size DRAG_SIZE = GetDragSize();
+
+        private static Size GetDragSize()
+        {
+            var size = SystemInformation.DragSize.Width * 16;
+            return new Size(size, size);
+        }
+
         public event EventHandler<MouseEventArgs> ImageMouseClick;
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
@@ -52,6 +60,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         private bool _isThumbnailMove = false;
         private Point _moveFromPoint = Point.Empty;
         private bool _isError = false;
+
+        private Rectangle _dragJudgementRectangle = new();
 
         private readonly StringFormat _stringFormat = new()
         {
@@ -304,9 +314,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                 }
                 else if (this.IsMousePointImage(e.X, e.Y))
                 {
-                    this._isDrag = true;
-                    this._moveFromPoint.X = e.X;
-                    this._moveFromPoint.Y = e.Y;
+                    var dragSize = DRAG_SIZE;
+                    this._dragJudgementRectangle = new Rectangle(
+                        e.X - dragSize.Width / 2,
+                        e.Y - dragSize.Height / 2,
+                        dragSize.Width,
+                        dragSize.Height);
                 }
             }
         }
@@ -318,6 +331,11 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
             if (this._isThumbnailMove)
             {
                 var scale = this.GetThumbnailToScaleImageScale();
@@ -341,19 +359,10 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this._moveFromPoint.X = e.X;
                 this._moveFromPoint.Y = e.Y;
             }
-            else if (this._isDrag)
+            else if (!this._dragJudgementRectangle.Contains(e.X, e.Y))
             {
-                // ドラッグとしないマウスの移動範囲を取得します。
-                var moveRect = new RectangleF(this._moveFromPoint.X - SystemInformation.DragSize.Width / 2f,
-                                              this._moveFromPoint.Y - SystemInformation.DragSize.Height / 2f,
-                                              SystemInformation.DragSize.Width,
-                                              SystemInformation.DragSize.Height);
-
-                if (!moveRect.Contains(e.X, e.Y))
-                {
-                    this._isDrag = true;
-                    this.OnDragStart(EventArgs.Empty);
-                }
+                this._isDrag = true;
+                this.OnDragStart(EventArgs.Empty);
             }
         }
 

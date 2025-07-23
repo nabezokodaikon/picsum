@@ -69,6 +69,14 @@ namespace SWF.UIComponent.FlowList
             RECTANGLE_SELECTION_COLOR.G,
             RECTANGLE_SELECTION_COLOR.B));
 
+        private static readonly Size DRAG_SIZE = GetDragSize();
+
+        private static Size GetDragSize()
+        {
+            var size = SystemInformation.DragSize.Width * 16;
+            return new Size(size, size);
+        }
+
         private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
         private StringAlignment _itemTextAlignment = StringAlignment.Center;
         private StringAlignment _itemTextLineAlignment = StringAlignment.Center;
@@ -116,6 +124,7 @@ namespace SWF.UIComponent.FlowList
 
         // マウスダウンした座標情報
         private HitTestInfo _mouseDownHitTestInfo = new();
+        private Rectangle _dragJudgementRectangle = new();
 
         // ドラッグフラグ
         private bool _isDrag = false;
@@ -393,6 +402,13 @@ namespace SWF.UIComponent.FlowList
 
                 // マウスダウンした座標情報を保持します。
                 this._mouseDownHitTestInfo = this.GetHitTestFromDrawPoint(e.X, e.Y);
+
+                var dragSize = DRAG_SIZE;
+                this._dragJudgementRectangle = new Rectangle(
+                    e.X - dragSize.Width / 2,
+                    e.Y - dragSize.Height / 2,
+                    dragSize.Width,
+                    dragSize.Height);
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -534,24 +550,17 @@ namespace SWF.UIComponent.FlowList
 
                 if (e.Button == MouseButtons.Left)
                 {
-                    // ドラッグとしないマウスの移動範囲を取得します。
-                    var moveRect = new Rectangle(this._mouseDownHitTestInfo.DrawRectangle.X - SystemInformation.DragSize.Width / 2,
-                                                 this._mouseDownHitTestInfo.DrawRectangle.Y - SystemInformation.DragSize.Height / 2,
-                                                 SystemInformation.DragSize.Width,
-                                                 SystemInformation.DragSize.Height);
-                    if (!moveRect.Contains(e.X, e.Y))
+                    if (!this._dragJudgementRectangle.Contains(e.X, e.Y)
+                        && this._mouseDownHitTestInfo.IsItem && !this._isDrag)
                     {
-                        if (this._mouseDownHitTestInfo.IsItem && !this._isDrag)
-                        {
-                            // 項目のドラッグを開始します。
-                            this._isDrag = true;
-                            this.OnDragStart(EventArgs.Empty);
-                        }
-                        else if (!this._mouseDownHitTestInfo.IsItem)
-                        {
-                            // 短形選択を開始します。
-                            this._rectangleSelection.BeginSelection(e.X, e.Y, this._scrollBar.Value);
-                        }
+                        // 項目のドラッグを開始します。
+                        this._isDrag = true;
+                        this.OnDragStart(EventArgs.Empty);
+                    }
+                    else if (!this._mouseDownHitTestInfo.IsItem)
+                    {
+                        // 短形選択を開始します。
+                        this._rectangleSelection.BeginSelection(e.X, e.Y, this._scrollBar.Value);
                     }
                 }
             }
