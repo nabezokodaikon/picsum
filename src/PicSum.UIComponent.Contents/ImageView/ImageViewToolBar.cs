@@ -263,7 +263,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small, scale);
+            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small);
             this.viewButton.Font = buttonFont;
             this.sizeButton.Font = buttonFont;
             this.doublePreviewButton.Font = buttonFont;

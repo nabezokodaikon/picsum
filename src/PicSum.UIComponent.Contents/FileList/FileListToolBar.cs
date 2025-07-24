@@ -264,7 +264,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small, scale);
+            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small);
             this.viewButton.Font = buttonFont;
             this.nameSortButton.Font = buttonFont;
             this.pathSortButton.Font = buttonFont;
