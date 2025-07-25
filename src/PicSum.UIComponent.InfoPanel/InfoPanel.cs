@@ -367,7 +367,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            Instance<JobCaller>.Value.EnqueueFileTagAddJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagUpdateJob(this, param);
 
             var tagInfo = this.TagList.FirstOrDefault(
                 t => t.Tag.Equals(tag, StringComparison.Ordinal),

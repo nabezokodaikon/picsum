@@ -13,14 +13,19 @@ namespace PicSum.DatabaseAccessor.Sql
     {
         private const string SQL_TEXT =
 @"
-UPDATE t_tag
-   SET tag = :tag
-      ,registration_date = :registration_date
- WHERE file_id = (SELECT mf.file_id
-                    FROM m_file mf
-                   WHERE mf.file_path = :file_path
-                 )
-   AND tag = :tag
+INSERT INTO t_tag (
+     file_id
+    ,tag
+    ,registration_date
+)
+SELECT mf.file_id
+      ,:tag
+      ,:registration_date
+  FROM m_file mf
+ WHERE mf.file_path = :file_path
+ON CONFLICT(file_id, tag) DO UPDATE SET
+    tag = :tag
+   ,registration_date = :registration_date
 ";
 
         public TagUpdateSql(string filePath, string tag, DateTime registrationDate)

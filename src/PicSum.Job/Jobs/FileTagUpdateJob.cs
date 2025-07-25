@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     /// ファイルにタグを追加します。
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class FileTagAddJob
+    internal sealed class FileTagUpdateJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
         protected override Task Execute(FileTagUpdateParameter param)
@@ -29,24 +29,14 @@ namespace PicSum.Job.Jobs
             using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateTag = new FileTagUpdateLogic(this);
-                var addTag = new FileTagAddLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
-                var updateFileMaster = new FileMastercUpdateLogic(this);
                 var registrationDate = DateTime.Now;
 
                 foreach (var filePath in param.FilePathList)
                 {
                     if (!updateTag.Execute(con, filePath, param.Tag, registrationDate))
                     {
-                        if (!addTag.Execute(con, filePath, param.Tag, registrationDate))
-                        {
-                            if (!updateFileMaster.Execute(con, filePath))
-                            {
-                                addFileMaster.Execute(con, filePath);
-                            }
-
-                            addTag.Execute(con, filePath, param.Tag, registrationDate);
-                        }
+                        addFileMaster.Execute(con, filePath);
                     }
                 }
 

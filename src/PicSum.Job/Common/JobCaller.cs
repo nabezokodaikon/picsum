@@ -113,11 +113,11 @@ namespace PicSum.Job.Common
             this._oneWayJobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
-        public void EnqueueFileTagAddJob(ISender sender, FileTagUpdateParameter parameter)
+        public void EnqueueFileTagUpdateJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayJobQueue.Value.Enqueue<FileTagAddJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileTagUpdateJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueTagsGetJob(
