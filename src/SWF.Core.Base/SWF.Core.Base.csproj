@@ -82,7 +82,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="6.0.1" />
+    <PackageReference Include="NLog" Version="6.0.2" />
   </ItemGroup>
 
 </Project>
