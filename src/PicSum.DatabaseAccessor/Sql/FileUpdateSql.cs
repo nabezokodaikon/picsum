@@ -3,25 +3,18 @@ using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Sql
 {
-    /// <summary>
-    /// ファイルM作成
-    /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class FileCreationSql
+    public sealed class FileUpdateSql
         : SqlBase
     {
         private const string SQL_TEXT =
 @"
-INSERT INTO m_file (
-     file_id
-    ,file_path
-)
-SELECT mfi.file_id
-      ,:file_path
-  FROM m_file_id mfi
+UPDATE m_file
+   SET file_path = :file_path
+WHERE file_path = :file_path
 ";
 
-        public FileCreationSql(string filePath)
+        public FileUpdateSql(string filePath)
             : base(SQL_TEXT)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

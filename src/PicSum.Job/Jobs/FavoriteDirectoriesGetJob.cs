@@ -104,8 +104,12 @@ namespace PicSum.Job.Jobs
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
                     if (!incrementDirectoryViewCounter.Execute(con, dirPath))
                     {
-                        var addFileMaster = new FileMasterAddLogic(this);
-                        addFileMaster.Execute(con, dirPath);
+                        var updateFileMaster = new FileMastercUpdateLogic(this);
+                        if (!updateFileMaster.Execute(con, dirPath))
+                        {
+                            var addFileMaster = new FileMasterAddLogic(this);
+                            addFileMaster.Execute(con, dirPath);
+                        }
 
                         var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
                         addDirectoryViewCounter.Execute(con, dirPath);

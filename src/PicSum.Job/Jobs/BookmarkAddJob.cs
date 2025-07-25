@@ -28,8 +28,12 @@ namespace PicSum.Job.Jobs
                 {
                     if (!addLogic.Execute(con, param.Value, registrationDate))
                     {
-                        var addFileMasterLogic = new FileMasterAddLogic(this);
-                        addFileMasterLogic.Execute(con, param.Value);
+                        var updateFileMaster = new FileMastercUpdateLogic(this);
+                        if (!updateFileMaster.Execute(con, param.Value))
+                        {
+                            var addFileMasterLogic = new FileMasterAddLogic(this);
+                            addFileMasterLogic.Execute(con, param.Value);
+                        }
 
                         addLogic.Execute(con, param.Value, registrationDate);
                     }

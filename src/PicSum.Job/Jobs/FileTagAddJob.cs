@@ -30,6 +30,8 @@ namespace PicSum.Job.Jobs
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addTag = new FileTagAddLogic(this);
+                var addFileMaster = new FileMasterAddLogic(this);
+                var updateFileMaster = new FileMastercUpdateLogic(this);
                 var registrationDate = DateTime.Now;
 
                 foreach (var filePath in param.FilePathList)
@@ -38,8 +40,10 @@ namespace PicSum.Job.Jobs
                     {
                         if (!addTag.Execute(con, filePath, param.Tag, registrationDate))
                         {
-                            var addFileMaster = new FileMasterAddLogic(this);
-                            addFileMaster.Execute(con, filePath);
+                            if (!updateFileMaster.Execute(con, filePath))
+                            {
+                                addFileMaster.Execute(con, filePath);
+                            }
 
                             addTag.Execute(con, filePath, param.Tag, registrationDate);
                         }
