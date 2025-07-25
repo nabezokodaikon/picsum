@@ -26,13 +26,8 @@ namespace PicSum.Job.Jobs
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
                 if (!updateDirectoryState.Execute(con, param))
                 {
-                    var addDirectoryStateLogic = new DirectoryStateAddLogic(this);
-                    if (!addDirectoryStateLogic.Execute(con, param))
-                    {
-                        var addFileMasterLogic = new FileMasterAddLogic(this);
-                        addFileMasterLogic.Execute(con, param.DirectoryPath);
-                        addDirectoryStateLogic.Execute(con, param);
-                    }
+                    var addFileMasterLogic = new FileMasterAddLogic(this);
+                    addFileMasterLogic.Execute(con, param.DirectoryPath);
                 }
 
                 con.Commit();
