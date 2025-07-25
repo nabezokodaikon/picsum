@@ -22,12 +22,8 @@ namespace PicSum.Job.Jobs
                 var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
                 if (!addDirectoryViewHistory.Execute(con, param.Value))
                 {
-                    var updateFileMaster = new FileMastercUpdateLogic(this);
-                    if (!updateFileMaster.Execute(con, param.Value))
-                    {
-                        var addFileMaster = new FileMasterAddLogic(this);
-                        addFileMaster.Execute(con, param.Value);
-                    }
+                    var addFileMaster = new FileMasterAddLogic(this);
+                    addFileMaster.Execute(con, param.Value);
 
                     var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
                     addDirectoryViewHistory.Execute(con, param.Value);

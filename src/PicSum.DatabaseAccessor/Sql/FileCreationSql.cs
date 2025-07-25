@@ -19,6 +19,9 @@ INSERT INTO m_file (
 SELECT mfi.file_id
       ,:file_path
   FROM m_file_id mfi
+ WHERE true
+ON CONFLICT(file_id) DO UPDATE SET
+     file_path = :file_path
 ";
 
         public FileCreationSql(string filePath)
