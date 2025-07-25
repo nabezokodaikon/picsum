@@ -97,22 +97,16 @@ namespace PicSum.Job.Jobs
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
 
+                var addFileMaster = new FileMasterAddLogic(this);
+                var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
+
                 foreach (var dirPath in FileUtil.GetSubDirectoriesArray(parentDir, true))
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
                     if (!incrementDirectoryViewCounter.Execute(con, dirPath))
                     {
-                        var updateFileMaster = new FileMastercUpdateLogic(this);
-                        if (!updateFileMaster.Execute(con, dirPath))
-                        {
-                            var addFileMaster = new FileMasterAddLogic(this);
-                            addFileMaster.Execute(con, dirPath);
-                        }
-
-                        var addDirectoryViewCounter = new DirectoryViewCounterAddLogic(this);
-                        addDirectoryViewCounter.Execute(con, dirPath);
+                        addFileMaster.Execute(con, dirPath);
                     }
                 }
 
