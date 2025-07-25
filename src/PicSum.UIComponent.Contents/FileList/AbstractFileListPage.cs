@@ -1168,7 +1168,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            Instance<JobCaller>.Value.EnqueueBookmarkAddJob(this, paramter);
+            Instance<JobCaller>.Value.EnqueueBookmarkUpdateJob(this, paramter);
         }
     }
 }

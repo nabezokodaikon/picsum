@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class BookmarkAddJob
+    internal sealed class BookmarkUpdateJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
         protected override Task Execute(ValueParameter<string> param)
@@ -21,22 +21,14 @@ namespace PicSum.Job.Jobs
 
             using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
-                var deleteLogic = new BookmarkDeleteLogic(this);
-                var addLogic = new BookmarkAddLogic(this);
+                var updateLogic = new BookmarkUpdateLogic(this);
 
-                if (!deleteLogic.Execute(con, param.Value))
+                if (!updateLogic.Execute(con, param.Value, registrationDate))
                 {
-                    if (!addLogic.Execute(con, param.Value, registrationDate))
-                    {
-                        var addFileMasterLogic = new FileMasterAddLogic(this);
-                        addFileMasterLogic.Execute(con, param.Value);
+                    var addFileMasterLogic = new FileMasterAddLogic(this);
+                    addFileMasterLogic.Execute(con, param.Value);
 
-                        addLogic.Execute(con, param.Value, registrationDate);
-                    }
-                }
-                else
-                {
-                    addLogic.Execute(con, param.Value, registrationDate);
+                    updateLogic.Execute(con, param.Value, registrationDate);
                 }
 
                 con.Commit();

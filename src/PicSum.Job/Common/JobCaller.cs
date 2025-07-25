@@ -62,11 +62,11 @@ namespace PicSum.Job.Common
             GC.SuppressFinalize(this);
         }
 
-        public void EnqueueBookmarkAddJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueBookmarkUpdateJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayJobQueue.Value.Enqueue<BookmarkAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<BookmarkUpdateJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)

@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Logics
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class BookmarkAddLogic(IAsyncJob job)
+    internal sealed class BookmarkUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         public bool Execute(IDatabaseConnection con, string filePath, DateTime registrationDate)
@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var sql = new BookmarkCreationSql(filePath, registrationDate);
+            var sql = new BookmarkUpdateSql(filePath, registrationDate);
             return con.Update(sql);
         }
     }
