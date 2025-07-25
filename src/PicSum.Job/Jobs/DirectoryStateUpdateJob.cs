@@ -28,6 +28,7 @@ namespace PicSum.Job.Jobs
                 {
                     var addFileMasterLogic = new FileMasterAddLogic(this);
                     addFileMasterLogic.Execute(con, param.DirectoryPath);
+                    updateDirectoryState.Execute(con, param);
                 }
 
                 con.Commit();

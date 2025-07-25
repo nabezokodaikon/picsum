@@ -107,6 +107,7 @@ namespace PicSum.Job.Jobs
                     if (!incrementDirectoryViewCounter.Execute(con, dirPath))
                     {
                         addFileMaster.Execute(con, dirPath);
+                        incrementDirectoryViewCounter.Execute(con, dirPath);
                     }
                 }
 

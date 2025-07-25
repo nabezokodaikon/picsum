@@ -37,6 +37,7 @@ namespace PicSum.Job.Jobs
                     if (!updateTag.Execute(con, filePath, param.Tag, registrationDate))
                     {
                         addFileMaster.Execute(con, filePath);
+                        updateTag.Execute(con, filePath, param.Tag, registrationDate);
                     }
                 }
 
