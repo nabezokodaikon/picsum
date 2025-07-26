@@ -48,7 +48,9 @@ namespace PicSum.Main.UIComponent
                         false => FileUtil.GetParentDirectoryPath(subParamter.FilePath),
                     };
 
-                    Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, new ValueParameter<string>(dir));
+                    var dirPrameter = new ValueParameter<string>(dir);
+                    Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(sender, dirPrameter);
+                    Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, dirPrameter);
 
                     Instance<JobCaller>.Value.EnqueueImageFilesGetByDirectoryJob(sender, subParamter, e =>
                         {

@@ -74,13 +74,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void DirectoryFileListPage_Loaded(object sender, EventArgs e)
         {
-            var param = new FilesGetByDirectoryParameter()
+            var dirParam = new ValueParameter<string>(this._parameter.DirectoryPath);
+            Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(this, dirParam);
+            Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(this, dirParam);
+
+            var getParam = new FilesGetByDirectoryParameter()
             {
                 DirectoryPath = this._parameter.DirectoryPath,
                 IsGetThumbnail = true,
             };
 
-            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, getParam, _ =>
             {
                 if (this._disposed)
                 {
@@ -239,9 +243,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                 }
             }
-
-            var param = new ValueParameter<string>(e.DirectoryPath);
-            Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(this, param);
         }
 
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
