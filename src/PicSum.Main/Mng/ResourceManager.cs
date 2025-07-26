@@ -41,7 +41,19 @@ namespace PicSum.Main.Mng
             ImageViewPageConfig.INSTANCE.ImageDisplayMode = Config.INSTANCE.ImageDisplayMode;
             ImageViewPageConfig.INSTANCE.ImageSizeMode = Config.INSTANCE.ImageSizeMode;
 
-            LOGGER.Info($"現在のバージョン '{Config.INSTANCE.GetCurrentVersion()}'");
+            var configVersion = new Version(
+                Config.INSTANCE.MajorVersion,
+                Config.INSTANCE.MinorVersion,
+                Config.INSTANCE.BuildVersion,
+                Config.INSTANCE.RevisionVersion);
+
+            LOGGER.Info($"コンフィグのバージョン '{configVersion}'");
+            LOGGER.Info($"現在のバージョン '{AppInfo.CURRENT_VERSION}'");
+
+            var updater = new Updater();
+            updater.VersionUpTo_12_0_0_0(configVersion);
+            updater.VersionUpTo_12_2_1_0(configVersion);
+            updater.VersionUpTo_12_2_2_0(configVersion);
 
             if (CommandLineArgs.IsCleanup())
             {
@@ -55,20 +67,6 @@ namespace PicSum.Main.Mng
 
                 var fileInfoDBCleanupJob = new FileInfoDBCleanupSyncJob();
                 fileInfoDBCleanupJob.Execute();
-            }
-            else if (AppInfo.IsUpdated(
-                Config.INSTANCE.MajorVersion,
-                Config.INSTANCE.MinorVersion,
-                Config.INSTANCE.BuildVersion,
-                Config.INSTANCE.RevisionVersion))
-            {
-                LOGGER.Info($"バージョン '{Config.INSTANCE.GetOldVersion()}' から起動されました。");
-
-                var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
-                thumbnailDBCleanupJob.Execute();
-
-                var startupJob = new StartupSyncJob();
-                startupJob.Execute();
             }
             else
             {
