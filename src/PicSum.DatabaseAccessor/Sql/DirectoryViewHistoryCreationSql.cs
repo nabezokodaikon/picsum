@@ -15,25 +15,26 @@ namespace PicSum.DatabaseAccessor.Sql
 INSERT INTO t_directory_view_history (
      file_id
     ,file_history_id
-    ,view_date
+    ,view_date_ticks
 )
 SELECT mf.file_id
       ,( SELECT COUNT(1)
            FROM t_directory_view_history tfvh
           WHERE tfvh.file_id = mf.file_id
        )
-      ,DATETIME('NOW', 'LOCALTIME')
+      ,:ticks
   FROM m_file mf
  WHERE mf.file_path = :directory_path
 ";
 
-        public DirectoryViewHistoryCreationSql(string directoryPath)
+        public DirectoryViewHistoryCreationSql(string directoryPath, long ticks)
             : base(SQL_TEXT)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             base.Parameters = [
-                SqlUtil.CreateParameter("directory_path", directoryPath)
+                SqlUtil.CreateParameter("directory_path", directoryPath),
+                SqlUtil.CreateParameter("ticks", ticks)
             ];
         }
     }

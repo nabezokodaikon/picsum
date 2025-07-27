@@ -16,10 +16,10 @@ namespace PicSum.DatabaseAccessor.Sql
 SELECT mf.file_path
   FROM m_file mf
        INNER JOIN (SELECT tfvh.file_id AS file_id
-                         ,MAX(tfvh.view_date) AS view_date
+                         ,MAX(tfvh.view_date_ticks)
                      FROM t_directory_view_history tfvh
                  GROUP BY tfvh.file_id
-                 ORDER BY tfvh.view_date DESC
+                 ORDER BY tfvh.view_date_ticks DESC
                     LIMIT :limit
                   ) tfvh
                ON tfvh.file_id = mf.file_id

@@ -22,7 +22,7 @@ namespace PicSum.Main
                     return;
                 }
 
-                LOGGER.Info($"バージョンが'{this._12_0_0_0}'未満であるため、サムネイルを初期化します。");
+                LOGGER.Info($"バージョンが'{this._12_0_0_0}'未満のため、サムネイルを初期化します。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -38,7 +38,7 @@ namespace PicSum.Main
                     return;
                 }
 
-                LOGGER.Info($"バージョンが'{this._12_2_1_0}'であるため、評価値Tを更新します。");
+                LOGGER.Info($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
 
                 var job = new VersionUpTo_12_2_1_0_Job();
                 job.Execute();
@@ -54,7 +54,10 @@ namespace PicSum.Main
                     return;
                 }
 
-                LOGGER.Info($"バージョンが'{this._12_2_2_0}'であるため、ディレクトリ表示履歴Tを更新します。");
+                LOGGER.Info($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
+
+                var job = new VersionUpTo_12_2_2_0_Job();
+                job.Execute();
             }
         }
     }

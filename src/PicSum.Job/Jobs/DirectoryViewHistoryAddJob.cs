@@ -17,14 +17,16 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
+            var ticks = DateTime.Now.Ticks;
+
             using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
-                if (!addDirectoryViewHistory.Execute(con, param.Value))
+                if (!addDirectoryViewHistory.Execute(con, param.Value, ticks))
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
                     addFileMaster.Execute(con, param.Value);
-                    addDirectoryViewHistory.Execute(con, param.Value);
+                    addDirectoryViewHistory.Execute(con, param.Value, ticks);
                 }
 
                 con.Commit();
