@@ -54,6 +54,7 @@ namespace PicSum.Main.Mng
             updater.VersionUpTo_12_0_0_0(configVersion);
             updater.VersionUpTo_12_2_1_0(configVersion);
             updater.VersionUpTo_12_2_2_0(configVersion);
+            updater.VersionUpTo_12_3_0_0(configVersion);
 
             if (CommandLineArgs.IsCleanup())
             {

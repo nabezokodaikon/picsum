@@ -80,7 +80,7 @@ namespace PicSum.Job.Common
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryAddJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryUpdateJob, ValueParameter<string>>(sender, parameter);
         }
 
         public void EnqueueDirectoryViewCounterIncrementJob(ISender sender, ValueParameter<string> parameter)

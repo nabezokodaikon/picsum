@@ -75,13 +75,11 @@ CREATE TABLE 't_directory_view_counter' (
 /* ディレクトリ表示履歴T */
 CREATE TABLE 't_directory_view_history' (
      'file_id'         INTEGER  NOT NULL
-    ,'file_history_id' INTEGER  NOT NULL
     ,'view_date_ticks' INTEGER  NOT NULL
     ,'create_date'     DATETIME
     ,'update_date'     DATETIME
     ,PRIMARY KEY (
          'file_id'
-        ,'file_history_id'
      )
 );
 
@@ -198,8 +196,7 @@ CREATE TRIGGER t_directory_view_history_insert_trigger
        ON t_directory_view_history
     BEGIN UPDATE t_directory_view_history
              SET create_date     = DATETIME('NOW', 'LOCALTIME')
-           WHERE file_id         = NEW.file_id
-             AND file_history_id = NEW.file_history_id;
+           WHERE file_id         = NEW.file_id;
    END;
 
 /* ディレクトリ表示履歴T UPDATE */
@@ -208,8 +205,7 @@ CREATE TRIGGER t_directory_view_history_update_trigger
        ON t_directory_view_history
     BEGIN UPDATE t_directory_view_history
              SET update_date     = DATETIME('NOW', 'LOCALTIME')
-           WHERE file_id         = NEW.file_id
-             AND file_history_id = NEW.file_history_id;
+           WHERE file_id         = NEW.file_id;
    END;
 
 /* ディレクトリ状態T INSERT */

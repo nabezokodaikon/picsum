@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class DirectoryViewHistoryAddJob
+    internal sealed class DirectoryViewHistoryUpdateJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
         protected override Task Execute(ValueParameter<string> param)
@@ -21,12 +21,12 @@ namespace PicSum.Job.Jobs
 
             using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
-                var addDirectoryViewHistory = new DirectoryViewHistoryAddLogic(this);
-                if (!addDirectoryViewHistory.Execute(con, param.Value, ticks))
+                var updateDirectoryViewHistory = new DirectoryViewHistoryUpdateLogic(this);
+                if (!updateDirectoryViewHistory.Execute(con, param.Value, ticks))
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
                     addFileMaster.Execute(con, param.Value);
-                    addDirectoryViewHistory.Execute(con, param.Value, ticks);
+                    updateDirectoryViewHistory.Execute(con, param.Value, ticks);
                 }
 
                 con.Commit();

@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     /// フォルダの表示履歴を追加します。
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class DirectoryViewHistoryAddLogic(IAsyncJob job)
+    internal sealed class DirectoryViewHistoryUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            var sql = new DirectoryViewHistoryCreationSql(directoryPath, ticks);
+            var sql = new DirectoryViewHistoryUpdateSql(directoryPath, ticks);
             return con.Update(sql);
         }
     }

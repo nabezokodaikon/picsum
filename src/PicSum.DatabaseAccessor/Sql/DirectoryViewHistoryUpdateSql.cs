@@ -7,27 +7,24 @@ namespace PicSum.DatabaseAccessor.Sql
     /// フォルダ表示履歴T作成
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class DirectoryViewHistoryCreationSql
+    public sealed class DirectoryViewHistoryUpdateSql
         : SqlBase
     {
         private const string SQL_TEXT =
 @"
 INSERT INTO t_directory_view_history (
      file_id
-    ,file_history_id
     ,view_date_ticks
 )
 SELECT mf.file_id
-      ,( SELECT COUNT(1)
-           FROM t_directory_view_history tfvh
-          WHERE tfvh.file_id = mf.file_id
-       )
       ,:ticks
   FROM m_file mf
  WHERE mf.file_path = :directory_path
+ON CONFLICT(file_id) DO UPDATE SET
+    view_date_ticks = :ticks
 ";
 
-        public DirectoryViewHistoryCreationSql(string directoryPath, long ticks)
+        public DirectoryViewHistoryUpdateSql(string directoryPath, long ticks)
             : base(SQL_TEXT)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
