@@ -76,7 +76,7 @@ CREATE TABLE 't_directory_view_counter' (
 CREATE TABLE 't_directory_view_history' (
      'file_id'         INTEGER  NOT NULL
     ,'file_history_id' INTEGER  NOT NULL
-    ,'view_date'       DATETIME NOT NULL
+    ,'view_date_ticks' INTEGER  NOT NULL
     ,'create_date'     DATETIME
     ,'update_date'     DATETIME
     ,PRIMARY KEY (
