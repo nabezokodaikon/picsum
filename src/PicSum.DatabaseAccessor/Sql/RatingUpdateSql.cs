@@ -4,21 +4,27 @@ using System.Runtime.Versioning;
 namespace PicSum.DatabaseAccessor.Sql
 {
     /// <summary>
-    /// 評価T更新
+    /// 評価T作成
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class RatingUpdateSql
         : SqlBase
     {
-        private const string SQL_TEXT =
+        const string SQL_TEXT =
 @"
-UPDATE t_rating
-   SET rating = :rating
-      ,registration_date = :registration_date
- WHERE file_id = (SELECT mf.file_id
-                    FROM m_file mf
-                   WHERE mf.file_path = :file_path
-                 )
+INSERT INTO t_rating (
+     file_id
+    ,rating
+    ,registration_date
+)
+SELECT mf.file_id
+      ,:rating
+      ,:registration_date
+  FROM m_file mf
+ WHERE mf.file_path = :file_path
+ON CONFLICT(file_id) DO UPDATE SET
+    rating = :rating
+   ,registration_date = :registration_date
 ";
 
         public RatingUpdateSql(string filePath, int rating, DateTime registrationDate)

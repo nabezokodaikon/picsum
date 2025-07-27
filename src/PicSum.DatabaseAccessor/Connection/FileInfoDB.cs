@@ -58,7 +58,6 @@ CREATE TABLE 't_rating' (
     ,'update_date'       DATETIME
     ,PRIMARY KEY (
          'file_id'
-        ,'rating'
      )
 );
 

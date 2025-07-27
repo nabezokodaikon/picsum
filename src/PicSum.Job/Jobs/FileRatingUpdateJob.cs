@@ -24,7 +24,6 @@ namespace PicSum.Job.Jobs
             using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
-                var addFileRating = new FileRatingAddLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
                 var registrationDate = DateTime.Now;
 
@@ -32,11 +31,8 @@ namespace PicSum.Job.Jobs
                 {
                     if (!updateFileRating.Execute(con, filePath, param.RatingValue, registrationDate))
                     {
-                        if (!addFileRating.Execute(con, filePath, param.RatingValue, registrationDate))
-                        {
-                            addFileMaster.Execute(con, filePath);
-                            addFileRating.Execute(con, filePath, param.RatingValue, registrationDate);
-                        }
+                        addFileMaster.Execute(con, filePath);
+                        updateFileRating.Execute(con, filePath, param.RatingValue, registrationDate);
                     }
                 }
 

@@ -39,6 +39,9 @@ namespace PicSum.Main
                 }
 
                 LOGGER.Info($"バージョンが'{this._12_2_1_0}'であるため、評価値Tを更新します。");
+
+                var job = new VersionUpTo_12_2_1_0_Job();
+                job.Execute();
             }
         }
 
