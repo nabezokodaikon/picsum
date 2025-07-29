@@ -56,7 +56,6 @@ namespace PicSum.UIComponent.Contents.ImageView
         private float _hScrollValue = 0f;
         private float _vScrollValue = 0;
 
-        private bool _isDrag = false;
         private bool _isThumbnailMove = false;
         private Point _moveFromPoint = Point.Empty;
         private bool _isError = false;
@@ -150,7 +149,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public ImagePanel()
         {
-            this.MouseLeave += this.ImagePanel_MouseLeave;
             this.MouseDown += this.ImagePanel_MouseDown;
             this.MouseUp += this.ImagePanel_MouseUp;
             this.MouseClick += this.ImagePanel_MouseClick;
@@ -264,11 +262,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
-        private void ImagePanel_MouseLeave(object sender, EventArgs e)
-        {
-            this._isDrag = false;
-        }
-
         private void ImagePanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -361,7 +354,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
             else if (!this._dragJudgementRectangle.Contains(e.X, e.Y))
             {
-                this._isDrag = true;
                 this.OnDragStart(EventArgs.Empty);
             }
         }
@@ -374,8 +366,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this._isThumbnailMove = false;
                 this.Invalidate();
             }
-
-            this._isDrag = false;
         }
 
         private void ImagePanel_LostFocus(object sender, EventArgs e)
