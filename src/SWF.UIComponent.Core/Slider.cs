@@ -232,12 +232,30 @@ namespace SWF.UIComponent.Core
             var scaleButtonSize = new SizeF(this._button.Width * scale, this._button.Height * scale);
             var centerPoint = this.GetCenterPoint();
 
-            var rect = new RectangleF(this._buttonPointX - scaleButtonSize.Width / 2f,
-                                      centerPoint.Y - scaleButtonSize.Height / 2f,
-                                      scaleButtonSize.Width,
-                                      scaleButtonSize.Height);
+            var rect = new RectangleF(
+                this._buttonPointX - scaleButtonSize.Width / 2f,
+                centerPoint.Y - scaleButtonSize.Height / 2f,
+                scaleButtonSize.Width,
+                scaleButtonSize.Height);
 
-            g.DrawImage(this._button, rect);
+            if (rect.X < 0)
+            {
+                g.DrawImage(
+                    this._button,
+                    new RectangleF(0, rect.Y, rect.Width, rect.Height));
+            }
+            else if (rect.X + rect.Width > this.Width)
+            {
+                g.DrawImage(
+                    this._button,
+                    new RectangleF(this.Width - rect.Width, rect.Y, rect.Width, rect.Height));
+            }
+            else
+            {
+                g.DrawImage(this._button, rect);
+            }
+
+
         }
 
         private void Slider_Paint(object? sender, PaintEventArgs e)
