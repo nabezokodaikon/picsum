@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core
@@ -7,35 +9,29 @@ namespace SWF.UIComponent.Core
     public partial class BaseButton
         : Button
     {
-        private const int REGION_OFFSET = 4;
+        private static readonly SolidBrush DEFAULT_BRUSH = new(Color.FromArgb(250, 250, 250));
+        private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(220, 220, 220));
+        private static readonly SolidBrush DISABLED_BRUSH = new(Color.FromArgb(255, 250, 250, 250));
+        private static readonly float[][] MATRIX_ITEMS = [
+            [1, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 0, 0.75f, 0],
+            [0, 0, 0, 0, 1]
+        ];
+        private static readonly ColorMatrix COLOR_MATRIX = new(MATRIX_ITEMS);
+        private static readonly ImageAttributes IMG_ATTR = CreateImageAttributes();
 
-        public enum ToolButtonRegionType
+        public static ImageAttributes CreateImageAttributes()
         {
-            Default = 0,
-            Left = 1,
-            Top = 2,
-            Right = 3,
-            Bottom = 4,
-            HorizonCenter = 5,
-            VerticalCenter = 6
+            var imgAttr = new ImageAttributes();
+            imgAttr.SetColorMatrix(
+                COLOR_MATRIX, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+            return imgAttr;
         }
 
         private bool _isLeftClick = false;
-        private ToolButtonRegionType _regionType = ToolButtonRegionType.Default;
-        private Func<Rectangle>? _getRectangleMethod;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new FlatStyle FlatStyle
-        {
-            get
-            {
-                return base.FlatStyle;
-            }
-            private set
-            {
-                base.FlatStyle = value;
-            }
-        }
+        private bool _isMousePoint = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Color BackColor
@@ -50,18 +46,6 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        public new string Name
-        {
-            get
-            {
-                return base.Name;
-            }
-            private set
-            {
-                base.Name = value;
-            }
-        }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool DoubleBuffered
         {
@@ -72,6 +56,31 @@ namespace SWF.UIComponent.Core
             private set
             {
                 base.DoubleBuffered = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new Font Font
+        {
+            get
+            {
+                return base.Font;
+            }
+            private set
+            {
+                base.Font = value;
+            }
+        }
+
+        public new string Name
+        {
+            get
+            {
+                return base.Name;
+            }
+            private set
+            {
+                base.Name = value;
             }
         }
 
@@ -102,75 +111,17 @@ namespace SWF.UIComponent.Core
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool UseVisualStyleBackColor
-        {
-            get
-            {
-                return base.UseVisualStyleBackColor;
-            }
-            private set
-            {
-                base.UseVisualStyleBackColor = value;
-            }
-        }
-
-        public int RegionOffset
-        {
-            get
-            {
-                return REGION_OFFSET;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ToolButtonRegionType RegionType
-        {
-            get
-            {
-                return this._regionType;
-            }
-            set
-            {
-                this._regionType = value;
-
-                switch (value)
-                {
-                    case ToolButtonRegionType.Left:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetLeftRectangle);
-                        break;
-                    case ToolButtonRegionType.Top:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetTopRectangle);
-                        break;
-                    case ToolButtonRegionType.Right:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetRightRectangle);
-                        break;
-                    case ToolButtonRegionType.Bottom:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetBottomRectangle);
-                        break;
-                    case ToolButtonRegionType.HorizonCenter:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetHorizonCenterRectangle);
-                        break;
-                    case ToolButtonRegionType.VerticalCenter:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetVerticalCenterRectangle);
-                        break;
-                    case ToolButtonRegionType.Default:
-                        break;
-                    default:
-                        this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
-                        break;
-                }
-
-                this.Region = this.GetRegion();
-                this.Refresh();
-            }
-        }
+        public SolidBrush DefaultBrush { get; set; } = DEFAULT_BRUSH;
 
         public BaseButton()
         {
             this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick,
+                ControlStyles.StandardClick |
+                ControlStyles.UserPaint |
+                ControlStyles.SupportsTransparentBackColor,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl,
@@ -179,39 +130,13 @@ namespace SWF.UIComponent.Core
 
             this.DoubleBuffered = true;
 
-            this._getRectangleMethod = new Func<Rectangle>(this.GetDefaultRectangle);
-            this.Region = this.GetRegion();
-
-            this.UseVisualStyleBackColor = false;
             this.TabIndex = 0;
             this.TabStop = false;
-            this.BackColor = Color.FromArgb(250, 250, 250);
-            this.FlatStyle = FlatStyle.Flat;
-            this.FlatAppearance.BorderSize = 0;
-            this.FlatAppearance.MouseDownBackColor = Color.FromArgb(250, 250, 250);
+            this.BackColor = Color.Transparent;
 
-            this.Resize += this.ToolButton_Resize;
-        }
-
-        public Rectangle GetRegionBounds()
-        {
-            if (this._getRectangleMethod == null)
-            {
-                throw new NullReferenceException("描画領域取得メソッドがNullです。");
-            }
-
-            var rect = this._getRectangleMethod();
-            var x = this.Bounds.Left + rect.Left;
-            var y = this.Bounds.Top + rect.Top;
-            var w = rect.Width;
-            var h = rect.Height;
-            return new Rectangle(x, y, w, h);
-        }
-
-        private void ToolButton_Resize(object? sender, EventArgs e)
-        {
-            this.Region = this.GetRegion();
-            this.Invalidate();
+            this.MouseEnter += this.BaseIconButton_MouseEnter;
+            this.MouseLeave += this.BaseIconButton_MouseLeave;
+            this.Paint += this.BaseButton_Paint;
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
@@ -230,77 +155,55 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        private Rectangle GetDefaultRectangle()
+        protected virtual void Draw(PaintEventArgs e)
         {
-            var l = 0;
-            var t = 0;
-            var r = this.Width;
-            var b = this.Height;
-            return Rectangle.FromLTRB(l, t, r, b);
+            throw new NotImplementedException();
         }
 
-        private Rectangle GetLeftRectangle()
+        private void BaseIconButton_MouseEnter(object? sender, EventArgs e)
         {
-            var l = 0;
-            var t = 0;
-            var r = this.Width - REGION_OFFSET;
-            var b = this.Height;
-            return Rectangle.FromLTRB(l, t, r, b);
+            this._isMousePoint = true;
         }
 
-        private Rectangle GetTopRectangle()
+        private void BaseIconButton_MouseLeave(object? sender, EventArgs e)
         {
-            var l = 0;
-            var t = 0;
-            var r = this.Width;
-            var b = this.Height - REGION_OFFSET;
-            return Rectangle.FromLTRB(l, t, r, b);
+            this._isMousePoint = false;
         }
 
-        private Rectangle GetRightRectangle()
+        private void BaseButton_Paint(object? sender, PaintEventArgs e)
         {
-            var l = REGION_OFFSET;
-            var t = 0;
-            var r = this.Width;
-            var b = this.Height;
-            return Rectangle.FromLTRB(l, t, r, b);
-        }
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
-        private Rectangle GetBottomRectangle()
-        {
-            var l = 0;
-            var t = REGION_OFFSET;
-            var r = this.Width;
-            var b = this.Height;
-            return Rectangle.FromLTRB(l, t, r, b);
-        }
-
-        private Rectangle GetHorizonCenterRectangle()
-        {
-            var l = REGION_OFFSET;
-            var t = 0;
-            var r = this.Width - REGION_OFFSET;
-            var b = this.Height;
-            return Rectangle.FromLTRB(l, t, r, b);
-        }
-
-        private Rectangle GetVerticalCenterRectangle()
-        {
-            var l = 0;
-            var t = REGION_OFFSET;
-            var r = this.Width;
-            var b = this.Height - REGION_OFFSET;
-            return Rectangle.FromLTRB(l, t, r, b);
-        }
-
-        private Region GetRegion()
-        {
-            if (this._getRectangleMethod == null)
+            if (this._isMousePoint)
             {
-                throw new NullReferenceException("描画領域取得メソッドがNullです。");
+                e.Graphics.FillRectangle(
+                    MOUSE_POINT_BRUSH, 0, 0, this.Width, this.Height);
+            }
+            else
+            {
+                e.Graphics.FillRectangle(
+                    this.DefaultBrush, 0, 0, this.Width, this.Height);
             }
 
-            return new Region(this._getRectangleMethod());
+            this.Draw(e);
+
+            if (!this.Enabled)
+            {
+                using (var overlay = new Bitmap(this.ClientSize.Width, this.ClientSize.Height))
+                using (var overlayGraphics = Graphics.FromImage(overlay))
+                {
+                    overlayGraphics.FillRectangle(
+                        DISABLED_BRUSH,
+                        new Rectangle(0, 0, overlay.Width, overlay.Height));
+                    e.Graphics.DrawImage(
+                        overlay,
+                        new Rectangle(0, 0, overlay.Width, overlay.Height),
+                        0, 0, overlay.Width, overlay.Height, GraphicsUnit.Pixel, IMG_ATTR);
+                }
+            }
         }
     }
 }
