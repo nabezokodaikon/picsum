@@ -24,7 +24,6 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // addButton
             // 
-            this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.addButton.MouseClick += this.AddButton_MouseClick;
             // 
             // inputTextBox
