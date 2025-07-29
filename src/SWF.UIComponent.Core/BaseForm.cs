@@ -22,6 +22,7 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             this.Load += this.BaseForm_Load;
         }
