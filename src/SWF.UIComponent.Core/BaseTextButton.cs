@@ -20,6 +20,11 @@ namespace SWF.UIComponent.Core
 
         protected override void Draw(PaintEventArgs e)
         {
+            if (string.IsNullOrEmpty(this.Text))
+            {
+                return;
+            }
+
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var font = Fonts.GetRegularFont(Fonts.Size.Small, scale);
             var textSize = TextRenderer.MeasureText(this.Text, font);
