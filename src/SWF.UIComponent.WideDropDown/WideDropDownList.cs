@@ -279,7 +279,6 @@ namespace SWF.UIComponent.WideDropDown
             this.FlowList.IsLileList = false;
             this.FlowList.ItemSpace = 0;
             this.FlowList.IsMultiSelect = false;
-            this.FlowList.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
             this.FlowList.SetItemSize(ITEM_DEFAULT_SIZE.Width, ITEM_DEFAULT_SIZE.Height);
             this.FlowList.CanKeyDown = false;
 
@@ -399,16 +398,18 @@ namespace SWF.UIComponent.WideDropDown
                 e.Graphics.FillRectangle(this.FlowList.MousePointItemBrush, e.ItemRectangle);
             }
 
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
             var itemText = this._itemList[e.ItemIndex];
-            var itemTextSize = TextRenderer.MeasureText(itemText, this.FlowList.Font);
+            var itemTextSize = TextRenderer.MeasureText(itemText, font);
             var destText = itemText;
             var destTextSize = itemTextSize;
             var itemWidth = e.ItemRectangle.Width - iconWidth;
             while (destTextSize.Width > itemWidth)
             {
                 destText = destText.Substring(0, destText.Length - 1);
-                destTextSize = TextRenderer.MeasureText($"{destText}...", this.FlowList.Font);
+                destTextSize = TextRenderer.MeasureText($"{destText}...", font);
             }
             destText = itemText == destText ? itemText : $"{destText}...";
 
@@ -420,7 +421,7 @@ namespace SWF.UIComponent.WideDropDown
             TextRenderer.DrawText(
                 e.Graphics,
                 destText,
-                this.FlowList.Font,
+                font,
                 textRect.Location,
                 this.FlowList.ItemTextBrush.Color,
                 TextFormatFlags.Top);
