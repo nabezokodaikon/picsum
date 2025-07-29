@@ -90,8 +90,6 @@ namespace SWF.UIComponent.TabOperation
 
         public TabDragForm()
         {
-            this.AutoScaleMode = AutoScaleMode.Dpi;
-
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;

@@ -127,8 +127,6 @@ namespace SWF.UIComponent.Form
 
         public GrassForm()
         {
-            this.AutoScaleMode = AutoScaleMode.Dpi;
-
             //this.SetWindowColor(ACTIVE_WINDOW_COLOR);
 
             this.Activated += this.GrassForm_Activated;
