@@ -1,3 +1,4 @@
+using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System.ComponentModel;
 using System.Drawing;
@@ -110,7 +111,10 @@ namespace PicSum.UIComponent.InfoPanel
         private void InfoLabel_Paint(object sender, PaintEventArgs e)
         {
             const float MARGIN = 8;
-            var textSize = e.Graphics.MeasureString("あ", this.Font);
+
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            var textSize = e.Graphics.MeasureString("あ", font);
 
             var fileNameRect = new RectangleF(
                 0,
@@ -121,27 +125,27 @@ namespace PicSum.UIComponent.InfoPanel
             if (!string.IsNullOrEmpty(this.FileName))
             {
                 e.Graphics.DrawString(
-                    this.FileName, this.Font, this.TextBrush, fileNameRect, STRING_FORMAT);
+                    this.FileName, font, this.TextBrush, fileNameRect, STRING_FORMAT);
             }
 
             if (!string.IsNullOrEmpty(this.FileType))
             {
                 e.Graphics.DrawString(
-                    this.FileType, this.Font, this.TextBrush, 0,
+                    this.FileType, font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN);
             }
 
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
-                    this.Timestamp, this.Font, this.TextBrush, 0,
+                    this.Timestamp, font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN + textSize.Height + MARGIN);
             }
 
             if (!string.IsNullOrEmpty(this._fileSize))
             {
                 e.Graphics.DrawString(
-                    this._fileSize, this.Font, this.TextBrush, 0,
+                    this._fileSize, font, this.TextBrush, 0,
                     fileNameRect.Bottom + MARGIN + (textSize.Height + MARGIN) * 2);
             }
         }

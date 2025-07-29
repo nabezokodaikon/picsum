@@ -74,7 +74,6 @@ namespace PicSum.UIComponent.InfoPanel
             // fileInfoLabel
             // 
             this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
-            this.fileInfoLabel.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
             // 
             // InfoPanel
             // 
