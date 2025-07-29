@@ -31,7 +31,8 @@ namespace PicSum.UIComponent.InfoPanel
             this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
             // 
             // tagContextMenuStrip
-            // 
+            //
+            this.tagContextMenuStrip.ShowImageMargin = false;
             this.tagContextMenuStrip.Font = Fonts.GetRegularFont(Fonts.Size.Medium);
             this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
             this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
