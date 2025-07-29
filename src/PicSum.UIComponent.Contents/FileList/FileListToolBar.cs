@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
@@ -263,15 +262,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.viewButton.Location.Y,
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
-
-            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small);
-            this.viewButton.Font = buttonFont;
-            this.nameSortButton.Font = buttonFont;
-            this.pathSortButton.Font = buttonFont;
-            this.timestampSortButton.Font = buttonFont;
-            this.registrationSortButton.Font = buttonFont;
-            this.movePreviewButton.Font = buttonFont;
-            this.moveNextButton.Font = buttonFont;
         }
 
         public BaseTextButton GetSortToolStripButton(SortTypeID sortType)

@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
@@ -262,14 +261,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
-
-            var buttonFont = Fonts.GetRegularFont(Fonts.Size.Small);
-            this.viewButton.Font = buttonFont;
-            this.sizeButton.Font = buttonFont;
-            this.doublePreviewButton.Font = buttonFont;
-            this.singlePreviewButton.Font = buttonFont;
-            this.singleNextButton.Font = buttonFont;
-            this.doubleNextButton.Font = buttonFont;
         }
 
         protected override void Dispose(bool disposing)

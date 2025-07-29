@@ -42,25 +42,21 @@ namespace PicSum.UIComponent.Contents.FileList
             // nameSortButton
             //
             this.nameSortButton.Text = "Name";
-            this.nameSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.nameSortButton.MouseClick += this.NameSortButton_MouseClick;
             // 
             // pathSortButton
             //
             this.pathSortButton.Text = "Path";
-            this.pathSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
             // 
             // timestampSortButton
             //
             this.timestampSortButton.Text = "Time stamp";
-            this.timestampSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
             //
             this.registrationSortButton.Text = "Registration";
-            this.registrationSortButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
