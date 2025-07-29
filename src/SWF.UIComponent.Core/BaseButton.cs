@@ -33,6 +33,30 @@ namespace SWF.UIComponent.Core
         private bool _isLeftClick = false;
         private bool _isMousePoint = false;
 
+        public new bool AutoSize
+        {
+            get
+            {
+                return base.AutoSize;
+            }
+            private set
+            {
+                base.AutoSize = value;
+            }
+        }
+
+        public new AutoSizeMode AutoSizeMode
+        {
+            get
+            {
+                return base.AutoSizeMode;
+            }
+            private set
+            {
+                base.AutoSizeMode = value;
+            }
+        }
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Color BackColor
         {
@@ -130,6 +154,7 @@ namespace SWF.UIComponent.Core
 
             this.DoubleBuffered = true;
 
+            this.AutoSize = false;
             this.TabIndex = 0;
             this.TabStop = false;
             this.BackColor = Color.Transparent;

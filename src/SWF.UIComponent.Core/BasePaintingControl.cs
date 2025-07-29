@@ -12,6 +12,18 @@ namespace SWF.UIComponent.Core
         private bool _isHandleCreated = false;
         private bool _isParentChanged = false;
 
+        public new bool AutoSize
+        {
+            get
+            {
+                return base.AutoSize;
+            }
+            private set
+            {
+                base.AutoSize = value;
+            }
+        }
+
         public new string Name
         {
             get
@@ -80,6 +92,7 @@ namespace SWF.UIComponent.Core
                 false);
             this.UpdateStyles();
 
+            this.AutoSize = false;
             this.DoubleBuffered = true;
 
             this.HandleCreated += this.BasePaintingControl_HandleCreated;
