@@ -17,16 +17,29 @@ namespace PicSum.Job.SyncLogics
         {
             using (TimeMeasuring.Run(true, "StartupSyncLogic.Execute"))
             {
-                Instance<IFileInfoDB>.Initialize(() =>
-                    new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value));
+                Instance<IFileInfoDB>.Initialize(new Lazy<IFileInfoDB>(
+                    () => new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
 
-                Instance<IThumbnailDB>.Initialize(() =>
-                    new ThumbnailDB(AppFiles.THUMBNAIL_DATABASE_FILE.Value));
+                Instance<IThumbnailDB>.Initialize(new Lazy<IThumbnailDB>(
+                    () => new ThumbnailDB(AppFiles.THUMBNAIL_DATABASE_FILE.Value),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
 
-                Instance<IFileIconCacher>.Initialize(() => new FileIconCacher());
-                Instance<IThumbnailCacher>.Initialize(() => new ThumbnailCacher());
-                Instance<IImageFileCacher>.Initialize(() => new ImageFileCacher());
-                Instance<IImageFileSizeCacher>.Initialize(() => new ImageFileSizeCacher());
+                Instance<IFileIconCacher>.Initialize(new Lazy<IFileIconCacher>(
+                    () => new FileIconCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
+
+                Instance<IThumbnailCacher>.Initialize(new Lazy<IThumbnailCacher>(
+                    () => new ThumbnailCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
+
+                Instance<IImageFileCacher>.Initialize(new Lazy<IImageFileCacher>(
+                    () => new ImageFileCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
+
+                Instance<IImageFileSizeCacher>.Initialize(new Lazy<IImageFileSizeCacher>(
+                    () => new ImageFileSizeCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
 
                 SynchronizationContext.SetSynchronizationContext(
                     new WindowsFormsSynchronizationContext());
@@ -36,8 +49,9 @@ namespace PicSum.Job.SyncLogics
                     throw new NullReferenceException("同期コンテキストが生成されていません。");
                 }
 
-                Instance<JobCaller>.Initialize(() =>
-                    new JobCaller(SynchronizationContext.Current));
+                Instance<JobCaller>.Initialize(new Lazy<JobCaller>(
+                    () => new JobCaller(SynchronizationContext.Current),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
             }
         }
     }

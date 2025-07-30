@@ -3,35 +3,36 @@ namespace SWF.Core.Base
     public static class Instance<TValue>
         where TValue : class
     {
-        private static readonly Lock LOCK = new();
-        private static Func<TValue>? _valueFactory = null;
-        private static volatile TValue? _value = null;
-
-#pragma warning disable CS8602
+        private static Lazy<TValue>? _lazyValue = null;
 
         public static TValue Value
         {
             get
             {
-                if (_value == null)
+                if (_lazyValue == null)
                 {
-                    lock (LOCK)
-                    {
-                        _value ??= _valueFactory();
-                    }
+                    throw new InvalidOperationException("インスタンスが設定されていません。");
                 }
 
-                return _value;
+                return _lazyValue.Value;
             }
         }
 
-#pragma warning restore CS8602
-
-        public static void Initialize(Func<TValue> valueFactory)
+        public static void Initialize(Lazy<TValue> lazyValue)
         {
-            ArgumentNullException.ThrowIfNull(valueFactory, nameof(valueFactory));
+            ArgumentNullException.ThrowIfNull(lazyValue, nameof(lazyValue));
 
-            _valueFactory = valueFactory;
+            if (_lazyValue != null)
+            {
+                throw new InvalidOperationException("インスタンスが既に設定されています。");
+            }
+
+            if (Thread.CurrentThread.Name != AppConstants.UI_THREAD_NAME)
+            {
+                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
+            }
+
+            _lazyValue = lazyValue;
         }
     }
 }

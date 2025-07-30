@@ -50,12 +50,6 @@ namespace PicSum.Main.Mng
             LOGGER.Info($"コンフィグのバージョン '{configVersion}'");
             LOGGER.Info($"現在のバージョン '{AppInfo.CURRENT_VERSION}'");
 
-            var updater = new Updater();
-            updater.VersionUpTo_12_0_0_0(configVersion);
-            updater.VersionUpTo_12_2_1_0(configVersion);
-            updater.VersionUpTo_12_2_2_0(configVersion);
-            updater.VersionUpTo_12_3_0_0(configVersion);
-
             if (CommandLineArgs.IsCleanup())
             {
                 LOGGER.Info("コマンドライン引数に '--cleanup' が指定されました。");
@@ -74,6 +68,12 @@ namespace PicSum.Main.Mng
                 var startupJob = new StartupSyncJob();
                 startupJob.Execute();
             }
+
+            var updater = new Updater();
+            updater.VersionUpTo_12_0_0_0(configVersion);
+            updater.VersionUpTo_12_2_1_0(configVersion);
+            updater.VersionUpTo_12_2_2_0(configVersion);
+            updater.VersionUpTo_12_3_0_0(configVersion);
         }
 
         public async ValueTask DisposeAsync()

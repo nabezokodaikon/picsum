@@ -2,7 +2,6 @@ using PicSum.DatabaseAccessor.Connection;
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.Job;
-using SWF.Core.ResourceAccessor;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncJobs
@@ -16,19 +15,10 @@ namespace PicSum.Job.SyncJobs
             var logger = Log.GetLogger();
             logger.Debug("バージョン'12.2.2.0'に更新します。");
 
-            try
-            {
-                Instance<IFileInfoDB>.Initialize(() =>
-                    new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value));
+            this.UpdateTDirectoryViewHistoryTable();
+            this.Vacuum();
 
-                this.UpdateTDirectoryViewHistoryTable();
-                this.Vacuum();
-            }
-            finally
-            {
-                Instance<IFileInfoDB>.Value.Dispose();
-                logger.Debug("バージョン'12.2.2.0'に更新しました。");
-            }
+            logger.Debug("バージョン'12.2.2.0'に更新しました。");
         }
 
         private void UpdateTDirectoryViewHistoryTable()
