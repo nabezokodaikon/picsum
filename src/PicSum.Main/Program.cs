@@ -124,7 +124,7 @@ namespace PicSum.Main
                         Application.Run(context);
                     }
 
-                    logger.Info("アプリケーションを終了します。");
+                    logger.Info("アプリケーションを終了します。\n");
                 }
                 finally
                 {
