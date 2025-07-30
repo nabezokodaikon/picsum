@@ -18,8 +18,6 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByDirectoryJob
         : AbstractTwoWayJob<FilesGetByDirectoryParameter, DirectoryGetResult>
     {
-        private const int MAX_DEGREE_OF_PARALLELISM = 8;
-
         protected override Task Execute(FilesGetByDirectoryParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
@@ -54,7 +52,7 @@ namespace PicSum.Job.Jobs
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                                MaxDegreeOfParallelism = files.Length,
                             },
                             file =>
                             {

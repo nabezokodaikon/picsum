@@ -15,8 +15,6 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        private const int MAX_DEGREE_OF_PARALLELISM = 8;
-
         protected override Task Execute(FavoriteDirectoriesGetParameter param)
         {
             var dtos = this.GetOrCreateFileList();
@@ -30,13 +28,11 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         Parallel.ForEach(
-                            dtos.AsEnumerable()
-                                .OrderBy(dto => dto.DirectoryPath)
-                                .OrderByDescending(dto => dto.ViewCount),
+                            dtos,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                                MaxDegreeOfParallelism = dtos.Length,
                             },
                             dto =>
                             {
