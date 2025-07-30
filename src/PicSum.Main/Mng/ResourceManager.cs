@@ -3,6 +3,8 @@ using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
@@ -50,6 +52,8 @@ namespace PicSum.Main.Mng
             LOGGER.Info($"コンフィグのバージョン '{configVersion}'");
             LOGGER.Info($"現在のバージョン '{AppInfo.CURRENT_VERSION}'");
 
+            var isFirstLaunch = !FileUtil.IsExistsFile(AppFiles.FILE_INFO_DATABASE_FILE.Value);
+
             if (CommandLineArgs.IsCleanup())
             {
                 LOGGER.Info("コマンドライン引数に '--cleanup' が指定されました。");
@@ -69,11 +73,18 @@ namespace PicSum.Main.Mng
                 startupJob.Execute();
             }
 
-            var updater = new Updater();
-            updater.VersionUpTo_12_0_0_0(configVersion);
-            updater.VersionUpTo_12_2_1_0(configVersion);
-            updater.VersionUpTo_12_2_2_0(configVersion);
-            updater.VersionUpTo_12_3_0_0(configVersion);
+            if (isFirstLaunch)
+            {
+                LOGGER.Info("アプリケーションが初めて起動しました。");
+            }
+            else
+            {
+                var updater = new Updater();
+                updater.VersionUpTo_12_0_0_0(configVersion);
+                updater.VersionUpTo_12_2_1_0(configVersion);
+                updater.VersionUpTo_12_2_2_0(configVersion);
+                updater.VersionUpTo_12_3_0_0(configVersion);
+            }
         }
 
         public async ValueTask DisposeAsync()
