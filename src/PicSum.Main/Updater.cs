@@ -16,13 +16,13 @@ namespace PicSum.Main
 
         public void VersionUpTo_12_0_0_0(Version version)
         {
+            if (this._12_0_0_0 <= version)
+            {
+                return;
+            }
+
             using (TimeMeasuring.Run(true, "VersionUpTo_12_0_0_0"))
             {
-                if (this._12_0_0_0 <= version)
-                {
-                    return;
-                }
-
                 LOGGER.Info($"バージョンが'{this._12_0_0_0}'未満のため、サムネイルを初期化します。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
@@ -32,13 +32,13 @@ namespace PicSum.Main
 
         public void VersionUpTo_12_2_1_0(Version version)
         {
+            if (this._12_2_1_0 <= version)
+            {
+                return;
+            }
+
             using (TimeMeasuring.Run(true, "VersionUpTo_12_2_1_0"))
             {
-                if (this._12_2_1_0 <= version)
-                {
-                    return;
-                }
-
                 LOGGER.Info($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
 
                 var job = new VersionUpTo_12_2_1_0_Job();
@@ -48,13 +48,13 @@ namespace PicSum.Main
 
         public void VersionUpTo_12_2_2_0(Version version)
         {
+            if (this._12_2_2_0 <= version)
+            {
+                return;
+            }
+
             using (TimeMeasuring.Run(true, "VersionUpTo_12_2_2_0"))
             {
-                if (this._12_2_2_0 <= version)
-                {
-                    return;
-                }
-
                 LOGGER.Info($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
                 var job = new VersionUpTo_12_2_2_0_Job();
@@ -64,13 +64,13 @@ namespace PicSum.Main
 
         public void VersionUpTo_12_3_0_0(Version version)
         {
+            if (this._12_3_0_0 <= version)
+            {
+                return;
+            }
+
             using (TimeMeasuring.Run(true, "VersionUpTo_12_3_0_0"))
             {
-                if (this._12_3_0_0 <= version)
-                {
-                    return;
-                }
-
                 LOGGER.Info($"バージョンが'{this._12_3_0_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
                 var job = new VersionUpTo_12_3_0_0_Job();
