@@ -1,6 +1,9 @@
-using PicSum.Job.SyncLogics;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.ResourceAccessor;
+using SWF.Core.StringAccessor;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncJobs
@@ -13,37 +16,51 @@ namespace PicSum.Job.SyncJobs
 
         public void Execute()
         {
-            var logger = Log.GetLogger();
-            logger.Debug("サムネイルデータベースクリーンアップジョブを開始します。");
+            using (TimeMeasuring.Run(true, "ThumbnailDBCleanupSyncJob.Execute"))
+            {
+                try
+                {
+                    var dbFile = AppFiles.THUMBNAIL_DATABASE_FILE.Value;
+                    if (FileUtil.CanAccess(dbFile))
+                    {
+                        File.Delete(dbFile);
+                    }
 
-            try
-            {
-                var thumbnailLogic = new ThumbnailDBCleanupSyncLogic();
-                thumbnailLogic.Execute();
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                logger.Error(ex, ERROR_MESSAGE);
-            }
-            catch (PathTooLongException ex)
-            {
-                logger.Error(ex, ERROR_MESSAGE);
-            }
-            catch (IOException ex)
-            {
-                logger.Error(ex, ERROR_MESSAGE);
-            }
-            catch (NotSupportedException ex)
-            {
-                logger.Error(ex, ERROR_MESSAGE);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                logger.Error(ex, ERROR_MESSAGE);
-            }
-            finally
-            {
-                logger.Debug("サムネイルデータベースクリーンアップジョブが終了しました。");
+                    var cacheFile = AppFiles.THUMBNAIL_CACHE_FILE.Value;
+                    if (FileUtil.CanAccess(cacheFile))
+                    {
+                        File.Delete(cacheFile);
+                    }
+
+                    foreach (var thumbnailFile in FileUtil.GetFiles(AppFiles.DATABASE_DIRECTORY.Value)
+                        .Where(file =>
+                        StringUtil.CompareFilePath(
+                            FileUtil.GetExtensionFastStack(file),
+                            ThumbnailUtil.THUMBNAIL_BUFFER_FILE_EXTENSION)))
+                    {
+                        File.Delete($"{thumbnailFile}");
+                    }
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                }
+                catch (PathTooLongException ex)
+                {
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                }
+                catch (IOException ex)
+                {
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                }
+                catch (NotSupportedException ex)
+                {
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                }
             }
         }
     }
