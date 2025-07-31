@@ -31,7 +31,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
+            using (TimeMeasuring.Run(true, "OpenCVUtil.Resize By Mat"))
             {
                 var size = new OpenCvSharp.Size(newWidth, newHeight);
                 using (var destMat = new Mat(size, srcMat.Type()))
