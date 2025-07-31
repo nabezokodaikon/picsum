@@ -131,21 +131,21 @@ namespace PicSum.UIComponent.Contents.ImageView
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool HasImage { get; private set; } = false;
 
-        private int ThumbnailPanelSize
+        private float ThumbnailPanelSize
         {
             get
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                return (int)(this._thumbnailPanelImage.Width * scale);
+                return this._thumbnailPanelImage.Width * scale;
             }
         }
 
-        public int ThumbnailSize
+        public float ThumbnailSize
         {
             get
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                return (int)((this._thumbnailPanelImage.Width - THUMBNAIL_OFFSET) * scale);
+                return (this._thumbnailPanelImage.Width - THUMBNAIL_OFFSET) * scale;
             }
         }
 
