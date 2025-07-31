@@ -72,7 +72,7 @@ namespace SWF.UIComponent.Core
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
-            this.AutoScaleMode = AutoScaleMode.None;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
             this.AutoSize = false;
 
             this.Load += this.BaseForm_Load;
