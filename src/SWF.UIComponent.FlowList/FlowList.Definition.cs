@@ -89,7 +89,7 @@ namespace SWF.UIComponent.FlowList
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                if (value < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < value)
+                if (value < MINIMUM_ITEM_SIZE)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
@@ -117,7 +117,7 @@ namespace SWF.UIComponent.FlowList
                     throw new InvalidOperationException("短形選択中は設定できません。");
                 }
 
-                if (value < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < value)
+                if (value < MINIMUM_ITEM_SIZE)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
@@ -430,12 +430,12 @@ namespace SWF.UIComponent.FlowList
                 throw new InvalidOperationException("短形選択中は設定できません。");
             }
 
-            if (width < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < width)
+            if (width < MINIMUM_ITEM_SIZE)
             {
                 throw new ArgumentOutOfRangeException(nameof(width));
             }
 
-            if (height < MINIMUM_ITEM_SIZE || MAXIMUM_ITEM_SIZE < height)
+            if (height < MINIMUM_ITEM_SIZE)
             {
                 throw new ArgumentOutOfRangeException(nameof(height));
             }

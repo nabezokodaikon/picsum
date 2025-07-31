@@ -554,13 +554,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFlowListItemSize()
         {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            var thumbnailSize = (int)(this.ThumbnailSize * scale);
+
             if (this.IsShowFileName)
             {
-                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize + this.GetItemTextHeight());
+                this.flowList.SetItemSize(thumbnailSize, thumbnailSize + this.GetItemTextHeight());
             }
             else
             {
-                this.flowList.SetItemSize(this.ThumbnailSize, this.ThumbnailSize);
+                this.flowList.SetItemSize(thumbnailSize, thumbnailSize);
             }
         }
 

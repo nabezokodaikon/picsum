@@ -19,9 +19,6 @@ namespace SWF.UIComponent.FlowList
         // 項目最小サイズ
         public const int MINIMUM_ITEM_SIZE = 16;
 
-        // 項目最大サイズ
-        public const int MAXIMUM_ITEM_SIZE = 512;
-
         private static readonly Color ITEM_TEXT_COLOR = Color.FromArgb(
             SystemColors.ControlText.A,
             SystemColors.ControlText.R,
