@@ -297,11 +297,8 @@ namespace SWF.Core.ImageAccessor
 
                 using (var bmp = OpenCVUtil.Resize(this._mat, width, height, flag))
                 {
-                    using (TimeMeasuring.Run(true, "CvImage.DrawResizeImage DrawImage"))
-                    {
-                        g.DrawImage(bmp, destRect,
-                            new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
-                    }
+                    g.DrawImage(bmp, destRect,
+                        new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
                 }
             }
             catch (NotSupportedException ex)
