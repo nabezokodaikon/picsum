@@ -135,7 +135,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this._thumbnailPanelImage.Width;
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                return (int)(this._thumbnailPanelImage.Width * scale);
             }
         }
 
@@ -143,7 +144,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this._thumbnailPanelImage.Width - THUMBNAIL_OFFSET;
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                return (int)((this._thumbnailPanelImage.Width - THUMBNAIL_OFFSET) * scale);
             }
         }
 
