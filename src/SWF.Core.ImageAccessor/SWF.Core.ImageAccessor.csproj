@@ -42,7 +42,7 @@
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.10" />
     <PackageReference Include="Svg" Version="3.4.7" />
   </ItemGroup>
 

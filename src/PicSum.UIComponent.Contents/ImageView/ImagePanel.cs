@@ -244,7 +244,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
                 e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                 if (this._isError)
                 {
