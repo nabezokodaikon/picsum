@@ -4,7 +4,6 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;

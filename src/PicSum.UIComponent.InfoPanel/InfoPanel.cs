@@ -535,6 +535,7 @@ namespace PicSum.UIComponent.InfoPanel
                 if (this.FileInfo.IsFile)
                 {
                     ThumbnailUtil.DrawHighQualityFileThumbnail(
+                        this,
                         e.Graphics,
                         this.Thumbnail.ThumbnailImage,
                         rect,
@@ -543,6 +544,7 @@ namespace PicSum.UIComponent.InfoPanel
                 else
                 {
                     ThumbnailUtil.DrawHighQualityDirectoryThumbnail(
+                        this,
                         e.Graphics,
                         this.Thumbnail.ThumbnailImage,
                         rect,

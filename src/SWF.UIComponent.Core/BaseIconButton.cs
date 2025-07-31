@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Core

@@ -1,5 +1,5 @@
+using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
 using System;
 using System.Drawing;
 using System.Runtime.Versioning;

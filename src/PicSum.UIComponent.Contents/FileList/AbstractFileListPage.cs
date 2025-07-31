@@ -12,7 +12,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using SWF.UIComponent.Core;
 using SWF.UIComponent.FlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -602,12 +601,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (item.IsFile)
                 {
                     ThumbnailUtil.DrawLowQualityFileThumbnail(
-                        e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
+                        this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
                 }
                 else
                 {
                     ThumbnailUtil.DrawLowQualityDirectoryThumbnail(
-                        e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
+                        this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
                 }
 
                 if (this.IsShowFileName)

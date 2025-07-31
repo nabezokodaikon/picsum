@@ -1,9 +1,8 @@
-using SWF.Core.Base;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using WinApi;
 
-namespace SWF.UIComponent.Core
+namespace SWF.Core.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class WindowUtil

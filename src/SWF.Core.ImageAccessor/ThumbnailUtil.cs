@@ -82,17 +82,17 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static void DrawHighQualityFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        public static void DrawHighQualityFileThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
         {
-            DrawFileThumbnail(g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Area);
+            DrawFileThumbnail(control, g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Area);
         }
 
-        public static void DrawLowQualityFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        public static void DrawLowQualityFileThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
         {
-            DrawFileThumbnail(g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Linear);
+            DrawFileThumbnail(control, g, thumb, destRect, srcSize, OpenCvSharp.InterpolationFlags.Linear);
         }
 
-        private static void DrawFileThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, OpenCvSharp.InterpolationFlags flag)
+        private static void DrawFileThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -102,7 +102,8 @@ namespace SWF.Core.ImageAccessor
             float scale;
             if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
             {
-                scale = Math.Min(1, Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height));
+                var displayScale = WindowUtil.GetCurrentWindowScale(control);
+                scale = Math.Min(1, Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height)) * displayScale;
             }
             else
             {
@@ -128,23 +129,23 @@ namespace SWF.Core.ImageAccessor
             thumb.DrawResizeImage(g, new RectangleF(x, y, w, h), flag);
         }
 
-        public static void DrawHighQualityDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void DrawHighQualityDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
         {
-            DrawDirectoryThumbnail(g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Area);
+            DrawDirectoryThumbnail(control, g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Area);
         }
 
-        public static void DrawLowQualityDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void DrawLowQualityDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
         {
-            DrawDirectoryThumbnail(g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Linear);
+            DrawDirectoryThumbnail(control, g, thumb, destRect, srcSize, icon, OpenCvSharp.InterpolationFlags.Linear);
         }
 
-        private static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon, OpenCvSharp.InterpolationFlags flag)
+        private static void DrawDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon, OpenCvSharp.InterpolationFlags flag)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(g, thumb, destRect, srcSize, flag);
+            DrawFileThumbnail(control, g, thumb, destRect, srcSize, flag);
 
             var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
             var destIconRect = new RectangleF(
