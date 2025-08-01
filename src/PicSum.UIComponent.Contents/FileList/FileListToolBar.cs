@@ -280,8 +280,8 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.nameSortButton.Text = "Name";
             this.pathSortButton.Text = "Path";
-            this.timestampSortButton.Text = "Time stamp";
-            this.registrationSortButton.Text = "Registration";
+            this.timestampSortButton.Text = "Updated";
+            this.registrationSortButton.Text = "Added";
         }
 
         protected override void Dispose(bool disposing)

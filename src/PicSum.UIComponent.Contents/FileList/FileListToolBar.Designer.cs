@@ -51,12 +51,12 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // timestampSortButton
             //
-            this.timestampSortButton.Text = "Time stamp";
+            this.timestampSortButton.Text = "Updated";
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
             // 
             // registrationSortButton
             //
-            this.registrationSortButton.Text = "Registration";
+            this.registrationSortButton.Text = "Added";
             this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
