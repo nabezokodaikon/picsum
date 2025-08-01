@@ -161,14 +161,14 @@ namespace PicSum.UIComponent.InfoPanel
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
-                    $"Updated: {this.Timestamp}", font, this.TextBrush, 0,
+                    $"Updated  {this.Timestamp}", font, this.TextBrush, 0,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
             }
 
             if (!string.IsNullOrEmpty(this.PhotographDate))
             {
                 e.Graphics.DrawString(
-                    $"Taken: {this.PhotographDate}", font, this.TextBrush, 0,
+                    $"Taken  {this.PhotographDate}", font, this.TextBrush, 0,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
             }
         }

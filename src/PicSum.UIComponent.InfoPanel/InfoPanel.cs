@@ -486,7 +486,7 @@ namespace PicSum.UIComponent.InfoPanel
                     if (this.FileInfo.ImageSize != ImageUtil.EMPTY_SIZE)
                     {
                         this.fileInfoLabel.FileSize
-                            += $" ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
+                            += $"  ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
                 }
 
