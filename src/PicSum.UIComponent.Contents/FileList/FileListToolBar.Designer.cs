@@ -20,6 +20,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.viewButton = new SWF.UIComponent.Core.BaseTextButton();
             this.nameSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.pathSortButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.createDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.timestampSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.registrationSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
@@ -48,6 +49,11 @@ namespace PicSum.UIComponent.Contents.FileList
             //
             this.pathSortButton.Text = "Path";
             this.pathSortButton.MouseClick += this.PathSortButton_MouseClick;
+            // 
+            // createDateSortButton
+            //
+            this.createDateSortButton.Text = "Created";
+            this.createDateSortButton.MouseClick += this.CreateDateSortButton_MouseClick;
             // 
             // timestampSortButton
             //
@@ -107,6 +113,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.movePreviewButton,
                 this.thumbnailSizeSlider,
                 this.registrationSortButton,
+                this.createDateSortButton,
                 this.timestampSortButton,
                 this.pathSortButton,
                 this.nameSortButton,
@@ -130,6 +137,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private SWF.UIComponent.Core.BaseTextButton moveNextButton;
         private SWF.UIComponent.Core.BaseTextButton nameSortButton;
         private SWF.UIComponent.Core.BaseTextButton pathSortButton;
+        private SWF.UIComponent.Core.BaseTextButton createDateSortButton;
         private SWF.UIComponent.Core.BaseTextButton timestampSortButton;
         private SWF.UIComponent.Core.BaseTextButton registrationSortButton;
     }

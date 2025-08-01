@@ -22,6 +22,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         public event EventHandler NameSortButtonClick;
         public event EventHandler PathSortButtonClick;
+        public event EventHandler CreateDateSortButtonClick;
         public event EventHandler TimestampSortButtonClick;
         public event EventHandler RegistrationSortButtonClick;
         public event EventHandler DirectoryMenuItemClick;
@@ -233,32 +234,38 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.timestampSortButton.SetBounds(
+            this.createDateSortButton.SetBounds(
                 this.viewButton.Location.X * 4 + this.viewButton.Width + this.nameSortButton.Width * 2,
                 this.viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.registrationSortButton.SetBounds(
+            this.timestampSortButton.SetBounds(
                 this.viewButton.Location.X * 5 + this.viewButton.Width + this.nameSortButton.Width * 3,
                 this.viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.thumbnailSizeSlider.SetBounds(
+            this.registrationSortButton.SetBounds(
                 this.viewButton.Location.X * 6 + this.viewButton.Width + this.nameSortButton.Width * 4,
+                this.viewButton.Location.Y,
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
+                (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
+
+            this.thumbnailSizeSlider.SetBounds(
+                this.viewButton.Location.X * 7 + this.viewButton.Width + this.nameSortButton.Width * 5,
                 this.viewButton.Location.Y,
                 (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Width * scale),
                 (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Height * scale));
 
             this.movePreviewButton.SetBounds(
-                this.viewButton.Location.X * 7 + this.viewButton.Width + this.nameSortButton.Width * 4 + this.thumbnailSizeSlider.Width,
+                this.viewButton.Location.X * 8 + this.viewButton.Width + this.nameSortButton.Width * 5 + this.thumbnailSizeSlider.Width,
                 this.viewButton.Location.Y,
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
             this.moveNextButton.SetBounds(
-                this.viewButton.Location.X * 8 + this.viewButton.Width + this.nameSortButton.Width * 4 + this.thumbnailSizeSlider.Width + this.movePreviewButton.Width,
+                this.viewButton.Location.X * 9 + this.viewButton.Width + this.nameSortButton.Width * 5 + this.thumbnailSizeSlider.Width + this.movePreviewButton.Width,
                 this.viewButton.Location.Y,
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
@@ -270,6 +277,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 SortTypeID.FileName => this.nameSortButton,
                 SortTypeID.FilePath => this.pathSortButton,
+                SortTypeID.CreateDate => this.createDateSortButton,
                 SortTypeID.UpdateDate => this.timestampSortButton,
                 SortTypeID.RegistrationDate => this.registrationSortButton,
                 _ => null,
@@ -280,6 +288,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.nameSortButton.Text = "Name";
             this.pathSortButton.Text = "Path";
+            this.createDateSortButton.Text = "Created";
             this.timestampSortButton.Text = "Updated";
             this.registrationSortButton.Text = "Added";
         }
@@ -329,6 +338,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private void PathSortButton_MouseClick(object sender, MouseEventArgs e)
         {
             this.PathSortButtonClick?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CreateDateSortButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.CreateDateSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void TimestampSortButton_MouseClick(object sender, MouseEventArgs e)

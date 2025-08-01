@@ -249,6 +249,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     FilePath = srcFile.FilePath,
                     FileName = srcFile.FileName,
+                    CreateDate = srcFile.CreateDate,
                     UpdateDate = srcFile.UpdateDate,
                     RgistrationDate = srcFile.RgistrationDate,
                     SmallIcon = srcFile.SmallIcon,
@@ -435,6 +436,35 @@ namespace PicSum.UIComponent.Contents.FileList
                         else
                         {
                             return NaturalStringComparer.WINDOWS.Compare(y.FilePath, x.FilePath);
+                        }
+                    });
+                    break;
+                case SortTypeID.CreateDate:
+                    filterList.Sort((x, y) =>
+                    {
+                        var xDate = x.CreateDate.GetValueOrDefault(DateTime.MinValue);
+                        var yDate = y.CreateDate.GetValueOrDefault(DateTime.MinValue);
+                        if (isAscending)
+                        {
+                            if (xDate == yDate)
+                            {
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
+                            }
+                            else
+                            {
+                                return xDate.CompareTo(yDate);
+                            }
+                        }
+                        else
+                        {
+                            if (xDate == yDate)
+                            {
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
+                            }
+                            else
+                            {
+                                return -xDate.CompareTo(yDate);
+                            }
                         }
                     });
                     break;
@@ -737,6 +767,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.FilePath);
             this.SortInfo.ActiveSortType = SortTypeID.FilePath;
+            this.SetSort();
+            this.SetFilter();
+        }
+
+        private void ToolBar_CreateDateSortButtonClick(object sender, EventArgs e)
+        {
+            this.SortInfo.ChangeSortDirection(SortTypeID.CreateDate);
+            this.SortInfo.ActiveSortType = SortTypeID.CreateDate;
             this.SetSort();
             this.SetFilter();
         }

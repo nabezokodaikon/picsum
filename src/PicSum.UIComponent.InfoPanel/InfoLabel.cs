@@ -26,6 +26,7 @@ namespace PicSum.UIComponent.InfoPanel
         };
 
         private string _fileName = string.Empty;
+        private string _createDate = string.Empty;
         private string _timestamp = string.Empty;
         private string _photographDate = string.Empty;
         private string _fileType = string.Empty;
@@ -41,6 +42,20 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._fileName = value;
+                this.Invalidate();
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string CreateDate
+        {
+            get
+            {
+                return this._createDate;
+            }
+            set
+            {
+                this._createDate = value;
                 this.Invalidate();
             }
         }
@@ -158,18 +173,25 @@ namespace PicSum.UIComponent.InfoPanel
 
             }
 
+            if (!string.IsNullOrEmpty(this.CreateDate))
+            {
+                e.Graphics.DrawString(
+                    $"Created  {this.CreateDate}", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
+            }
+
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
                     $"Updated  {this.Timestamp}", font, this.TextBrush, 0,
-                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
             }
 
             if (!string.IsNullOrEmpty(this.PhotographDate))
             {
                 e.Graphics.DrawString(
                     $"Taken  {this.PhotographDate}", font, this.TextBrush, 0,
-                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 4);
             }
         }
     }

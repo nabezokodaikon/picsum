@@ -284,6 +284,41 @@ namespace SWF.Core.FileAccessor
             }
         }
 
+        public static DateTime GetCreateDate(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            if (FileUtil.IsSystemRoot(filePath))
+            {
+                return FileUtil.ROOT_DIRECTORY_DATETIME;
+            }
+
+            try
+            {
+                return File.GetCreationTime(filePath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
         /// <summary>
         /// ファイルの更新日時を取得します。
         /// </summary>

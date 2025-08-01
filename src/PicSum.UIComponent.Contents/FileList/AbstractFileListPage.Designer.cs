@@ -66,6 +66,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.ThumbnailSizeSliderValue = 96;
             this.toolBar.NameSortButtonClick += new System.EventHandler(this.ToolBar_NameSortButtonClick);
             this.toolBar.PathSortButtonClick += new System.EventHandler(this.ToolBar_PathSortButtonClick);
+            this.toolBar.CreateDateSortButtonClick += new System.EventHandler(this.ToolBar_CreateDateSortButtonClick);
             this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.ToolBar_TimestampSortButtonClick);
             this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.ToolBar_RegistrationSortButtonClick);
             this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderBeginValueChange);

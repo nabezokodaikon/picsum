@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.InfoPanel
         private static readonly Rectangle THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS
             = new(4, 0, 508, 256);
         private static readonly Rectangle FILE_INFO_LABEL_DEFAULT_BOUNDS
-            = new(4, 256, 508, 156);
+            = new(4, 256, 508, 180);
         private static readonly Rectangle RATING_BAR_DEFAULT_BOUNDS
             = new(4, 390, 508, 64);
         private static readonly Rectangle WIDE_COMBO_BOX_DEFAULT_BOUNDS
@@ -325,6 +325,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.FileName = string.Empty;
             this.fileInfoLabel.FileType = string.Empty;
             this.fileInfoLabel.FileSize = string.Empty;
+            this.fileInfoLabel.CreateDate = string.Empty;
             this.fileInfoLabel.Timestamp = string.Empty;
             this.fileInfoLabel.PhotographDate = string.Empty;
             this.ratingBar.SetValue(0);
@@ -488,6 +489,12 @@ namespace PicSum.UIComponent.InfoPanel
                         this.fileInfoLabel.FileSize
                             += $"  ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
+                }
+
+                if (this.FileInfo.CreateDate != FileUtil.EMPTY_DATETIME)
+                {
+                    this.fileInfoLabel.CreateDate
+                        = $"{this.FileInfo.CreateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
                 if (this.FileInfo.UpdateDate != FileUtil.EMPTY_DATETIME)
