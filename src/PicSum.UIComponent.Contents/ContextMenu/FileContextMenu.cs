@@ -37,7 +37,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem _fileActiveTabOpenMenuItem = new("Open");
         private readonly ToolStripMenuItem _fileNewTabOpenMenuItem = new("Open in new tab");
         private readonly ToolStripMenuItem _fileNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem _fileBookmarkMenuItem = new("Bookmark");
+        private readonly ToolStripMenuItem _fileBookmarkMenuItem = new("Add to bookmark");
 
         // ファイルメニュー項目
         private readonly ToolStripMenuItem _selectApplicationMenuItem = new("Open in other application");
