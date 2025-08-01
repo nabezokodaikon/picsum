@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(true, "MetadataExtractorUtil.GetPhotographDate"))
+            using (TimeMeasuring.Run(false, "MetadataExtractorUtil.GetPhotographDate"))
             {
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
