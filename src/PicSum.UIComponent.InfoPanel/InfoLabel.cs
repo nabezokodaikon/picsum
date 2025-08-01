@@ -173,24 +173,35 @@ namespace PicSum.UIComponent.InfoPanel
 
             }
 
+            var dateHeaderSize = e.Graphics.MeasureString("Updated", font);
+
             if (!string.IsNullOrEmpty(this.CreateDate))
             {
                 e.Graphics.DrawString(
-                    $"Created  {this.CreateDate}", font, this.TextBrush, 0,
+                    "Created", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
+                e.Graphics.DrawString(
+                    $"{this.CreateDate}", font, this.TextBrush, dateHeaderSize.Width,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
             }
 
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
-                    $"Updated  {this.Timestamp}", font, this.TextBrush, 0,
+                    "Updated", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
+                e.Graphics.DrawString(
+                    $"{this.Timestamp}", font, this.TextBrush, dateHeaderSize.Width,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
             }
 
             if (!string.IsNullOrEmpty(this.PhotographDate))
             {
                 e.Graphics.DrawString(
-                    $"Taken  {this.PhotographDate}", font, this.TextBrush, 0,
+                    "Taken", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 4);
+                e.Graphics.DrawString(
+                    $"{this.PhotographDate}", font, this.TextBrush, dateHeaderSize.Width,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 4);
             }
         }
