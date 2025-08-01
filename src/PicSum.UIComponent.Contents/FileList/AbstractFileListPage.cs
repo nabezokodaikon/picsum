@@ -446,7 +446,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var yDate = y.CreateDate.GetValueOrDefault(DateTime.MinValue);
                         if (isAscending)
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
                                 return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
@@ -457,9 +457,9 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                         else
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
-                                return NaturalStringComparer.WINDOWS.Compare(y.FileName, x.FileName);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -475,7 +475,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var yDate = y.UpdateDate.GetValueOrDefault(DateTime.MinValue);
                         if (isAscending)
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
                                 return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
@@ -486,9 +486,9 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                         else
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
-                                return NaturalStringComparer.WINDOWS.Compare(y.FileName, x.FileName);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
@@ -504,7 +504,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var yDate = y.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
                         if (isAscending)
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
                                 return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
@@ -515,9 +515,9 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                         else
                         {
-                            if (xDate.ToString() == yDate.ToString())
+                            if (xDate == yDate)
                             {
-                                return NaturalStringComparer.WINDOWS.Compare(y.FileName, x.FileName);
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
                             }
                             else
                             {
