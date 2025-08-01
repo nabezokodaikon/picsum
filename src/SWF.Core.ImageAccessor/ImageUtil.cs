@@ -88,6 +88,24 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static DateTime GetPhotographDate(string filePath)
+        {
+            ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
+
+            try
+            {
+                return MetadataExtractorUtil.GetPhotographDate(filePath);
+            }
+            catch (MetadataExtractor.ImageProcessingException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (IOException ex)
+            {
+                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
         public static string GetFirstImageFilePath(string directoryPath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.GetFirstImageFilePath"))

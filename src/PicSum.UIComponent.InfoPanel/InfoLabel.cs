@@ -27,6 +27,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private string _fileName = string.Empty;
         private string _timestamp = string.Empty;
+        private string _photographDate = string.Empty;
         private string _fileType = string.Empty;
         private string _fileSize = string.Empty;
 
@@ -54,6 +55,20 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._timestamp = value;
+                this.Invalidate();
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string PhotographDate
+        {
+            get
+            {
+                return this._photographDate;
+            }
+            set
+            {
+                this._photographDate = value;
                 this.Invalidate();
             }
         }
@@ -111,9 +126,8 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void InfoLabel_Paint(object sender, PaintEventArgs e)
         {
-            const float MARGIN = 8;
-
             var scale = WindowUtil.GetCurrentWindowScale(this);
+            var margin = 8 * scale;
             var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
             var textSize = e.Graphics.MeasureString("あ", font);
 
@@ -133,21 +147,29 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 e.Graphics.DrawString(
                     this.FileType, font, this.TextBrush, 0,
-                    fileNameRect.Bottom + MARGIN);
+                    fileNameRect.Bottom + margin);
+            }
+
+            if (!string.IsNullOrEmpty(this.FileSize))
+            {
+                e.Graphics.DrawString(
+                    this._fileSize, font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + textSize.Height + margin);
+
             }
 
             if (!string.IsNullOrEmpty(this.Timestamp))
             {
                 e.Graphics.DrawString(
-                    this.Timestamp, font, this.TextBrush, 0,
-                    fileNameRect.Bottom + MARGIN + textSize.Height + MARGIN);
+                    $"Time stamp {this.Timestamp}", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
             }
 
-            if (!string.IsNullOrEmpty(this._fileSize))
+            if (!string.IsNullOrEmpty(this.PhotographDate))
             {
                 e.Graphics.DrawString(
-                    this._fileSize, font, this.TextBrush, 0,
-                    fileNameRect.Bottom + MARGIN + (textSize.Height + MARGIN) * 2);
+                    $"Photograph {this.PhotographDate}", font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
             }
         }
     }

@@ -17,6 +17,7 @@ namespace PicSum.Job.Entities
             FilePath = string.Empty,
             FileName = string.Empty,
             UpdateDate = FileUtil.EMPTY_DATETIME,
+            PhotographDate = FileUtil.EMPTY_DATETIME,
             IsFile = false,
             IsImageFile = false,
             FileType = string.Empty,
@@ -33,6 +34,7 @@ namespace PicSum.Job.Entities
             FilePath = string.Empty,
             FileName = string.Empty,
             UpdateDate = FileUtil.EMPTY_DATETIME,
+            PhotographDate = FileUtil.EMPTY_DATETIME,
             IsFile = false,
             IsImageFile = false,
             FileType = string.Empty,
@@ -47,6 +49,7 @@ namespace PicSum.Job.Entities
         public string FilePath { get; internal set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
         public DateTime UpdateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime PhotographDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
         public bool IsFile { get; internal set; } = false;
         public bool IsImageFile { get; internal set; } = false;
         public string FileType { get; internal set; } = string.Empty;

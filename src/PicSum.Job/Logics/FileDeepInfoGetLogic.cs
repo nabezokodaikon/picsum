@@ -62,6 +62,7 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.ROOT_DIRECTORY_NAME,
                 FileType = FileUtil.ROOT_DIRECTORY_TYPE_NAME,
                 UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
+                PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -78,6 +79,7 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
                 UpdateDate = FileUtil.GetUpdateDate(filePath),
+                PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -95,6 +97,7 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
                 UpdateDate = FileUtil.GetUpdateDate(filePath),
+                PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -144,6 +147,7 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
                 UpdateDate = FileUtil.GetUpdateDate(filePath),
+                PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = true,
                 FileSize = FileUtil.GetFileSize(filePath),
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
@@ -161,6 +165,9 @@ namespace PicSum.Job.Logics
                 info.IsImageFile = true;
                 return info;
             }
+
+            info.PhotographDate = this.GetPhotographDate(filePath);
+            this.ThrowIfJobCancellationRequested();
 
             var srcSize = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
             info.ImageSize = new(srcSize.Width, srcSize.Height);
@@ -204,6 +211,19 @@ namespace PicSum.Job.Logics
             {
                 this.WriteErrorLog(ex);
                 return CvImage.EMPTY;
+            }
+        }
+
+        private DateTime GetPhotographDate(string filePath)
+        {
+            try
+            {
+                return ImageUtil.GetPhotographDate(filePath);
+            }
+            catch (ImageUtilException ex)
+            {
+                this.WriteErrorLog(ex);
+                return FileUtil.EMPTY_DATETIME;
             }
         }
     }
