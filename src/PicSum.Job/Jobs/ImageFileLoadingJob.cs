@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            await Task.Delay(1, this.CancellationToken);
+            await Task.Delay(10, this.CancellationToken);
 
             var logic = new ImageFileReadLogic(this);
 
