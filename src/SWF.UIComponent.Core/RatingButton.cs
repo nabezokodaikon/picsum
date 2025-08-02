@@ -24,7 +24,6 @@ namespace SWF.UIComponent.Core
             set
             {
                 this._isActive = value;
-                this.Invalidate();
             }
         }
 

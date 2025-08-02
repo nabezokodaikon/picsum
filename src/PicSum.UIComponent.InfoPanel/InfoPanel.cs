@@ -216,6 +216,9 @@ namespace PicSum.UIComponent.InfoPanel
                 if (FileUtil.IsSystemRoot(filePathList.First()))
                 {
                     this.ClearInfo();
+                    this.fileInfoLabel.Invalidate();
+                    this.ratingBar.Invalidate();
+                    this.thumbnailPictureBox.Invalidate();
                     return;
                 }
 
@@ -262,6 +265,8 @@ namespace PicSum.UIComponent.InfoPanel
             else
             {
                 this.ClearInfo();
+                this.fileInfoLabel.Invalidate();
+                this.ratingBar.Invalidate();
                 this.thumbnailPictureBox.Invalidate();
             }
         }
@@ -328,6 +333,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.CreateDate = string.Empty;
             this.fileInfoLabel.Timestamp = string.Empty;
             this.fileInfoLabel.PhotographDate = string.Empty;
+
             this.ratingBar.SetValue(0);
             this.tagFlowList.ItemCount = 0;
 
@@ -517,6 +523,8 @@ namespace PicSum.UIComponent.InfoPanel
                 this.tagFlowList.ItemCount = this.TagList.Count;
             }
 
+            this.fileInfoLabel.Invalidate();
+            this.ratingBar.Invalidate();
             this.thumbnailPictureBox.Invalidate();
         }
 

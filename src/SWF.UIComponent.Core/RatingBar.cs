@@ -135,6 +135,7 @@ namespace SWF.UIComponent.Core
                 this.SetValue(index + 1);
             }
 
+            this.Invalidate();
             this.OnRatingButtonMouseClick(e);
         }
 

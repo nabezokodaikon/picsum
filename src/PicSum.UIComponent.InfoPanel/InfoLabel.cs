@@ -42,7 +42,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._fileName = value;
-                this.Invalidate();
             }
         }
 
@@ -56,7 +55,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._createDate = value;
-                this.Invalidate();
             }
         }
 
@@ -70,7 +68,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._timestamp = value;
-                this.Invalidate();
             }
         }
 
@@ -84,7 +81,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._photographDate = value;
-                this.Invalidate();
             }
         }
 
@@ -98,7 +94,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._fileType = value;
-                this.Invalidate();
             }
         }
 
@@ -112,7 +107,6 @@ namespace PicSum.UIComponent.InfoPanel
             set
             {
                 this._fileSize = value;
-                this.Invalidate();
             }
         }
 
