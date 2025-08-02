@@ -1,6 +1,8 @@
+using System.Drawing;
 using System.Runtime.Versioning;
+using System.Windows.Forms;
 
-namespace SWF.Core.ImageAccessor
+namespace SWF.UIComponent.TabOperation
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static class ScreenUtil
