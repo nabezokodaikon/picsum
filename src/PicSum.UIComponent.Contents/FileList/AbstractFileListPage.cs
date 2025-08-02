@@ -355,6 +355,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected abstract Action<ISender> GetImageFilesGetAction(ImageViewPageParameter paramter);
 
+        protected virtual void OnSelectedItemChange()
+        {
+            var filePathList = this.GetSelectedFiles();
+            if (filePathList.Length > 0)
+            {
+                this.SelectedFilePath = filePathList.First();
+            }
+
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
+        }
+
         private void SetSort()
         {
             this.toolBar.ClearSortImage();
@@ -910,13 +921,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_SelectedItemChange(object sender, EventArgs e)
         {
-            var filePathList = this.GetSelectedFiles();
-            if (filePathList.Length > 0)
-            {
-                this.SelectedFilePath = filePathList.First();
-            }
-
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
+            this.OnSelectedItemChange();
         }
 
         private void FlowList_ItemMouseClick(object sender, MouseEventArgs e)
@@ -979,11 +984,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var param = new DirectoryFileListPageParameter(file.FilePath);
                 this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
             }
-        }
-
-        protected virtual void FlowLilst_BackgroundMouseClick(object sender, MouseEventArgs e)
-        {
-            this.OnBackgroundMouseClick(e);
         }
 
         private void FlowList_ItemExecute(object sender, EventArgs e)

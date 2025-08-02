@@ -64,7 +64,5 @@ namespace PicSum.UIComponent.Contents.Common
         {
             this.MouseClick?.Invoke(this, e);
         }
-
-        protected abstract void OnBackgroundMouseClick(MouseEventArgs e);
     }
 }

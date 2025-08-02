@@ -340,11 +340,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnBackgroundMouseClick(MouseEventArgs e)
-        {
-            // 処理無し。
-        }
-
         private void CheckPatternPanel_Resize(object sender, EventArgs e)
         {
             this.RedrawPage(this._scale);

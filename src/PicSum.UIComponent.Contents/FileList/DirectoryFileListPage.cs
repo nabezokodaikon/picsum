@@ -13,7 +13,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -108,11 +107,23 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnBackgroundMouseClick(MouseEventArgs e)
+        protected override void OnSelectedItemChange()
         {
-            if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
+            var filePathList = this.GetSelectedFiles();
+            if (filePathList.Length > 0)
             {
-                base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                base.OnSelectedItemChange();
+            }
+            else
+            {
+                if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
+                {
+                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                }
+                else
+                {
+                    base.OnSelectedItemChange();
+                }
             }
         }
 

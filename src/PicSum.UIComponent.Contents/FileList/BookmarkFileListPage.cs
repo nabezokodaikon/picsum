@@ -11,7 +11,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -66,11 +65,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     (int)e.TextRectangle.Width,
                     (int)e.TextRectangle.Height),
                 e.TitleColor, e.TitleFormatFlags);
-        }
-
-        protected override void OnBackgroundMouseClick(MouseEventArgs e)
-        {
-            // 処理無し。
         }
 
         protected override void OnRemoveFile(string[] filePathList)
