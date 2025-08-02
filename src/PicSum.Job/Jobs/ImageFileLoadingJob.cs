@@ -19,8 +19,6 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(parameter));
             }
 
-            await Task.Delay(10, this.CancellationToken);
-
             var logic = new ImageFileReadLogic(this);
 
             var mainIndex =
@@ -48,23 +46,36 @@ namespace PicSum.Job.Jobs
                     && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width <= subSize.Height)
                 {
+                    await this.Delay();
+
                     this.Callback(logic.CreateLoadingResult(
                         mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue));
+
+                    await this.Delay();
 
                     this.Callback(logic.CreateLoadingResult(
                         subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue));
                 }
                 else
                 {
+                    await this.Delay();
+
                     this.Callback(logic.CreateLoadingResult(
                         mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
                 }
             }
             else
             {
+                await this.Delay();
+
                 this.Callback(logic.CreateLoadingResult(
                     mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
             }
+        }
+
+        private async ValueTask Delay()
+        {
+            await Task.Delay(10, this.CancellationToken);
         }
     }
 }
