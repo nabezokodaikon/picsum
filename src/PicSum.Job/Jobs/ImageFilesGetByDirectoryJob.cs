@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFilesGetByDirectoryJob
         : AbstractTwoWayJob<ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>
     {
-        protected override Task Execute(ImageFileGetByDirectoryParameter param)
+        protected override ValueTask Execute(ImageFileGetByDirectoryParameter param)
         {
             var result = new ImageFilesGetByDirectoryResult();
 
@@ -43,7 +43,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback(result);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

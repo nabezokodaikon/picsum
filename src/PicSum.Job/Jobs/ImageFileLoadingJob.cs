@@ -12,7 +12,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileLoadingJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
-        protected override async Task Execute(ImageFileReadParameter parameter)
+        protected override async ValueTask Execute(ImageFileReadParameter parameter)
         {
             if (parameter.FilePathList == null)
             {

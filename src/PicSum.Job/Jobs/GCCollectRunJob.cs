@@ -8,7 +8,7 @@ namespace PicSum.Job.Jobs
     public sealed class GCCollectRunJob
         : AbstractOneWayJob
     {
-        protected override async Task Execute()
+        protected override async ValueTask Execute()
         {
             const int INTERVAL = 1000 * 5;
 

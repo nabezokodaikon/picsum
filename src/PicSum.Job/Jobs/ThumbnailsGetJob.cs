@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected override Task Execute(ThumbnailsGetParameter param)
+        protected override ValueTask Execute(ThumbnailsGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -96,7 +96,7 @@ namespace PicSum.Job.Jobs
                 catch (OperationCanceledException) { }
             }
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

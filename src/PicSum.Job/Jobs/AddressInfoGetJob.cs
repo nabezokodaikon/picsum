@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class AddressInfoGetJob
         : AbstractTwoWayJob<ValueParameter<string>, AddressInfoGetResult>
     {
-        protected override Task Execute(ValueParameter<string> param)
+        protected override ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -64,7 +64,7 @@ namespace PicSum.Job.Jobs
                     var info = logic.Get(directory, false);
                     if (info == FileShallowInfoEntity.EMPTY)
                     {
-                        return Task.CompletedTask;
+                        return ValueTask.CompletedTask;
                     }
 
                     addressInfo.DirectoryList.Insert(0, info);
@@ -77,7 +77,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback(addressInfo);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class BookmarksGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {
-        protected override Task Execute()
+        protected override ValueTask Execute()
         {
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
@@ -62,7 +62,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback([.. infoList]);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private BookmarkDto[] GetBookmarks()

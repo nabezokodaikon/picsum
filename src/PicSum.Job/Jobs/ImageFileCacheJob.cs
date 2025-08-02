@@ -16,7 +16,7 @@ namespace PicSum.Job.Jobs
             MaxDegreeOfParallelism = 4,
         };
 
-        protected override Task Execute(ImageFileCacheParameter parameter)
+        protected override ValueTask Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -78,7 +78,7 @@ namespace PicSum.Job.Jobs
                 }
             );
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private int GetNextIndex(int currentIndex, string[] files)

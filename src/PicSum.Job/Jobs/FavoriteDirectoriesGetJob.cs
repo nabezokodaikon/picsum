@@ -15,7 +15,7 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override Task Execute(FavoriteDirectoriesGetParameter param)
+        protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
             var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
@@ -73,7 +73,7 @@ namespace PicSum.Job.Jobs
                 .Take(param.Count)
                 .Select(info => info.info)]);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private FavoriteDirecotryDto[] GetOrCreateFileList()

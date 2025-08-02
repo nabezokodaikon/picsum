@@ -18,7 +18,7 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByRatingJob
         : AbstractTwoWayJob<FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override Task Execute(FilesGetByRatingParameter param)
+        protected override ValueTask Execute(FilesGetByRatingParameter param)
         {
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
@@ -66,7 +66,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback([.. infoList]);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private FileByRatingDto[] GetFiles(int ratingValue)

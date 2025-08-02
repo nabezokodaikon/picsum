@@ -12,7 +12,7 @@ namespace PicSum.Job.Jobs
     public sealed class NextDirectoryGetJob
         : AbstractTwoWayJob<NextDirectoryGetParameter, ValueResult<string>>
     {
-        protected override Task Execute(NextDirectoryGetParameter param)
+        protected override ValueTask Execute(NextDirectoryGetParameter param)
         {
 
             if (param.CurrentParameter == null)
@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
             var index = Array.IndexOf(dirs, param.CurrentParameter);
             if (index < 0)
             {
-                return Task.CompletedTask;
+                return ValueTask.CompletedTask;
             }
 
             var result = new ValueResult<string>();
@@ -60,7 +60,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback(result);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

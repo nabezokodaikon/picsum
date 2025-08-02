@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryViewCounterDeleteJob
         : AbstractOneWayJob<ListParameter<string>>
     {
-        protected override Task Execute(ListParameter<string> param)
+        protected override ValueTask Execute(ListParameter<string> param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoLoadingJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override async Task Execute(FileDeepInfoGetParameter param)
+        protected override async ValueTask Execute(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {

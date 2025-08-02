@@ -18,7 +18,7 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override Task Execute(FileDeepInfoGetParameter param)
+        protected override ValueTask Execute(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback(result);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private FileDeepInfoGetResult CreateCallbackResult(FileDeepInfoGetParameter param)

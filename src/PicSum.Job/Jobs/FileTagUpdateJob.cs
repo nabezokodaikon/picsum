@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     internal sealed class FileTagUpdateJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
-        protected override Task Execute(FileTagUpdateParameter param)
+        protected override ValueTask Execute(FileTagUpdateParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -44,7 +44,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

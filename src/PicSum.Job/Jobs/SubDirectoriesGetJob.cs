@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class SubDirectoriesGetJob
         : AbstractTwoWayJob<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
     {
-        protected override Task Execute(ValueParameter<string> param)
+        protected override ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -45,7 +45,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback(result);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

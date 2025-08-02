@@ -62,7 +62,7 @@ namespace SWF.Core.Job
             return this._name;
         }
 
-        internal abstract Task ExecuteWrapper(CancellationToken token);
+        internal abstract ValueTask ExecuteWrapper(CancellationToken token);
 
         internal void BeginCancel()
         {
@@ -109,7 +109,7 @@ namespace SWF.Core.Job
 
         }
 
-        internal override async Task ExecuteWrapper(CancellationToken token)
+        internal override async ValueTask ExecuteWrapper(CancellationToken token)
         {
             this.CancellationToken = token;
 
@@ -152,12 +152,12 @@ namespace SWF.Core.Job
             }
         }
 
-        protected virtual Task Execute(TParameter parameter)
+        protected virtual ValueTask Execute(TParameter parameter)
         {
             throw new NotImplementedException();
         }
 
-        protected virtual Task Execute()
+        protected virtual ValueTask Execute()
         {
             throw new NotImplementedException();
         }

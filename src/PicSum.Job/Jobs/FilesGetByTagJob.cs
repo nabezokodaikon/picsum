@@ -18,7 +18,7 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByTagJob
         : AbstractTwoWayJob<FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override Task Execute(FilesGetByTagParameter param)
+        protected override ValueTask Execute(FilesGetByTagParameter param)
         {
             if (string.IsNullOrEmpty(param.Tag))
             {
@@ -71,7 +71,7 @@ namespace PicSum.Job.Jobs
 
             this.Callback([.. infoList]);
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         private FileByTagDto[] GetFiles(string tag)

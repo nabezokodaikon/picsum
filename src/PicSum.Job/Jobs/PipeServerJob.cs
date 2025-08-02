@@ -11,7 +11,7 @@ namespace PicSum.Job.Jobs
     public sealed class PipeServerJob
         : AbstractTwoWayJob<ValueResult<string>>
     {
-        protected override async Task Execute()
+        protected override async ValueTask Execute()
         {
             while (true)
             {

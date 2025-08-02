@@ -10,7 +10,7 @@ namespace PicSum.Job.Jobs
     internal sealed class BookmarkUpdateJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
-        protected override Task Execute(ValueParameter<string> param)
+        protected override ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -34,7 +34,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }

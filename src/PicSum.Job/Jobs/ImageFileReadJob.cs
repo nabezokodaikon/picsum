@@ -12,7 +12,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileReadJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
-        protected override Task Execute(ImageFileReadParameter parameter)
+        protected override ValueTask Execute(ImageFileReadParameter parameter)
         {
             if (parameter.FilePathList == null)
             {
@@ -71,7 +71,7 @@ namespace PicSum.Job.Jobs
                     mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
             }
 
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     }
 }
