@@ -633,7 +633,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (item.ThumbnailImage == null)
             {
-                ThumbnailUtil.DrawIcon(e.Graphics, item.JumboIcon, this.GetIconRectangle(e, itemTextHeight));
+                ThumbnailUtil.DrawIcon(this, e.Graphics, item.JumboIcon, this.GetIconRectangle(e, itemTextHeight));
                 e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e, itemTextHeight), this.flowList.ItemTextFormat);
             }
             else

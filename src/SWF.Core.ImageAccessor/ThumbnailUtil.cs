@@ -167,15 +167,16 @@ namespace SWF.Core.ImageAccessor
         /// <param name="g">グラフィックオブジェクト</param>
         /// <param name="icon">アイコン</param>
         /// <param name="rect">描画領域</param>
-        public static void DrawIcon(Graphics g, Image icon, RectangleF rect)
+        public static void DrawIcon(Control control, Graphics g, Image icon, RectangleF rect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            if (Math.Max(icon.Width, icon.Height) <= Math.Min(rect.Width, rect.Height))
+            var displayScale = WindowUtil.GetCurrentWindowScale(control);
+            if (Math.Max(icon.Width * displayScale, icon.Height * displayScale) <= Math.Min(rect.Width, rect.Height))
             {
-                var w = icon.Width;
-                var h = icon.Height;
+                var w = icon.Width * displayScale;
+                var h = icon.Height * displayScale;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
