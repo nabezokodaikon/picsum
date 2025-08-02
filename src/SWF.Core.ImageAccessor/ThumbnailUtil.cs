@@ -103,7 +103,9 @@ namespace SWF.Core.ImageAccessor
             if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
             {
                 var displayScale = WindowUtil.GetCurrentWindowScale(control);
-                scale = Math.Min(1, Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height)) * displayScale;
+                scale = Math.Min(
+                    displayScale,
+                    Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height));
             }
             else
             {
