@@ -42,7 +42,7 @@ namespace SWF.Core.Base
             {
                 Parallel.ForEach(
                     criticalTypes,
-                    new ParallelOptions { MaxDegreeOfParallelism = criticalTypes.Length },
+                    new ParallelOptions { MaxDegreeOfParallelism = Math.Max(criticalTypes.Length, 1) },
                     SyncPreloadAssemblyForType
                 );
             }

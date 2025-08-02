@@ -35,7 +35,7 @@ namespace PicSum.Job.Jobs
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = dtos.Length,
+                                MaxDegreeOfParallelism = Math.Max(dtos.Length, 1),
                             },
                             dto =>
                             {

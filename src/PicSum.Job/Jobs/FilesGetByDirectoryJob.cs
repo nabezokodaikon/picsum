@@ -52,7 +52,7 @@ namespace PicSum.Job.Jobs
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = files.Length,
+                                MaxDegreeOfParallelism = Math.Max(files.Length, 1),
                             },
                             file =>
                             {
