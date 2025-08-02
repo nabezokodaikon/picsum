@@ -173,10 +173,12 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             var displayScale = WindowUtil.GetCurrentWindowScale(control);
-            if (Math.Max(icon.Width * displayScale, icon.Height * displayScale) <= Math.Min(rect.Width, rect.Height))
+            var displayScaleWidth = icon.Width * displayScale;
+            var displayScaleHeight = icon.Height * displayScale;
+            if (Math.Max(displayScaleWidth, displayScaleHeight) <= Math.Min(rect.Width, rect.Height))
             {
-                var w = icon.Width * displayScale;
-                var h = icon.Height * displayScale;
+                var w = displayScaleWidth;
+                var h = displayScaleHeight;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
                 g.DrawImage(icon, new RectangleF(x, y, w, h));
