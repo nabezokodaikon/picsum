@@ -399,6 +399,76 @@ namespace SWF.Core.FileAccessor
             }
         }
 
+        public static (DateTime CreateDate, DateTime UpdateDate, long FileSize) GetFileInfo(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            try
+            {
+                var fi = new FileInfo(filePath);
+                return (fi.CreationTime, fi.LastWriteTime, fi.Length);
+            }
+            catch (SecurityException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
+        public static (DateTime CreateDate, DateTime UpdateDate) GetDirectoryInfo(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            try
+            {
+                var fi = new DirectoryInfo(filePath);
+                return (fi.CreationTime, fi.LastWriteTime);
+            }
+            catch (SecurityException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (PathTooLongException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (NotSupportedException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+            }
+        }
+
         /// <summary>
         /// フォルダ内のファイルを取得します。
         /// </summary>

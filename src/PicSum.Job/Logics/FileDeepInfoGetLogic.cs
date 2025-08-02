@@ -74,13 +74,15 @@ namespace PicSum.Job.Logics
 
         private FileDeepInfoEntity GetDriveInfo(string filePath)
         {
+            var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
+
             return new FileDeepInfoEntity
             {
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = false,
                 IsImageFile = false,
@@ -93,13 +95,15 @@ namespace PicSum.Job.Logics
         private FileDeepInfoEntity GetDirectoryInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
+            var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
+
             var info = new FileDeepInfoEntity
             {
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = false,
                 IsImageFile = false,
@@ -144,16 +148,18 @@ namespace PicSum.Job.Logics
         private FileDeepInfoEntity GetFileInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
+            var (createDate, updateDate, fileSize) = FileUtil.GetFileInfo(filePath);
+
             var info = new FileDeepInfoEntity
             {
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 FileType = FileUtil.GetTypeName(filePath),
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 PhotographDate = FileUtil.EMPTY_DATETIME,
                 IsFile = true,
-                FileSize = FileUtil.GetFileSize(filePath),
+                FileSize = fileSize,
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
             };
 

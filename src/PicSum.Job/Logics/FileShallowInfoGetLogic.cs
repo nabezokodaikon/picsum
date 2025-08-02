@@ -58,6 +58,8 @@ namespace PicSum.Job.Logics
         private FileShallowInfoEntity GetFileInfo(
             string filePath, bool isGetThumbnail, DateTime registrationDate)
         {
+            var (createDate, updateDate, _) = FileUtil.GetFileInfo(filePath);
+
             var info = new FileShallowInfoEntity
             {
                 RgistrationDate = registrationDate,
@@ -65,8 +67,8 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = true,
                 IsImageFile = ImageUtil.IsImageFile(filePath),
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
@@ -100,6 +102,8 @@ namespace PicSum.Job.Logics
         private FileShallowInfoEntity GetDirectoryInfo(
             string filePath, bool isGetThumbnail, DateTime registrationDate)
         {
+            var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
+
             var info = new FileShallowInfoEntity
             {
                 RgistrationDate = registrationDate,
@@ -107,8 +111,8 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,
                 IsImageFile = false,
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon,
                 JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
@@ -141,6 +145,8 @@ namespace PicSum.Job.Logics
         private FileShallowInfoEntity GetDriveInfo(
             string filePath, DateTime registrationDate)
         {
+            var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
+
             return new FileShallowInfoEntity
             {
                 RgistrationDate = registrationDate,
@@ -148,8 +154,8 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,
                 IsImageFile = false,
-                CreateDate = FileUtil.GetCreateDate(filePath),
-                UpdateDate = FileUtil.GetUpdateDate(filePath),
+                CreateDate = createDate,
+                UpdateDate = updateDate,
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)
