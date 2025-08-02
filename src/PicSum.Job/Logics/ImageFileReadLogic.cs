@@ -31,7 +31,7 @@ namespace PicSum.Job.Logics
             {
                 using (TimeMeasuring.Run(false, $"ImageFileReadLogic.CreateResult"))
                 {
-                    image = this.ReadImageFileFromCache(filePath, zoomValue);
+                    image = this.ReadImageFile(filePath, zoomValue);
 
                     this.ThrowIfJobCancellationRequested();
 
@@ -241,13 +241,26 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private CvImage ReadImageFileFromCache(string filePath, float zoomValue)
+        private CvImage ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
-                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFileFromCache"))
+                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
-                    return Instance<IImageFileCacher>.Value.GetImage(filePath, zoomValue);
+                    var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
+                    if (image != CvImage.EMPTY)
+                    {
+                        return image;
+                    }
+                }
+
+                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
+                {
+                    using (var bmp = ImageUtil.ReadImageFile(filePath))
+                    {
+                        return new CvImage(
+                            filePath, OpenCVUtil.ToMat(bmp), zoomValue);
+                    }
                 }
             }
             catch (FileUtilException ex)

@@ -61,11 +61,11 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public CvImage GetImage(string filePath, float zoomValue)
+        public CvImage GetCache(string filePath, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var cvImage = this.Get(filePath, cache =>
+            return this.Get(filePath, cache =>
             {
                 if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {
@@ -77,17 +77,6 @@ namespace SWF.Core.ImageAccessor
                     return CvImage.EMPTY;
                 }
             });
-
-            if (cvImage != CvImage.EMPTY)
-            {
-                return cvImage;
-            }
-
-            using (var bmp = ImageUtil.ReadImageFile(filePath))
-            {
-                return new CvImage(
-                    filePath, OpenCVUtil.ToMat(bmp), zoomValue);
-            }
         }
 
         public void Create(string filePath)

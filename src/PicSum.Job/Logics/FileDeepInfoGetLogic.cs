@@ -127,7 +127,7 @@ namespace PicSum.Job.Logics
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.ReadImageFileFromCache(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE);
+            var thumbnail = this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE);
 
             this.ThrowIfJobCancellationRequested();
 
@@ -184,7 +184,7 @@ namespace PicSum.Job.Logics
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.ReadImageFileFromCache(filePath, AppConstants.DEFAULT_ZOOM_VALUE);
+            var thumbnail = this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE);
             info.IsImageFile = true;
 
             this.ThrowIfJobCancellationRequested();
@@ -203,13 +203,26 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private CvImage ReadImageFileFromCache(string filePath, float zoomValue)
+        private CvImage ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
-                using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFileFromCache"))
+                using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFile Get Cache"))
                 {
-                    return Instance<IImageFileCacher>.Value.GetImage(filePath, zoomValue);
+                    var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
+                    if (image != CvImage.EMPTY)
+                    {
+                        return image;
+                    }
+                }
+
+                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
+                {
+                    using (var bmp = ImageUtil.ReadImageFile(filePath))
+                    {
+                        return new CvImage(
+                            filePath, OpenCVUtil.ToMat(bmp), zoomValue);
+                    }
                 }
             }
             catch (FileUtilException ex)

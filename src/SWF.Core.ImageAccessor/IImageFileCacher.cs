@@ -4,7 +4,7 @@ namespace SWF.Core.ImageAccessor
         : IDisposable
     {
         public Size GetSize(string filePath);
-        public CvImage GetImage(string filePath, float zoomValue);
+        public CvImage GetCache(string filePath, float zoomValue);
         public void Create(string filePath);
     }
 }
