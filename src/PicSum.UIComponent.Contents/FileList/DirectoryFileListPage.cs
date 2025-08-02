@@ -12,6 +12,7 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -110,21 +111,21 @@ namespace PicSum.UIComponent.Contents.FileList
         protected override void OnSelectedItemChange()
         {
             var filePathList = this.GetSelectedFiles();
-            if (filePathList.Length > 0)
-            {
-                base.OnSelectedItemChange();
-            }
-            else
+            if (filePathList.Length < 1)
             {
                 if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
                 {
-                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
-                }
-                else
-                {
-                    base.OnSelectedItemChange();
+                    base.OnSelectedFileChanged(
+                        new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                    return;
                 }
             }
+            else
+            {
+                this.SelectedFilePath = filePathList.First();
+            }
+
+            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
         }
 
         protected override void OnRemoveFile(string[] filePathList)
