@@ -130,12 +130,6 @@
   <data name="DropArrowIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DropArrowIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DropLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DropLeftIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DropRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DropRightIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="EmptyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EmptyIcon.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

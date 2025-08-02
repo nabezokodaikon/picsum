@@ -106,30 +106,30 @@ namespace SWF.UIComponent.TabOperation
             var screenPoint = Cursor.Position;
             this.Location = new Point(screenPoint.X - (int)this.GetDrawTabWidthOffset() - (int)xOffset, screenPoint.Y - (int)yOffset);
 
-            var leftBorderRect = ScreenUtil.GetLeftBorderRect();
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+
+            var leftBorderRect = ScreenUtil.GetLeftBorderRect(scale);
             if (leftBorderRect.Contains(screenPoint))
             {
-                var leftRect = ScreenUtil.GetLeftRect(this.TabDropForm.Size);
-                this.TabDropForm.Location = new Point(leftRect.X, leftRect.Y);
-                this.TabDropForm.SetLeftImage();
+                this.TabDropForm.SetBounds(
+                    leftBorderRect.X, leftBorderRect.Y, leftBorderRect.Width, leftBorderRect.Height);
                 WinApiMembers.SetWindowPos(
                     this.TabDropForm.Handle,
                     WinApiMembers.HWND_TOP,
-                    leftRect.X, leftRect.Y, leftRect.Width, leftRect.Height,
+                    leftBorderRect.X, leftBorderRect.Y, leftBorderRect.Width, leftBorderRect.Height,
                     WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
                 return;
             }
 
-            var rightBorderRect = ScreenUtil.GetRightBorderRect();
+            var rightBorderRect = ScreenUtil.GetRightBorderRect(scale);
             if (rightBorderRect.Contains(screenPoint))
             {
-                var rightRect = ScreenUtil.GetRightRect(this.TabDropForm.Size);
-                this.TabDropForm.Location = new Point(rightRect.X, rightRect.Y);
-                this.TabDropForm.SetRightImage();
+                this.TabDropForm.SetBounds(
+                    rightBorderRect.X, rightBorderRect.Y, rightBorderRect.Width, rightBorderRect.Height);
                 WinApiMembers.SetWindowPos(
                     this.TabDropForm.Handle,
                     WinApiMembers.HWND_TOP,
-                    rightRect.X, rightRect.Y, rightRect.Width, rightRect.Height,
+                    rightBorderRect.X, rightBorderRect.Y, rightBorderRect.Width, rightBorderRect.Height,
                     WinApiMembers.SWP_NOSIZE | WinApiMembers.SWP_NOACTIVATE | WinApiMembers.SWP_SHOWWINDOW);
                 return;
             }

@@ -23,14 +23,6 @@ namespace SWF.Core.ResourceAccessor
             () => CreateBitmapFromByteArray(Resources.DropArrowIcon),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly Lazy<Bitmap> DropLeftIcon = new(
-            () => CreateBitmapFromByteArray(Resources.DropLeftIcon),
-            LazyThreadSafetyMode.ExecutionAndPublication);
-
-        public static readonly Lazy<Bitmap> DropRightIcon = new(
-            () => CreateBitmapFromByteArray(Resources.DropRightIcon),
-            LazyThreadSafetyMode.ExecutionAndPublication);
-
         public static readonly Lazy<Bitmap> EmptyIcon = new(
             () => CreateBitmapFromByteArray(Resources.EmptyIcon),
             LazyThreadSafetyMode.ExecutionAndPublication);
