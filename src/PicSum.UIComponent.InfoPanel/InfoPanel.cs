@@ -332,7 +332,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.FileSize = string.Empty;
             this.fileInfoLabel.CreateDate = string.Empty;
             this.fileInfoLabel.Timestamp = string.Empty;
-            this.fileInfoLabel.PhotographDate = string.Empty;
+            this.fileInfoLabel.TakenDate = string.Empty;
 
             this.ratingBar.SetValue(0);
             this.tagFlowList.ItemCount = 0;
@@ -509,10 +509,10 @@ namespace PicSum.UIComponent.InfoPanel
                         = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
-                if (this.FileInfo.PhotographDate != FileUtil.EMPTY_DATETIME)
+                if (this.FileInfo.TakenDate != FileUtil.EMPTY_DATETIME)
                 {
-                    this.fileInfoLabel.PhotographDate
-                        = $"{this.FileInfo.PhotographDate:yyyy/MM/dd HH:mm:ss}";
+                    this.fileInfoLabel.TakenDate
+                        = $"{this.FileInfo.TakenDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
                 this.ratingBar.SetValue(this.FileInfo.Rating);

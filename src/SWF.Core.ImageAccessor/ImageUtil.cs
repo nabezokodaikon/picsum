@@ -88,13 +88,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static DateTime GetPhotographDate(string filePath)
+        public static DateTime GetTakenDate(string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             try
             {
-                return MetadataExtractorUtil.GetPhotographDate(filePath);
+                return MetadataExtractorUtil.GetTakenDate(filePath);
             }
             catch (MetadataExtractor.ImageProcessingException ex)
             {

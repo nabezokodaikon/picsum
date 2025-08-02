@@ -12,24 +12,24 @@ namespace SWF.Core.ImageAccessor
     {
         private const int FILE_READ_BUFFER_SIZE = 128;
 
-        public static DateTime GetPhotographDate(string filePath)
+        public static DateTime GetTakenDate(string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "MetadataExtractorUtil.GetPhotographDate"))
+            using (TimeMeasuring.Run(false, "MetadataExtractorUtil.GetTakenDate"))
             {
                 using (var fs = new FileStream(filePath,
                     FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
                 {
                     var directories = ImageMetadataReader.ReadMetadata(fs);
 
-                    var date = GetPhotographDateByExifSubIfdDirectory(directories);
+                    var date = GetTakenDateByExifSubIfdDirectory(directories);
                     if (date != FileUtil.EMPTY_DATETIME)
                     {
                         return date;
                     }
 
-                    date = GetPhotographDateByXmpDirectory(directories);
+                    date = GetTakenDateByXmpDirectory(directories);
                     if (date != FileUtil.EMPTY_DATETIME)
                     {
                         return date;
@@ -40,7 +40,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static DateTime GetPhotographDateByExifSubIfdDirectory(
+        private static DateTime GetTakenDateByExifSubIfdDirectory(
             IReadOnlyList<MetadataExtractor.Directory> directories)
         {
             var dir = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
@@ -57,7 +57,7 @@ namespace SWF.Core.ImageAccessor
             return dateTimeOriginal;
         }
 
-        private static DateTime GetPhotographDateByXmpDirectory(
+        private static DateTime GetTakenDateByXmpDirectory(
             IReadOnlyList<MetadataExtractor.Directory> directories)
         {
             var dir = directories.OfType<XmpDirectory>().FirstOrDefault();
