@@ -17,6 +17,7 @@ namespace PicSum.Job.Entities
             FileName = string.Empty,
             CreateDate = FileUtil.EMPTY_DATETIME,
             UpdateDate = FileUtil.EMPTY_DATETIME,
+            TakenDate = FileUtil.EMPTY_DATETIME,
             RgistrationDate = FileUtil.EMPTY_DATETIME,
             ExtraLargeIcon = null,
             SmallIcon = null,
@@ -34,6 +35,7 @@ namespace PicSum.Job.Entities
         public string FileName { get; internal set; } = string.Empty;
         public DateTime CreateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
         public DateTime UpdateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime TakenDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
         public DateTime RgistrationDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
         public Image? ExtraLargeIcon { get; internal set; } = null;
         public Image? SmallIcon { get; internal set; } = null;

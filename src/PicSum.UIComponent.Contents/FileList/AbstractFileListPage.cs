@@ -508,6 +508,35 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
+                case SortTypeID.TakenDate:
+                    filterList.Sort((x, y) =>
+                    {
+                        var xDate = x.TakenDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        var yDate = y.TakenDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        if (isAscending)
+                        {
+                            if (xDate == yDate)
+                            {
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
+                            }
+                            else
+                            {
+                                return xDate.CompareTo(yDate);
+                            }
+                        }
+                        else
+                        {
+                            if (xDate == yDate)
+                            {
+                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
+                            }
+                            else
+                            {
+                                return -xDate.CompareTo(yDate);
+                            }
+                        }
+                    });
+                    break;
                 case SortTypeID.RegistrationDate:
                     filterList.Sort((x, y) =>
                     {
@@ -794,6 +823,14 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
             this.SortInfo.ActiveSortType = SortTypeID.UpdateDate;
+            this.SetSort();
+            this.SetFilter();
+        }
+
+        private void ToolBar_TakenSortButtonClick(object sender, EventArgs e)
+        {
+            this.SortInfo.ChangeSortDirection(SortTypeID.TakenDate);
+            this.SortInfo.ActiveSortType = SortTypeID.TakenDate;
             this.SetSort();
             this.SetFilter();
         }

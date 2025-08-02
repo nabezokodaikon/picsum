@@ -67,6 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.PathSortButtonClick += new System.EventHandler(this.ToolBar_PathSortButtonClick);
             this.toolBar.CreateDateSortButtonClick += new System.EventHandler(this.ToolBar_CreateDateSortButtonClick);
             this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.ToolBar_TimestampSortButtonClick);
+            this.toolBar.TakenSortButtonClick += new System.EventHandler(this.ToolBar_TakenSortButtonClick);
             this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.ToolBar_RegistrationSortButtonClick);
             this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderBeginValueChange);
             this.toolBar.ThumbnailSizeSliderValueChanging += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderValueChanging);

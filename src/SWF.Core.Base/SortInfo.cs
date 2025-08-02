@@ -9,6 +9,7 @@ namespace SWF.Core.Base
         private bool _isFilePathSortAscending = true;
         private bool _isCreateDateSortAscending = true;
         private bool _isUpdateDateSortAscending = true;
+        private bool _isTakenDateSortAscending = true;
         private bool _isRegistrationDateSortAscending = true;
 
         public SortTypeID ActiveSortType { get; set; }
@@ -21,6 +22,7 @@ namespace SWF.Core.Base
                 SortTypeID.FilePath => this._isFilePathSortAscending,
                 SortTypeID.CreateDate => this._isCreateDateSortAscending,
                 SortTypeID.UpdateDate => this._isUpdateDateSortAscending,
+                SortTypeID.TakenDate => this._isTakenDateSortAscending,
                 SortTypeID.RegistrationDate => this._isRegistrationDateSortAscending,
                 _ => false,
             };
@@ -43,6 +45,9 @@ namespace SWF.Core.Base
                     break;
                 case SortTypeID.UpdateDate:
                     this._isUpdateDateSortAscending = isAscending;
+                    break;
+                case SortTypeID.TakenDate:
+                    this._isTakenDateSortAscending = isAscending;
                     break;
                 case SortTypeID.RegistrationDate:
                     this._isRegistrationDateSortAscending = isAscending;

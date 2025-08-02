@@ -62,5 +62,6 @@ namespace SWF.Core.Base
         UpdateDate = 3,
         CreateDate = 4,
         RegistrationDate = 5,
+        TakenDate = 6,
     }
 }

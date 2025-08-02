@@ -4,6 +4,7 @@ using SWF.UIComponent.Core;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -22,6 +23,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.pathSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.createDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.timestampSortButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.takenSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.registrationSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
             this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
@@ -59,6 +61,11 @@ namespace PicSum.UIComponent.Contents.FileList
             //
             this.timestampSortButton.Text = "Updated";
             this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
+            // 
+            // timestampSortButton
+            //
+            this.takenSortButton.Text = "Taken";
+            this.takenSortButton.MouseClick += this.TakenSortButton_MouseClick;
             // 
             // registrationSortButton
             //
@@ -115,6 +122,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.registrationSortButton,
                 this.createDateSortButton,
                 this.timestampSortButton,
+                this.takenSortButton,
                 this.pathSortButton,
                 this.nameSortButton,
                 this.viewButton);
@@ -139,6 +147,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private SWF.UIComponent.Core.BaseTextButton pathSortButton;
         private SWF.UIComponent.Core.BaseTextButton createDateSortButton;
         private SWF.UIComponent.Core.BaseTextButton timestampSortButton;
+        private SWF.UIComponent.Core.BaseTextButton takenSortButton;
         private SWF.UIComponent.Core.BaseTextButton registrationSortButton;
     }
 }

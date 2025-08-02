@@ -108,6 +108,27 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
+                case SortTypeID.TakenDate:
+                    if (isAscending)
+                    {
+                        return files
+                            .AsValueEnumerable()
+                            .Where(file => file.IsImageFile)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(file => file.TakenDate)
+                            .Select(file => file.FilePath)
+                            .ToArray();
+                    }
+                    else
+                    {
+                        return files
+                            .AsValueEnumerable()
+                            .Where(file => file.IsImageFile)
+                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(file => file.TakenDate)
+                            .Select(file => file.FilePath)
+                            .ToArray();
+                    }
                 case SortTypeID.RegistrationDate:
                     if (isAscending)
                     {
