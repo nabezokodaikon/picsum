@@ -25,46 +25,30 @@ namespace PicSum.Job.Jobs
 
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob FileShallowInfoGetLogic"))
             {
-                using (var cts = new CancellationTokenSource())
+                foreach (var dto in dtos)
                 {
+                    if (this.IsJobCancel)
+                    {
+                        break;
+                    }
+
+                    if (infoList.Count >= param.Count)
+                    {
+                        break;
+                    }
+
                     try
                     {
-                        Parallel.ForEach(
-                            dtos,
-                            new ParallelOptions
-                            {
-                                CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
-                            },
-                            dto =>
-                            {
-                                if (this.IsJobCancel)
-                                {
-                                    cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
-                                }
-
-                                if (infoList.Count >= param.Count)
-                                {
-                                    cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
-                                }
-
-                                try
-                                {
-                                    var info = getInfoLogic.Get(dto.DirectoryPath, true);
-                                    if (info != FileShallowInfoEntity.EMPTY)
-                                    {
-                                        infoList.Add((dto.ViewCount, info));
-                                    }
-                                }
-                                catch (FileUtilException ex)
-                                {
-                                    this.WriteErrorLog(ex);
-                                }
-                            });
+                        var info = getInfoLogic.Get(dto.DirectoryPath, true);
+                        if (info != FileShallowInfoEntity.EMPTY)
+                        {
+                            infoList.Add((dto.ViewCount, info));
+                        }
                     }
-                    catch (OperationCanceledException) { }
+                    catch (FileUtilException ex)
+                    {
+                        this.WriteErrorLog(ex);
+                    }
                 }
             }
 
