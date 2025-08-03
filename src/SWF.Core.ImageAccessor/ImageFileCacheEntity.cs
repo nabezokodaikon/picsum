@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
         {
             FilePath = string.Empty,
             Bitmap = null,
-            Timestamp = FileUtil.EMPTY_DATETIME,
+            UpdateDate = FileUtil.EMPTY_DATETIME,
         };
 
         private bool _disposed = false;
@@ -19,17 +19,17 @@ namespace SWF.Core.ImageAccessor
 
         public string FilePath { get; private set; } = string.Empty;
         public Bitmap? Bitmap { get; private set; }
-        public DateTime Timestamp { get; private set; }
+        public DateTime UpdateDate { get; private set; }
 
-        public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime timestamp)
+        public ImageFileCacheEntity(string filePath, Bitmap bitmap, DateTime updateDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
             this.FilePath = filePath;
             this.Bitmap = bitmap;
-            this.Timestamp = timestamp;
-            this._hashCode = HashCode.Combine(this.FilePath, this.Timestamp);
+            this.UpdateDate = updateDate;
+            this._hashCode = HashCode.Combine(this.FilePath, this.UpdateDate);
         }
 
         private ImageFileCacheEntity()
@@ -70,7 +70,7 @@ namespace SWF.Core.ImageAccessor
                 return false;
             }
 
-            if (other.Timestamp != this.Timestamp)
+            if (other.UpdateDate != this.UpdateDate)
             {
                 return false;
             }

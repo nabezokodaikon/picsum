@@ -6,16 +6,16 @@ namespace SWF.Core.ImageAccessor
         private readonly int _hashCode;
         public readonly string FilePath;
         public readonly Size Size;
-        public readonly DateTime Timestamp;
+        public readonly DateTime UpdateDate;
 
-        public ImageFileSizeCacheEntity(string filePath, Size size, DateTime timestamp)
+        public ImageFileSizeCacheEntity(string filePath, Size size, DateTime updateDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this._hashCode = HashCode.Combine(this.FilePath, this.Timestamp);
+            this._hashCode = HashCode.Combine(this.FilePath, this.UpdateDate);
             this.FilePath = filePath;
             this.Size = size;
-            this.Timestamp = timestamp;
+            this.UpdateDate = updateDate;
         }
 
         public bool Equals(ImageFileSizeCacheEntity? other)
@@ -30,7 +30,7 @@ namespace SWF.Core.ImageAccessor
                 return false;
             }
 
-            if (other.Timestamp != this.Timestamp)
+            if (other.UpdateDate != this.UpdateDate)
             {
                 return false;
             }

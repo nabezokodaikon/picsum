@@ -27,7 +27,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private string _fileName = string.Empty;
         private string _createDate = string.Empty;
-        private string _timestamp = string.Empty;
+        private string _updateDate = string.Empty;
         private string _takenDate = string.Empty;
         private string _fileType = string.Empty;
         private string _fileSize = string.Empty;
@@ -59,15 +59,15 @@ namespace PicSum.UIComponent.InfoPanel
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string Timestamp
+        public string UpdateDate
         {
             get
             {
-                return this._timestamp;
+                return this._updateDate;
             }
             set
             {
-                this._timestamp = value;
+                this._updateDate = value;
             }
         }
 
@@ -179,13 +179,13 @@ namespace PicSum.UIComponent.InfoPanel
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 2);
             }
 
-            if (!string.IsNullOrEmpty(this.Timestamp))
+            if (!string.IsNullOrEmpty(this.UpdateDate))
             {
                 e.Graphics.DrawString(
                     "Updated", font, this.TextBrush, 0,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
                 e.Graphics.DrawString(
-                    $"{this.Timestamp}", font, this.TextBrush, dateHeaderSize.Width,
+                    $"{this.UpdateDate}", font, this.TextBrush, dateHeaderSize.Width,
                     fileNameRect.Bottom + margin + (textSize.Height + margin) * 3);
             }
 

@@ -331,7 +331,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.FileType = string.Empty;
             this.fileInfoLabel.FileSize = string.Empty;
             this.fileInfoLabel.CreateDate = string.Empty;
-            this.fileInfoLabel.Timestamp = string.Empty;
+            this.fileInfoLabel.UpdateDate = string.Empty;
             this.fileInfoLabel.TakenDate = string.Empty;
 
             this.ratingBar.SetValue(0);
@@ -505,7 +505,7 @@ namespace PicSum.UIComponent.InfoPanel
 
                 if (this.FileInfo.UpdateDate != FileUtil.EMPTY_DATETIME)
                 {
-                    this.fileInfoLabel.Timestamp
+                    this.fileInfoLabel.UpdateDate
                         = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 

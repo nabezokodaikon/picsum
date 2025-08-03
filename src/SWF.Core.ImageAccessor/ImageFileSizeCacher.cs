@@ -45,7 +45,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var timestamp = FileUtil.GetUpdateDate(filePath);
+            var updateDate = FileUtil.GetUpdateDate(filePath);
 
             lock (this._cacheLock)
             {
@@ -53,7 +53,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (timestamp == cache.Timestamp)
+                        if (updateDate == cache.UpdateDate)
                         {
                             return;
                         }
@@ -62,7 +62,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             var newCache = new ImageFileSizeCacheEntity(
-                filePath, ImageUtil.GetImageSize(filePath), timestamp);
+                filePath, ImageUtil.GetImageSize(filePath), updateDate);
 
             lock (this._cacheLock)
             {
@@ -70,7 +70,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (newCache.Timestamp == cache.Timestamp)
+                        if (newCache.UpdateDate == cache.UpdateDate)
                         {
                             return;
                         }
@@ -98,13 +98,13 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "ImageFileSizeCacher.GetOrCreate"))
             {
-                var timestamp = FileUtil.GetUpdateDate(filePath);
+                var updateDate = FileUtil.GetUpdateDate(filePath);
 
                 lock (this._cacheLock)
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (timestamp == cache.Timestamp)
+                        if (updateDate == cache.UpdateDate)
                         {
                             return cache;
                         }
@@ -112,13 +112,13 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var size = ImageUtil.GetImageSize(filePath);
-                this.Set(filePath, size, timestamp);
+                this.Set(filePath, size, updateDate);
                 return new ImageFileSizeCacheEntity(
-                    filePath, size, timestamp);
+                    filePath, size, updateDate);
             }
         }
 
-        public void Set(string filePath, Size size, DateTime timestamp)
+        public void Set(string filePath, Size size, DateTime updateDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -128,7 +128,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (timestamp == cache.Timestamp)
+                        if (updateDate == cache.UpdateDate)
                         {
                             return;
                         }
@@ -137,7 +137,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             var newCache = new ImageFileSizeCacheEntity(
-                filePath, size, timestamp);
+                filePath, size, updateDate);
 
             lock (this._cacheLock)
             {
@@ -145,7 +145,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
                     {
-                        if (newCache.Timestamp == cache.Timestamp)
+                        if (newCache.UpdateDate == cache.UpdateDate)
                         {
                             return;
                         }
@@ -169,8 +169,8 @@ namespace SWF.Core.ImageAccessor
 
         public void Set(string filePath, Size size)
         {
-            var timestamp = FileUtil.GetUpdateDate(filePath);
-            this.Set(filePath, size, timestamp);
+            var updateDate = FileUtil.GetUpdateDate(filePath);
+            this.Set(filePath, size, updateDate);
         }
     }
 }

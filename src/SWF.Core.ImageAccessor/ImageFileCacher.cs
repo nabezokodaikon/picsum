@@ -83,13 +83,13 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var timestamp = FileUtil.GetUpdateDate(filePath);
+            var updateDate = FileUtil.GetUpdateDate(filePath);
 
             lock (this._cacheLock)
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
-                    if (timestamp == cache.Timestamp)
+                    if (updateDate == cache.UpdateDate)
                     {
                         return;
                     }
@@ -97,13 +97,13 @@ namespace SWF.Core.ImageAccessor
             }
 
             var bitmap = ImageUtil.ReadImageFile(filePath);
-            var newCache = new ImageFileCacheEntity(filePath, bitmap, timestamp);
+            var newCache = new ImageFileCacheEntity(filePath, bitmap, updateDate);
 
             lock (this._cacheLock)
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
-                    if (timestamp == cache.Timestamp)
+                    if (updateDate == cache.UpdateDate)
                     {
                         newCache.Dispose();
                         return;
@@ -129,13 +129,13 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
             {
-                var timestamp = FileUtil.GetUpdateDate(filePath);
+                var updateDate = FileUtil.GetUpdateDate(filePath);
 
                 lock (this._cacheLock)
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (timestamp == cache.Timestamp)
+                        if (updateDate == cache.UpdateDate)
                         {
                             return resultFunc(cache);
                         }
