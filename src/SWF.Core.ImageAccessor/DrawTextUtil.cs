@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
                 var dttOpts = new WinApiMembers.DTTOPTS
                 {
                     dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS)),
-                    dwFlags = GetDwFlags(),
+                    dwFlags = GetDwFlags() | WinApiMembers.DTT_COMPOSITED,
 
                     crText = ColorTranslator.ToWin32(color),
                     iGlowSize = 8 // This is about the size Microsoft Word 2007 uses
