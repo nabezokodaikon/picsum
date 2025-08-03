@@ -1,12 +1,11 @@
 using PicSum.DatabaseAccessor.Connection;
-using PicSum.DatabaseAccessor.Dto;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
+using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
-using System.Collections.Concurrent;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
@@ -15,34 +14,36 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        private const int MAX_DEGREE_OF_PARALLELISM = 8;
-
         protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
             var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
-            var infoList = new ConcurrentBag<(long ViewCount, FileShallowInfoEntity info)>();
+            var infoList = new List<FileShallowInfoEntity>();
 
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob FileShallowInfoGetLogic"))
             {
                 foreach (var dto in dtos)
                 {
-                    if (this.IsJobCancel)
-                    {
-                        break;
-                    }
+                    this.ThrowIfJobCancellationRequested();
 
                     if (infoList.Count >= param.Count)
                     {
                         break;
                     }
 
+                    if (dto.Value is null
+                        || FileUtil.IsSystemRoot(dto.Value)
+                        || FileUtil.IsExistsDrive(dto.Value))
+                    {
+                        continue;
+                    }
+
                     try
                     {
-                        var info = getInfoLogic.Get(dto.DirectoryPath, true);
+                        var info = getInfoLogic.Get(dto.Value, true);
                         if (info != FileShallowInfoEntity.EMPTY)
                         {
-                            infoList.Add((dto.ViewCount, info));
+                            infoList.Add(info);
                         }
                     }
                     catch (FileUtilException ex)
@@ -52,17 +53,12 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            this.Callback([.. infoList
-                .AsEnumerable()
-                .OrderBy(info => info.info.FilePath)
-                .OrderByDescending(info => info.ViewCount)
-                .Take(param.Count)
-                .Select(info => info.info)]);
+            this.Callback([.. infoList]);
 
             return ValueTask.CompletedTask;
         }
 
-        private FavoriteDirecotryDto[] GetOrCreateFileList()
+        private SingleValueDto<string>[] GetOrCreateFileList()
         {
             using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
