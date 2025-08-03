@@ -485,8 +485,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.CreateDate:
                     filterList.Sort((x, y) =>
                     {
-                        var xDate = x.CreateDate.GetValueOrDefault(DateTime.MinValue);
-                        var yDate = y.CreateDate.GetValueOrDefault(DateTime.MinValue);
+                        var xDate = x.CreateDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        var yDate = y.CreateDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
                         if (isAscending)
                         {
                             if (xDate == yDate)
@@ -514,8 +514,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.UpdateDate:
                     filterList.Sort((x, y) =>
                     {
-                        var xDate = x.UpdateDate.GetValueOrDefault(DateTime.MinValue);
-                        var yDate = y.UpdateDate.GetValueOrDefault(DateTime.MinValue);
+                        var xDate = x.UpdateDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        var yDate = y.UpdateDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
                         if (isAscending)
                         {
                             if (xDate == yDate)
@@ -575,8 +575,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.AddDate:
                     filterList.Sort((x, y) =>
                     {
-                        var xDate = x.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
-                        var yDate = y.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
+                        var xDate = x.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        var yDate = y.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
                         if (isAscending)
                         {
                             if (xDate == yDate)

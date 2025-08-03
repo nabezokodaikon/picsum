@@ -16,7 +16,7 @@ namespace PicSum.Job.Entities
             ThumbnailHeight = 0,
             SourceWidth = 0,
             SourceHeight = 0,
-            FileUpdateDate = DateTime.MinValue,
+            FileUpdateDate = FileUtil.EMPTY_DATETIME,
             ThumbnailBuffer = null,
         };
 
