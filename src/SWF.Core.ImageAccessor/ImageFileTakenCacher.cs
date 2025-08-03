@@ -7,8 +7,10 @@ namespace SWF.Core.ImageAccessor
     public sealed class ImageFileTakenCacher
         : IImageFileTakenCacher
     {
+        private const int CACHE_CAPACITY = 10000;
+
         private bool _disposed = false;
-        private readonly Dictionary<string, ImageFileTakenCacheEntity> _cacheDictionary = [];
+        private readonly Dictionary<string, ImageFileTakenCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
         private readonly Lock _cacheLock = new();
 
         public ImageFileTakenCacher()
