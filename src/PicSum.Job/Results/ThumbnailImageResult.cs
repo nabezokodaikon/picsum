@@ -20,7 +20,7 @@ namespace PicSum.Job.Results
             ThumbnailHeight = 0,
             SourceWidth = 0,
             SourceHeight = 0,
-            FileUpdatedate = FileUtil.EMPTY_DATETIME,
+            FileUpdateDate = FileUtil.EMPTY_DATETIME,
         };
 
         public string FilePath { get; internal set; } = string.Empty;
@@ -29,6 +29,6 @@ namespace PicSum.Job.Results
         public int ThumbnailHeight { get; internal set; }
         public int SourceWidth { get; internal set; }
         public int SourceHeight { get; internal set; }
-        public DateTime FileUpdatedate { get; internal set; }
+        public DateTime FileUpdateDate { get; internal set; }
     }
 }

@@ -137,7 +137,7 @@ namespace PicSum.Job.Common
             if (cache != ThumbnailCacheEntity.EMPTY)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
-                if (cache.FileUpdatedate >= updateDate)
+                if (cache.FileUpdateDate >= updateDate)
                 {
                     return cache;
                 }
@@ -161,7 +161,7 @@ namespace PicSum.Job.Common
 
                 if (dbCache.ThumbnailWidth >= thumbWidth &&
                     dbCache.ThumbnailHeight >= thumbHeight &&
-                    dbCache.FileUpdatedate >= updateDate)
+                    dbCache.FileUpdateDate >= updateDate)
                 {
                     // DBキャッシュを返します。
                     return dbCache;
@@ -194,7 +194,7 @@ namespace PicSum.Job.Common
 
                 if (dbCache.ThumbnailWidth >= thumbWidth &&
                     dbCache.ThumbnailHeight >= thumbHeight &&
-                    dbCache.FileUpdatedate >= updateDate)
+                    dbCache.FileUpdateDate >= updateDate)
                 {
                     // DBキャッシュを返します。
                     return dbCache;
@@ -251,7 +251,7 @@ namespace PicSum.Job.Common
                                 ThumbnailHeight = dto.ThumbnailHeight,
                                 SourceWidth = dto.SourceWidth,
                                 SourceHeight = dto.SourceHeight,
-                                FileUpdatedate = dto.FileUpdatedate
+                                FileUpdateDate = dto.FileUpdateDate
                             };
 
                             thumb.ThumbnailBuffer = this._cacheFileController.Read(
@@ -338,7 +338,7 @@ namespace PicSum.Job.Common
                             ThumbnailHeight = thumbHeight,
                             SourceWidth = srcImg.Width,
                             SourceHeight = srcImg.Height,
-                            FileUpdatedate = directoryUpdateDate
+                            FileUpdateDate = directoryUpdateDate
                         };
 
                         return thumb;
@@ -412,7 +412,7 @@ namespace PicSum.Job.Common
                             ThumbnailHeight = thumbHeight,
                             SourceWidth = srcImg.Width,
                             SourceHeight = srcImg.Height,
-                            FileUpdatedate = directoryUpdateDate
+                            FileUpdateDate = directoryUpdateDate
                         };
 
                         return thumb;

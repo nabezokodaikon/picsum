@@ -64,7 +64,7 @@ namespace PicSum.Job.Jobs
                                     Instance<IImageFileSizeCacher>.Value.Set(
                                         bf.FilePath,
                                         new Size(bf.SourceWidth, bf.SourceHeight),
-                                        bf.FileUpdatedate);
+                                        bf.FileUpdateDate);
 
                                     var img = new ThumbnailImageResult
                                     {
@@ -76,7 +76,7 @@ namespace PicSum.Job.Jobs
                                         ThumbnailHeight = bf.ThumbnailHeight,
                                         SourceWidth = bf.SourceWidth,
                                         SourceHeight = bf.SourceHeight,
-                                        FileUpdatedate = bf.FileUpdatedate
+                                        FileUpdateDate = bf.FileUpdateDate
                                     };
 
                                     this.Callback(img);

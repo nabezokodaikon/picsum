@@ -764,7 +764,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 if (e.ThumbnailWidth != file.ThumbnailWidth ||
                     e.ThumbnailHeight != file.ThumbnailHeight ||
-                    e.FileUpdatedate > file.UpdateDate)
+                    e.FileUpdateDate > file.UpdateDate)
                 {
                     file.ThumbnailImage.Dispose();
                     file.ThumbnailImage = null;
@@ -773,7 +773,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     file.ThumbnailHeight = e.ThumbnailHeight;
                     file.SourceImageWidth = e.SourceWidth;
                     file.SourceImageHeight = e.SourceHeight;
-                    file.UpdateDate = e.FileUpdatedate;
+                    file.UpdateDate = e.FileUpdateDate;
                 }
                 else
                 {
@@ -787,7 +787,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 file.ThumbnailHeight = e.ThumbnailHeight;
                 file.SourceImageWidth = e.SourceWidth;
                 file.SourceImageHeight = e.SourceHeight;
-                file.UpdateDate = e.FileUpdatedate;
+                file.UpdateDate = e.FileUpdateDate;
             }
 
             if (this._filterFilePathList != null)

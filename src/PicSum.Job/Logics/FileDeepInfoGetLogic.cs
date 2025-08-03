@@ -134,7 +134,7 @@ namespace PicSum.Job.Logics
             info.Thumbnail = new()
             {
                 FilePath = info.FilePath,
-                FileUpdatedate = info.UpdateDate,
+                FileUpdateDate = info.UpdateDate,
                 ThumbnailImage = thumbnail,
                 ThumbnailWidth = thumbSize.Width,
                 ThumbnailHeight = thumbSize.Height,
@@ -192,7 +192,7 @@ namespace PicSum.Job.Logics
             info.Thumbnail = new()
             {
                 FilePath = info.FilePath,
-                FileUpdatedate = info.UpdateDate,
+                FileUpdateDate = info.UpdateDate,
                 ThumbnailImage = thumbnail,
                 ThumbnailWidth = thumbSize.Width,
                 ThumbnailHeight = thumbSize.Height,
