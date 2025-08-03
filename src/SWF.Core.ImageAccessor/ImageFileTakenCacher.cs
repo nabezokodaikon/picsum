@@ -56,6 +56,11 @@ namespace SWF.Core.ImageAccessor
 
         public DateTime GetOrCreate(string filePath)
         {
+            if (!ImageUtil.CanRetainExifImageFormat(filePath))
+            {
+                return FileUtil.EMPTY_DATETIME;
+            }
+
             lock (this._cacheLock)
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
