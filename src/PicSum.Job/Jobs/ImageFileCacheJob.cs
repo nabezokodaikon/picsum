@@ -11,10 +11,7 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
-        private static readonly ParallelOptions PARALLEL_OPTIONS = new ParallelOptions
-        {
-            MaxDegreeOfParallelism = 4,
-        };
+        private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
         protected override ValueTask Execute(ImageFileCacheParameter parameter)
         {
@@ -44,39 +41,60 @@ namespace PicSum.Job.Jobs
                 previewFiles.Add(parameter.Files[previewIndex]);
             }
 
-            Parallel.ForEach(
-                [parameter.Files[parameter.CurrentIndex], .. nextFiles, .. previewFiles],
-                PARALLEL_OPTIONS,
-                filePath =>
-                {
-                    try
-                    {
-                        if (this.IsJobCancel)
-                        {
-                            return;
-                        }
+            string[] targetFiles = [
+                parameter.Files[parameter.CurrentIndex],
+                .. nextFiles,
+                .. previewFiles];
+            if (targetFiles.Length < 1)
+            {
+                return ValueTask.CompletedTask;
+            }
 
-                        Instance<IImageFileCacher>.Value.Create(filePath);
-                        var size = Instance<IImageFileCacher>.Value.GetSize(filePath);
-                        if (size != ImageUtil.EMPTY_SIZE)
+            using (var cts = new CancellationTokenSource())
+            {
+                try
+                {
+                    Parallel.ForEach(
+                        targetFiles,
+                        new ParallelOptions
                         {
-                            Instance<IImageFileSizeCacher>.Value.Set(filePath, size);
-                        }
-                        else
+                            CancellationToken = cts.Token,
+                            MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                        },
+                        file =>
                         {
-                            Instance<IImageFileSizeCacher>.Value.Create(filePath);
+                            try
+                            {
+                                if (this.IsJobCancel)
+                                {
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
+                                }
+
+                                Instance<IImageFileCacher>.Value.Create(file);
+                                var size = Instance<IImageFileCacher>.Value.GetSize(file);
+                                if (size != ImageUtil.EMPTY_SIZE)
+                                {
+                                    Instance<IImageFileSizeCacher>.Value.Set(file, size);
+                                }
+                                else
+                                {
+                                    Instance<IImageFileSizeCacher>.Value.Create(file);
+                                }
+                            }
+                            catch (FileUtilException ex)
+                            {
+                                this.WriteErrorLog(ex);
+                            }
+                            catch (ImageUtilException ex)
+                            {
+                                this.WriteErrorLog(ex);
+                            }
                         }
-                    }
-                    catch (FileUtilException ex)
-                    {
-                        this.WriteErrorLog(ex);
-                    }
-                    catch (ImageUtilException ex)
-                    {
-                        this.WriteErrorLog(ex);
-                    }
+                    );
                 }
-            );
+                catch (OperationCanceledException) { }
+            }
 
             return ValueTask.CompletedTask;
         }
