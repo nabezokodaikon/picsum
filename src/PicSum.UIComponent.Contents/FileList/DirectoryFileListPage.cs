@@ -49,7 +49,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this._parameter.DirectoryPath);
             this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            base.toolBar.RegistrationSortButtonEnabled = false;
+            base.toolBar.AddDateSortButtonEnabled = false;
 
             this.Loaded += this.DirectoryFileListPage_Loaded;
             this.DrawTabPage += this.DirectoryFileListPage_DrawTabPage;

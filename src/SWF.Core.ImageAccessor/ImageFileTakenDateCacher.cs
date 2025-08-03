@@ -4,16 +4,16 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class ImageFileTakenCacher
-        : IImageFileTakenCacher
+    public sealed class ImageFileTakenDateCacher
+        : IImageFileTakenDateCacher
     {
         private const int CACHE_CAPACITY = 10000;
 
         private bool _disposed = false;
-        private readonly Dictionary<string, ImageFileTakenCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
+        private readonly Dictionary<string, ImageFileTakenDateCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
         private readonly Lock _cacheLock = new();
 
-        public ImageFileTakenCacher()
+        public ImageFileTakenDateCacher()
         {
 
         }
@@ -52,7 +52,7 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                return ImageFileTakenCacheEntity.EMPTY.TakenDate;
+                return ImageFileTakenDateCacheEntity.EMPTY.TakenDate;
             }
         }
 
@@ -77,7 +77,7 @@ namespace SWF.Core.ImageAccessor
                 }
             }
 
-            var newCache = new ImageFileTakenCacheEntity(
+            var newCache = new ImageFileTakenDateCacheEntity(
                 filePath,
                 ImageUtil.GetTakenDate(filePath),
                 FileUtil.GetUpdateDate(filePath));

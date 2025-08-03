@@ -305,7 +305,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                     if (result == TakenDateResult.COMPLETED)
                     {
-                        this.toolBar.TakenSortButtonEnabled = true;
+                        this.toolBar.TakenDateSortButtonEnabled = true;
                     }
                     else if (this._masterFileDictionary.TryGetValue(result.FilePath, out var item))
                     {
@@ -572,7 +572,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         filterList = [.. a.Concat(b)];
                     }
                     break;
-                case SortTypeID.RegistrationDate:
+                case SortTypeID.AddDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.RgistrationDate.GetValueOrDefault(DateTime.MinValue);
@@ -854,7 +854,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void ToolBar_TimestampSortButtonClick(object sender, EventArgs e)
+        private void ToolBar_UpdateDateSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
             this.SortInfo.ActiveSortType = SortTypeID.UpdateDate;
@@ -862,7 +862,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void ToolBar_TakenSortButtonClick(object sender, EventArgs e)
+        private void ToolBar_TakenDateSortButtonClick(object sender, EventArgs e)
         {
             this.SortInfo.ChangeSortDirection(SortTypeID.TakenDate);
             this.SortInfo.ActiveSortType = SortTypeID.TakenDate;
@@ -870,10 +870,10 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        private void ToolBar_RegistrationSortButtonClick(object sender, EventArgs e)
+        private void ToolBar_AddDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.RegistrationDate);
-            this.SortInfo.ActiveSortType = SortTypeID.RegistrationDate;
+            this.SortInfo.ChangeSortDirection(SortTypeID.AddDate);
+            this.SortInfo.ActiveSortType = SortTypeID.AddDate;
             this.SetSort();
             this.SetFilter();
         }

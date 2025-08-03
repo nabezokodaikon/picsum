@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .ToArray();
                         return [.. a.Concat(b)];
                     }
-                case SortTypeID.RegistrationDate:
+                case SortTypeID.AddDate:
                     if (isAscending)
                     {
                         return files

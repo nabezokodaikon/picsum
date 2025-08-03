@@ -25,14 +25,14 @@ namespace PicSum.Job.Jobs
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
-                var registrationDate = DateTime.Now;
+                var addDate = DateTime.Now;
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    if (!updateFileRating.Execute(con, filePath, param.RatingValue, registrationDate))
+                    if (!updateFileRating.Execute(con, filePath, param.RatingValue, addDate))
                     {
                         addFileMaster.Execute(con, filePath);
-                        updateFileRating.Execute(con, filePath, param.RatingValue, registrationDate);
+                        updateFileRating.Execute(con, filePath, param.RatingValue, addDate);
                     }
                 }
 

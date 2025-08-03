@@ -22,9 +22,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.nameSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.pathSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.createDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.timestampSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.takenSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.registrationSortButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.updateDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.takenDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.addDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
             this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
             this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
             this.directoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,18 +59,18 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // timestampSortButton
             //
-            this.timestampSortButton.Text = "Updated";
-            this.timestampSortButton.MouseClick += this.TimestampSortButton_MouseClick;
+            this.updateDateSortButton.Text = "Updated";
+            this.updateDateSortButton.MouseClick += this.UpdateDateSortButton_MouseClick;
             // 
             // timestampSortButton
             //
-            this.takenSortButton.Text = "Taken";
-            this.takenSortButton.MouseClick += this.TakenSortButton_MouseClick;
+            this.takenDateSortButton.Text = "Taken";
+            this.takenDateSortButton.MouseClick += this.TakenDateSortButton_MouseClick;
             // 
-            // registrationSortButton
+            // addDateSortButton
             //
-            this.registrationSortButton.Text = "Added";
-            this.registrationSortButton.MouseClick += this.RegistrationSortButton_MouseClick;
+            this.addDateSortButton.Text = "Added";
+            this.addDateSortButton.MouseClick += this.AddDateSortButton_MouseClick;
             // 
             // thumbnailSizeSlider
             // 
@@ -119,10 +119,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.moveNextButton,
                 this.movePreviewButton,
                 this.thumbnailSizeSlider,
-                this.registrationSortButton,
+                this.addDateSortButton,
                 this.createDateSortButton,
-                this.timestampSortButton,
-                this.takenSortButton,
+                this.updateDateSortButton,
+                this.takenDateSortButton,
                 this.pathSortButton,
                 this.nameSortButton,
                 this.viewButton);
@@ -146,8 +146,8 @@ namespace PicSum.UIComponent.Contents.FileList
         private SWF.UIComponent.Core.BaseTextButton nameSortButton;
         private SWF.UIComponent.Core.BaseTextButton pathSortButton;
         private SWF.UIComponent.Core.BaseTextButton createDateSortButton;
-        private SWF.UIComponent.Core.BaseTextButton timestampSortButton;
-        private SWF.UIComponent.Core.BaseTextButton takenSortButton;
-        private SWF.UIComponent.Core.BaseTextButton registrationSortButton;
+        private SWF.UIComponent.Core.BaseTextButton updateDateSortButton;
+        private SWF.UIComponent.Core.BaseTextButton takenDateSortButton;
+        private SWF.UIComponent.Core.BaseTextButton addDateSortButton;
     }
 }

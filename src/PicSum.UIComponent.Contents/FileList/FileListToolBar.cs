@@ -23,9 +23,9 @@ namespace PicSum.UIComponent.Contents.FileList
         public event EventHandler NameSortButtonClick;
         public event EventHandler PathSortButtonClick;
         public event EventHandler CreateDateSortButtonClick;
-        public event EventHandler TimestampSortButtonClick;
-        public event EventHandler TakenSortButtonClick;
-        public event EventHandler RegistrationSortButtonClick;
+        public event EventHandler UpdateDateSortButtonClick;
+        public event EventHandler TakenDateSortButtonClick;
+        public event EventHandler AddDateSortButtonClick;
         public event EventHandler DirectoryMenuItemClick;
         public event EventHandler ImageFileMenuItemClick;
         public event EventHandler OtherFileMenuItemClick;
@@ -118,41 +118,41 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool TimestampSortButtonEnabled
+        public bool UpdateDateSortButtonEnabled
         {
             get
             {
-                return this.timestampSortButton.Enabled;
+                return this.updateDateSortButton.Enabled;
             }
             set
             {
-                this.timestampSortButton.Enabled = value;
+                this.updateDateSortButton.Enabled = value;
             }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool TakenSortButtonEnabled
+        public bool TakenDateSortButtonEnabled
         {
             get
             {
-                return this.takenSortButton.Enabled;
+                return this.takenDateSortButton.Enabled;
             }
             set
             {
-                this.takenSortButton.Enabled = value;
+                this.takenDateSortButton.Enabled = value;
             }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool RegistrationSortButtonEnabled
+        public bool AddDateSortButtonEnabled
         {
             get
             {
-                return this.registrationSortButton.Enabled;
+                return this.addDateSortButton.Enabled;
             }
             set
             {
-                this.registrationSortButton.Enabled = value;
+                this.addDateSortButton.Enabled = value;
             }
         }
 
@@ -254,19 +254,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.timestampSortButton.SetBounds(
+            this.updateDateSortButton.SetBounds(
                 this.viewButton.Location.X * 5 + this.viewButton.Width + this.nameSortButton.Width * 3,
                 this.viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.takenSortButton.SetBounds(
+            this.takenDateSortButton.SetBounds(
                 this.viewButton.Location.X * 6 + this.viewButton.Width + this.nameSortButton.Width * 4,
                 this.viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.registrationSortButton.SetBounds(
+            this.addDateSortButton.SetBounds(
                 this.viewButton.Location.X * 7 + this.viewButton.Width + this.nameSortButton.Width * 5,
                 this.viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
@@ -298,9 +298,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 SortTypeID.FileName => this.nameSortButton,
                 SortTypeID.FilePath => this.pathSortButton,
                 SortTypeID.CreateDate => this.createDateSortButton,
-                SortTypeID.UpdateDate => this.timestampSortButton,
-                SortTypeID.TakenDate => this.takenSortButton,
-                SortTypeID.RegistrationDate => this.registrationSortButton,
+                SortTypeID.UpdateDate => this.updateDateSortButton,
+                SortTypeID.TakenDate => this.takenDateSortButton,
+                SortTypeID.AddDate => this.addDateSortButton,
                 _ => null,
             };
         }
@@ -310,9 +310,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.nameSortButton.Text = "Name";
             this.pathSortButton.Text = "Path";
             this.createDateSortButton.Text = "Created";
-            this.timestampSortButton.Text = "Updated";
-            this.takenSortButton.Text = "Taken";
-            this.registrationSortButton.Text = "Added";
+            this.updateDateSortButton.Text = "Updated";
+            this.takenDateSortButton.Text = "Taken";
+            this.addDateSortButton.Text = "Added";
         }
 
         protected override void Dispose(bool disposing)
@@ -367,19 +367,19 @@ namespace PicSum.UIComponent.Contents.FileList
             this.CreateDateSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void TimestampSortButton_MouseClick(object sender, MouseEventArgs e)
+        private void UpdateDateSortButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.TimestampSortButtonClick?.Invoke(this, EventArgs.Empty);
+            this.UpdateDateSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void TakenSortButton_MouseClick(object sender, MouseEventArgs e)
+        private void TakenDateSortButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.TakenSortButtonClick?.Invoke(this, EventArgs.Empty);
+            this.TakenDateSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
-        private void RegistrationSortButton_MouseClick(object sender, MouseEventArgs e)
+        private void AddDateSortButton_MouseClick(object sender, MouseEventArgs e)
         {
-            this.RegistrationSortButtonClick?.Invoke(this, EventArgs.Empty);
+            this.AddDateSortButtonClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void DirectoryMenuItem_Click(object sender, EventArgs e)

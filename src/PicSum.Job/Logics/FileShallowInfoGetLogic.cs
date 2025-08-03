@@ -17,29 +17,29 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public FileShallowInfoEntity Get(
-            string filePath, bool isGetThumbnail, DateTime registrationDate)
+            string filePath, bool isGetThumbnail, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             if (FileUtil.IsExistsFile(filePath))
             {
                 return this.GetFileInfo(
-                    filePath, isGetThumbnail, registrationDate);
+                    filePath, isGetThumbnail, addDate);
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
                 return this.GetSystemRootInfo(
-                    filePath, registrationDate);
+                    filePath, addDate);
             }
             else if (FileUtil.IsExistsDrive(filePath))
             {
                 return this.GetDriveInfo(
-                    filePath, registrationDate);
+                    filePath, addDate);
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return this.GetDirectoryInfo(
-                    filePath, isGetThumbnail, registrationDate);
+                    filePath, isGetThumbnail, addDate);
             }
             else
             {
@@ -56,20 +56,20 @@ namespace PicSum.Job.Logics
         }
 
         private FileShallowInfoEntity GetFileInfo(
-            string filePath, bool isGetThumbnail, DateTime registrationDate)
+            string filePath, bool isGetThumbnail, DateTime addDate)
         {
             var (createDate, updateDate, _) = FileUtil.GetFileInfo(filePath);
 
             var info = new FileShallowInfoEntity
             {
-                RgistrationDate = registrationDate,
+                RgistrationDate = addDate,
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = true,
                 IsImageFile = ImageUtil.IsImageFile(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = Instance<IImageFileTakenCacher>.Value.Get(filePath),
+                TakenDate = Instance<IImageFileTakenDateCacher>.Value.Get(filePath),
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
@@ -101,13 +101,13 @@ namespace PicSum.Job.Logics
         }
 
         private FileShallowInfoEntity GetDirectoryInfo(
-            string filePath, bool isGetThumbnail, DateTime registrationDate)
+            string filePath, bool isGetThumbnail, DateTime addDate)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
 
             var info = new FileShallowInfoEntity
             {
-                RgistrationDate = registrationDate,
+                RgistrationDate = addDate,
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,
@@ -145,13 +145,13 @@ namespace PicSum.Job.Logics
         }
 
         private FileShallowInfoEntity GetDriveInfo(
-            string filePath, DateTime registrationDate)
+            string filePath, DateTime addDate)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
 
             return new FileShallowInfoEntity
             {
-                RgistrationDate = registrationDate,
+                RgistrationDate = addDate,
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,
@@ -166,11 +166,11 @@ namespace PicSum.Job.Logics
         }
 
         private FileShallowInfoEntity GetSystemRootInfo(
-            string filePath, DateTime registrationDate)
+            string filePath, DateTime addDate)
         {
             return new FileShallowInfoEntity
             {
-                RgistrationDate = registrationDate,
+                RgistrationDate = addDate,
                 FilePath = filePath,
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,

@@ -4,22 +4,22 @@ using System.Runtime.Versioning;
 namespace SWF.Core.ImageAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal sealed class ImageFileTakenCacheEntity
+    internal sealed class ImageFileTakenDateCacheEntity
     {
-        public static readonly ImageFileTakenCacheEntity EMPTY = new();
+        public static readonly ImageFileTakenDateCacheEntity EMPTY = new();
 
         public string FilePath { get; private set; }
         public DateTime TakenDate { get; private set; }
         public DateTime UpdateDate { get; private set; }
 
-        private ImageFileTakenCacheEntity()
+        private ImageFileTakenDateCacheEntity()
         {
             this.FilePath = string.Empty;
             this.TakenDate = FileUtil.EMPTY_DATETIME;
             this.UpdateDate = FileUtil.EMPTY_DATETIME;
         }
 
-        public ImageFileTakenCacheEntity(string filePath, DateTime takenDate, DateTime updateDate)
+        public ImageFileTakenDateCacheEntity(string filePath, DateTime takenDate, DateTime updateDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 

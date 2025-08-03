@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public bool Execute(
-            IDatabaseConnection con, string filePath, int ratingValue, DateTime registrationDate)
+            IDatabaseConnection con, string filePath, int ratingValue, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
                 throw new ArgumentException("0未満は評価値として無効です。", nameof(ratingValue));
             }
 
-            var sql = new RatingUpdateSql(filePath, ratingValue, registrationDate);
+            var sql = new RatingUpdateSql(filePath, ratingValue, addDate);
             return con.Update(sql);
         }
     }

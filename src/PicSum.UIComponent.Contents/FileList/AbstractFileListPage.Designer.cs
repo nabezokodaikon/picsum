@@ -63,13 +63,13 @@ namespace PicSum.UIComponent.Contents.FileList
             this.toolBar.ThumbnailSizeSliderMaximumValue = ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE;
             this.toolBar.ThumbnailSizeSliderMinimumValue = ThumbnailUtil.THUMBNAIL_MINIMUM_SIZE;
             this.toolBar.ThumbnailSizeSliderValue = 96;
-            this.toolBar.TakenSortButtonEnabled = false;
+            this.toolBar.TakenDateSortButtonEnabled = false;
             this.toolBar.NameSortButtonClick += new System.EventHandler(this.ToolBar_NameSortButtonClick);
             this.toolBar.PathSortButtonClick += new System.EventHandler(this.ToolBar_PathSortButtonClick);
             this.toolBar.CreateDateSortButtonClick += new System.EventHandler(this.ToolBar_CreateDateSortButtonClick);
-            this.toolBar.TimestampSortButtonClick += new System.EventHandler(this.ToolBar_TimestampSortButtonClick);
-            this.toolBar.TakenSortButtonClick += new System.EventHandler(this.ToolBar_TakenSortButtonClick);
-            this.toolBar.RegistrationSortButtonClick += new System.EventHandler(this.ToolBar_RegistrationSortButtonClick);
+            this.toolBar.UpdateDateSortButtonClick += new System.EventHandler(this.ToolBar_UpdateDateSortButtonClick);
+            this.toolBar.TakenDateSortButtonClick += new System.EventHandler(this.ToolBar_TakenDateSortButtonClick);
+            this.toolBar.AddDateSortButtonClick += new System.EventHandler(this.ToolBar_AddDateSortButtonClick);
             this.toolBar.ThumbnailSizeSliderBeginValueChange += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderBeginValueChange);
             this.toolBar.ThumbnailSizeSliderValueChanging += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderValueChanging);
             this.toolBar.ThumbnailSizeSliderValueChanged += new System.EventHandler(this.ToolBar_ThumbnailSizeSliderValueChanged);

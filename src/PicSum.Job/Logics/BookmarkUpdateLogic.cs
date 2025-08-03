@@ -9,12 +9,12 @@ namespace PicSum.Job.Logics
     internal sealed class BookmarkUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(IDatabaseConnection con, string filePath, DateTime registrationDate)
+        public bool Execute(IDatabaseConnection con, string filePath, DateTime addDate)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            var sql = new BookmarkUpdateSql(filePath, registrationDate);
+            var sql = new BookmarkUpdateSql(filePath, addDate);
             return con.Update(sql);
         }
     }

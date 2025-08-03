@@ -30,7 +30,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = ResourceFiles.BookmarkIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.RegistrationSortButtonEnabled = true;
+            base.toolBar.AddDateSortButtonEnabled = true;
 
             this.Loaded += this.BookmarkFileListPage_Loaded;
             this.DrawTabPage += this.BookmarkFileListPage_DrawTabPage;
@@ -124,7 +124,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this._parameter.SortInfo == null)
             {
-                base.SetFiles([.. result], this._parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. result], this._parameter.SelectedFilePath, SortTypeID.AddDate, false);
             }
             else
             {

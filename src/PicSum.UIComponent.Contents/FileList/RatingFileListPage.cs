@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = ResourceFiles.ActiveRatingIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.RegistrationSortButtonEnabled = true;
+            base.toolBar.AddDateSortButtonEnabled = true;
 
             this.Loaded += this.RatingFileListPage_Loaded;
             this.DrawTabPage += this.RatingFileListPage_DrawTabPage;
@@ -120,7 +120,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this._parameter.SortInfo == null)
             {
-                base.SetFiles([.. e], this._parameter.SelectedFilePath, SortTypeID.RegistrationDate, false);
+                base.SetFiles([.. e], this._parameter.SelectedFilePath, SortTypeID.AddDate, false);
             }
             else
             {

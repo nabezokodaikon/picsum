@@ -241,7 +241,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return Instance<IImageFileTakenCacher>.Value.GetOrCreate(filePath);
+                return Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
             }
             catch (ImageUtilException ex)
             {
@@ -254,7 +254,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                return Instance<IImageFileTakenCacher>.Value.Get(filePath);
+                return Instance<IImageFileTakenDateCacher>.Value.Get(filePath);
             }
             catch (ImageUtilException ex)
             {

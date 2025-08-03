@@ -33,7 +33,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Icon = ResourceFiles.HomeIcon.Value;
             this.IsMoveControlVisible = false;
             this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.RegistrationSortButtonEnabled = false;
+            base.toolBar.AddDateSortButtonEnabled = false;
 
             this.Loaded += this.FavoriteDirectoryListPage_Loaded;
             this.DrawTabPage += this.FavoriteDirectoryListPage_DrawTabPage;

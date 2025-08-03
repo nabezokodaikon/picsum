@@ -1,6 +1,6 @@
 namespace SWF.Core.ImageAccessor
 {
-    public interface IImageFileTakenCacher
+    public interface IImageFileTakenDateCacher
         : IDisposable
     {
         public DateTime Get(string filePath);

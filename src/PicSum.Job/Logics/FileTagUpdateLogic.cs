@@ -14,12 +14,12 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public bool Execute(
-            IDatabaseConnection con, string filePath, string tag, DateTime registrationDate)
+            IDatabaseConnection con, string filePath, string tag, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            var sql = new TagUpdateSql(filePath, tag, registrationDate);
+            var sql = new TagUpdateSql(filePath, tag, addDate);
             return con.Update(sql);
         }
     }

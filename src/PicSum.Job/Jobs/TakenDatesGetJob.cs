@@ -62,7 +62,7 @@ namespace PicSum.Job.Jobs
                         try
                         {
                             var filePath = files[index];
-                            var takenDate = Instance<IImageFileTakenCacher>.Value.GetOrCreate(filePath);
+                            var takenDate = Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
                             if (takenDate == FileUtil.EMPTY_DATETIME)
                             {
                                 return;
