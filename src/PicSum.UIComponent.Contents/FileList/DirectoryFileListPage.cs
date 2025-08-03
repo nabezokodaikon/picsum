@@ -65,6 +65,8 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this.SaveCurrentDirectoryState();
+                this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.SortInfo = base.SortInfo;
             }
 
             this._disposed = true;
@@ -228,31 +230,66 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SearchJob_Callback(DirectoryGetResult e)
         {
-            if (!string.IsNullOrEmpty(this._parameter.SelectedFilePath))
+            if (this._parameter.SortInfo == null)
             {
-                if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                if (!string.IsNullOrEmpty(this._parameter.SelectedFilePath))
                 {
-                    base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                    }
+                    else
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    }
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, SortTypeID.FilePath, true);
+                    }
+                    else
+                    {
+                        base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                    }
+
+                    if (e.FileInfoList.Length < 1)
+                    {
+                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                    }
                 }
             }
             else
             {
-                if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                var sortType = this._parameter.SortInfo.ActiveSortType;
+                var isAscending = this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType);
+                if (!string.IsNullOrEmpty(this._parameter.SelectedFilePath))
                 {
-                    base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, SortTypeID.FilePath, true);
+                    if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, sortType, isAscending);
+                    }
+                    else
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, sortType, isAscending);
+                    }
                 }
                 else
                 {
-                    base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
-                }
+                    if (e.DirectoryState == DirectoryStateParameter.EMPTY)
+                    {
+                        base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, sortType, isAscending);
+                    }
+                    else
+                    {
+                        base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, sortType, isAscending);
+                    }
 
-                if (e.FileInfoList.Length < 1)
-                {
-                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                    if (e.FileInfoList.Length < 1)
+                    {
+                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
+                    }
                 }
             }
         }
