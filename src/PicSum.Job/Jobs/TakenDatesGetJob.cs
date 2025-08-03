@@ -28,17 +28,26 @@ namespace PicSum.Job.Jobs
 
         protected override ValueTask Execute(TakenDatesGetParameter param)
         {
+            var files = param.FilePathList
+                .AsEnumerable()
+                .Where(ImageUtil.CanRetainExifImageFormat)
+                .ToArray();
+            if (files.Length < 1)
+            {
+                return ValueTask.CompletedTask;
+            }
+
             using (var cts = new CancellationTokenSource())
             {
                 try
                 {
                     Parallel.For(
                         0,
-                        param.FilePathList.Length,
+                        files.Length,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
-                            MaxDegreeOfParallelism = Math.Max(param.FilePathList.Length, 1),
+                            MaxDegreeOfParallelism = Math.Max(files.Length, 1),
                         },
                         index =>
                     {
@@ -50,7 +59,7 @@ namespace PicSum.Job.Jobs
 
                         try
                         {
-                            var filePath = param.FilePathList[index];
+                            var filePath = files[index];
                             var takenDate = Instance<IImageFileTakenCacher>.Value.GetOrCreate(filePath);
                             if (takenDate == FileUtil.EMPTY_DATETIME)
                             {

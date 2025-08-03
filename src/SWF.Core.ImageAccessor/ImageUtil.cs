@@ -28,6 +28,7 @@ namespace SWF.Core.ImageAccessor
         private const int LARGE_IMAGE_SIZE = 2000 * 2000;
 
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
+        private static readonly string[] RETAIN_EXIF_IMAGE_FORMAT = GetRetainExifImageFormat();
         public static readonly Size EMPTY_SIZE = Size.Empty;
         public static readonly Bitmap EMPTY_IMAGE = new(1, 1);
 
@@ -379,6 +380,14 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
             }
+        }
+
+        public static bool CanRetainExifImageFormat(string filePath)
+        {
+            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            var ex = FileUtil.GetExtensionFastStack(filePath);
+            return RETAIN_EXIF_IMAGE_FORMAT.Any(_ => StringUtil.CompareFilePath(_, ex));
         }
 
         public static Bitmap ReadImageFile(string filePath)
@@ -803,6 +812,19 @@ namespace SWF.Core.ImageAccessor
                 HEIF_FILE_EXTENSION,
                 PNG_FILE_EXTENSION,
                 SVG_FILE_EXTENSION,
+                WEBP_FILE_EXTENSION
+            ];
+        }
+
+        private static string[] GetRetainExifImageFormat()
+        {
+            return
+            [
+                AVIF_FILE_EXTENSION,
+                JPEG_FILE_EXTENSION,
+                JPG_FILE_EXTENSION,
+                HEIC_FILE_EXTENSION,
+                HEIF_FILE_EXTENSION,
                 WEBP_FILE_EXTENSION
             ];
         }
