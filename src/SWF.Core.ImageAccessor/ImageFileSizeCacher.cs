@@ -8,7 +8,7 @@ namespace SWF.Core.ImageAccessor
     public sealed partial class ImageFileSizeCacher
         : IImageFileSizeCacher
     {
-        private const int CACHE_CAPACITY = 1000;
+        private const int CACHE_CAPACITY = 10000;
 
         private bool _disposed = false;
         private readonly List<ImageFileSizeCacheEntity> _cacheList = new(CACHE_CAPACITY);
