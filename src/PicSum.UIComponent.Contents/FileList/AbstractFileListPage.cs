@@ -251,6 +251,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     FileName = srcFile.FileName,
                     CreateDate = srcFile.CreateDate,
                     UpdateDate = srcFile.UpdateDate,
+                    TakenDate = srcFile.TakenDate,
                     RgistrationDate = srcFile.RgistrationDate,
                     SmallIcon = srcFile.SmallIcon,
                     ExtraLargeIcon = srcFile.ExtraLargeIcon,
@@ -281,6 +282,37 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
 
             this.flowList.Focus();
+
+            var imageFiles = this._masterFileDictionary
+                .AsEnumerable()
+                .Where(item => ImageUtil.IsImageFile(item.Value.FilePath))
+                .Select(item => item.Value.FilePath)
+                .ToArray();
+
+            if (imageFiles.Length > 0)
+            {
+                var param = new TakenDatesGetParameter()
+                {
+                    FilePathList = imageFiles,
+                };
+
+                Instance<JobCaller>.Value.TakenDatesGetJob.Value.StartJob(this, param, result =>
+                {
+                    if (this._disposed)
+                    {
+                        return;
+                    }
+
+                    if (result == TakenDateResult.COMPLETED)
+                    {
+                        this.toolBar.TakenSortButtonEnabled = true;
+                    }
+                    else if (this._masterFileDictionary.TryGetValue(result.FilePath, out var item))
+                    {
+                        item.TakenDate = result.TakenDate;
+                    }
+                });
+            }
         }
 
         protected void SetFile(FileShallowInfoEntity[] srcFiles, string selectedFilePath)
@@ -509,33 +541,36 @@ namespace PicSum.UIComponent.Contents.FileList
                     });
                     break;
                 case SortTypeID.TakenDate:
-                    filterList.Sort((x, y) =>
+                    if (isAscending)
                     {
-                        var xDate = x.TakenDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
-                        var yDate = y.TakenDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
-                        if (isAscending)
-                        {
-                            if (xDate == yDate)
-                            {
-                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
-                            }
-                            else
-                            {
-                                return xDate.CompareTo(yDate);
-                            }
-                        }
-                        else
-                        {
-                            if (xDate == yDate)
-                            {
-                                return NaturalStringComparer.WINDOWS.Compare(x.FilePath, y.FilePath);
-                            }
-                            else
-                            {
-                                return -xDate.CompareTo(yDate);
-                            }
-                        }
-                    });
+                        var a = filterList
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate != null && item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(item => item.TakenDate)
+                            .ToArray();
+                        var b = filterList
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate == null || item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .ToArray();
+                        filterList = [.. a.Concat(b)];
+                    }
+                    else
+                    {
+                        var a = filterList
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate != null && item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(item => item.TakenDate)
+                            .ToArray();
+                        var b = filterList
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate == null || item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .ToArray();
+                        filterList = [.. a.Concat(b)];
+                    }
                     break;
                 case SortTypeID.RegistrationDate:
                     filterList.Sort((x, y) =>

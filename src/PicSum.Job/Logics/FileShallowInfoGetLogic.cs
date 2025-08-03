@@ -69,6 +69,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = ImageUtil.IsImageFile(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
+                TakenDate = Instance<IImageFileTakenCacher>.Value.Get(filePath),
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
@@ -113,6 +114,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 CreateDate = createDate,
                 UpdateDate = updateDate,
+                TakenDate = FileUtil.EMPTY_DATETIME,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon,
                 JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
@@ -156,6 +158,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 CreateDate = createDate,
                 UpdateDate = updateDate,
+                TakenDate = FileUtil.EMPTY_DATETIME,
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)
@@ -174,6 +177,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 CreateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
                 UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
+                TakenDate = FileUtil.ROOT_DIRECTORY_DATETIME,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
                 JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon

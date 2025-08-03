@@ -41,6 +41,10 @@ namespace PicSum.Job.SyncJobs
                     () => new ImageFileSizeCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
+                Instance<IImageFileTakenCacher>.Initialize(new Lazy<IImageFileTakenCacher>(
+                    () => new ImageFileTakenCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
+
                 SynchronizationContext.SetSynchronizationContext(
                     new WindowsFormsSynchronizationContext());
 

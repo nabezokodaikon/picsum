@@ -26,6 +26,8 @@ namespace PicSum.Job.Common
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+        public readonly Lazy<TwoWayJob<TakenDatesGetJob, TakenDatesGetParameter, TakenDateResult>> TakenDatesGetJob = new(
+            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(
@@ -51,6 +53,7 @@ namespace PicSum.Job.Common
             await this.ImageFileLoadingJob.Value.DisposeAsync();
             await this.ImageFileCacheJob.Value.DisposeAsync();
             await this.ThumbnailsGetJob.Value.DisposeAsync();
+            await this.TakenDatesGetJob.Value.DisposeAsync();
             await this.FileDeepInfoGetJob.Value.DisposeAsync();
             await this.FileDeepInfoLoadingJob.Value.DisposeAsync();
             await this.AddressInfoGetJob.Value.DisposeAsync();

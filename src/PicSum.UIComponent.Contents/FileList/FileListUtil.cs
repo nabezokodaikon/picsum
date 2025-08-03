@@ -111,23 +111,37 @@ namespace PicSum.UIComponent.Contents.FileList
                 case SortTypeID.TakenDate:
                     if (isAscending)
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(file => file.TakenDate)
-                            .Select(file => file.FilePath)
+                        var a = files
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(item => item.TakenDate)
+                            .Select(item => item.FilePath)
                             .ToArray();
+                        var b = files
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(item => item.FilePath)
+                            .ToArray();
+                        return [.. a.Concat(b)];
                     }
                     else
                     {
-                        return files
-                            .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(file => file.TakenDate)
-                            .Select(file => file.FilePath)
+                        var a = files
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(item => item.TakenDate)
+                            .Select(item => item.FilePath)
                             .ToArray();
+                        var b = files
+                            .AsEnumerable()
+                            .Where(item => item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(item => item.FilePath)
+                            .ToArray();
+                        return [.. a.Concat(b)];
                     }
                 case SortTypeID.RegistrationDate:
                     if (isAscending)
