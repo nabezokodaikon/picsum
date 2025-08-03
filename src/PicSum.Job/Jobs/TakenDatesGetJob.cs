@@ -12,6 +12,8 @@ namespace PicSum.Job.Jobs
     public sealed class TakenDatesGetJob
         : AbstractTwoWayJob<TakenDatesGetParameter, TakenDateResult>
     {
+        private const int MAX_DEGREE_OF_PARALLELISM = 4;
+
         private long _hasTakenDates = 0;
 
         private bool HasTakenDates
@@ -47,7 +49,7 @@ namespace PicSum.Job.Jobs
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
-                            MaxDegreeOfParallelism = Math.Max(files.Length, 1),
+                            MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
                         index =>
                     {
