@@ -33,8 +33,7 @@ namespace PicSum.Job.Jobs
 
                     if (dto.Value is null
                         || FileUtil.IsSystemRoot(dto.Value)
-                        || FileUtil.IsExistsDrive(dto.Value)
-                        || !FileUtil.CanAccess(dto.Value))
+                        || FileUtil.IsExistsDrive(dto.Value))
                     {
                         continue;
                     }

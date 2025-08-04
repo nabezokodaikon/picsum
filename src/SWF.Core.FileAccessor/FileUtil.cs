@@ -471,6 +471,11 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
+            if (!CanAccess(directoryPath))
+            {
+                return [];
+            }
+
             try
             {
                 return Directory
@@ -517,6 +522,11 @@ namespace SWF.Core.FileAccessor
             }
             else
             {
+                if (!CanAccess(directoryPath))
+                {
+                    return false;
+                }
+
                 try
                 {
                     var root = new DirectoryInfo(directoryPath);
@@ -570,6 +580,11 @@ namespace SWF.Core.FileAccessor
             }
             else
             {
+                if (!CanAccess(directoryPath))
+                {
+                    return [];
+                }
+
                 try
                 {
                     var root = new DirectoryInfo(directoryPath);
@@ -630,6 +645,11 @@ namespace SWF.Core.FileAccessor
             {
                 try
                 {
+                    if (!CanAccess(directoryPath))
+                    {
+                        return [];
+                    }
+
                     var root = new DirectoryInfo(directoryPath);
 
                     return root

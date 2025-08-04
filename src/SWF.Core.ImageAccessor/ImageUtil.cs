@@ -61,6 +61,11 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
+                    if (!FileUtil.CanAccess(directoryPath))
+                    {
+                        return [];
+                    }
+
                     var root = new DirectoryInfo(directoryPath);
 
                     return root
