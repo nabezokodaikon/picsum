@@ -586,9 +586,9 @@ namespace SWF.Core.FileAccessor
                         return root
                             .Children()
                             .OfType<DirectoryInfo>()
+                            .Where(dir => CanAccess(dir.FullName))
+                            .OrderBy(dir => dir.FullName, NaturalStringComparer.WINDOWS)
                             .Select(dir => dir.FullName)
-                            .Where(CanAccess)
-                            .OrderBy(dir => dir, NaturalStringComparer.WINDOWS)
                             .ToArray();
                     }
                     else
@@ -596,8 +596,8 @@ namespace SWF.Core.FileAccessor
                         return root
                             .Children()
                             .OfType<DirectoryInfo>()
+                            .Where(dir => CanAccess(dir.FullName))
                             .Select(dir => dir.FullName)
-                            .Where(CanAccess)
                             .ToArray();
                     }
                 }
@@ -641,8 +641,8 @@ namespace SWF.Core.FileAccessor
 
                     return root
                         .Children()
+                        .Where(dir => CanAccess(dir.FullName))
                         .Select(dir => dir.FullName)
-                        .Where(CanAccess)
                         .ToArray();
                 }
                 catch (ArgumentNullException)

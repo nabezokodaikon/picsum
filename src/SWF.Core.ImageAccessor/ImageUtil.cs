@@ -66,8 +66,8 @@ namespace SWF.Core.ImageAccessor
                     return root
                         .Children()
                         .OfType<FileInfo>()
-                        .Select(fi => fi.FullName)
-                        .Where(file => FileUtil.CanAccess(file) && IsImageFile(file))
+                        .Where(file => FileUtil.CanAccess(file.FullName) && IsImageFile(file.FullName))
+                        .Select(file => file.FullName)
                         .ToArray();
                 }
                 catch (ArgumentNullException)
@@ -120,19 +120,18 @@ namespace SWF.Core.ImageAccessor
                     var imageFile = root
                         .Children()
                         .OfType<FileInfo>()
-                        .Select(fi => fi.FullName)
-                        .OrderBy(file => file, NaturalStringComparer.WINDOWS)
+                        .OrderBy(file => file.FullName, NaturalStringComparer.WINDOWS)
                         .FirstOrDefault(file =>
                         {
-                            return FileUtil.CanAccess(file) && IsImageFile(file);
+                            return FileUtil.CanAccess(file.FullName) && IsImageFile(file.FullName);
                         });
 
-                    if (string.IsNullOrEmpty(imageFile))
+                    if (imageFile is null)
                     {
                         return string.Empty;
                     }
 
-                    return imageFile;
+                    return imageFile.FullName;
                 }
                 catch (ArgumentNullException)
                 {
