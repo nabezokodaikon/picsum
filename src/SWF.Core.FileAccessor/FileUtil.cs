@@ -637,42 +637,45 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            if (FileUtil.IsSystemRoot(directoryPath))
+            using (TimeMeasuring.Run(true, "FileUtil.GetFileSystemEntriesArray"))
             {
-                return [.. GetDrives()];
-            }
-            else
-            {
-                try
+                if (FileUtil.IsSystemRoot(directoryPath))
                 {
-                    if (!CanAccess(directoryPath))
+                    return [.. GetDrives()];
+                }
+                else
+                {
+                    try
+                    {
+                        if (!CanAccess(directoryPath))
+                        {
+                            return [];
+                        }
+
+                        var root = new DirectoryInfo(directoryPath);
+
+                        return root
+                            .Children()
+                            .Where(dir => CanAccess(dir.FullName))
+                            .Select(dir => dir.FullName)
+                            .ToArray();
+                    }
+                    catch (ArgumentNullException)
                     {
                         return [];
                     }
-
-                    var root = new DirectoryInfo(directoryPath);
-
-                    return root
-                        .Children()
-                        .Where(dir => CanAccess(dir.FullName))
-                        .Select(dir => dir.FullName)
-                        .ToArray();
-                }
-                catch (ArgumentNullException)
-                {
-                    return [];
-                }
-                catch (SecurityException)
-                {
-                    return [];
-                }
-                catch (ArgumentException)
-                {
-                    return [];
-                }
-                catch (PathTooLongException)
-                {
-                    return [];
+                    catch (SecurityException)
+                    {
+                        return [];
+                    }
+                    catch (ArgumentException)
+                    {
+                        return [];
+                    }
+                    catch (PathTooLongException)
+                    {
+                        return [];
+                    }
                 }
             }
         }

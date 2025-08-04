@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
-            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob FileShallowInfoGetLogic"))
+            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob Parallel.ForEach"))
             {
                 foreach (var dto in dtos)
                 {

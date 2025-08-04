@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = this.GetFiles(param.Tag);
 
-            using (TimeMeasuring.Run(true, "FilesGetByTagJob FileShallowInfoGetLogic"))
+            using (TimeMeasuring.Run(true, "FilesGetByTagJob Parallel.ForEach"))
             {
                 using (var cts = new CancellationTokenSource())
                 {

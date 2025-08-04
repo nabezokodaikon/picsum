@@ -1,5 +1,6 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -18,9 +19,12 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            var sql = new FileReadByTagSql(tag);
-            var dtoList = con.ReadList<FileByTagDto>(sql);
-            return dtoList;
+            using (TimeMeasuring.Run(true, "FilesGetByTagLogic.Execute"))
+            {
+                var sql = new FileReadByTagSql(tag);
+                var dtoList = con.ReadList<FileByTagDto>(sql);
+                return dtoList;
+            }
         }
     }
 }

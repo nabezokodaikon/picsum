@@ -1,5 +1,6 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -12,9 +13,12 @@ namespace PicSum.Job.Logics
     {
         public BookmarkDto[] Execute(IDatabaseConnection con)
         {
-            var sql = new BookmarksReadSql();
-            var dtoList = con.ReadList<BookmarkDto>(sql);
-            return dtoList;
+            using (TimeMeasuring.Run(true, "BookmarksGetLogic.Execute"))
+            {
+                var sql = new BookmarksReadSql();
+                var dtoList = con.ReadList<BookmarkDto>(sql);
+                return dtoList;
+            }
         }
     }
 }

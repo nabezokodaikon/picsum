@@ -22,7 +22,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = this.GetBookmarks();
 
-            using (TimeMeasuring.Run(true, "BookmarksGetJob FileShallowInfoGetLogic"))
+            using (TimeMeasuring.Run(true, "BookmarksGetJob Parallel.ForEach"))
             {
                 using (var cts = new CancellationTokenSource())
                 {

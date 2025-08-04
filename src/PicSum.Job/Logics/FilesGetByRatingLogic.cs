@@ -1,5 +1,6 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -15,9 +16,12 @@ namespace PicSum.Job.Logics
     {
         public FileByRatingDto[] Execute(IDatabaseConnection con, int rating)
         {
-            var sql = new FileReadByRatingSql(rating);
-            var dtoList = con.ReadList<FileByRatingDto>(sql);
-            return dtoList;
+            using (TimeMeasuring.Run(true, "FilesGetByRatingLogic.Execute"))
+            {
+                var sql = new FileReadByRatingSql(rating);
+                var dtoList = con.ReadList<FileByRatingDto>(sql);
+                return dtoList;
+            }
         }
     }
 }
