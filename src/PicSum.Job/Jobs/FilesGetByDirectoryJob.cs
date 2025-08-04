@@ -64,11 +64,6 @@ namespace PicSum.Job.Jobs
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
-                                if (!FileUtil.CanAccess(file))
-                                {
-                                    return;
-                                }
-
                                 try
                                 {
                                     var info = getInfoLogic.Get(file, param.IsGetThumbnail);
