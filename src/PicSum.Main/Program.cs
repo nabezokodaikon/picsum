@@ -28,9 +28,9 @@ namespace PicSum.Main
             {
                 try
                 {
-                    BootTimeMeasurement.Start();
-
                     Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
+
+                    BootTimeMeasurement.Start();
 
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
