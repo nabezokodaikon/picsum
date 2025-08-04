@@ -308,6 +308,14 @@ namespace WinApi
 
         public const int DWMWA_CAPTION_BUTTON_BOUNDS = 5;
 
+        public const uint INVALID_FILE_ATTRIBUTES = 0xFFFFFFFF;
+        public const uint FILE_ATTRIBUTE_HIDDEN = 0x2;
+
+        public const int ERROR_SUCCESS = 0;
+        public const int ERROR_FILE_NOT_FOUND = 2;
+        public const int ERROR_PATH_NOT_FOUND = 3;
+        public const int ERROR_ACCESS_DENIED = 5;
+
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -671,6 +679,9 @@ namespace WinApi
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern uint GetFileAttributes(string lpFileName);
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {
