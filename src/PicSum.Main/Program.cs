@@ -94,7 +94,7 @@ namespace PicSum.Main
                     {
                         Action[] actions = [
                             () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
-                            Config.INSTANCE.Load
+                            () => Config.INSTANCE.Load()
                         ];
 
                         Parallel.ForEach(
