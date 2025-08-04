@@ -642,7 +642,6 @@ namespace SWF.Core.FileAccessor
                     return root
                         .Children()
                         .Select(dir => dir.FullName)
-                        .Where(CanAccess)
                         .ToArray();
                 }
                 catch (ArgumentNullException)

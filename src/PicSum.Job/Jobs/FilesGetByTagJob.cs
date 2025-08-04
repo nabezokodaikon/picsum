@@ -52,6 +52,11 @@ namespace PicSum.Job.Jobs
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
+                                if (!FileUtil.CanAccess(dto.FilePath))
+                                {
+                                    return;
+                                }
+
                                 try
                                 {
                                     var info = getInfoLogic.Get(
