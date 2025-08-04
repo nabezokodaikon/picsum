@@ -64,7 +64,7 @@ namespace PicSum.Job.Jobs
                     var info = logic.Get(directory, false);
                     if (info == FileShallowInfoEntity.EMPTY)
                     {
-                        return ValueTask.CompletedTask;
+                        break;
                     }
 
                     addressInfo.DirectoryList.Insert(0, info);
