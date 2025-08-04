@@ -19,7 +19,7 @@ namespace SWF.Core.ResourceAccessor
             () => Path.Combine(APPLICATION_DIRECTORY.Value, "config"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> CONFIG_FILE = new(
-            () => Path.Combine(CONFIG_DIRECTORY.Value, "config.bin"),
+            () => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> DATABASE_DIRECTORY = new(
             () => Path.Combine(APPLICATION_DIRECTORY.Value, "db"),
