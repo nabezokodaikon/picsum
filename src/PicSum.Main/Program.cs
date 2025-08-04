@@ -53,7 +53,7 @@ namespace PicSum.Main
 #if UWP
                         typeof(Windows.Storage.AppDataPaths),
 #endif
-                        typeof(MessagePack.CompositeResolverAttribute),
+                        typeof(MemoryPack.BitPackFormatterAttribute),
                         typeof(NLog.Attributes.LogLevelTypeConverter),
 
                         typeof(HeyRed.ImageSharp.Heif.DecodingMode),
