@@ -115,7 +115,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    if (FileUtil.CanAccess(directoryPath))
+                    if (!FileUtil.CanAccess(directoryPath))
                     {
                         return string.Empty;
                     }
