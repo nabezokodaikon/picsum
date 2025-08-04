@@ -21,6 +21,11 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            if (!FileUtil.CanAccess(filePath))
+            {
+                return FileShallowInfoEntity.EMPTY;
+            }
+
             if (FileUtil.IsExistsFile(filePath))
             {
                 return this.GetFileInfo(

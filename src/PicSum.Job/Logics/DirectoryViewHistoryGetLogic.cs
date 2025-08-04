@@ -1,7 +1,7 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
-using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Data;
 using System.Runtime.Versioning;
@@ -18,12 +18,14 @@ namespace PicSum.Job.Logics
     {
         public string[] Execute(IDatabaseConnection con)
         {
-            var sql = new DirectoryViewHistoryReadSql(100);
-            var dtoList = con.ReadList<DirectoryViewHistoryDto>(sql);
-            return [.. dtoList
-                .AsValueEnumerable()
-                .Where(dto => FileUtil.CanAccess(dto.DirectoryPath))
-                .Select(dto => dto.DirectoryPath)                ];
+            using (TimeMeasuring.Run(true, "DirectoryViewHistoryGetLogic.Execute"))
+            {
+                var sql = new DirectoryViewHistoryReadSql(100);
+                var dtoList = con.ReadList<DirectoryViewHistoryDto>(sql);
+                return [.. dtoList
+                    .AsValueEnumerable()
+                    .Select(dto => dto.DirectoryPath)];
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
             {
                 var sql = new FavoriteDirectoriesReadSql();
                 var dtoList = con.ReadList<SingleValueDto<string>>(sql);
-                return [.. dtoList];
+                return dtoList;
             }
         }
     }
