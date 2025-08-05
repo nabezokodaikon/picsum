@@ -2,7 +2,6 @@ using System.Diagnostics;
 
 namespace SWF.Core.Base
 {
-#pragma warning disable CS0414, IDE0051
     public readonly struct TimeMeasuring
         : IDisposable
     {
@@ -23,10 +22,13 @@ namespace SWF.Core.Base
         private TimeMeasuring(bool enable, string message)
         {
 #if DEBUG
+            ArgumentNullException.ThrowIfNull(message, nameof(message));
+
+            this._stopwatch = Stopwatch.StartNew();
+            this._message = message;
+
             if (enable)
             {
-                this._stopwatch = Stopwatch.StartNew();
-                this._message = message;
                 this._enable = enable;
             }
 #endif
@@ -35,15 +37,14 @@ namespace SWF.Core.Base
         public void Dispose()
         {
 #if DEBUG
-            if (this._enable)
-            {
-                this._stopwatch?.Stop();
+            this._stopwatch?.Stop();
 
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._message}: {this._stopwatch?.ElapsedMilliseconds} ms");
+            if (this._enable || this._stopwatch?.ElapsedMilliseconds > 100)
+            {
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4")} ms: {this._message}: ");
             }
 #endif
             GC.SuppressFinalize(this);
         }
     }
-#pragma warning restore CS0414, IDE0051
 }
