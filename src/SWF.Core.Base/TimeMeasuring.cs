@@ -2,6 +2,7 @@ using System.Diagnostics;
 
 namespace SWF.Core.Base
 {
+#pragma warning disable CS0414
     public readonly struct TimeMeasuring
         : IDisposable
     {
@@ -47,4 +48,5 @@ namespace SWF.Core.Base
             GC.SuppressFinalize(this);
         }
     }
+#pragma warning restore CS0414
 }
