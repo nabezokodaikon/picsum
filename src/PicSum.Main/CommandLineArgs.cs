@@ -17,13 +17,62 @@ namespace PicSum.Main
 
         public static bool IsCleanup()
         {
-            return ARGS.Contains("--cleanup");
+            var arg = ARGS.FirstOrDefault(string.Empty).Trim();
+            if (string.IsNullOrEmpty(arg))
+            {
+                return false;
+            }
+
+            if (arg != "--cleanup")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static int GetThreshold()
+        {
+            var arg = ARGS.FirstOrDefault(string.Empty).Trim();
+            if (string.IsNullOrEmpty(arg))
+            {
+                return -1;
+            }
+
+            if (!arg.StartsWith("--threshold="))
+            {
+                return -1;
+            }
+
+            var equalsIndex = arg.IndexOf('=');
+            if (equalsIndex < 0)
+            {
+                return -1;
+            }
+
+            var numberString = arg.Substring(equalsIndex + 1);
+            if (!int.TryParse(numberString, out int threshold))
+            {
+                return -1;
+            }
+
+            return threshold;
         }
 
         public static string GetImageFilePathCommandLineArgs()
         {
-            return ARGS
-                .FirstOrDefault(_ => FileUtil.CanAccess(_) && ImageUtil.IsImageFile(_));
+            var arg = ARGS.FirstOrDefault(string.Empty).Trim();
+            if (string.IsNullOrEmpty(arg))
+            {
+                return string.Empty;
+            }
+
+            if (!FileUtil.CanAccess(arg) || !ImageUtil.IsImageFile(arg))
+            {
+                return string.Empty;
+            }
+
+            return arg;
         }
     }
 }
