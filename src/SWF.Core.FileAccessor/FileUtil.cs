@@ -108,23 +108,31 @@ namespace SWF.Core.FileAccessor
 
                 try
                 {
-                    var attributes = WinApiMembers.GetFileAttributes(filePath);
-                    if (attributes == WinApiMembers.INVALID_FILE_ATTRIBUTES)
+                    if (IsExistsFile(filePath))
                     {
-                        var error = Marshal.GetLastWin32Error();
-                        return error switch
-                        {
-                            // ファイルまたはパスが存在しない
-                            WinApiMembers.ERROR_FILE_NOT_FOUND or
-                            WinApiMembers.ERROR_PATH_NOT_FOUND => false,
-                            // アクセスが拒否された
-                            WinApiMembers.ERROR_ACCESS_DENIED => false,
-                            // その他のエラー
-                            _ => false,
-                        };
+                        var info = new FileInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        var attr = File.GetAttributes(filePath);
+                        return (attr & FileAttributes.Hidden) == 0;
                     }
+                    else if (IsExistsDrive(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        return true;
+                    }
+                    else if (IsExistsDirectory(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        var attr = File.GetAttributes(filePath);
+                        return (attr & FileAttributes.Hidden) == 0;
+                    }
+                    else
+                    {
+                        return false;
 
-                    return (attributes & WinApiMembers.FILE_ATTRIBUTE_HIDDEN) == 0;
+                    }
                 }
                 catch (ArgumentNullException)
                 {
