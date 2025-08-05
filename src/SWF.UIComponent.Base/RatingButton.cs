@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
-namespace SWF.UIComponent.Core
+namespace SWF.UIComponent.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal partial class RatingButton

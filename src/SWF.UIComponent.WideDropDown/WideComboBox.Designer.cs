@@ -1,6 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -17,7 +17,7 @@ namespace SWF.UIComponent.WideDropDown
         /// </summary>
         private void InitializeComponent()
         {
-            this.addButton = new SWF.UIComponent.Core.BaseIconButton();
+            this.addButton = new SWF.UIComponent.Base.BaseIconButton();
             this.inputTextBox = new InputTextBox();
             this.arrowPictureBox = new BaseIconButton();
             this.SuspendLayout();
@@ -41,7 +41,7 @@ namespace SWF.UIComponent.WideDropDown
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Core.BaseIconButton addButton;
+        private SWF.UIComponent.Base.BaseIconButton addButton;
         private BaseIconButton arrowPictureBox;
         private InputTextBox inputTextBox;
 

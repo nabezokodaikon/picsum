@@ -56,7 +56,7 @@
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
     <ProjectReference Include="..\SWF.Core.Base\SWF.Core.Base.csproj" />
     <ProjectReference Include="..\SWF.Core.ImageAccessor\SWF.Core.ImageAccessor.csproj" />
-    <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />

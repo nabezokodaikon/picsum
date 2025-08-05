@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.Core.StringAccessor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.Core.ResourceAccessor", "SWF.Core.ResourceAccessor\SWF.Core.ResourceAccessor.csproj", "{FD9BABA8-F981-DBAF-382B-715581522DF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.UIComponent.Base", "SWF.UIComponent.Base\SWF.UIComponent.Base.csproj", "{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -161,6 +163,12 @@ Global
 		{FD9BABA8-F981-DBAF-382B-715581522DF9}.Release|x64.Build.0 = Release|x64
 		{FD9BABA8-F981-DBAF-382B-715581522DF9}.UWP|x64.ActiveCfg = UWP|x64
 		{FD9BABA8-F981-DBAF-382B-715581522DF9}.UWP|x64.Build.0 = UWP|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.Debug|x64.ActiveCfg = Debug|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.Debug|x64.Build.0 = Debug|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.Release|x64.ActiveCfg = Release|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.Release|x64.Build.0 = Release|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.UWP|x64.ActiveCfg = UWP|x64
+		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.UWP|x64.Build.0 = UWP|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

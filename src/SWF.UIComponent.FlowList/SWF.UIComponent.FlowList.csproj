@@ -32,7 +32,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
   </ItemGroup>
   
   <ItemGroup>

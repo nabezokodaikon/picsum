@@ -1,5 +1,5 @@
 using SWF.Core.Base;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.Runtime.Versioning;
 using System.Windows.Forms;

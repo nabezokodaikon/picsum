@@ -1,4 +1,4 @@
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System.Drawing;
 using System.Runtime.Versioning;
 using System.Windows.Forms;

@@ -14,11 +14,11 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.thumbnailPictureBox = new SWF.UIComponent.Core.BasePaintingControl();
+            this.thumbnailPictureBox = new SWF.UIComponent.Base.BasePaintingControl();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ratingBar = new SWF.UIComponent.Core.RatingBar();
+            this.ratingBar = new SWF.UIComponent.Base.RatingBar();
             this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
             this.fileInfoLabel = new InfoLabel();
@@ -90,8 +90,8 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Core.BasePaintingControl thumbnailPictureBox;
-        private SWF.UIComponent.Core.RatingBar ratingBar;
+        private SWF.UIComponent.Base.BasePaintingControl thumbnailPictureBox;
+        private SWF.UIComponent.Base.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;

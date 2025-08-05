@@ -3,7 +3,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;

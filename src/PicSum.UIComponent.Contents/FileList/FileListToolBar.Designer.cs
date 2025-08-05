@@ -1,6 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,22 +18,22 @@ namespace PicSum.UIComponent.Contents.FileList
         /// </summary>
         private void InitializeComponent()
         {
-            this.viewButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.nameSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.pathSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.createDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.updateDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.takenDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.addDateSortButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.thumbnailSizeSlider = new SWF.UIComponent.Core.Slider();
+            this.viewButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.nameSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.pathSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.createDateSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.updateDateSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.takenDateSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.addDateSortButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.thumbnailSizeSlider = new SWF.UIComponent.Base.Slider();
             this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
             this.directoryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otherFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.fileNameMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.movePreviewButton = new SWF.UIComponent.Core.BaseTextButton();
-            this.moveNextButton = new SWF.UIComponent.Core.BaseTextButton();
+            this.movePreviewButton = new SWF.UIComponent.Base.BaseTextButton();
+            this.moveNextButton = new SWF.UIComponent.Base.BaseTextButton();
             this.viewMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -133,21 +133,21 @@ namespace PicSum.UIComponent.Contents.FileList
 
         #endregion
 
-        private SWF.UIComponent.Core.BaseTextButton viewButton;
-        private SWF.UIComponent.Core.Slider thumbnailSizeSlider;
+        private SWF.UIComponent.Base.BaseTextButton viewButton;
+        private SWF.UIComponent.Base.Slider thumbnailSizeSlider;
         private System.Windows.Forms.ToolStripDropDown viewMenu;
         private System.Windows.Forms.ToolStripMenuItem directoryMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imageFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem otherFileMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem fileNameMenuItem;
-        private SWF.UIComponent.Core.BaseTextButton movePreviewButton;
-        private SWF.UIComponent.Core.BaseTextButton moveNextButton;
-        private SWF.UIComponent.Core.BaseTextButton nameSortButton;
-        private SWF.UIComponent.Core.BaseTextButton pathSortButton;
-        private SWF.UIComponent.Core.BaseTextButton createDateSortButton;
-        private SWF.UIComponent.Core.BaseTextButton updateDateSortButton;
-        private SWF.UIComponent.Core.BaseTextButton takenDateSortButton;
-        private SWF.UIComponent.Core.BaseTextButton addDateSortButton;
+        private SWF.UIComponent.Base.BaseTextButton movePreviewButton;
+        private SWF.UIComponent.Base.BaseTextButton moveNextButton;
+        private SWF.UIComponent.Base.BaseTextButton nameSortButton;
+        private SWF.UIComponent.Base.BaseTextButton pathSortButton;
+        private SWF.UIComponent.Base.BaseTextButton createDateSortButton;
+        private SWF.UIComponent.Base.BaseTextButton updateDateSortButton;
+        private SWF.UIComponent.Base.BaseTextButton takenDateSortButton;
+        private SWF.UIComponent.Base.BaseTextButton addDateSortButton;
     }
 }

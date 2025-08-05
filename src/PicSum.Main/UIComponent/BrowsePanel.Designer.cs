@@ -113,16 +113,16 @@ namespace PicSum.Main.UIComponent
         private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
         private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
         private System.Windows.Forms.Control toolPanel;
-        private SWF.UIComponent.Core.ToolPanel toolPanel2;
-        private SWF.UIComponent.Core.BaseIconButton showInfoToolButton;
+        private SWF.UIComponent.Base.ToolPanel toolPanel2;
+        private SWF.UIComponent.Base.BaseIconButton showInfoToolButton;
         private PicSum.UIComponent.AddressBar.AddressBar addressBar;
-        private SWF.UIComponent.Core.BaseIconButton nextPageHistoryButton;
-        private SWF.UIComponent.Core.BaseIconButton previewPageHistoryButton;
-        private SWF.UIComponent.Core.BaseIconButton homeToolButton;
-        private SWF.UIComponent.Core.BaseIconButton searchRatingToolButton;
+        private SWF.UIComponent.Base.BaseIconButton nextPageHistoryButton;
+        private SWF.UIComponent.Base.BaseIconButton previewPageHistoryButton;
+        private SWF.UIComponent.Base.BaseIconButton homeToolButton;
+        private SWF.UIComponent.Base.BaseIconButton searchRatingToolButton;
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
-        private SWF.UIComponent.Core.BaseIconButton reloadToolButton;
-        private SWF.UIComponent.Core.BaseIconButton searchBookmarkToolButton;
+        private SWF.UIComponent.Base.BaseIconButton reloadToolButton;
+        private SWF.UIComponent.Base.BaseIconButton searchBookmarkToolButton;
 
         #endregion
     }

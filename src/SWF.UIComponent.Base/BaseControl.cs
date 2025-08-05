@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using System.Runtime.Versioning;
 
-namespace SWF.UIComponent.Core
+namespace SWF.UIComponent.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public class BasePaintingControl
+    public class BaseControl
         : Control
     {
         public event EventHandler? Loaded = null;
@@ -77,15 +77,12 @@ namespace SWF.UIComponent.Core
 
         public bool IsLoaded { get; private set; } = false;
 
-        public BasePaintingControl()
+        public BaseControl()
         {
             this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
+                ControlStyles.StandardClick,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl,
@@ -95,8 +92,8 @@ namespace SWF.UIComponent.Core
             this.AutoSize = false;
             this.DoubleBuffered = true;
 
-            this.HandleCreated += this.BasePaintingControl_HandleCreated;
-            this.ParentChanged += this.BasePaintingControl_ParentChanged;
+            this.HandleCreated += this.BaseControl_HandleCreated;
+            this.ParentChanged += this.BaseControl_ParentChanged;
         }
 
         protected virtual void OnLoaded(EventArgs e)
@@ -104,7 +101,7 @@ namespace SWF.UIComponent.Core
             this.Loaded?.Invoke(this, e);
         }
 
-        private void BasePaintingControl_HandleCreated(object? sender, EventArgs e)
+        private void BaseControl_HandleCreated(object? sender, EventArgs e)
         {
             if (this.IsLoaded)
             {
@@ -120,7 +117,7 @@ namespace SWF.UIComponent.Core
             }
         }
 
-        private void BasePaintingControl_ParentChanged(object? sender, EventArgs e)
+        private void BaseControl_ParentChanged(object? sender, EventArgs e)
         {
             if (this.IsLoaded)
             {

@@ -5,7 +5,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

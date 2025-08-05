@@ -1,7 +1,7 @@
 using PicSum.UIComponent.Contents.ContextMenu;
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Windows.Forms;
@@ -21,7 +21,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
             this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
-            this.checkPatternPanel = new SWF.UIComponent.Core.CheckPatternPanel();
+            this.checkPatternPanel = new SWF.UIComponent.Base.CheckPatternPanel();
             this.toolBar = new PicSum.UIComponent.Contents.ImageView.ImageViewToolBar();
             this.checkPatternPanel.SuspendLayout();
             this.toolBar.SuspendLayout();
@@ -106,7 +106,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private PicSum.UIComponent.Contents.ImageView.ImagePanel leftImagePanel;
         private PicSum.UIComponent.Contents.ImageView.ImagePanel rightImagePanel;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
-        private SWF.UIComponent.Core.CheckPatternPanel checkPatternPanel;
+        private SWF.UIComponent.Base.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ImageView.ImageViewToolBar toolBar;
 
         #endregion

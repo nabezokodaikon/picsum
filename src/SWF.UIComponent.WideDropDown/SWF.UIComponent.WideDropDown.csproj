@@ -44,7 +44,7 @@
     <Compile Update="WideDropToolButton.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SWF.UIComponent.Core\SWF.UIComponent.Core.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>

@@ -3,7 +3,7 @@ using SWF.Core.ResourceAccessor;
 using System.ComponentModel;
 using System.Runtime.Versioning;
 
-namespace SWF.UIComponent.Core
+namespace SWF.UIComponent.Base
 {
     /// <summary>
     /// スライダーコントロール

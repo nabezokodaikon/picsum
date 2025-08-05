@@ -1,6 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

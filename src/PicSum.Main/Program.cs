@@ -79,7 +79,7 @@ namespace PicSum.Main
                         typeof(SWF.Core.ResourceAccessor.ResourceFiles),
                         typeof(SWF.Core.StringAccessor.NaturalStringComparer),
 
-                        typeof(SWF.UIComponent.Core.CheckPatternPanel),
+                        typeof(SWF.UIComponent.Base.CheckPatternPanel),
                         typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
                         typeof(SWF.UIComponent.Form.GrassForm),
                         typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),

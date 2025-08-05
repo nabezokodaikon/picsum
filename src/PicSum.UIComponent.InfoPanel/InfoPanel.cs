@@ -7,7 +7,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Core;
+using SWF.UIComponent.Base;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.Collections.Generic;
