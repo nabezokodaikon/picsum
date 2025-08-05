@@ -108,6 +108,13 @@ namespace SWF.Core.FileAccessor
 
                 try
                 {
+                    if (IsExistsDrive(filePath))
+                    {
+                        var info = new DirectoryInfo(filePath);
+                        var _ = info.GetAccessControl();
+                        return true;
+                    }
+
                     var attributes = WinApiMembers.GetFileAttributes(filePath);
                     if (attributes == WinApiMembers.INVALID_FILE_ATTRIBUTES)
                     {
