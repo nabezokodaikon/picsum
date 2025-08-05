@@ -54,9 +54,8 @@ namespace SWF.Core.Base
             if (this.IsRunning)
             {
                 this._sw?.Stop();
-                var message = $"{this._sw?.ElapsedMilliseconds.ToString("D4")} ms: Boot End";
-                ConsoleUtil.Write(true, message);
-                LOGGER.Info(message);
+                ConsoleUtil.Write(true, $"{this._sw?.ElapsedMilliseconds.ToString("D4")} ms: Boot End");
+                LOGGER.Info($"Boot End: {this._sw?.ElapsedMilliseconds} ms");
                 this.IsRunning = false;
             }
         }
