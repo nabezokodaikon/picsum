@@ -6,6 +6,29 @@ namespace SWF.Core.Base
     public readonly struct TimeMeasuring
         : IDisposable
     {
+        private const long DEFAULT_THRESHOLD = long.MaxValue;
+
+        private static long _threshold = DEFAULT_THRESHOLD;
+
+        public static long Threshold
+        {
+            get
+            {
+                return Interlocked.Read(ref _threshold);
+            }
+            set
+            {
+                if (value > -1)
+                {
+                    Interlocked.Exchange(ref _threshold, value);
+                }
+                else
+                {
+                    Interlocked.Exchange(ref _threshold, DEFAULT_THRESHOLD);
+                }
+            }
+        }
+
         public static TimeMeasuring Run(bool enable, string message)
         {
 #if DEBUG
@@ -40,7 +63,7 @@ namespace SWF.Core.Base
 #if DEBUG
             this._stopwatch?.Stop();
 
-            if (this._enable || this._stopwatch?.ElapsedMilliseconds > 100)
+            if (this._enable || this._stopwatch?.ElapsedMilliseconds > Threshold)
             {
                 Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4")} ms: {this._message}: ");
             }
