@@ -510,13 +510,15 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Clear();
             this._selectedItemIndexs.Add(itemIndex);
 
-            this.EnsureVisible(itemIndex);
-
             if (size == this.Size
                 && itemSize.Width == this.ItemWidth
                 && itemSize.Height == this.ItemHeight)
             {
                 this._scrollBar.Value = scrollValue;
+            }
+            else
+            {
+                this.EnsureVisible(itemIndex);
             }
 
             this.Invalidate();
