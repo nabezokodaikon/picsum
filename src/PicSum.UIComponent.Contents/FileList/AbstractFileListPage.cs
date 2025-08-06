@@ -13,7 +13,6 @@ using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.FlowList;
-using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -160,7 +159,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public AbstractFileListPage(IPageParameter param)
+        public AbstractFileListPage(AbstractPageParameter param)
             : base(param)
         {
             using (TimeMeasuring.Run(true, "AbstractFileListPage.New"))
@@ -266,9 +265,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFiles(
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
-            int scrollValue,
-            Size flowListSize,
-            Size itemSize,
+            ScrollInfo scrollInfo,
             SortTypeID sortTypeID,
             bool isAscending)
         {
@@ -312,7 +309,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SortInfo.SetSortType(sortTypeID, isAscending);
 
             this.SetSort();
-            this.SetFilter(scrollValue, flowListSize, itemSize);
+            this.SetFilter(scrollInfo);
 
             this.flowList.Focus();
 
@@ -351,9 +348,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFile(
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
-            int scrollValue,
-            Size flowListSize,
-            Size itemSize)
+            ScrollInfo scrollInfo)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
@@ -361,9 +356,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFiles(
                 srcFiles,
                 selectedFilePath,
-                scrollValue,
-                flowListSize,
-                itemSize,
+                scrollInfo,
                 SortTypeID.Default,
                 false);
         }
@@ -458,10 +451,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
-            this.SetFilter(0, Size.Empty, Size.Empty);
+            this.SetFilter(ScrollInfo.EMPTY);
         }
 
-        private void SetFilter(int scrollValue, Size flowListSize, Size itemSize)
+        private void SetFilter(ScrollInfo scrollInfo)
         {
             this.flowList.Focus();
 
@@ -667,9 +660,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     this.flowList.SelectItem(
                         filterList.IndexOf(selectedFile),
-                        scrollValue,
-                        flowListSize,
-                        itemSize);
+                        scrollInfo);
                 }
                 else if (this.flowList.ItemCount > 0)
                 {

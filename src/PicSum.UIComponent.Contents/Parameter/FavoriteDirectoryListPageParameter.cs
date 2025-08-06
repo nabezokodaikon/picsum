@@ -1,26 +1,14 @@
 using PicSum.UIComponent.Contents.FileList;
-using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
-using System.Drawing;
 using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class FavoriteDirectoryListPageParameter
-        : IPageParameter
+        : AbstractPageParameter
     {
         public const string PAGE_SOURCES = "Favorite";
-
-        public string PageSources { get; private set; }
-        public string SourcesKey { get; private set; }
-        public string Key { get; private set; }
-        public string SelectedFilePath { get; set; }
-        public int ScrollValue { get; set; }
-        public Size FlowListSize { get; set; }
-        public Size ItemSize { get; set; }
-        public SortInfo SortInfo { get; set; }
-        public bool VisibleBookmarkMenuItem { get; private set; }
 
         public FavoriteDirectoryListPageParameter()
         {
@@ -32,7 +20,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.VisibleBookmarkMenuItem = false;
         }
 
-        public PagePanel CreatePage()
+        public override PagePanel CreatePage()
         {
             // ディレクトリのみ表示のため、画像ビューアへの遷移は有り得ない。
             return new FavoriteDirectoryListPage(this);

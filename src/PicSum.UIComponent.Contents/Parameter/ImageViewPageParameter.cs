@@ -14,22 +14,13 @@ namespace PicSum.UIComponent.Contents.Parameter
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class ImageViewPageParameter
-        : IPageParameter
+        : AbstractPageParameter
     {
         public event EventHandler<GetImageFilesEventArgs> GetImageFiles;
 
-        public string PageSources { get; private set; }
-        public string SourcesKey { get; private set; }
-        public string Key { get; private set; }
         public Func<ImageViewPageParameter, Action<ISender>> ImageFilesGetAction { get; private set; }
         public string PageTitle { get; private set; }
-        public System.Drawing.Image PageIcon { get; private set; }
-        public string SelectedFilePath { get; set; }
-        public int ScrollValue { get; set; }
-        public Size FlowListSize { get; set; }
-        public Size ItemSize { get; set; }
-        public SortInfo SortInfo { get; set; }
-        public bool VisibleBookmarkMenuItem { get; private set; }
+        public Image PageIcon { get; private set; }
 
         public ImageViewPageParameter(
             string pageSources,
@@ -38,7 +29,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             string selectedFilePath,
             SortInfo sortInfo,
             string pageTitle,
-            System.Drawing.Image pageIcon,
+            Image pageIcon,
             bool visibleBookmarkMenuItem)
         {
             this.PageSources = pageSources ?? throw new ArgumentNullException(nameof(pageSources));
@@ -52,7 +43,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.VisibleBookmarkMenuItem = visibleBookmarkMenuItem;
         }
 
-        public PagePanel CreatePage()
+        public override PagePanel CreatePage()
         {
             return new ImageViewPage(this);
         }

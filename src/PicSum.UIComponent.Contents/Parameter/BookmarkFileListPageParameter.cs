@@ -1,26 +1,14 @@
 using PicSum.UIComponent.Contents.FileList;
-using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
-using System.Drawing;
 using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed class BookmarkFileListPageParameter
-        : IPageParameter
+        : AbstractPageParameter
     {
         public const string PAGE_SOURCES = "Bookmark";
-
-        public string Key { get; private set; }
-        public string PageSources { get; private set; }
-        public string SourcesKey { get; private set; }
-        public string SelectedFilePath { get; set; }
-        public int ScrollValue { get; set; }
-        public Size FlowListSize { get; set; }
-        public Size ItemSize { get; set; }
-        public SortInfo SortInfo { get; set; }
-        public bool VisibleBookmarkMenuItem { get; private set; }
 
         public BookmarkFileListPageParameter()
         {
@@ -32,7 +20,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             this.VisibleBookmarkMenuItem = true;
         }
 
-        public PagePanel CreatePage()
+        public override PagePanel CreatePage()
         {
             return new BookmarkFileListPage(this);
         }

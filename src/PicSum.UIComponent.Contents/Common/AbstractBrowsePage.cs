@@ -1,3 +1,4 @@
+using PicSum.UIComponent.Contents.Parameter;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
@@ -22,9 +23,9 @@ namespace PicSum.UIComponent.Contents.Common
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public abstract string SelectedFilePath { get; protected set; }
 
-        protected IPageParameter Parameter { get; private set; }
+        protected AbstractPageParameter Parameter { get; private set; }
 
-        public AbstractBrowsePage(IPageParameter parameter)
+        public AbstractBrowsePage(AbstractPageParameter parameter)
         {
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }

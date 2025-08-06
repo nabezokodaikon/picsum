@@ -1,6 +1,3 @@
-using SWF.Core.Base;
-using System.Drawing;
-
 namespace SWF.UIComponent.TabOperation
 {
     /// <summary>
@@ -12,11 +9,6 @@ namespace SWF.UIComponent.TabOperation
         string PageSources { get; }
         string SourcesKey { get; }
         string SelectedFilePath { get; set; }
-        int ScrollValue { get; set; }
-        Size FlowListSize { get; set; }
-        Size ItemSize { get; set; }
-        SortInfo SortInfo { get; set; }
-        public bool VisibleBookmarkMenuItem { get; }
         PagePanel CreatePage();
     }
 }

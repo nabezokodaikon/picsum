@@ -66,9 +66,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.SaveCurrentDirectoryState();
                 this._parameter.SelectedFilePath = base.SelectedFilePath;
-                this._parameter.ScrollValue = this.ScrollValue;
-                this._parameter.FlowListSize = this.FlowListSize;
-                this._parameter.ItemSize = this.ItemSize;
+                this._parameter.ScrollInfo
+                    = new(this.ScrollValue, this.FlowListSize, this.ItemSize);
                 this._parameter.SortInfo = base.SortInfo;
             }
 
@@ -242,9 +241,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             SortTypeID.FilePath,
                             true);
                     }
@@ -253,9 +250,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             e.DirectoryState.SortTypeID,
                             e.DirectoryState.IsAscending);
                     }
@@ -267,9 +262,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.DirectoryPath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             SortTypeID.FilePath,
                             true);
                     }
@@ -278,9 +271,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             e.DirectoryState.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             e.DirectoryState.SortTypeID,
                             e.DirectoryState.IsAscending);
                     }
@@ -302,9 +293,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             sortType,
                             isAscending);
                     }
@@ -313,9 +302,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             sortType,
                             isAscending);
                     }
@@ -327,9 +314,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             this._parameter.DirectoryPath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             sortType,
                             isAscending);
                     }
@@ -338,9 +323,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         base.SetFiles(
                             e.FileInfoList,
                             e.DirectoryState.SelectedFilePath,
-                            this._parameter.ScrollValue,
-                            this._parameter.FlowListSize,
-                            this._parameter.ItemSize,
+                            this._parameter.ScrollInfo,
                             sortType,
                             isAscending);
                     }

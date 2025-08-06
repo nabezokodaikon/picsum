@@ -471,7 +471,7 @@ namespace SWF.UIComponent.FlowList
             this.OnSelectedItemChanged(EventArgs.Empty);
         }
 
-        public void SelectItem(int itemIndex, int scrollValue, Size size, Size itemSize)
+        public void SelectItem(int itemIndex, ScrollInfo scrollInfo)
         {
             if (this._rectangleSelection.IsBegun)
             {
@@ -488,11 +488,11 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Clear();
             this._selectedItemIndexs.Add(itemIndex);
 
-            if (size == this.Size
-                && itemSize.Width == this.ItemWidth
-                && itemSize.Height == this.ItemHeight)
+            if (scrollInfo.FlowListSize == this.Size
+                && scrollInfo.ItemSize.Width == this.ItemWidth
+                && scrollInfo.ItemSize.Height == this.ItemHeight)
             {
-                this._scrollBar.Value = scrollValue;
+                this._scrollBar.Value = scrollInfo.ScrollValue;
             }
             else
             {
