@@ -20,7 +20,7 @@ namespace PicSum.UIComponent.Contents.FileList
     internal static class FileListUtil
     {
         private static string[] GetSortFiles(
-            IEnumerable<FileShallowInfoEntity> files, SortInfo sortInfo)
+            IEnumerable<FileShallowInfoEntity> files, SortParameter sortInfo)
         {
             ArgumentNullException.ThrowIfNull(files, nameof(files));
             ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));

@@ -27,7 +27,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             string sourcesKey,
             Func<ImageViewPageParameter, Action<ISender>> imageFilesGetAction,
             string selectedFilePath,
-            SortInfo sortInfo,
+            SortParameter sortInfo,
             string pageTitle,
             Image pageIcon,
             bool visibleBookmarkMenuItem)

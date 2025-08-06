@@ -4,12 +4,12 @@ using System;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
-    public class DragEntity(
+    public class DragParameter(
         object sender,
         string pageSources,
         string sourcesKey,
         string currentFilePath,
-        SortInfo sortInfo,
+        SortParameter sortInfo,
         Func<ImageViewPageParameter, Action<ISender>> getImageFilesAction,
         string pageTitle,
         System.Drawing.Image pageIcon,
@@ -27,7 +27,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string CurrentFilePath { get; private set; }
             = currentFilePath ?? throw new ArgumentNullException(nameof(currentFilePath));
 
-        public SortInfo SortInfo { get; private set; }
+        public SortParameter SortInfo { get; private set; }
             = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
 
         public Func<ImageViewPageParameter, Action<ISender>> GetImageFilesAction { get; private set; }

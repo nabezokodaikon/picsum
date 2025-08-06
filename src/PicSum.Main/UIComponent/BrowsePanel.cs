@@ -526,7 +526,7 @@ namespace PicSum.Main.UIComponent
             this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(tabIndex, param));
         }
 
-        private void OverlapPage(DragEntity dragData)
+        private void OverlapPage(DragParameter dragData)
         {
             if (FileUtil.IsExistsDirectory(dragData.CurrentFilePath))
             {
@@ -550,7 +550,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void InsertPage(DragEntity dragData, int tabIndex)
+        private void InsertPage(DragParameter dragData, int tabIndex)
         {
             if (FileUtil.IsExistsDirectory(dragData.CurrentFilePath))
             {
@@ -576,15 +576,15 @@ namespace PicSum.Main.UIComponent
 
         private new void DragDrop(TabAreaDragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(DragEntity)))
+            if (e.Data.GetDataPresent(typeof(DragParameter)))
             {
                 if (e.IsOverlap)
                 {
-                    this.OverlapPage((DragEntity)e.Data.GetData(typeof(DragEntity)));
+                    this.OverlapPage((DragParameter)e.Data.GetData(typeof(DragParameter)));
                 }
                 else
                 {
-                    this.InsertPage((DragEntity)e.Data.GetData(typeof(DragEntity)), e.TabIndex);
+                    this.InsertPage((DragParameter)e.Data.GetData(typeof(DragParameter)), e.TabIndex);
                 }
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -600,10 +600,10 @@ namespace PicSum.Main.UIComponent
                 var dirPath = FileUtil.IsExistsDirectory(filePath) ?
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
 
-                var sortInfo = new SortInfo();
+                var sortInfo = new SortParameter();
                 sortInfo.SetSortType(SortTypeID.FilePath, true);
 
-                var dragData = new DragEntity(
+                var dragData = new DragParameter(
                     this,
                     DirectoryFileListPageParameter.PAGE_SOURCES,
                     dirPath,
@@ -753,7 +753,7 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_TabAreaDragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(DragEntity)))
+            if (e.Data.GetDataPresent(typeof(DragParameter)))
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -827,9 +827,9 @@ namespace PicSum.Main.UIComponent
                 return;
             }
 
-            if (e.Data.GetDataPresent(typeof(DragEntity)))
+            if (e.Data.GetDataPresent(typeof(DragParameter)))
             {
-                var entity = (DragEntity)e.Data.GetData(typeof(DragEntity));
+                var entity = (DragParameter)e.Data.GetData(typeof(DragParameter));
                 if (!HasControl(entity.Sender, this))
                 {
                     e.Effect = DragDropEffects.Copy;

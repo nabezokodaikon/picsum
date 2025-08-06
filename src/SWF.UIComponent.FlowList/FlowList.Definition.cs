@@ -471,7 +471,7 @@ namespace SWF.UIComponent.FlowList
             this.OnSelectedItemChanged(EventArgs.Empty);
         }
 
-        public void SelectItem(int itemIndex, ScrollInfo scrollInfo)
+        public void SelectItem(int itemIndex, ScrollParameter scrollInfo)
         {
             if (this._rectangleSelection.IsBegun)
             {

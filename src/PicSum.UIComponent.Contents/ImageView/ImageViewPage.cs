@@ -697,7 +697,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DoDragDrop(string currentFilePath)
         {
-            var dragData = new DragEntity(
+            var dragData = new DragParameter(
                 this,
                 this.Parameter.PageSources,
                 this.Parameter.SourcesKey,
@@ -710,7 +710,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             var dataObject = new DataObject();
             dataObject.SetData(DataFormats.FileDrop, new string[] { currentFilePath });
-            dataObject.SetData(typeof(DragEntity), dragData);
+            dataObject.SetData(typeof(DragParameter), dragData);
             this.DoDragDrop(dataObject, DragDropEffects.Copy);
         }
 

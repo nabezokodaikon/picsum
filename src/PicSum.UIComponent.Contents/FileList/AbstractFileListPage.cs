@@ -42,7 +42,7 @@ namespace PicSum.UIComponent.Contents.FileList
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
-        protected SortInfo SortInfo { get; private set; } = new();
+        protected SortParameter SortInfo { get; private set; } = new();
 
         protected bool IsAscending
         {
@@ -265,7 +265,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFiles(
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
-            ScrollInfo scrollInfo,
+            ScrollParameter scrollInfo,
             SortTypeID sortTypeID,
             bool isAscending)
         {
@@ -348,7 +348,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected void SetFile(
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
-            ScrollInfo scrollInfo)
+            ScrollParameter scrollInfo)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
@@ -451,10 +451,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFilter()
         {
-            this.SetFilter(ScrollInfo.EMPTY);
+            this.SetFilter(ScrollParameter.EMPTY);
         }
 
-        private void SetFilter(ScrollInfo scrollInfo)
+        private void SetFilter(ScrollParameter scrollInfo)
         {
             this.flowList.Focus();
 
@@ -1168,7 +1168,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     .Where(ImageUtil.IsImageFile)
                     .ToArray();
 
-                var dragData = new DragEntity(
+                var dragData = new DragParameter(
                     this,
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,
@@ -1181,13 +1181,13 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var dataObject = new DataObject();
                 dataObject.SetData(DataFormats.FileDrop, selectedImageFiles);
-                dataObject.SetData(typeof(DragEntity), dragData);
+                dataObject.SetData(typeof(DragParameter), dragData);
                 this.DoDragDrop(dataObject, DragDropEffects.Copy);
             }
             else if (!currentFileInfo.IsFile)
             {
                 // 選択項目がフォルダの場合。
-                var dragData = new DragEntity(
+                var dragData = new DragParameter(
                     this,
                     this.Parameter.PageSources,
                     this.Parameter.SourcesKey,

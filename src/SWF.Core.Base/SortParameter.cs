@@ -3,7 +3,7 @@ using System.Runtime.Versioning;
 namespace SWF.Core.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class SortInfo
+    public sealed class SortParameter
     {
         private bool _isFileNameSortAscending = true;
         private bool _isFilePathSortAscending = true;

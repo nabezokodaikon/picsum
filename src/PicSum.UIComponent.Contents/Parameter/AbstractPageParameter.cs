@@ -12,8 +12,8 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string SourcesKey { get; protected set; }
 
         public string SelectedFilePath { get; set; }
-        public ScrollInfo ScrollInfo { get; set; }
-        public SortInfo SortInfo { get; set; }
+        public ScrollParameter ScrollInfo { get; set; }
+        public SortParameter SortInfo { get; set; }
         public bool VisibleBookmarkMenuItem { get; protected set; }
 
         public abstract PagePanel CreatePage();

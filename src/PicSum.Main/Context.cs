@@ -47,7 +47,7 @@ namespace PicSum.Main
                     var form = this._browseManager.GetActiveBrowse();
                     var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
 
-                    var sortInfo = new SortInfo();
+                    var sortInfo = new SortParameter();
                     sortInfo.SetSortType(SortTypeID.FilePath, true);
 
                     var parameter = new ImageViewPageParameter(

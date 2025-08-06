@@ -2,10 +2,10 @@ using System.Drawing;
 
 namespace SWF.UIComponent.FlowList
 {
-    public struct ScrollInfo(
+    public struct ScrollParameter(
         int scrollValue, Size flowListSize, Size itemSize)
     {
-        public static readonly ScrollInfo EMPTY
+        public static readonly ScrollParameter EMPTY
             = new(0, Size.Empty, Size.Empty);
 
         public int ScrollValue { get; private set; } = scrollValue;
