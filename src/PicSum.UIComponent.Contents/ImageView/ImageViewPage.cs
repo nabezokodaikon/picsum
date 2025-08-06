@@ -644,16 +644,14 @@ namespace PicSum.UIComponent.Contents.ImageView
                             return;
                         }
 
-                        if (result.IsMain && !this._isMainLoading)
+                        if (result.IsMain && this._isMainLoading)
                         {
-                            return;
+                            this.ImageFileReadJob_Callback(result);
                         }
-                        else if (!result.IsMain && !this._isSubLoading)
+                        else if (!result.IsMain && this._isSubLoading)
                         {
-                            return;
+                            this.ImageFileReadJob_Callback(result);
                         }
-
-                        this.ImageFileReadJob_Callback(result);
                     });
 
                 Instance<JobCaller>.Value.ImageFileReadJob.Value
@@ -673,12 +671,17 @@ namespace PicSum.UIComponent.Contents.ImageView
                             this._isInitializing = false;
                         }
 
-                        if (result.IsMain)
+                        if (result.IsMain && result.HasSub)
                         {
                             this._isMainLoading = false;
                         }
                         else if (!result.IsMain)
                         {
+                            this._isSubLoading = false;
+                        }
+                        else
+                        {
+                            this._isMainLoading = false;
                             this._isSubLoading = false;
                         }
 
