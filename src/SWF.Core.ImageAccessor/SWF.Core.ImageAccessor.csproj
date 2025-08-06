@@ -38,7 +38,7 @@
     <PackageReference Include="LibHeif.Native.win-x64" Version="1.15.1" />
     <PackageReference Include="Magick.NET-Q16-x64" Version="14.7.0" />
     <PackageReference Include="Magick.NET.SystemDrawing" Version="8.0.7" />
-    <PackageReference Include="MetadataExtractor" Version="2.8.1" />
+    <PackageReference Include="MetadataExtractor" Version="2.9.0-rc3" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507">
       <TreatAsUsed>true</TreatAsUsed>
