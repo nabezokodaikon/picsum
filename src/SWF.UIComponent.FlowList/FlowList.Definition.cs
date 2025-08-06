@@ -347,15 +347,6 @@ namespace SWF.UIComponent.FlowList
         }
 
         [Browsable(false)]
-        public Pen SelectedItemPen
-        {
-            get
-            {
-                return SELECTED_ITEM_PEN;
-            }
-        }
-
-        [Browsable(false)]
         public SolidBrush FocusItemBrush
         {
             get

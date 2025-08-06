@@ -727,15 +727,17 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void DrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
+            var selectedItemPen = FlowList.GetSelectedItemPen(this);
+
             if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(this.flowList.SelectedItemBrush, e.ItemRectangle);
-                e.Graphics.DrawRectangle(this.flowList.SelectedItemPen, e.ItemRectangle);
+                e.Graphics.DrawRectangle(selectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsFocus)
             {
-                e.Graphics.DrawRectangle(this.flowList.SelectedItemPen, e.ItemRectangle);
+                e.Graphics.DrawRectangle(selectedItemPen, e.ItemRectangle);
             }
 
             if (e.IsMousePoint)

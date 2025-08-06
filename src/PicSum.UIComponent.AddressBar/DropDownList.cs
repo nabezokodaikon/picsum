@@ -237,15 +237,6 @@ namespace PicSum.UIComponent.AddressBar
         }
 
         [Browsable(false)]
-        public Pen SelectedItemPen
-        {
-            get
-            {
-                return this.FlowList.SelectedItemPen;
-            }
-        }
-
-        [Browsable(false)]
         public SolidBrush FocusItemBrush
         {
             get

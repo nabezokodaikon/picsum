@@ -1,6 +1,7 @@
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -51,20 +52,9 @@ namespace SWF.UIComponent.FlowList
 
         private static readonly SolidBrush ITEM_TEXT_BRUSH = new(ITEM_TEXT_COLOR);
         private static readonly SolidBrush SELECTED_ITEM_BRUSH = new(SELECTED_ITEM_COLOR);
-        private static readonly Pen SELECTED_ITEM_PEN = new(Color.FromArgb(
-            255,
-            SELECTED_ITEM_COLOR.R,
-            SELECTED_ITEM_COLOR.G,
-            SELECTED_ITEM_COLOR.B),
-            2);
         private static readonly SolidBrush FOUCUS_ITEM_BRUSH = new(FOCUS_ITEM_COLOR);
         private static readonly SolidBrush MOUSE_POINT_ITEM_BRUSH = new(MOUSE_POINT_ITEM_COLOR);
         private static readonly SolidBrush RECTANGLE_SELECTION_BRUSH = new(RECTANGLE_SELECTION_COLOR);
-        private static readonly Pen RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
-            RECTANGLE_SELECTION_COLOR.A * 2,
-            RECTANGLE_SELECTION_COLOR.R,
-            RECTANGLE_SELECTION_COLOR.G,
-            RECTANGLE_SELECTION_COLOR.B));
 
         private static readonly Size DRAG_SIZE = GetDragSize();
 
@@ -72,6 +62,58 @@ namespace SWF.UIComponent.FlowList
         {
             var size = SystemInformation.DragSize.Width * 16;
             return new Size(size, size);
+        }
+
+        private static readonly Pen DEFAULT_SELECTED_ITEM_PEN = new(Color.FromArgb(
+            255,
+            SELECTED_ITEM_COLOR.R,
+            SELECTED_ITEM_COLOR.G,
+            SELECTED_ITEM_COLOR.B),
+            2f);
+
+        private static readonly Dictionary<float, Pen> DEFAULT_SELECTED_ITEM_PEN_CACHE = [];
+
+        public static Pen GetSelectedItemPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (DEFAULT_SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                        DEFAULT_SELECTED_ITEM_PEN.Color,
+                        DEFAULT_SELECTED_ITEM_PEN.Width * scale);
+                DEFAULT_SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        private static readonly Pen DEFAULT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
+            RECTANGLE_SELECTION_COLOR.A * 2,
+            RECTANGLE_SELECTION_COLOR.R,
+            RECTANGLE_SELECTION_COLOR.G,
+            RECTANGLE_SELECTION_COLOR.B),
+            2f);
+
+        private static readonly Dictionary<float, Pen> RECTANGLE_SELECTION_PEN_CACHE = [];
+
+        private static Pen GetRectangleSelectionPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                        DEFAULT_RECTANGLE_SELECTION_PEN.Color,
+                        DEFAULT_RECTANGLE_SELECTION_PEN.Width * scale);
+                RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
         }
 
         private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
@@ -131,14 +173,6 @@ namespace SWF.UIComponent.FlowList
             get
             {
                 return RECTANGLE_SELECTION_BRUSH;
-            }
-        }
-
-        private Pen RectangleSelectionPen
-        {
-            get
-            {
-                return RECTANGLE_SELECTION_PEN;
             }
         }
 
@@ -941,7 +975,10 @@ namespace SWF.UIComponent.FlowList
         private void DrawRectangleSelection(Graphics g)
         {
             g.FillRectangle(this.RectangleSelectionBrush, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
-            g.DrawRectangle(this.RectangleSelectionPen, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
+
+            g.DrawRectangle(
+                GetRectangleSelectionPen(this),
+                this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
         }
 
         private int GetRowFromVirtualY(int y)
