@@ -38,6 +38,14 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        public int ScrollValue
+        {
+            get
+            {
+                return this._scrollBar.Value;
+            }
+        }
+
         /// <summary>
         /// 項目数
         /// </summary>
@@ -479,6 +487,37 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Add(itemIndex);
 
             this.EnsureVisible(itemIndex);
+
+            this.Invalidate();
+
+            this.OnSelectedItemChanged(EventArgs.Empty);
+        }
+
+        public void SelectItem(int itemIndex, int scrollValue, Size size, Size itemSize)
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                throw new InvalidOperationException("短形選択中は設定できません。");
+            }
+
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
+            {
+                throw new ArgumentOutOfRangeException(nameof(itemIndex));
+            }
+
+            this._foucusItemIndex = itemIndex;
+
+            this._selectedItemIndexs.Clear();
+            this._selectedItemIndexs.Add(itemIndex);
+
+            this.EnsureVisible(itemIndex);
+
+            if (size == this.Size
+                && itemSize.Width == this.ItemWidth
+                && itemSize.Height == this.ItemHeight)
+            {
+                this._scrollBar.Value = scrollValue;
+            }
 
             this.Invalidate();
 

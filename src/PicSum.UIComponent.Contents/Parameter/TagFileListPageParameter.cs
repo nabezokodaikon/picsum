@@ -2,6 +2,7 @@ using PicSum.UIComponent.Contents.FileList;
 using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
+using System.Drawing;
 using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
@@ -20,6 +21,9 @@ namespace PicSum.UIComponent.Contents.Parameter
         public string Key { get; private set; }
         public String Tag { get; private set; }
         public string SelectedFilePath { get; set; }
+        public int ScrollValue { get; set; }
+        public Size FlowListSize { get; set; }
+        public Size ItemSize { get; set; }
         public SortInfo SortInfo { get; set; }
         public bool VisibleBookmarkMenuItem { get; private set; }
 

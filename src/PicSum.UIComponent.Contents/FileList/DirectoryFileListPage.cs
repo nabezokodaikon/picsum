@@ -66,6 +66,9 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.SaveCurrentDirectoryState();
                 this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.ScrollValue = this.ScrollValue;
+                this._parameter.FlowListSize = this.FlowListSize;
+                this._parameter.ItemSize = this.ItemSize;
                 this._parameter.SortInfo = base.SortInfo;
             }
 
@@ -236,22 +239,50 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, SortTypeID.FilePath, true);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            SortTypeID.FilePath,
+                            true);
                     }
                     else
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            e.DirectoryState.SortTypeID,
+                            e.DirectoryState.IsAscending);
                     }
                 }
                 else
                 {
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, SortTypeID.FilePath, true);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.DirectoryPath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            SortTypeID.FilePath,
+                            true);
                     }
                     else
                     {
-                        base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, e.DirectoryState.SortTypeID, e.DirectoryState.IsAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            e.DirectoryState.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            e.DirectoryState.SortTypeID,
+                            e.DirectoryState.IsAscending);
                     }
 
                     if (e.FileInfoList.Length < 1)
@@ -268,22 +299,50 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, sortType, isAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            sortType,
+                            isAscending);
                     }
                     else
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.SelectedFilePath, sortType, isAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            sortType,
+                            isAscending);
                     }
                 }
                 else
                 {
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                     {
-                        base.SetFiles(e.FileInfoList, this._parameter.DirectoryPath, sortType, isAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            this._parameter.DirectoryPath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            sortType,
+                            isAscending);
                     }
                     else
                     {
-                        base.SetFiles(e.FileInfoList, e.DirectoryState.SelectedFilePath, sortType, isAscending);
+                        base.SetFiles(
+                            e.FileInfoList,
+                            e.DirectoryState.SelectedFilePath,
+                            this._parameter.ScrollValue,
+                            this._parameter.FlowListSize,
+                            this._parameter.ItemSize,
+                            sortType,
+                            isAscending);
                     }
 
                     if (e.FileInfoList.Length < 1)

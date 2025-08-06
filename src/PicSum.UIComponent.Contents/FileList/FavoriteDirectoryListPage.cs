@@ -49,6 +49,9 @@ namespace PicSum.UIComponent.Contents.FileList
             if (disposing)
             {
                 this._parameter.SelectedFilePath = base.SelectedFilePath;
+                this._parameter.ScrollValue = this.ScrollValue;
+                this._parameter.FlowListSize = this.FlowListSize;
+                this._parameter.ItemSize = this.ItemSize;
                 this._parameter.SortInfo = base.SortInfo;
             }
 
@@ -116,13 +119,21 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this._parameter.SortInfo == null)
             {
-                base.SetFile([.. e], this._parameter.SelectedFilePath);
+                base.SetFile(
+                    [.. e],
+                    this._parameter.SelectedFilePath,
+                    this._parameter.ScrollValue,
+                    this._parameter.FlowListSize,
+                    this._parameter.ItemSize);
             }
             else
             {
                 base.SetFiles(
                     [.. e],
                     this._parameter.SelectedFilePath,
+                    this._parameter.ScrollValue,
+                    this._parameter.FlowListSize,
+                    this._parameter.ItemSize,
                     this._parameter.SortInfo.ActiveSortType,
                     this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
             }

@@ -74,6 +74,32 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        protected int ScrollValue
+        {
+            get
+            {
+                return this.flowList.ScrollValue;
+            }
+        }
+
+        protected Size FlowListSize
+        {
+            get
+            {
+                return this.flowList.Size;
+            }
+        }
+
+        protected Size ItemSize
+        {
+            get
+            {
+                return new(
+                    this.flowList.ItemWidth,
+                    this.flowList.ItemHeight);
+            }
+        }
+
         private bool IsShowDirectory
         {
             get
@@ -237,7 +263,14 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected abstract void OnMoveNextButtonClick(EventArgs e);
 
-        protected void SetFiles(FileShallowInfoEntity[] srcFiles, string selectedFilePath, SortTypeID sortTypeID, bool isAscending)
+        protected void SetFiles(
+            FileShallowInfoEntity[] srcFiles,
+            string selectedFilePath,
+            int scrollValue,
+            Size flowListSize,
+            Size itemSize,
+            SortTypeID sortTypeID,
+            bool isAscending)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
@@ -279,7 +312,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SortInfo.SetSortType(sortTypeID, isAscending);
 
             this.SetSort();
-            this.SetFilter();
+            this.SetFilter(scrollValue, flowListSize, itemSize);
 
             this.flowList.Focus();
 
@@ -315,12 +348,24 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        protected void SetFile(FileShallowInfoEntity[] srcFiles, string selectedFilePath)
+        protected void SetFile(
+            FileShallowInfoEntity[] srcFiles,
+            string selectedFilePath,
+            int scrollValue,
+            Size flowListSize,
+            Size itemSize)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
-            this.SetFiles(srcFiles, selectedFilePath, SortTypeID.Default, false);
+            this.SetFiles(
+                srcFiles,
+                selectedFilePath,
+                scrollValue,
+                flowListSize,
+                itemSize,
+                SortTypeID.Default,
+                false);
         }
 
         protected void SetContextMenuFiles(string[] filePathList)
@@ -412,6 +457,11 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void SetFilter()
+        {
+            this.SetFilter(0, Size.Empty, Size.Empty);
+        }
+
+        private void SetFilter(int scrollValue, Size flowListSize, Size itemSize)
         {
             this.flowList.Focus();
 
@@ -615,7 +665,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     .FirstOrDefault(f => StringUtil.CompareFilePath(f.FilePath, this.SelectedFilePath));
                 if (selectedFile != null)
                 {
-                    this.flowList.SelectItem(filterList.IndexOf(selectedFile));
+                    this.flowList.SelectItem(
+                        filterList.IndexOf(selectedFile),
+                        scrollValue,
+                        flowListSize,
+                        itemSize);
                 }
                 else if (this.flowList.ItemCount > 0)
                 {
