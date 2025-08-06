@@ -54,7 +54,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
         private string[] _filePathList = null;
         private bool _isInitializing = true;
-        private bool _isLoading = false;
+        private bool _isMainLoading = false;
+        private bool _isSubLoading = false;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = string.Empty;
@@ -614,7 +615,8 @@ namespace PicSum.UIComponent.Contents.ImageView
                 return;
             }
 
-            this._isLoading = true;
+            this._isMainLoading = true;
+            this._isSubLoading = true;
 
             using (TimeMeasuring.Run(false, "ImageViewPage.ReadImage"))
             {
@@ -642,7 +644,11 @@ namespace PicSum.UIComponent.Contents.ImageView
                             return;
                         }
 
-                        if (!this._isLoading)
+                        if (result.IsMain && !this._isMainLoading)
+                        {
+                            return;
+                        }
+                        else if (!result.IsMain && !this._isSubLoading)
                         {
                             return;
                         }
@@ -667,7 +673,14 @@ namespace PicSum.UIComponent.Contents.ImageView
                             this._isInitializing = false;
                         }
 
-                        this._isLoading = false;
+                        if (result.IsMain)
+                        {
+                            this._isMainLoading = false;
+                        }
+                        else if (!result.IsMain)
+                        {
+                            this._isSubLoading = false;
+                        }
 
                         using (TimeMeasuring.Run(false, "ImageViewPage.ImageFileReadJob_Callback"))
                         {
