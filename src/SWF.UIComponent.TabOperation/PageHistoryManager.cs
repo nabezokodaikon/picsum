@@ -99,19 +99,7 @@ namespace SWF.UIComponent.TabOperation
                 throw new IndexOutOfRangeException("コンテンツパラメータの前の履歴が存在しません。");
             }
 
-            var currentIndex = this._index;
-            var previewIndex = this._index - 1;
-
-            var currentParameter = this._list[currentIndex];
-            var previewParameter = this._list[previewIndex];
-
-            if (currentParameter.SourcesKey == previewParameter.SourcesKey
-                && currentParameter.SelectedFilePath != previewParameter.SelectedFilePath)
-            {
-                previewParameter.SelectedFilePath = currentParameter.SelectedFilePath;
-            }
-
-            this._index = previewIndex;
+            this._index--;
             return this._list[this._index].CreatePage();
         }
 
