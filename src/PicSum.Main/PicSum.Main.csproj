@@ -99,7 +99,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-	<ApplicationIcon>ApplicationIcon.ico</ApplicationIcon>
+	<ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
 	<SatelliteResourceLanguages>_</SatelliteResourceLanguages>
@@ -169,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
 	<Compile Remove="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="application.ico" />
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="MemoryPack" Version="1.21.4" />
