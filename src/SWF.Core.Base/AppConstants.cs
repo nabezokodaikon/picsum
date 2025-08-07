@@ -3,8 +3,8 @@ namespace SWF.Core.Base
     public static class AppConstants
     {
         public const string UI_THREAD_NAME = "Main";
-        public const string MUTEX_NAME = "11d9bca9";
-        public const string PIPE_NAME = "be752c43";
+        public const string MUTEX_NAME = "fadae40f7f7e837033b2ac472808f03e7c9cce257210a11ff9cf4b8bf8b1ce0d";
+        public const string PIPE_NAME = "2cb501081d1ec16e2feb1988139bcba70f0539d98b80d2d2fc83d0e167814331";
         public const float DEFAULT_ZOOM_VALUE = 1f;
     }
 
