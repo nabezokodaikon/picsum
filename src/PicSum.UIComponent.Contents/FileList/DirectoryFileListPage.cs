@@ -210,11 +210,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SaveCurrentDirectoryState()
         {
-            if (base.SortTypeID == SortTypeID.Default)
+            if (base.SortTypeID == SortMode.Default)
             {
                 var param = new DirectoryStateParameter(
                     this._parameter.DirectoryPath,
-                    SortTypeID.FileName,
+                    SortMode.FileName,
                     true,
                     base.SelectedFilePath);
                 Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
@@ -242,7 +242,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
                             this._parameter.ScrollInfo,
-                            SortTypeID.FilePath,
+                            SortMode.FilePath,
                             true);
                     }
                     else
@@ -263,7 +263,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             this._parameter.DirectoryPath,
                             this._parameter.ScrollInfo,
-                            SortTypeID.FilePath,
+                            SortMode.FilePath,
                             true);
                     }
                     else
@@ -339,7 +339,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void GetNextDirectoryProcess_Callback(ValueResult<string> e)
         {
             var param = new DirectoryFileListPageParameter(e.Value);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
         }
 
     }

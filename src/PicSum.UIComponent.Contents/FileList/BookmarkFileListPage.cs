@@ -130,7 +130,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     [.. result],
                     this._parameter.SelectedFilePath,
                     this._parameter.ScrollInfo,
-                    SortTypeID.AddDate,
+                    SortMode.AddDate,
                     false);
             }
             else

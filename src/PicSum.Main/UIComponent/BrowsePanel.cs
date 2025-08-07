@@ -370,13 +370,13 @@ namespace PicSum.Main.UIComponent
         {
             using (TimeMeasuring.Run(true, "BrowsePanel.AddFavoriteDirectoryListTab"))
             {
-                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
+                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenMode.AddTab);
             }
         }
 
         public void AddImageViewPageTab(ImageViewPageParameter parameter)
         {
-            this.OpenPage(parameter, PageOpenType.AddTab);
+            this.OpenPage(parameter, PageOpenMode.AddTab);
         }
 
         public void Reload()
@@ -486,20 +486,20 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void OpenPage(IPageParameter param, PageOpenType openType)
+        private void OpenPage(IPageParameter param, PageOpenMode openType)
         {
             using (TimeMeasuring.Run(true, "BrowsePanel.OpenPage"))
             {
-                if (openType == PageOpenType.OverlapTab)
+                if (openType == PageOpenMode.OverlapTab)
                 {
                     this.AddPageEventHandler(this.tabSwitch.OverwriteTab<AbstractBrowsePage>(param));
                     this.SetPageHistoryButtonEnabled();
                 }
-                else if (openType == PageOpenType.AddHome)
+                else if (openType == PageOpenMode.AddHome)
                 {
                     this.AddPageEventHandler(this.tabSwitch.AddTab<AbstractBrowsePage>(param));
                 }
-                else if (openType == PageOpenType.AddTab)
+                else if (openType == PageOpenMode.AddTab)
                 {
                     if (this.tabSwitch.ActiveTabIndex < 0)
                     {
@@ -510,7 +510,7 @@ namespace PicSum.Main.UIComponent
                         this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(this.tabSwitch.ActiveTabIndex + 1, param));
                     }
                 }
-                else if (openType == PageOpenType.NewWindow)
+                else if (openType == PageOpenMode.NewWindow)
                 {
                     this.OnNewWindowPageOpen(new BrowsePageOpenEventArgs(param));
                 }
@@ -531,7 +531,7 @@ namespace PicSum.Main.UIComponent
             if (FileUtil.IsExistsDirectory(dragData.CurrentFilePath))
             {
                 // フォルダコンテンツを上書きします。
-                this.OpenPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), PageOpenType.OverlapTab);
+                this.OpenPage(new DirectoryFileListPageParameter(dragData.CurrentFilePath), PageOpenMode.OverlapTab);
             }
             else if (FileUtil.IsExistsFile(dragData.CurrentFilePath) &&
                 ImageUtil.IsImageFile(dragData.CurrentFilePath))
@@ -546,7 +546,7 @@ namespace PicSum.Main.UIComponent
                     dragData.PageTitle,
                     dragData.PageIcon,
                     dragData.VisibleBookmarkMenuItem);
-                this.OpenPage(parameter, PageOpenType.OverlapTab);
+                this.OpenPage(parameter, PageOpenMode.OverlapTab);
             }
         }
 
@@ -601,7 +601,7 @@ namespace PicSum.Main.UIComponent
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
 
                 var sortInfo = new SortParameter();
-                sortInfo.SetSortType(SortTypeID.FilePath, true);
+                sortInfo.SetSortType(SortMode.FilePath, true);
 
                 var dragData = new DragParameter(
                     this,
@@ -687,7 +687,7 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_AddTabButtonMouseClick(object sender, MouseEventArgs e)
         {
-            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddHome);
+            this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenMode.AddHome);
         }
 
         private void TabSwitch_ActiveTabChanged(object sender, EventArgs e)
@@ -866,11 +866,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.OverlapTab);
+                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenMode.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenType.AddTab);
+                this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenMode.AddTab);
             }
         }
 
@@ -891,11 +891,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenType.OverlapTab);
+                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenMode.OverlapTab);
             }
             else
             {
-                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenType.AddTab);
+                this.OpenPage(new TagFileListPageParameter(e.Item), PageOpenMode.AddTab);
             }
         }
 
@@ -903,11 +903,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenPage(new RatingFileListPageParameter(1), PageOpenType.OverlapTab);
+                this.OpenPage(new RatingFileListPageParameter(1), PageOpenMode.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenPage(new RatingFileListPageParameter(1), PageOpenType.AddTab);
+                this.OpenPage(new RatingFileListPageParameter(1), PageOpenMode.AddTab);
             }
         }
 
@@ -915,11 +915,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.OverlapTab);
+                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenMode.OverlapTab);
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenType.AddTab);
+                this.OpenPage(new BookmarkFileListPageParameter(), PageOpenMode.AddTab);
             }
         }
     }

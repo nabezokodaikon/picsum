@@ -291,16 +291,16 @@ namespace PicSum.UIComponent.Contents.FileList
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
         }
 
-        public BaseTextButton GetSortToolStripButton(SortTypeID sortType)
+        public BaseTextButton GetSortToolStripButton(SortMode sortType)
         {
             return sortType switch
             {
-                SortTypeID.FileName => this.nameSortButton,
-                SortTypeID.FilePath => this.pathSortButton,
-                SortTypeID.CreateDate => this.createDateSortButton,
-                SortTypeID.UpdateDate => this.updateDateSortButton,
-                SortTypeID.TakenDate => this.takenDateSortButton,
-                SortTypeID.AddDate => this.addDateSortButton,
+                SortMode.FileName => this.nameSortButton,
+                SortMode.FilePath => this.pathSortButton,
+                SortMode.CreateDate => this.createDateSortButton,
+                SortMode.UpdateDate => this.updateDateSortButton,
+                SortMode.TakenDate => this.takenDateSortButton,
+                SortMode.AddDate => this.addDateSortButton,
                 _ => null,
             };
         }

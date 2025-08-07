@@ -141,11 +141,11 @@ namespace PicSum.UIComponent.AddressBar
             var item = this._items[index];
             if (e.Button == MouseButtons.Left)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, item.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.OverlapTab, item.DirectoryPath));
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, item.DirectoryPath));
+                this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.AddTab, item.DirectoryPath));
             }
         }
 
@@ -160,7 +160,7 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             var item = this._items[index];
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, item.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.OverlapTab, item.DirectoryPath));
         }
 
         private void ContextMenu_Opening(object sender, CancelEventArgs e)
@@ -179,19 +179,19 @@ namespace PicSum.UIComponent.AddressBar
         private void ContextMenu_ActiveTabOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.OverlapTab, this._mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.OverlapTab, this._mousePointItem.DirectoryPath));
         }
 
         private void ContextMenu_NewTabOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.AddTab, this._mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.AddTab, this._mousePointItem.DirectoryPath));
         }
 
         private void ContextMenu_NewWindowOpen(object sender, EventArgs e)
         {
             this.DropDownList.Close();
-            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenType.NewWindow, this._mousePointItem.DirectoryPath));
+            this.OnSelectedDirectory(new SelectedDirectoryEventArgs(PageOpenMode.NewWindow, this._mousePointItem.DirectoryPath));
         }
     }
 }

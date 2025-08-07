@@ -28,7 +28,7 @@ namespace PicSum.Job.Logics
                 throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
-            if (directoryState.SortTypeID == SortTypeID.Default)
+            if (directoryState.SortTypeID == SortMode.Default)
             {
                 throw new ArgumentException("ソートIDがデフォルトです。", nameof(directoryState));
             }

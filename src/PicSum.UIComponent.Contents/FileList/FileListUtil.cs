@@ -28,7 +28,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var isAscending = sortInfo.IsAscending(sortInfo.ActiveSortType);
             switch (sortInfo.ActiveSortType)
             {
-                case SortTypeID.FileName:
+                case SortMode.FileName:
                     if (isAscending)
                     {
                         return files
@@ -47,7 +47,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortTypeID.FilePath:
+                case SortMode.FilePath:
                     if (isAscending)
                     {
                         return files
@@ -66,7 +66,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortTypeID.CreateDate:
+                case SortMode.CreateDate:
                     if (isAscending)
                     {
                         return files
@@ -87,7 +87,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortTypeID.UpdateDate:
+                case SortMode.UpdateDate:
                     if (isAscending)
                     {
                         return files
@@ -108,7 +108,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortTypeID.TakenDate:
+                case SortMode.TakenDate:
                     if (isAscending)
                     {
                         var a = files
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .ToArray();
                         return [.. a.Concat(b)];
                     }
-                case SortTypeID.AddDate:
+                case SortMode.AddDate:
                     if (isAscending)
                     {
                         return files

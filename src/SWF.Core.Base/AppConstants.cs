@@ -9,9 +9,9 @@ namespace SWF.Core.Base
     }
 
     /// <summary>
-    /// コンテンツ表示種別
+    /// コンテンツ表示モード
     /// </summary>
-    public enum PageOpenType
+    public enum PageOpenMode
     {
         Default = 0,
         OverlapTab = 1,
@@ -52,9 +52,9 @@ namespace SWF.Core.Base
     }
 
     /// <summary>
-    /// ソート種別ID
+    /// ソートモード
     /// </summary>
-    public enum SortTypeID
+    public enum SortMode
     {
         Default = 0,
         FileName = 1,

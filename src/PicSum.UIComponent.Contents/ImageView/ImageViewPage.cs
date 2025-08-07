@@ -1291,7 +1291,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
@@ -1305,7 +1305,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)

@@ -23,12 +23,12 @@ namespace PicSum.Job.Logics
             var dto = con.ReadLine<DirectoryStateDto>(sql);
             if (dto != null)
             {
-                var sortTypeId = (SortTypeID)dto.SortTypeId;
-                if (sortTypeId == SortTypeID.TakenDate)
+                var sortTypeId = (SortMode)dto.SortTypeId;
+                if (sortTypeId == SortMode.TakenDate)
                 {
                     var directoryState = new DirectoryStateParameter(
                         dto.DirectoryPath,
-                        SortTypeID.FilePath,
+                        SortMode.FilePath,
                         true,
                         dto.SelectedFilePath);
                     return directoryState;

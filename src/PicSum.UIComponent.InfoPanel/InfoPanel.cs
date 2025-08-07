@@ -716,7 +716,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             var tagInfo = this.TagList[index];
-            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenType.OverlapTab, tagInfo.Tag));
+            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenMode.OverlapTab, tagInfo.Tag));
         }
 
         private void TagFlowList_MouseClick(object sender, MouseEventArgs e)
@@ -734,7 +734,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             var tagInfo = this.TagList[index];
-            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenType.AddTab, tagInfo.Tag));
+            this.OnSelectedTag(new SelectedTagEventArgs(PageOpenMode.AddTab, tagInfo.Tag));
         }
 
         private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)

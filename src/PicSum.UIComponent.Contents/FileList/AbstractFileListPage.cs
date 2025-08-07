@@ -52,7 +52,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        protected SortTypeID SortTypeID
+        protected SortMode SortTypeID
         {
             get
             {
@@ -266,7 +266,7 @@ namespace PicSum.UIComponent.Contents.FileList
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
             ScrollParameter scrollInfo,
-            SortTypeID sortTypeID,
+            SortMode sortTypeID,
             bool isAscending)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
@@ -357,7 +357,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 srcFiles,
                 selectedFilePath,
                 scrollInfo,
-                SortTypeID.Default,
+                SortMode.Default,
                 false);
         }
 
@@ -499,7 +499,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
             switch (this.SortInfo.ActiveSortType)
             {
-                case SortTypeID.FileName:
+                case SortMode.FileName:
                     filterList.Sort((x, y) =>
                     {
                         if (isAscending)
@@ -512,7 +512,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortTypeID.FilePath:
+                case SortMode.FilePath:
                     filterList.Sort((x, y) =>
                     {
                         if (isAscending)
@@ -525,7 +525,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortTypeID.CreateDate:
+                case SortMode.CreateDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.CreateDate.GetValueOrDefault(DateTime.MinValue);
@@ -554,7 +554,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortTypeID.UpdateDate:
+                case SortMode.UpdateDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.UpdateDate.GetValueOrDefault(DateTime.MinValue);
@@ -583,7 +583,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortTypeID.TakenDate:
+                case SortMode.TakenDate:
                     if (isAscending)
                     {
                         var a = filterList
@@ -615,7 +615,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         filterList = [.. a.Concat(b)];
                     }
                     break;
-                case SortTypeID.AddDate:
+                case SortMode.AddDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
@@ -879,48 +879,48 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ToolBar_NameSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.FileName);
-            this.SortInfo.ActiveSortType = SortTypeID.FileName;
+            this.SortInfo.ChangeSortDirection(SortMode.FileName);
+            this.SortInfo.ActiveSortType = SortMode.FileName;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_PathSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.FilePath);
-            this.SortInfo.ActiveSortType = SortTypeID.FilePath;
+            this.SortInfo.ChangeSortDirection(SortMode.FilePath);
+            this.SortInfo.ActiveSortType = SortMode.FilePath;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_CreateDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.CreateDate);
-            this.SortInfo.ActiveSortType = SortTypeID.CreateDate;
+            this.SortInfo.ChangeSortDirection(SortMode.CreateDate);
+            this.SortInfo.ActiveSortType = SortMode.CreateDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_UpdateDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.UpdateDate);
-            this.SortInfo.ActiveSortType = SortTypeID.UpdateDate;
+            this.SortInfo.ChangeSortDirection(SortMode.UpdateDate);
+            this.SortInfo.ActiveSortType = SortMode.UpdateDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_TakenDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.TakenDate);
-            this.SortInfo.ActiveSortType = SortTypeID.TakenDate;
+            this.SortInfo.ChangeSortDirection(SortMode.TakenDate);
+            this.SortInfo.ActiveSortType = SortMode.TakenDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_AddDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortTypeID.AddDate);
-            this.SortInfo.ActiveSortType = SortTypeID.AddDate;
+            this.SortInfo.ChangeSortDirection(SortMode.AddDate);
+            this.SortInfo.ActiveSortType = SortMode.AddDate;
             this.SetSort();
             this.SetFilter();
         }
@@ -1063,12 +1063,12 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.AddTab, param));
             }
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.AddTab, param));
             }
         }
 
@@ -1092,7 +1092,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
             }
             else if (file.IsFile)
             {
@@ -1101,7 +1101,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
             }
         }
 
@@ -1126,7 +1126,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.Title,
                     this.Icon,
                     this.Parameter.VisibleBookmarkMenuItem);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
             }
             else if (file.IsFile)
             {
@@ -1135,7 +1135,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else if (!file.IsFile)
             {
                 var param = new DirectoryFileListPageParameter(file.FilePath);
-                this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+                this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
             }
         }
 
@@ -1225,7 +1225,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
         }
 
         private void FileContextMenu_FileNewTabOpen(object sender, ExecuteFileEventArgs e)
@@ -1239,7 +1239,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.AddTab, param));
         }
 
         private void FileContextMenu_FileNewWindowOpen(object sender, ExecuteFileEventArgs e)
@@ -1253,7 +1253,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.Title,
                 this.Icon,
                 this.Parameter.VisibleBookmarkMenuItem);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.NewWindow, param));
         }
 
         private void FileContextMenu_FileOpen(object sender, ExecuteFileEventArgs e)
@@ -1274,19 +1274,19 @@ namespace PicSum.UIComponent.Contents.FileList
         private void FileContextMenu_DirectoryActiveTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.OverlapTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.OverlapTab, param));
         }
 
         private void FileContextMenu_DirectoryNewTabOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.AddTab, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.AddTab, param));
         }
 
         private void FileContextMenu_DirectoryNewWindowOpen(object sender, ExecuteFileEventArgs e)
         {
             var param = new DirectoryFileListPageParameter(e.FilePath);
-            this.OnOpenPage(new BrowsePageEventArgs(PageOpenType.NewWindow, param));
+            this.OnOpenPage(new BrowsePageEventArgs(PageOpenMode.NewWindow, param));
         }
 
         private void FileContextMenu_ExplorerOpen(object sender, ExecuteFileEventArgs e)
