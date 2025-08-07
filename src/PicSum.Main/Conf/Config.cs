@@ -26,8 +26,8 @@ namespace PicSum.Main.Conf
         public bool IsShowImageFile { get; set; }
         public bool IsShowOtherFile { get; set; }
         public int FavoriteDirectoryCount { get; set; }
-        public ImageDisplayMode ImageDisplayMode { get; set; }
-        public ImageSizeMode ImageSizeMode { get; set; }
+        public ImageDisplayMode DisplayMode { get; set; }
+        public ImageSizeMode SizeMode { get; set; }
         public int MajorVersion { get; set; }
         public int MinorVersion { get; set; }
         public int BuildVersion { get; set; }
@@ -58,8 +58,8 @@ namespace PicSum.Main.Conf
                     this.IsShowDirectory = config.IsShowDirectory;
                     this.IsShowOtherFile = config.IsShowOtherFile;
                     this.FavoriteDirectoryCount = config.FavoriteDirectoryCount;
-                    this.ImageDisplayMode = config.ImageDisplayMode;
-                    this.ImageSizeMode = config.ImageSizeMode;
+                    this.DisplayMode = config.DisplayMode;
+                    this.SizeMode = config.SizeMode;
 
                     this.MajorVersion = config.MajorVersion;
                     this.MinorVersion = config.MinorVersion;
@@ -116,8 +116,8 @@ namespace PicSum.Main.Conf
             this.IsShowDirectory = true;
             this.IsShowOtherFile = true;
             this.FavoriteDirectoryCount = 21;
-            this.ImageDisplayMode = ImageDisplayMode.LeftFacing;
-            this.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+            this.DisplayMode = ImageDisplayMode.LeftFacing;
+            this.SizeMode = ImageSizeMode.FitOnlyBigImage;
 
             this.MajorVersion = 0;
             this.MinorVersion = 0;

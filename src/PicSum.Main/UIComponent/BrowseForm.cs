@@ -284,7 +284,7 @@ namespace PicSum.Main.UIComponent
                             var directoryPath = FileUtil.GetParentDirectoryPath(imageFilePath);
 
                             var sortInfo = new SortParameter();
-                            sortInfo.SetSortType(SortMode.FilePath, true);
+                            sortInfo.SetSortMode(FileSortMode.FilePath, true);
 
                             var parameter = new ImageViewPageParameter(
                                 DirectoryFileListPageParameter.PAGE_SOURCES,

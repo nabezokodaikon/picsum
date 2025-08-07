@@ -40,8 +40,8 @@ namespace PicSum.Main.Mng
             FileListPageConfig.INSTANCE.IsShowOtherFile = Config.INSTANCE.IsShowOtherFile;
             FileListPageConfig.INSTANCE.FavoriteDirectoryCount = Config.INSTANCE.FavoriteDirectoryCount;
 
-            ImageViewPageConfig.INSTANCE.ImageDisplayMode = Config.INSTANCE.ImageDisplayMode;
-            ImageViewPageConfig.INSTANCE.ImageSizeMode = Config.INSTANCE.ImageSizeMode;
+            ImageViewPageConfig.INSTANCE.DisplayMode = Config.INSTANCE.DisplayMode;
+            ImageViewPageConfig.INSTANCE.SizeMode = Config.INSTANCE.SizeMode;
 
             var configVersion = new Version(
                 Config.INSTANCE.MajorVersion,
@@ -102,8 +102,8 @@ namespace PicSum.Main.Mng
             Config.INSTANCE.IsShowDirectory = FileListPageConfig.INSTANCE.IsShowDirectory;
             Config.INSTANCE.IsShowImageFile = FileListPageConfig.INSTANCE.IsShowImageFile;
             Config.INSTANCE.IsShowOtherFile = FileListPageConfig.INSTANCE.IsShowOtherFile;
-            Config.INSTANCE.ImageDisplayMode = ImageViewPageConfig.INSTANCE.ImageDisplayMode;
-            Config.INSTANCE.ImageSizeMode = ImageViewPageConfig.INSTANCE.ImageSizeMode;
+            Config.INSTANCE.DisplayMode = ImageViewPageConfig.INSTANCE.DisplayMode;
+            Config.INSTANCE.SizeMode = ImageViewPageConfig.INSTANCE.SizeMode;
 
             Config.INSTANCE.Save();
 

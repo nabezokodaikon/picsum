@@ -9,14 +9,14 @@ namespace PicSum.UIComponent.Contents.Common
     public sealed class ExecuteDirectoryEventArgs
         : EventArgs
     {
-        public PageOpenMode OpenType { get; private set; }
+        public PageOpenMode OpenMode { get; private set; }
         public string DirectoryPath { get; private set; }
 
-        public ExecuteDirectoryEventArgs(PageOpenMode openType, string directoryPath)
+        public ExecuteDirectoryEventArgs(PageOpenMode openMode, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            this.OpenType = openType;
+            this.OpenMode = openMode;
             this.DirectoryPath = directoryPath;
         }
     }

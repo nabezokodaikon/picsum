@@ -210,11 +210,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SaveCurrentDirectoryState()
         {
-            if (base.SortTypeID == SortMode.Default)
+            if (base.SortMode == FileSortMode.Default)
             {
                 var param = new DirectoryStateParameter(
                     this._parameter.DirectoryPath,
-                    SortMode.FileName,
+                    FileSortMode.FileName,
                     true,
                     base.SelectedFilePath);
                 Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
@@ -223,7 +223,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var param = new DirectoryStateParameter(
                     this._parameter.DirectoryPath,
-                    base.SortTypeID,
+                    base.SortMode,
                     base.IsAscending,
                     base.SelectedFilePath);
                 Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
@@ -242,7 +242,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
                             this._parameter.ScrollInfo,
-                            SortMode.FilePath,
+                            FileSortMode.FilePath,
                             true);
                     }
                     else
@@ -251,7 +251,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             this._parameter.SelectedFilePath,
                             this._parameter.ScrollInfo,
-                            e.DirectoryState.SortTypeID,
+                            e.DirectoryState.SortMode,
                             e.DirectoryState.IsAscending);
                     }
                 }
@@ -263,7 +263,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             this._parameter.DirectoryPath,
                             this._parameter.ScrollInfo,
-                            SortMode.FilePath,
+                            FileSortMode.FilePath,
                             true);
                     }
                     else
@@ -272,7 +272,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.FileInfoList,
                             e.DirectoryState.SelectedFilePath,
                             this._parameter.ScrollInfo,
-                            e.DirectoryState.SortTypeID,
+                            e.DirectoryState.SortMode,
                             e.DirectoryState.IsAscending);
                     }
 
@@ -284,8 +284,8 @@ namespace PicSum.UIComponent.Contents.FileList
             }
             else
             {
-                var sortType = this._parameter.SortInfo.ActiveSortType;
-                var isAscending = this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType);
+                var sortType = this._parameter.SortInfo.ActiveSortMode;
+                var isAscending = this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortMode);
                 if (!string.IsNullOrEmpty(this._parameter.SelectedFilePath))
                 {
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)

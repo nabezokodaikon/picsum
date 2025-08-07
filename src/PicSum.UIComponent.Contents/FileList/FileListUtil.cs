@@ -25,10 +25,10 @@ namespace PicSum.UIComponent.Contents.FileList
             ArgumentNullException.ThrowIfNull(files, nameof(files));
             ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));
 
-            var isAscending = sortInfo.IsAscending(sortInfo.ActiveSortType);
-            switch (sortInfo.ActiveSortType)
+            var isAscending = sortInfo.IsAscending(sortInfo.ActiveSortMode);
+            switch (sortInfo.ActiveSortMode)
             {
-                case SortMode.FileName:
+                case FileSortMode.FileName:
                     if (isAscending)
                     {
                         return files
@@ -47,7 +47,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortMode.FilePath:
+                case FileSortMode.FilePath:
                     if (isAscending)
                     {
                         return files
@@ -66,7 +66,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortMode.CreateDate:
+                case FileSortMode.CreateDate:
                     if (isAscending)
                     {
                         return files
@@ -87,7 +87,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortMode.UpdateDate:
+                case FileSortMode.UpdateDate:
                     if (isAscending)
                     {
                         return files
@@ -108,7 +108,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Select(file => file.FilePath)
                             .ToArray();
                     }
-                case SortMode.TakenDate:
+                case FileSortMode.TakenDate:
                     if (isAscending)
                     {
                         var a = files
@@ -143,7 +143,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             .ToArray();
                         return [.. a.Concat(b)];
                     }
-                case SortMode.AddDate:
+                case FileSortMode.AddDate:
                     if (isAscending)
                     {
                         return files

@@ -33,7 +33,7 @@ namespace PicSum.Job.Jobs
             var mainSize = logic.GetImageSize(mainFilePath);
             this.ThrowIfJobCancellationRequested();
 
-            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+            if (parameter.DisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
             {
@@ -52,23 +52,23 @@ namespace PicSum.Job.Jobs
                     && subSize.Width <= subSize.Height)
                 {
                     this.Callback(logic.CreateResult(
-                        mainIndex, mainFilePath, true, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
+                        mainIndex, mainFilePath, true, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode));
 
                     this.ThrowIfJobCancellationRequested();
 
                     this.Callback(logic.CreateResult(
-                        subtIndex, subFilePath, false, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
+                        subtIndex, subFilePath, false, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode));
                 }
                 else
                 {
                     this.Callback(logic.CreateResult(
-                        mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
+                        mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode));
                 }
             }
             else
             {
                 this.Callback(logic.CreateResult(
-                    mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.ImageSizeMode));
+                    mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode));
             }
 
             return ValueTask.CompletedTask;

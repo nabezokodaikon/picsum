@@ -54,7 +54,7 @@ namespace SWF.Core.Base
     /// <summary>
     /// ソートモード
     /// </summary>
-    public enum SortMode
+    public enum FileSortMode
     {
         Default = 0,
         FileName = 1,

@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
 
             var mainFilePath = parameter.FilePathList[mainIndex];
             var mainSize = logic.GetImageSize(mainFilePath);
-            if (parameter.ImageDisplayMode != ImageDisplayMode.Single
+            if (parameter.DisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
             {

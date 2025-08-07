@@ -486,20 +486,20 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void OpenPage(IPageParameter param, PageOpenMode openType)
+        private void OpenPage(IPageParameter param, PageOpenMode openMode)
         {
             using (TimeMeasuring.Run(true, "BrowsePanel.OpenPage"))
             {
-                if (openType == PageOpenMode.OverlapTab)
+                if (openMode == PageOpenMode.OverlapTab)
                 {
                     this.AddPageEventHandler(this.tabSwitch.OverwriteTab<AbstractBrowsePage>(param));
                     this.SetPageHistoryButtonEnabled();
                 }
-                else if (openType == PageOpenMode.AddHome)
+                else if (openMode == PageOpenMode.AddHome)
                 {
                     this.AddPageEventHandler(this.tabSwitch.AddTab<AbstractBrowsePage>(param));
                 }
-                else if (openType == PageOpenMode.AddTab)
+                else if (openMode == PageOpenMode.AddTab)
                 {
                     if (this.tabSwitch.ActiveTabIndex < 0)
                     {
@@ -510,7 +510,7 @@ namespace PicSum.Main.UIComponent
                         this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(this.tabSwitch.ActiveTabIndex + 1, param));
                     }
                 }
-                else if (openType == PageOpenMode.NewWindow)
+                else if (openMode == PageOpenMode.NewWindow)
                 {
                     this.OnNewWindowPageOpen(new BrowsePageOpenEventArgs(param));
                 }
@@ -601,7 +601,7 @@ namespace PicSum.Main.UIComponent
                     filePath : FileUtil.GetParentDirectoryPath(filePath);
 
                 var sortInfo = new SortParameter();
-                sortInfo.SetSortType(SortMode.FilePath, true);
+                sortInfo.SetSortMode(FileSortMode.FilePath, true);
 
                 var dragData = new DragParameter(
                     this,
@@ -668,7 +668,7 @@ namespace PicSum.Main.UIComponent
 
         private void Page_OpenPage(object sender, BrowsePageEventArgs e)
         {
-            this.OpenPage(e.Parameter, e.OpenType);
+            this.OpenPage(e.Parameter, e.OpenMode);
         }
 
         private void Page_MouseClick(object sender, MouseEventArgs e)
@@ -795,7 +795,7 @@ namespace PicSum.Main.UIComponent
 
         private void AddressBar_SelectedDirectory(object sender, PicSum.UIComponent.AddressBar.SelectedDirectoryEventArgs e)
         {
-            this.OpenPage(new DirectoryFileListPageParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenType);
+            this.OpenPage(new DirectoryFileListPageParameter(e.DirectoryPath, e.SubDirectoryPath), e.OpenMode);
         }
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
@@ -815,7 +815,7 @@ namespace PicSum.Main.UIComponent
 
         private void InfoPanel_SelectedTag(object sender, SelectedTagEventArgs e)
         {
-            this.OpenPage(new TagFileListPageParameter(e.Tag), e.OpenType);
+            this.OpenPage(new TagFileListPageParameter(e.Tag), e.OpenMode);
         }
 
         private void PageContainer_DragEnter(object sender, DragEventArgs e)

@@ -28,7 +28,7 @@ namespace PicSum.Job.Logics
                 throw new ArgumentException("選択ファイルパスがNULLです。", nameof(directoryState));
             }
 
-            if (directoryState.SortTypeID == SortMode.Default)
+            if (directoryState.SortMode == FileSortMode.Default)
             {
                 throw new ArgumentException("ソートIDがデフォルトです。", nameof(directoryState));
             }
@@ -37,7 +37,7 @@ namespace PicSum.Job.Logics
             {
                 var sql = new DirectoryStateUpdateSql(
                     directoryState.DirectoryPath,
-                    (int)directoryState.SortTypeID,
+                    (int)directoryState.SortMode,
                     directoryState.IsAscending);
                 return con.Update(sql);
             }
@@ -45,7 +45,7 @@ namespace PicSum.Job.Logics
             {
                 var sql = new DirectoryStateUpdateSql(
                     directoryState.DirectoryPath,
-                    (int)directoryState.SortTypeID,
+                    (int)directoryState.SortMode,
                     directoryState.IsAscending,
                     directoryState.SelectedFilePath);
                 return con.Update(sql);

@@ -29,10 +29,10 @@ namespace PicSum.UIComponent.Contents.ImageView
         private static readonly Rectangle TOOL_BAR_DEFAULT_BOUNDS = new(0, 0, 767, 29);
         private static readonly Rectangle CHECK_PATTERN_PANEL_DEFAULT_BOUNDS = new(0, 29, 767, 0);
 
-        private static float GetImageScale(SizeF imageSize, Size backgroudSize, ImageSizeMode mode)
+        private static float GetImageScale(SizeF imageSize, Size backgroudSize, ImageSizeMode sizeMode)
         {
-            if (mode == ImageSizeMode.Original ||
-                mode == ImageSizeMode.FitOnlyBigImage
+            if (sizeMode == ImageSizeMode.Original ||
+                sizeMode == ImageSizeMode.FitOnlyBigImage
                 && imageSize.Width <= backgroudSize.Width
                 && imageSize.Height <= backgroudSize.Height)
             {
@@ -100,14 +100,14 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this.checkPatternPanel.Resize += this.CheckPatternPanel_Resize;
 
-            this.SetDisplayMode(ImageViewPageConfig.INSTANCE.ImageDisplayMode);
+            this.SetDisplayMode(ImageViewPageConfig.INSTANCE.DisplayMode);
 
-            if (ImageViewPageConfig.INSTANCE.ImageSizeMode == ImageSizeMode.Original)
+            if (ImageViewPageConfig.INSTANCE.SizeMode == ImageSizeMode.Original)
             {
-                ImageViewPageConfig.INSTANCE.ImageSizeMode = ImageSizeMode.FitOnlyBigImage;
+                ImageViewPageConfig.INSTANCE.SizeMode = ImageSizeMode.FitOnlyBigImage;
             }
 
-            this.SetSizeMode(ImageViewPageConfig.INSTANCE.ImageSizeMode);
+            this.SetSizeMode(ImageViewPageConfig.INSTANCE.SizeMode);
             this.SetThumbnailPanelVisible();
 
             this._parameter = parameter;
@@ -374,7 +374,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this.leftImagePanel.SuspendLayout();
             this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-            this.leftImagePanel.ImageAlign = ImageAlign.Center;
+            this.leftImagePanel.Align = ImageAlign.Center;
             this.leftImagePanel.Visible = true;
             this.leftImagePanel.ResumeLayout(true);
             this.leftImagePanel.Invalidate();
@@ -403,14 +403,14 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             this.leftImagePanel.SuspendLayout();
             this.leftImagePanel.SetBounds(lx, y, lw, h, BoundsSpecified.All);
-            this.leftImagePanel.ImageAlign = ImageAlign.Right;
+            this.leftImagePanel.Align = ImageAlign.Right;
             this.leftImagePanel.Visible = true;
             this.leftImagePanel.ResumeLayout(true);
             this.leftImagePanel.Invalidate();
 
             this.rightImagePanel.SuspendLayout();
             this.rightImagePanel.SetBounds(rx, y, rw, h, BoundsSpecified.All);
-            this.rightImagePanel.ImageAlign = ImageAlign.Left;
+            this.rightImagePanel.Align = ImageAlign.Left;
             this.rightImagePanel.Visible = true;
             this.rightImagePanel.ResumeLayout(true);
             this.rightImagePanel.Invalidate();
@@ -430,7 +430,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     {
                         var x = 0;
                         this.leftImagePanel.SetBounds(x, y, lw, h, BoundsSpecified.All);
-                        this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                        this.leftImagePanel.Align = ImageAlign.Right;
                         this.leftImagePanel.Visible = true;
                     });
                 }
@@ -441,7 +441,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var rw = this.GetRightImagePanelWidth(lw);
                         var x = this.checkPatternPanel.Width - rw;
                         this.rightImagePanel.SetBounds(x, y, rw, h, BoundsSpecified.All);
-                        this.rightImagePanel.ImageAlign = ImageAlign.Left;
+                        this.rightImagePanel.Align = ImageAlign.Left;
                         this.rightImagePanel.Visible = true;
                     });
                 }
@@ -459,7 +459,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var rw = this.GetRightImagePanelWidth(lw);
                         var x = this.checkPatternPanel.Width - rw;
                         this.rightImagePanel.SetBounds(x, y, rw, h, BoundsSpecified.All);
-                        this.rightImagePanel.ImageAlign = ImageAlign.Left;
+                        this.rightImagePanel.Align = ImageAlign.Left;
                         this.rightImagePanel.Visible = true;
                     });
                 }
@@ -469,7 +469,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     {
                         var x = 0;
                         this.leftImagePanel.SetBounds(x, y, lw, h, BoundsSpecified.All);
-                        this.leftImagePanel.ImageAlign = ImageAlign.Right;
+                        this.leftImagePanel.Align = ImageAlign.Right;
                         this.leftImagePanel.Visible = true;
                     });
                 }
@@ -484,7 +484,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     var y = 0;
 
                     this.leftImagePanel.SetBounds(x, y, w, h, BoundsSpecified.All);
-                    this.leftImagePanel.ImageAlign = ImageAlign.Center;
+                    this.leftImagePanel.Align = ImageAlign.Center;
                     this.leftImagePanel.Visible = true;
                     this.rightImagePanel.Visible = false;
                 });
@@ -572,8 +572,8 @@ namespace PicSum.UIComponent.Contents.ImageView
             {
                 CurrentIndex = currentIndex,
                 FilePathList = this._filePathList,
-                ImageDisplayMode = this._displayMode,
-                ImageSizeMode = this._sizeMode,
+                DisplayMode = this._displayMode,
+                SizeMode = this._sizeMode,
                 IsNext = isNext,
                 IsForceSingle = isForceSingle,
                 ZoomValue = zoomValue,
@@ -695,13 +695,13 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.DoDragDrop(dataObject, DragDropEffects.Copy);
         }
 
-        private bool SetDisplayMode(ImageDisplayMode mode)
+        private bool SetDisplayMode(ImageDisplayMode displayMode)
         {
             this.toolBar.SingleViewMenuItemChecked = false;
             this.toolBar.SpreadLeftFeedMenuItemChecked = false;
             this.toolBar.SpreadRightFeedMenuItemChecked = false;
 
-            switch (mode)
+            switch (displayMode)
             {
                 case ImageDisplayMode.Single:
                     this.toolBar.SingleViewMenuItemChecked = true;
@@ -720,9 +720,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                     break;
             }
 
-            if (this._displayMode != mode)
+            if (this._displayMode != displayMode)
             {
-                this._displayMode = mode;
+                this._displayMode = displayMode;
                 return true;
             }
             else
@@ -731,11 +731,11 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
-        private bool SetSizeMode(ImageSizeMode mode)
+        private bool SetSizeMode(ImageSizeMode sizeMode)
         {
-            this.toolBar.OriginalSizeMenuItemChecked = mode == ImageSizeMode.Original;
-            this.toolBar.FitWindowMenuItemChecked = mode == ImageSizeMode.FitAllImage;
-            this.toolBar.FitWindowLargeOnlyMenuItemChecked = mode == ImageSizeMode.FitOnlyBigImage;
+            this.toolBar.OriginalSizeMenuItemChecked = sizeMode == ImageSizeMode.Original;
+            this.toolBar.FitWindowMenuItemChecked = sizeMode == ImageSizeMode.FitAllImage;
+            this.toolBar.FitWindowLargeOnlyMenuItemChecked = sizeMode == ImageSizeMode.FitOnlyBigImage;
 
             var zoomValue = this.toolBar.GetZoomValue();
 
@@ -744,9 +744,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                 item.Checked = false;
             }
 
-            if (this._sizeMode != mode || zoomValue != AppConstants.DEFAULT_ZOOM_VALUE)
+            if (this._sizeMode != sizeMode || zoomValue != AppConstants.DEFAULT_ZOOM_VALUE)
             {
-                this._sizeMode = mode;
+                this._sizeMode = sizeMode;
                 return true;
             }
             else
@@ -982,7 +982,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.Single))
             {
-                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.DisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1003,7 +1003,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.LeftFacing))
             {
-                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.DisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1024,7 +1024,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetDisplayMode(ImageDisplayMode.RightFacing))
             {
-                ImageViewPageConfig.INSTANCE.ImageDisplayMode = this._displayMode;
+                ImageViewPageConfig.INSTANCE.DisplayMode = this._displayMode;
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
         }
@@ -1045,7 +1045,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.Original))
             {
-                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.SizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1067,7 +1067,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.FitAllImage))
             {
-                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.SizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }
@@ -1089,7 +1089,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (this.SetSizeMode(ImageSizeMode.FitOnlyBigImage))
             {
-                ImageViewPageConfig.INSTANCE.ImageSizeMode = this._sizeMode;
+                ImageViewPageConfig.INSTANCE.SizeMode = this._sizeMode;
                 this.SetThumbnailPanelVisible();
                 this.ReadImage(this.FilePathListIndex, null, false);
             }

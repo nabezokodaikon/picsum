@@ -44,7 +44,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private readonly Image _thumbnailPanelImage = ResourceFiles.ThumbnailPanelIcon.Value;
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
-        private ImageAlign _imageAlign = ImageAlign.Center;
+        private ImageAlign _align = ImageAlign.Center;
         private bool _isShowThumbnailPanel = false;
 
         private SizeF _imageScaleSize = SizeF.Empty;
@@ -89,17 +89,17 @@ namespace PicSum.UIComponent.Contents.ImageView
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ImageAlign ImageAlign
+        public ImageAlign Align
         {
             get
             {
-                return this._imageAlign;
+                return this._align;
             }
             set
             {
-                if (value != this._imageAlign)
+                if (value != this._align)
                 {
-                    this._imageAlign = value;
+                    this._align = value;
                 }
             }
         }
@@ -508,7 +508,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             else
             {
                 var width = this.Width;
-                x = this._imageAlign switch
+                x = this._align switch
                 {
                     ImageAlign.Left => 0f,
                     ImageAlign.Right => width - scaleWidth,

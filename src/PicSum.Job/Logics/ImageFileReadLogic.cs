@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
             bool hasSub,
             float zoomValue,
             float thumbnailSize,
-            ImageSizeMode imageSizeMode)
+            ImageSizeMode sizeMode)
         {
             CvImage? image = null;
             Bitmap? thumbnail = null;
@@ -35,7 +35,7 @@ namespace PicSum.Job.Logics
 
                     this.ThrowIfJobCancellationRequested();
 
-                    if (imageSizeMode == ImageSizeMode.Original)
+                    if (sizeMode == ImageSizeMode.Original)
                     {
                         var thumbnailScale = this.GetThumbnailScale(thumbnailSize, image.Size);
                         thumbnail = image.CreateScaleImage(thumbnailScale);
@@ -121,7 +121,7 @@ namespace PicSum.Job.Logics
             var maximumIndex = files.Length - 1;
 
             if (parameter.IsForceSingle
-                || parameter.ImageDisplayMode == ImageDisplayMode.Single)
+                || parameter.DisplayMode == ImageDisplayMode.Single)
             {
                 if (currentIndex == maximumIndex)
                 {
@@ -192,7 +192,7 @@ namespace PicSum.Job.Logics
             var maximumIndex = files.Length - 1;
 
             if (parameter.IsForceSingle
-                || parameter.ImageDisplayMode == ImageDisplayMode.Single)
+                || parameter.DisplayMode == ImageDisplayMode.Single)
             {
                 if (currentIndex == 0)
                 {

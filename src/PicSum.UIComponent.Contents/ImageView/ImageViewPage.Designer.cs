@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.leftImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.leftImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.leftImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
+            this.leftImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
             this.leftImagePanel.Visible = false;
             this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.rightImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.rightImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.rightImagePanel.ImageAlign = SWF.Core.Base.ImageAlign.Center;
+            this.rightImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
             this.rightImagePanel.Visible = false;
             this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);

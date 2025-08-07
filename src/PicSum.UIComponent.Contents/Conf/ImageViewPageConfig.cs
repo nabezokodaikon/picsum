@@ -9,8 +9,8 @@ namespace PicSum.UIComponent.Contents.Conf
     {
         public static readonly ImageViewPageConfig INSTANCE = new();
 
-        public ImageDisplayMode ImageDisplayMode { get; set; }
-        public ImageSizeMode ImageSizeMode { get; set; }
+        public ImageDisplayMode DisplayMode { get; set; }
+        public ImageSizeMode SizeMode { get; set; }
 
         private ImageViewPageConfig()
         {

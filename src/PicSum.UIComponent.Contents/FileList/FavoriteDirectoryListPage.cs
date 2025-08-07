@@ -129,8 +129,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     [.. e],
                     this._parameter.SelectedFilePath,
                     this._parameter.ScrollInfo,
-                    this._parameter.SortInfo.ActiveSortType,
-                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortType));
+                    this._parameter.SortInfo.ActiveSortMode,
+                    this._parameter.SortInfo.IsAscending(this._parameter.SortInfo.ActiveSortMode));
             }
         }
 

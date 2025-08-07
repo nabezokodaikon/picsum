@@ -48,15 +48,15 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
+                return this.SortInfo.IsAscending(this.SortInfo.ActiveSortMode);
             }
         }
 
-        protected SortMode SortTypeID
+        protected FileSortMode SortMode
         {
             get
             {
-                return this.SortInfo.ActiveSortType;
+                return this.SortInfo.ActiveSortMode;
             }
         }
 
@@ -266,7 +266,7 @@ namespace PicSum.UIComponent.Contents.FileList
             FileShallowInfoEntity[] srcFiles,
             string selectedFilePath,
             ScrollParameter scrollInfo,
-            SortMode sortTypeID,
+            FileSortMode sortMode,
             bool isAscending)
         {
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
@@ -306,7 +306,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RedrawPage(scale);
 
             this.SelectedFilePath = selectedFilePath;
-            this.SortInfo.SetSortType(sortTypeID, isAscending);
+            this.SortInfo.SetSortMode(sortMode, isAscending);
 
             this.SetSort();
             this.SetFilter(scrollInfo);
@@ -357,7 +357,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 srcFiles,
                 selectedFilePath,
                 scrollInfo,
-                SortMode.Default,
+                FileSortMode.Default,
                 false);
         }
 
@@ -440,10 +440,10 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.toolBar.ClearSortImage();
 
-            var sortButton = this.toolBar.GetSortToolStripButton(this.SortInfo.ActiveSortType);
+            var sortButton = this.toolBar.GetSortToolStripButton(this.SortInfo.ActiveSortMode);
             if (sortButton != null)
             {
-                var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
+                var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortMode);
                 var arrow = this.SortInfo.GetSortDirectionArrow(isAscending);
                 sortButton.Text = $"{arrow}  {sortButton.Text}";
             }
@@ -496,10 +496,10 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortType);
-            switch (this.SortInfo.ActiveSortType)
+            var isAscending = this.SortInfo.IsAscending(this.SortInfo.ActiveSortMode);
+            switch (this.SortInfo.ActiveSortMode)
             {
-                case SortMode.FileName:
+                case FileSortMode.FileName:
                     filterList.Sort((x, y) =>
                     {
                         if (isAscending)
@@ -512,7 +512,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortMode.FilePath:
+                case FileSortMode.FilePath:
                     filterList.Sort((x, y) =>
                     {
                         if (isAscending)
@@ -525,7 +525,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortMode.CreateDate:
+                case FileSortMode.CreateDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.CreateDate.GetValueOrDefault(DateTime.MinValue);
@@ -554,7 +554,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortMode.UpdateDate:
+                case FileSortMode.UpdateDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.UpdateDate.GetValueOrDefault(DateTime.MinValue);
@@ -583,7 +583,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                     });
                     break;
-                case SortMode.TakenDate:
+                case FileSortMode.TakenDate:
                     if (isAscending)
                     {
                         var a = filterList
@@ -615,7 +615,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         filterList = [.. a.Concat(b)];
                     }
                     break;
-                case SortMode.AddDate:
+                case FileSortMode.AddDate:
                     filterList.Sort((x, y) =>
                     {
                         var xDate = x.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
@@ -879,48 +879,48 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void ToolBar_NameSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.FileName);
-            this.SortInfo.ActiveSortType = SortMode.FileName;
+            this.SortInfo.ChangeSortDirection(FileSortMode.FileName);
+            this.SortInfo.ActiveSortMode = FileSortMode.FileName;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_PathSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.FilePath);
-            this.SortInfo.ActiveSortType = SortMode.FilePath;
+            this.SortInfo.ChangeSortDirection(FileSortMode.FilePath);
+            this.SortInfo.ActiveSortMode = FileSortMode.FilePath;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_CreateDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.CreateDate);
-            this.SortInfo.ActiveSortType = SortMode.CreateDate;
+            this.SortInfo.ChangeSortDirection(FileSortMode.CreateDate);
+            this.SortInfo.ActiveSortMode = FileSortMode.CreateDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_UpdateDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.UpdateDate);
-            this.SortInfo.ActiveSortType = SortMode.UpdateDate;
+            this.SortInfo.ChangeSortDirection(FileSortMode.UpdateDate);
+            this.SortInfo.ActiveSortMode = FileSortMode.UpdateDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_TakenDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.TakenDate);
-            this.SortInfo.ActiveSortType = SortMode.TakenDate;
+            this.SortInfo.ChangeSortDirection(FileSortMode.TakenDate);
+            this.SortInfo.ActiveSortMode = FileSortMode.TakenDate;
             this.SetSort();
             this.SetFilter();
         }
 
         private void ToolBar_AddDateSortButtonClick(object sender, EventArgs e)
         {
-            this.SortInfo.ChangeSortDirection(SortMode.AddDate);
-            this.SortInfo.ActiveSortType = SortMode.AddDate;
+            this.SortInfo.ChangeSortDirection(FileSortMode.AddDate);
+            this.SortInfo.ActiveSortMode = FileSortMode.AddDate;
             this.SetSort();
             this.SetFilter();
         }

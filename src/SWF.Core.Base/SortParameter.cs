@@ -12,44 +12,44 @@ namespace SWF.Core.Base
         private bool _isTakenDateSortAscending = true;
         private bool _isAddDateSortAscending = true;
 
-        public SortMode ActiveSortType { get; set; }
+        public FileSortMode ActiveSortMode { get; set; }
 
-        public bool IsAscending(SortMode sortType)
+        public bool IsAscending(FileSortMode sortMode)
         {
-            return sortType switch
+            return sortMode switch
             {
-                SortMode.FileName => this._isFileNameSortAscending,
-                SortMode.FilePath => this._isFilePathSortAscending,
-                SortMode.CreateDate => this._isCreateDateSortAscending,
-                SortMode.UpdateDate => this._isUpdateDateSortAscending,
-                SortMode.TakenDate => this._isTakenDateSortAscending,
-                SortMode.AddDate => this._isAddDateSortAscending,
+                FileSortMode.FileName => this._isFileNameSortAscending,
+                FileSortMode.FilePath => this._isFilePathSortAscending,
+                FileSortMode.CreateDate => this._isCreateDateSortAscending,
+                FileSortMode.UpdateDate => this._isUpdateDateSortAscending,
+                FileSortMode.TakenDate => this._isTakenDateSortAscending,
+                FileSortMode.AddDate => this._isAddDateSortAscending,
                 _ => false,
             };
         }
 
-        public void SetSortType(SortMode sortType, bool isAscending)
+        public void SetSortMode(FileSortMode sortMode, bool isAscending)
         {
-            this.ActiveSortType = sortType;
+            this.ActiveSortMode = sortMode;
 
-            switch (sortType)
+            switch (sortMode)
             {
-                case SortMode.FileName:
+                case FileSortMode.FileName:
                     this._isFileNameSortAscending = isAscending;
                     break;
-                case SortMode.FilePath:
+                case FileSortMode.FilePath:
                     this._isFilePathSortAscending = isAscending;
                     break;
-                case SortMode.CreateDate:
+                case FileSortMode.CreateDate:
                     this._isCreateDateSortAscending = isAscending;
                     break;
-                case SortMode.UpdateDate:
+                case FileSortMode.UpdateDate:
                     this._isUpdateDateSortAscending = isAscending;
                     break;
-                case SortMode.TakenDate:
+                case FileSortMode.TakenDate:
                     this._isTakenDateSortAscending = isAscending;
                     break;
-                case SortMode.AddDate:
+                case FileSortMode.AddDate:
                     this._isAddDateSortAscending = isAscending;
                     break;
                 default:
@@ -69,15 +69,15 @@ namespace SWF.Core.Base
             }
         }
 
-        public void ChangeSortDirection(SortMode sortType)
+        public void ChangeSortDirection(FileSortMode sortMode)
         {
-            if (this.ActiveSortType == sortType)
+            if (this.ActiveSortMode == sortMode)
             {
-                this.SetSortType(sortType, !this.IsAscending(sortType));
+                this.SetSortMode(sortMode, !this.IsAscending(sortMode));
             }
             else
             {
-                this.SetSortType(sortType, this.IsAscending(sortType));
+                this.SetSortMode(sortMode, this.IsAscending(sortMode));
             }
         }
     }
