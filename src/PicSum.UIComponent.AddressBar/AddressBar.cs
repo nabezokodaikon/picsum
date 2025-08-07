@@ -271,11 +271,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (this._addressItems != null)
             {
-                var scale = WindowUtil.GetCurrentWindowScale(this);
-                var right = addressRect.Right - this._directoryHistoryItem.Width * scale;
                 using (var g = this.CreateGraphics())
                 {
+                    var scale = WindowUtil.GetCurrentWindowScale(this);
                     var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+                    var right = addressRect.Right - this._directoryHistoryItem.Width;
                     for (var i = this._addressItems.Count - 1; i > -1; i--)
                     {
                         var drawItem = this._addressItems[i];
