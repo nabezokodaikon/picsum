@@ -172,47 +172,52 @@ namespace PicSum.Main.UIComponent
 
                 var baseWidth = this.Width - 16;
 
+                this.tabSwitch.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
                 this.tabSwitch.SetBounds(
                     TAB_SWITCH_DEFAULT_BOUNDS.X,
                     TAB_SWITCH_DEFAULT_BOUNDS.Y,
                     baseWidth,
                     (int)(TAB_SWITCH_DEFAULT_BOUNDS.Height * scale));
-                this.tabSwitch.Anchor
+
+                this.toolPanel.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Right;
-
                 this.toolPanel.SetBounds(
                     0,
                     (int)(TOOL_PANEL_DEFAULT_BOUNDS.Y * scale),
                     baseWidth,
                     (int)(TOOL_PANEL_DEFAULT_BOUNDS.Height * scale));
-                this.toolPanel.Anchor
+
+                this.toolPanel2.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
-                    | AnchorStyles.Right;
-
+                    | AnchorStyles.Bottom;
                 this.toolPanel2.SetBounds(
                     0,
                     this.toolPanel.Bottom,
                     (int)(TOOL_PANEL2_DEFAULT_BOUNDS.Width * scale),
                     this.Height - this.toolPanel.Bottom);
                 this.toolPanel2.VerticalTopMargin = (int)(TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN * scale);
-                this.toolPanel2.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Left
-                    | AnchorStyles.Bottom;
 
+                this.infoPanel.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Right
+                    | AnchorStyles.Bottom;
                 this.infoPanel.SetBounds(
                     (int)(baseWidth - INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
                     this.toolPanel.Bottom,
                     (int)(INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
                     this.Height - this.toolPanel.Bottom);
-                this.infoPanel.Anchor
+
+                this.pageContainer.Anchor
                     = AnchorStyles.Top
+                    | AnchorStyles.Left
                     | AnchorStyles.Right
                     | AnchorStyles.Bottom;
-
                 if (this.infoPanel.Visible)
                 {
                     this.pageContainer.SetBounds(
@@ -229,93 +234,88 @@ namespace PicSum.Main.UIComponent
                         baseWidth - this.toolPanel2.Right,
                         this.Height - this.toolPanel.Bottom);
                 }
-                this.pageContainer.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Left
-                    | AnchorStyles.Right
-                    | AnchorStyles.Bottom;
 
+                this.previewPageHistoryButton.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left;
                 this.previewPageHistoryButton.SetBounds(
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
-                this.previewPageHistoryButton.Anchor
+
+                this.nextPageHistoryButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-
                 this.nextPageHistoryButton.SetBounds(
                     this.previewPageHistoryButton.Left * 2 + this.previewPageHistoryButton.Width,
                     this.previewPageHistoryButton.Top,
                     this.previewPageHistoryButton.Width,
                     this.previewPageHistoryButton.Height);
-                this.nextPageHistoryButton.Anchor
+
+                this.reloadToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-
                 this.reloadToolButton.SetBounds(
                     this.previewPageHistoryButton.Left * 3 + this.previewPageHistoryButton.Width * 2,
                     this.previewPageHistoryButton.Top,
                     this.previewPageHistoryButton.Width,
                     this.previewPageHistoryButton.Height);
-                this.reloadToolButton.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Left;
 
+                this.addressBar.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left
+                    | AnchorStyles.Right;
                 this.addressBar.SetBounds(
                     this.previewPageHistoryButton.Left * 4 + this.previewPageHistoryButton.Width * 3,
                     this.previewPageHistoryButton.Top,
                     this.toolPanel.Width - this.previewPageHistoryButton.Left * 6 - this.previewPageHistoryButton.Width * 4,
                     this.previewPageHistoryButton.Height);
-                this.addressBar.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Left
-                    | AnchorStyles.Right;
 
+                this.showInfoToolButton.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Right;
                 this.showInfoToolButton.SetBounds(
                     this.addressBar.Right + this.previewPageHistoryButton.Left,
                     this.previewPageHistoryButton.Top,
                     this.previewPageHistoryButton.Width,
                     this.previewPageHistoryButton.Height);
-                this.showInfoToolButton.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Right;
 
+                this.homeToolButton.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left;
                 this.homeToolButton.SetBounds(
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.X * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Y * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Width * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Height * scale));
-                this.homeToolButton.Anchor
+
+                this.tagDropToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-
                 this.tagDropToolButton.SetBounds(
                     this.homeToolButton.Left,
                     this.homeToolButton.Top * 2 + this.homeToolButton.Height,
                     this.homeToolButton.Width,
                     this.homeToolButton.Height);
-                this.tagDropToolButton.Anchor
+
+                this.searchRatingToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-
                 this.searchRatingToolButton.SetBounds(
                     this.homeToolButton.Left,
                     this.homeToolButton.Top * 3 + this.homeToolButton.Height * 2,
                     this.homeToolButton.Width,
                     this.homeToolButton.Height);
-                this.searchRatingToolButton.Anchor
+
+                this.searchBookmarkToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-
                 this.searchBookmarkToolButton.SetBounds(
                     this.homeToolButton.Left,
                     this.homeToolButton.Top * 4 + this.homeToolButton.Height * 3,
                     this.homeToolButton.Width,
                     this.homeToolButton.Height);
-                this.searchBookmarkToolButton.Anchor
-                    = AnchorStyles.Top
-                    | AnchorStyles.Left;
 
                 this.infoPanel.SetControlsBounds(scale);
 

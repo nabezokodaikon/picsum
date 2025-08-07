@@ -251,17 +251,17 @@ namespace PicSum.Main.UIComponent
                 this._browsePanel.SuspendLayout();
                 this.SuspendLayout();
 
-                this.Controls.Add(this._browsePanel);
-
-                var scale = WindowUtil.GetCurrentWindowScale(this);
-                var rect = this.CreateBrowsePanelBounds(scale);
-                this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
-                this._browsePanel.SetControlsBounds(scale);
                 this._browsePanel.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Bottom
                     | AnchorStyles.Left
                     | AnchorStyles.Right;
+
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                var rect = this.CreateBrowsePanelBounds(scale);
+                this._browsePanel.SetBounds(rect.X, rect.Y, rect.Width, rect.Height);
+                this._browsePanel.SetControlsBounds(scale);
+                this.Controls.Add(this._browsePanel);
 
                 this._browsePanel.Close += new(this.BrowsePanel_Close);
                 this._browsePanel.BackgroundMouseDoubleLeftClick += new(this.BrowsePanel_BackgroundMouseDoubleLeftClick);

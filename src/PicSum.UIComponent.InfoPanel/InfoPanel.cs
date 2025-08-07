@@ -138,6 +138,32 @@ namespace PicSum.UIComponent.InfoPanel
         {
             this.SuspendLayout();
 
+            this.thumbnailPictureBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.fileInfoLabel.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.ratingBar.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.wideComboBox.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right;
+
+            this.tagFlowList.Anchor
+                = AnchorStyles.Top
+                | AnchorStyles.Left
+                | AnchorStyles.Right
+                | AnchorStyles.Bottom;
+
             this.thumbnailPictureBox.SetBounds(
                 THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.X,
                 THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.Y,
@@ -171,32 +197,6 @@ namespace PicSum.UIComponent.InfoPanel
                 this.thumbnailPictureBox.Top + this.wideComboBox.Bottom,
                 this.thumbnailPictureBox.Width,
                 (int)(this.Height - (this.thumbnailPictureBox.Top + this.wideComboBox.Bottom) - 9 * scale));
-
-            this.thumbnailPictureBox.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.fileInfoLabel.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.ratingBar.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.wideComboBox.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right;
-
-            this.tagFlowList.Anchor
-                = AnchorStyles.Top
-                | AnchorStyles.Left
-                | AnchorStyles.Right
-                | AnchorStyles.Bottom;
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
