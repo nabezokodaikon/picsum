@@ -241,18 +241,18 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        private int GetInnerOffset()
+        private float GetInnerOffset()
         {
             const int INNER_OFFSET = 1;
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            return (int)(INNER_OFFSET * scale);
+            return INNER_OFFSET * scale;
         }
 
-        private int GetDropDownItemWidth()
+        private float GetDropDownItemWidth()
         {
             var dropDownItemWidth = ResourceFiles.SmallArrowDownIcon.Value.Width;
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            return Math.Min((int)(dropDownItemWidth * scale), this.Height);
+            return Math.Min(dropDownItemWidth * scale, this.Height);
         }
 
         private void SetItemsRectangle()
@@ -272,7 +272,7 @@ namespace PicSum.UIComponent.AddressBar
             if (this._addressItems != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                var right = addressRect.Right - (int)(this._directoryHistoryItem.Width * scale);
+                var right = addressRect.Right - this._directoryHistoryItem.Width * scale;
                 using (var g = this.CreateGraphics())
                 {
                     var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
@@ -282,7 +282,7 @@ namespace PicSum.UIComponent.AddressBar
 
                         if (drawItem.GetType() == typeof(DirectoryDrawItem))
                         {
-                            drawItem.Width = (int)(g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", font).Width);
+                            drawItem.Width = g.MeasureString((drawItem as DirectoryDrawItem).Directory.DirectoryName + "__", font).Width;
                         }
                         else if (drawItem.GetType() == typeof(SeparatorDrawItem))
                         {
@@ -430,17 +430,17 @@ namespace PicSum.UIComponent.AddressBar
             this._addressItems.Clear();
         }
 
-        private Rectangle GetInnerRectangle()
+        private RectangleF GetInnerRectangle()
         {
             var innerOffset = this.GetInnerOffset();
             var x = innerOffset;
             var y = innerOffset;
             var w = this.ClientRectangle.Width - innerOffset * 2;
             var h = this.ClientRectangle.Height - innerOffset * 2;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
-        private Rectangle GetAddressRect()
+        private RectangleF GetAddressRect()
         {
             var innerOffset = this.GetInnerOffset();
             var dropDownItemWidth = this.GetDropDownItemWidth();
@@ -448,7 +448,7 @@ namespace PicSum.UIComponent.AddressBar
             var y = innerOffset;
             var w = this.ClientRectangle.Width - innerOffset * 2 - dropDownItemWidth;
             var h = this.ClientRectangle.Height - innerOffset * 2;
-            return new Rectangle(x, y, w, h);
+            return new RectangleF(x, y, w, h);
         }
 
         private bool SetMousePointItem(DrawItemBase newDrawItem)
@@ -511,7 +511,7 @@ namespace PicSum.UIComponent.AddressBar
             return ret;
         }
 
-        private DrawItemBase GetItemFromPoint(int x, int y)
+        private DrawItemBase GetItemFromPoint(float x, float y)
         {
             if (this._overflowItem.GetRectangle().Contains(x, y))
             {

@@ -20,10 +20,10 @@ namespace PicSum.UIComponent.AddressBar
         private AddressBar _addressBar = null;
         private bool _isMousePoint = false;
         private bool _isMouseDown = false;
-        private int _x = 0;
-        private int _y = 0;
-        private int _width = 0;
-        private int _height = 0;
+        private float _x = 0;
+        private float _y = 0;
+        private float _width = 0;
+        private float _height = 0;
 
         public AddressBar AddressBar
         {
@@ -61,7 +61,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int X
+        public float X
         {
             get
             {
@@ -73,7 +73,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Y
+        public float Y
         {
             get
             {
@@ -85,7 +85,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Left
+        public float Left
         {
             get
             {
@@ -97,7 +97,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Top
+        public float Top
         {
             get
             {
@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Right
+        public float Right
         {
             get
             {
@@ -121,7 +121,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Bottom
+        public float Bottom
         {
             get
             {
@@ -133,7 +133,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Width
+        public float Width
         {
             get
             {
@@ -145,7 +145,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public int Height
+        public float Height
         {
             get
             {
@@ -186,18 +186,18 @@ namespace PicSum.UIComponent.AddressBar
             GC.SuppressFinalize(this);
         }
 
-        protected int GetDropDownItemHeight()
+        protected float GetDropDownItemHeight()
         {
             const int DROPDOWN_ITEM_HEIGHT = 32;
             var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
-            return (int)(DROPDOWN_ITEM_HEIGHT * scale);
+            return DROPDOWN_ITEM_HEIGHT * scale;
         }
 
-        protected int GetMinimumDropDownWidth()
+        protected float GetMinimumDropDownWidth()
         {
             const int MINIMUM_DROPDOWN_WIDHT = 128;
             var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
-            return (int)(MINIMUM_DROPDOWN_WIDHT * scale);
+            return MINIMUM_DROPDOWN_WIDHT * scale;
         }
 
         protected virtual void OnDropDownOpened(EventArgs e)

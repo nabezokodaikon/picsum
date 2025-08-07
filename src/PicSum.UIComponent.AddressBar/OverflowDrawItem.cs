@@ -66,7 +66,7 @@ namespace PicSum.UIComponent.AddressBar
                 }
 
                 base.DropDownList.BeginUpdate();
-                base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
+                base.DropDownList.ItemHeight = (int)this.GetDropDownItemHeight();
 
                 var width = this.GetMinimumDropDownWidth();
 
@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.AddressBar
                     var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
                     foreach (var directory in base.Items)
                     {
-                        width = Math.Max(width, (int)g.MeasureString(directory.DirectoryName + "________", font).Width);
+                        width = Math.Max(width, g.MeasureString(directory.DirectoryName + "________", font).Width);
                     }
                 }
 
@@ -88,11 +88,11 @@ namespace PicSum.UIComponent.AddressBar
                 var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                       base.Items.Count * base.DropDownList.ItemHeight);
 
-                base.DropDownList.Size = new Size(width + base.DropDownList.ItemHeight, height);
+                base.DropDownList.Size = new Size((int)width + base.DropDownList.ItemHeight, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.ItemCount = base.Items.Count;
-                base.DropDownList.Show(base.AddressBar, base.Left, base.Bottom);
+                base.DropDownList.Show(base.AddressBar, (int)base.Left, (int)base.Bottom);
                 base.DropDownList.EndUpdate();
 
                 this.AddressBar.DropDownDirectory = string.Empty;

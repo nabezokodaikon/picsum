@@ -171,9 +171,9 @@ namespace PicSum.UIComponent.AddressBar
             base.Items.Clear();
             base.DropDownList.ClearSelectedItems();
             base.DropDownList.ItemCount = 0;
-            base.DropDownList.ItemHeight = this.GetDropDownItemHeight();
+            base.DropDownList.ItemHeight = (int)this.GetDropDownItemHeight();
 
-            var width = 0;
+            var width = 0f;
 
             using (var g = base.DropDownList.CreateGraphics())
             {
@@ -189,7 +189,7 @@ namespace PicSum.UIComponent.AddressBar
 
                     var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
                     var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
-                    width = Math.Max(width, (int)g.MeasureString(item.DirectoryPath + "________", font).Width);
+                    width = Math.Max(width, g.MeasureString(item.DirectoryPath + "________", font).Width);
                 }
             }
 
@@ -205,7 +205,7 @@ namespace PicSum.UIComponent.AddressBar
             var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
                                   base.Items.Count * base.DropDownList.ItemHeight);
 
-            base.DropDownList.Size = new Size(width, height);
+            base.DropDownList.Size = new Size((int)width, height);
             base.DropDownList.ItemCount = base.Items.Count;
             base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
             base.DropDownList.EndUpdate();
