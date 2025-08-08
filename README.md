@@ -3,26 +3,34 @@
 # PicSum
 
 ## Software Overview
-* PicSum is a tabbed image viewer.
-* Images can be displayed in a double-page spread.
-* Various functions are provided for organizing image files.
+An Intuitive and Comfortable Photo Viewer
+PicSum is a photo viewer with a tab function, similar to a web browser. It features fast startup and loading times, which allows for a smooth Browse experience. It also supports spread view, so you can display multiple photos side by side. What's more, it has an address bar like a file explorer, making folder access easy.
 
-## Functions
+* Please note: This application specializes in viewing photos and does not have any editing functions.
+
+
+## Features
 ### Tabs
-* Tabs can be added, deleted, and windows can be combined or separated.
-### Home Page
-* Displays a list of frequently accessed folders.
-### Stars
-* Files and folders can be starred.
+You can add, delete, merge, and separate windows.
+
+### Address Bar
+The address bar is a breadcrumb list, making it easy to navigate between folders.
+
+### Home
+This displays a list of frequently accessed folders.
+
+### Star
+You can star files and folders.
+
 ### Tags
-* Files and folders can be tagged.
+You can add tags to files and folders.
+
 ### Bookmarks
-* Image files within a folder can be bookmarked.
-### Clips
-* Files and folders are remembered only while the application is running.
-* Images can also be clipped by middle-clicking on the image page.
+You can add bookmarks to photos within a folder.
+
 ### Export
-* Image files can be exported to any folder.
+You can drag and drop photos to export them to any folder. The original files will not be changed.
+
 
 ## Supported image formats
 * `Avif`
@@ -37,20 +45,21 @@
 * `Svg`
 * `Webp`
 
+
 ## Startup options
-* If you run picsum with the `--empty` option, no page will be displayed at startup.
 * If you run picsum with the `--cleanup` option, it will optimize the picsum database and delete the thumbnail cache before starting.
 
+
 ## How to build
-1. Install `.Net 8.0`.
 1. Install `Visual Studio 2022`.
-1. Run the `build_release.bat` file.
+1. Run the `build_publish.bat` file.
+
 
 ## Operating environment
 * Windows 10 (64bit)
 * Windows 11 (64bit)
 
+
 ## Screenshot
 ![Home page](./screenshot/screenshot_001.png)
 ![Image view page](./screenshot/screenshot_002.png)
-![Multiple Windows](./screenshot/screenshot_003.png)
