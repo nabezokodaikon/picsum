@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
             this.Callback(result);
         }
 
-        private async Task<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
+        private async ValueTask<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {

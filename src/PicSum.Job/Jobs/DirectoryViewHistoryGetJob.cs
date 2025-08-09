@@ -42,7 +42,7 @@ namespace PicSum.Job.Jobs
             this.Callback(result);
         }
 
-        private async Task<string[]> GetHistories()
+        private async ValueTask<string[]> GetHistories()
         {
             await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {

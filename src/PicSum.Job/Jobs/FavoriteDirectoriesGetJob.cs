@@ -56,7 +56,7 @@ namespace PicSum.Job.Jobs
             this.Callback([.. infoList]);
         }
 
-        private async Task<SingleValueDto<string>[]> GetOrCreateFileList()
+        private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
             await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {

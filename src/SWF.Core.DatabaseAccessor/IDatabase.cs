@@ -3,7 +3,7 @@ namespace SWF.Core.DatabaseAccessor
     public interface IDatabase
         : IAsyncDisposable
     {
-        Task<IDatabaseConnection> Connect();
-        Task<IDatabaseConnection> ConnectWithTransaction();
+        ValueTask<IDatabaseConnection> Connect();
+        ValueTask<IDatabaseConnection> ConnectWithTransaction();
     }
 }

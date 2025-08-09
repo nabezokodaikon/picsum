@@ -68,7 +68,7 @@ namespace PicSum.Job.Jobs
             this.Callback([.. infoList]);
         }
 
-        private async Task<BookmarkDto[]> GetBookmarks()
+        private async ValueTask<BookmarkDto[]> GetBookmarks()
         {
             await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {

@@ -55,7 +55,7 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public async Task<IDatabaseConnection> Connect()
+        public async ValueTask<IDatabaseConnection> Connect()
         {
             await this._lockObject.WaitAsync();
 
@@ -72,7 +72,7 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public async Task<IDatabaseConnection> ConnectWithTransaction()
+        public async ValueTask<IDatabaseConnection> ConnectWithTransaction()
         {
             await this._lockObject.WaitAsync();
 
