@@ -6,7 +6,7 @@ namespace SWF.Core.DatabaseAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractDatabase
-        : IDatabase
+        : IAsyncDisposable
     {
         private static void CreateDB(string filePath, string tablesCreateSql)
         {
@@ -39,7 +39,7 @@ namespace SWF.Core.DatabaseAccessor
         private readonly string _filePath;
         private readonly bool _isPersistent;
         private SQLiteConnection? _persistentConnection;
-        private readonly Lock _lockObject = new();
+        private readonly SemaphoreSlim _lockObject = new(1, 1);
 
         protected AbstractDatabase(string filePath, string tablesCreateSql, bool isPersistent)
         {
@@ -55,9 +55,9 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public IDatabaseConnection Connect()
+        public async Task<IDatabaseConnection> Connect()
         {
-            this._lockObject.Enter();
+            await this._lockObject.WaitAsync();
 
             if (this._isPersistent)
             {
@@ -72,9 +72,9 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public IDatabaseConnection ConnectWithTransaction()
+        public async Task<IDatabaseConnection> ConnectWithTransaction()
         {
-            this._lockObject.Enter();
+            await this._lockObject.WaitAsync();
 
             if (this._isPersistent)
             {
@@ -89,36 +89,32 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        public ValueTask DisposeAsync()
         {
             if (this._disposed)
             {
-                return;
+                return ValueTask.CompletedTask;
             }
 
-            if (disposing)
+            if (this._persistentConnection != null)
             {
-                if (this._persistentConnection != null)
+                using (var fileConnection = new SQLiteConnection($"Data Source={this._filePath}"))
                 {
-                    using (var fileConnection = new SQLiteConnection($"Data Source={this._filePath}"))
-                    {
-                        fileConnection.Open();
-                        this._persistentConnection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
-                    }
-
-                    this._persistentConnection?.Dispose();
+                    fileConnection.Open();
+                    this._persistentConnection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
                 }
+
+                this._persistentConnection?.Dispose();
             }
 
             this._persistentConnection = null;
+            this._lockObject.Dispose();
 
             this._disposed = true;
+
+            GC.SuppressFinalize(this);
+
+            return ValueTask.CompletedTask;
         }
     }
 }

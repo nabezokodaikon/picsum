@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override ValueTask Execute(FilesGetByTagParameter param)
+        protected async override ValueTask Execute(FilesGetByTagParameter param)
         {
             if (string.IsNullOrEmpty(param.Tag))
             {
@@ -29,32 +29,32 @@ namespace PicSum.Job.Jobs
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = this.GetFiles(param.Tag);
+            var dtos = await this.GetFiles(param.Tag);
 
-            using (TimeMeasuring.Run(true, "FilesGetByTagJob Parallel.ForEach"))
+            using (TimeMeasuring.Run(true, "FilesGetByTagJob Parallel.ForEachAsync"))
             {
                 using (var cts = new CancellationTokenSource())
                 {
                     try
                     {
-                        Parallel.ForEach(
+                        await Parallel.ForEachAsync(
                             dtos,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            dto =>
+                            async (dto, token) =>
                             {
                                 if (this.IsJobCancel)
                                 {
                                     cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = getInfoLogic.Get(
+                                    var info = await getInfoLogic.Get(
                                         dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate);
                                     if (info != FileShallowInfoEntity.EMPTY)
                                     {
@@ -72,13 +72,11 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback([.. infoList]);
-
-            return ValueTask.CompletedTask;
         }
 
-        private FileByTagDto[] GetFiles(string tag)
+        private async ValueTask<FileByTagDto[]> GetFiles(string tag)
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FilesGetByTagLogic(this);
                 return logic.Execute(con, tag);

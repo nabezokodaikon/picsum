@@ -22,8 +22,8 @@ namespace PicSum.Job.SyncJobs
                 Instance<IImageFileCacher>.Value.Dispose();
                 Instance<IImageFileSizeCacher>.Value.Dispose();
                 Instance<IImageFileTakenDateCacher>.Value.Dispose();
-                Instance<IFileInfoDB>.Value.Dispose();
-                Instance<IThumbnailDB>.Value.Dispose();
+                await Instance<IFileInfoDB>.Value.DisposeAsync();
+                await Instance<IThumbnailDB>.Value.DisposeAsync();
             }
         }
     }

@@ -9,13 +9,13 @@ namespace SWF.Core.DatabaseAccessor
         : IDatabaseConnection
     {
         private bool _disposed = false;
-        private readonly Lock _lockObject;
+        private readonly SemaphoreSlim _lockObject;
         private readonly SQLiteConnection _connection;
         private readonly SQLiteTransaction? _transaction = null;
         private readonly bool _isDispose;
         private bool _isCommitted = false;
 
-        public DatabaseConnection(Lock lockObject, string filePath, bool isTransaction)
+        public DatabaseConnection(SemaphoreSlim lockObject, string filePath, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -31,7 +31,7 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = true;
         }
 
-        public DatabaseConnection(Lock lockObject, SQLiteConnection connection, bool isTransaction)
+        public DatabaseConnection(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
 
@@ -46,40 +46,35 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = false;
         }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
+        public ValueTask DisposeAsync()
         {
             if (this._disposed)
             {
-                return;
+                return ValueTask.CompletedTask;
             }
 
-            if (disposing)
+            if (this._transaction != null)
             {
-                if (this._transaction != null)
+                if (!this._isCommitted)
                 {
-                    if (!this._isCommitted)
-                    {
-                        this._transaction.Rollback();
-                    }
-
-                    this._transaction.Dispose();
+                    this._transaction.Rollback();
                 }
 
-                if (this._isDispose)
-                {
-                    this._connection.Dispose();
-                }
-
-                this._lockObject.Exit();
+                this._transaction.Dispose();
             }
+
+            if (this._isDispose)
+            {
+                this._connection.Dispose();
+            }
+
+            this._lockObject.Release();
 
             this._disposed = true;
+
+            GC.SuppressFinalize(this);
+
+            return ValueTask.CompletedTask;
         }
 
         public void Commit()
@@ -96,11 +91,6 @@ namespace SWF.Core.DatabaseAccessor
         public bool Update(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
-
-            if (this._transaction == null)
-            {
-                throw new InvalidOperationException("トランザクションが開始されていません。");
-            }
 
             using (var cmd = this._connection.CreateCommand())
             {

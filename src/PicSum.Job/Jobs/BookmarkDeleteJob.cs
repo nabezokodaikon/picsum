@@ -10,11 +10,11 @@ namespace PicSum.Job.Jobs
     internal sealed class BookmarkDeleteJob
         : AbstractOneWayJob<ListParameter<string>>
     {
-        protected override ValueTask Execute(ListParameter<string> param)
+        protected override async ValueTask Execute(ListParameter<string> param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var deleteLogic = new BookmarkDeleteLogic(this);
 
@@ -25,8 +25,6 @@ namespace PicSum.Job.Jobs
 
                 con.Commit();
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

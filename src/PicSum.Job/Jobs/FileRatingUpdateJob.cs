@@ -14,14 +14,14 @@ namespace PicSum.Job.Jobs
     internal sealed class FileRatingUpdateJob
         : AbstractOneWayJob<FileRatingUpdateParameter>
     {
-        protected override ValueTask Execute(FileRatingUpdateParameter param)
+        protected async override ValueTask Execute(FileRatingUpdateParameter param)
         {
             if (param.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
@@ -38,8 +38,6 @@ namespace PicSum.Job.Jobs
 
                 con.Commit();
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

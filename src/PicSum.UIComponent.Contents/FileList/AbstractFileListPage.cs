@@ -248,9 +248,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                foreach (var item in this._masterFileDictionary)
+                if (this._masterFileDictionary != null)
                 {
-                    item.Value.ThumbnailImage?.Dispose();
+                    foreach (var item in this._masterFileDictionary)
+                    {
+                        item.Value.ThumbnailImage?.Dispose();
+                    }
                 }
 
                 this.fileContextMenu.Close();

@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected override ValueTask Execute(ThumbnailsGetParameter param)
+        protected async override ValueTask Execute(ThumbnailsGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -38,24 +38,24 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    Parallel.ForEach(
+                    await Parallel.ForEachAsync(
                         filePathList,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        filePath =>
+                        async (filePath, token) =>
                         {
                             try
                             {
                                 if (this.IsJobCancel)
                                 {
                                     cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    token.ThrowIfCancellationRequested();
                                 }
 
-                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                                     filePath, param.ThumbnailWidth, param.ThumbnailHeight);
                                 if (param.IsExecuteCallback
                                     && bf != ThumbnailCacheEntity.EMPTY
@@ -95,8 +95,6 @@ namespace PicSum.Job.Jobs
                 }
                 catch (OperationCanceledException) { }
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

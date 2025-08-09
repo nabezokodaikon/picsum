@@ -15,18 +15,18 @@ namespace PicSum.Job.Jobs
     public sealed class DirectoryViewHistoryGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {
-        protected override ValueTask Execute()
+        protected override async ValueTask Execute()
         {
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();
 
-            foreach (var directoryPath in this.GetHistories())
+            foreach (var directoryPath in await this.GetHistories())
             {
                 this.ThrowIfJobCancellationRequested();
 
                 try
                 {
-                    var info = logic.Get(directoryPath, false);
+                    var info = await logic.Get(directoryPath, false);
                     if (info != FileShallowInfoEntity.EMPTY)
                     {
                         result.Add(info);
@@ -40,13 +40,11 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
-
-            return ValueTask.CompletedTask;
         }
 
-        private string[] GetHistories()
+        private async Task<string[]> GetHistories()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new DirectoryViewHistoryGetLogic(this);
                 return logic.Execute(con);

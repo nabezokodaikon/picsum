@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     public sealed class SubDirectoriesGetJob
         : AbstractTwoWayJob<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
     {
-        protected override ValueTask Execute(ValueParameter<string> param)
+        protected async override ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = logic.Get(subDirectory, false);
+                    var info = await logic.Get(subDirectory, false);
                     if (info != FileShallowInfoEntity.EMPTY)
                     {
                         result.Add(info);
@@ -44,8 +44,6 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
-
-            return ValueTask.CompletedTask;
         }
     }
 }

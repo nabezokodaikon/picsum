@@ -10,30 +10,30 @@ namespace PicSum.Job.SyncJobs
     public sealed class VersionUpTo_12_2_1_0_Job
         : AbstractSyncJob
     {
-        public void Execute()
+        public async ValueTask Execute()
         {
             var logger = Log.GetLogger();
             logger.Debug("バージョン'12.2.1.0'に更新します。");
 
-            this.UpdateTRatingTable();
-            this.Vacuum();
+            await this.UpdateTRatingTable();
+            await this.Vacuum();
 
             logger.Debug("バージョン'12.2.1.0'に更新しました。");
         }
 
-        private void UpdateTRatingTable()
+        private async ValueTask UpdateTRatingTable()
         {
             var updateSql = new VersionUpTo_12_2_1_0_Sql();
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 con.Update(updateSql);
                 con.Commit();
             }
         }
 
-        private void Vacuum()
+        private async ValueTask Vacuum()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
                 con.ReadLine(cleanupSql);

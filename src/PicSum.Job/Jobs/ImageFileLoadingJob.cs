@@ -48,19 +48,19 @@ namespace PicSum.Job.Jobs
                 {
                     await this.Delay();
 
-                    this.Callback(logic.CreateLoadingResult(
+                    this.Callback(await logic.CreateLoadingResult(
                         mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue));
 
                     await this.Delay();
 
-                    this.Callback(logic.CreateLoadingResult(
+                    this.Callback(await logic.CreateLoadingResult(
                         subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue));
                 }
                 else
                 {
                     await this.Delay();
 
-                    this.Callback(logic.CreateLoadingResult(
+                    this.Callback(await logic.CreateLoadingResult(
                         mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
                 }
             }
@@ -68,7 +68,7 @@ namespace PicSum.Job.Jobs
             {
                 await this.Delay();
 
-                this.Callback(logic.CreateLoadingResult(
+                this.Callback(await logic.CreateLoadingResult(
                     mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
             }
         }

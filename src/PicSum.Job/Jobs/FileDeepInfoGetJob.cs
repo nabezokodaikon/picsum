@@ -18,23 +18,21 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override ValueTask Execute(FileDeepInfoGetParameter param)
+        protected override async ValueTask Execute(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var result = this.CreateCallbackResult(param);
+            var result = await this.CreateCallbackResult(param);
 
             this.ThrowIfJobCancellationRequested();
 
             this.Callback(result);
-
-            return ValueTask.CompletedTask;
         }
 
-        private FileDeepInfoGetResult CreateCallbackResult(FileDeepInfoGetParameter param)
+        private async Task<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -58,7 +56,7 @@ namespace PicSum.Job.Jobs
 
                     this.ThrowIfJobCancellationRequested();
 
-                    using (var con = Instance<IFileInfoDB>.Value.Connect())
+                    await using (var con = await Instance<IFileInfoDB>.Value.Connect())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
                         fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
@@ -87,7 +85,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
                 result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);

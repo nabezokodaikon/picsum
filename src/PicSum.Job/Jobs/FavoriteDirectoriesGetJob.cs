@@ -14,9 +14,9 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
+        protected override async ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
-            var dtos = this.GetOrCreateFileList();
+            var dtos = await this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
@@ -40,7 +40,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = getInfoLogic.Get(dto.Value, true);
+                        var info = await getInfoLogic.Get(dto.Value, true);
                         if (info != FileShallowInfoEntity.EMPTY)
                         {
                             infoList.Add(info);
@@ -54,13 +54,11 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback([.. infoList]);
-
-            return ValueTask.CompletedTask;
         }
 
-        private SingleValueDto<string>[] GetOrCreateFileList()
+        private async Task<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
                 var dtos = logic.Execute(con);
@@ -70,7 +68,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -92,7 +90,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return this.GetOrCreateFileList();
+            return await this.GetOrCreateFileList();
         }
     }
 }
