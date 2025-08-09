@@ -550,11 +550,6 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.ContainsFocus)
-            {
-                return;
-            }
-
             if (this._itemCount < 1)
             {
                 return;
