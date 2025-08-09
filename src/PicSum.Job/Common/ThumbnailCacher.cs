@@ -20,11 +20,27 @@ namespace PicSum.Job.Common
         private const int CACHE_CAPACITY = 100 * 1024 * 1024;
 
         private bool _disposed = false;
-        private CacheFileController? _cacheFileController = null;
+        private readonly CacheFileController? _cacheFileController;
 
         public ThumbnailCacher()
         {
+            var con = Instance<IThumbnailDB>.Value.Connect().Result;
 
+            try
+            {
+                var position = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
+
+                this._cacheFileController = new(
+                    AppFiles.THUMBNAIL_CACHE_FILE.Value,
+                    CACHE_CAPACITY,
+                    position);
+            }
+            finally
+            {
+#pragma warning disable CA2012
+                con.DisposeAsync().GetAwaiter().GetResult();
+#pragma warning restore CA2012
+            }
         }
 
         public void Dispose()
@@ -46,24 +62,6 @@ namespace PicSum.Job.Common
             }
 
             this._disposed = true;
-        }
-
-        public async ValueTask Initialize()
-        {
-            await using (var con = await Instance<IThumbnailDB>.Value.Connect())
-            {
-                var position = (int)con.ReadValue<long>(new ThumbnailIDReadSql());
-
-                if (this._cacheFileController != null)
-                {
-                    throw new InvalidOperationException("キャッシュファイルコントローラは既に初期化されています。");
-                }
-
-                this._cacheFileController = new(
-                    AppFiles.THUMBNAIL_CACHE_FILE.Value,
-                    CACHE_CAPACITY,
-                    position);
-            }
         }
 
         public async ValueTask<ThumbnailCacheEntity> GetCache(string filePath)

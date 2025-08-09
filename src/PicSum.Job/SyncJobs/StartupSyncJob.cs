@@ -32,7 +32,6 @@ namespace PicSum.Job.SyncJobs
                 Instance<IThumbnailCacher>.Initialize(new Lazy<IThumbnailCacher>(
                     () => new ThumbnailCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
-                Instance<IThumbnailCacher>.Value.Initialize();
 
                 Instance<IImageFileCacher>.Initialize(new Lazy<IImageFileCacher>(
                     () => new ImageFileCacher(),
