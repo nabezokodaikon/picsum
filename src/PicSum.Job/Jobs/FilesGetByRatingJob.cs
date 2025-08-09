@@ -62,7 +62,10 @@ namespace PicSum.Job.Jobs
                                 }
                             });
                     }
-                    catch (OperationCanceledException) { }
+                    catch (OperationCanceledException)
+                    {
+                        return;
+                    }
                 }
             }
 

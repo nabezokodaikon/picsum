@@ -80,7 +80,7 @@ namespace PicSum.Job.Jobs
                     }
                     catch (OperationCanceledException)
                     {
-                        Console.WriteLine();
+                        return;
                     }
                 }
             }
