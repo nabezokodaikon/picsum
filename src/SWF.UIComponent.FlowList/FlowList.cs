@@ -217,6 +217,7 @@ namespace SWF.UIComponent.FlowList
             this.MouseWheel += this.FlowList_MouseWheel;
             this.Paint += this.FlowList_Paint;
             this.Resize += this.FlowList_Resize;
+            this.LostFocus += this.FlowList_LostFocus;
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -396,8 +397,27 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        private void FlowList_LostFocus(object sender, EventArgs e)
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                this._rectangleSelection.EndSelection();
+            }
+
+            this._mousePointItemIndex = -1;
+            this._isDrag = false;
+            this._mouseDownHitTestInfo = new HitTestInfo();
+
+            this.Invalidate();
+        }
+
         private void FlowList_MouseLeave(object sender, EventArgs e)
         {
+            if (this._rectangleSelection.IsBegun)
+            {
+                this._rectangleSelection.EndSelection();
+            }
+
             this._mousePointItemIndex = -1;
             this._isDrag = false;
             this._mouseDownHitTestInfo = new HitTestInfo();
@@ -407,7 +427,10 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_MouseDown(object sender, MouseEventArgs e)
         {
-            this.Focus();
+            if (!this.ContainsFocus)
+            {
+                return;
+            }
 
             if (this._itemCount < 1)
             {
@@ -477,6 +500,7 @@ namespace SWF.UIComponent.FlowList
             {
                 return;
             }
+
             if (this._rectangleSelection.IsBegun)
             {
                 var itemIndexs = this.GetItemIndexsFromVirtualRectangle(this._rectangleSelection.VirtualRectangle);
@@ -526,6 +550,11 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!this.ContainsFocus)
+            {
+                return;
+            }
+
             if (this._itemCount < 1)
             {
                 return;
