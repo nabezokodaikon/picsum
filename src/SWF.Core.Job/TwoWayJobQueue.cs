@@ -122,9 +122,9 @@ namespace SWF.Core.Job
             };
 
             this._currentJobDictionary.Add(type, job);
-#pragma warning disable CA2012 // ValueTask を正しく使用する必要があります
+#pragma warning disable CA2012
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012 // ValueTask を正しく使用する必要があります
+#pragma warning restore CA2012
         }
 
         public void Enqueue<TJob, TJobResult>(
@@ -173,9 +173,9 @@ namespace SWF.Core.Job
             };
 
             this._currentJobDictionary.Add(type, job);
-#pragma warning disable CA2012 // ValueTask を正しく使用する必要があります
+#pragma warning disable CA2012
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012 // ValueTask を正しく使用する必要があります
+#pragma warning restore CA2012
         }
 
         private async Task DoWork()

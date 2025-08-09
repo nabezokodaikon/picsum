@@ -80,7 +80,9 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
+#pragma warning disable CA2012
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
+#pragma warning restore CA2012
         }
 
         public void Enqueue<TJob>(ISender sender)
@@ -98,7 +100,9 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
+#pragma warning disable CA2012
             this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
+#pragma warning restore CA2012
         }
 
         private async Task DoWork()
