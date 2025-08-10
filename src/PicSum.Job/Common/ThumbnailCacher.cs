@@ -24,6 +24,7 @@ namespace PicSum.Job.Common
 
         public ThumbnailCacher()
         {
+#pragma warning disable CA2012
             var con = Instance<IThumbnailDB>.Value.Connect().Result;
 
             try
@@ -37,10 +38,9 @@ namespace PicSum.Job.Common
             }
             finally
             {
-#pragma warning disable CA2012
                 con.DisposeAsync().GetAwaiter().GetResult();
-#pragma warning restore CA2012
             }
+#pragma warning restore CA2012
         }
 
         public void Dispose()
