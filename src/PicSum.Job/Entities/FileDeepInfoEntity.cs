@@ -1,5 +1,5 @@
 using PicSum.Job.Results;
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -16,9 +16,9 @@ namespace PicSum.Job.Entities
         {
             FilePath = string.Empty,
             FileName = string.Empty,
-            CreateDate = FileUtil.EMPTY_DATETIME,
-            UpdateDate = FileUtil.EMPTY_DATETIME,
-            TakenDate = FileUtil.EMPTY_DATETIME,
+            CreateDate = DateTimeExtensions.EMPTY,
+            UpdateDate = DateTimeExtensions.EMPTY,
+            TakenDate = DateTimeExtensions.EMPTY,
             IsFile = false,
             IsImageFile = false,
             FileType = string.Empty,
@@ -34,9 +34,9 @@ namespace PicSum.Job.Entities
         {
             FilePath = string.Empty,
             FileName = string.Empty,
-            CreateDate = FileUtil.EMPTY_DATETIME,
-            UpdateDate = FileUtil.EMPTY_DATETIME,
-            TakenDate = FileUtil.EMPTY_DATETIME,
+            CreateDate = DateTimeExtensions.EMPTY,
+            UpdateDate = DateTimeExtensions.EMPTY,
+            TakenDate = DateTimeExtensions.EMPTY,
             IsFile = false,
             IsImageFile = false,
             FileType = string.Empty,
@@ -50,9 +50,9 @@ namespace PicSum.Job.Entities
 
         public string FilePath { get; internal set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
-        public DateTime CreateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
-        public DateTime UpdateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
-        public DateTime TakenDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime CreateDate { get; internal set; } = DateTimeExtensions.EMPTY;
+        public DateTime UpdateDate { get; internal set; } = DateTimeExtensions.EMPTY;
+        public DateTime TakenDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public bool IsFile { get; internal set; } = false;
         public bool IsImageFile { get; internal set; } = false;
         public string FileType { get; internal set; } = string.Empty;

@@ -1,7 +1,6 @@
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -63,7 +62,7 @@ namespace PicSum.Job.Jobs
                         {
                             var filePath = files[index];
                             var takenDate = Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
-                            if (takenDate == FileUtil.EMPTY_DATETIME)
+                            if (takenDate.IsEmpty())
                             {
                                 return;
                             }

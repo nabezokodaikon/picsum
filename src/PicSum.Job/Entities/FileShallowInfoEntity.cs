@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System.Drawing;
 using System.Runtime.Versioning;
@@ -15,10 +15,10 @@ namespace PicSum.Job.Entities
         {
             FilePath = string.Empty,
             FileName = string.Empty,
-            CreateDate = FileUtil.EMPTY_DATETIME,
-            UpdateDate = FileUtil.EMPTY_DATETIME,
-            TakenDate = FileUtil.EMPTY_DATETIME,
-            RgistrationDate = FileUtil.EMPTY_DATETIME,
+            CreateDate = DateTimeExtensions.EMPTY,
+            UpdateDate = DateTimeExtensions.EMPTY,
+            TakenDate = DateTimeExtensions.EMPTY,
+            RgistrationDate = DateTimeExtensions.EMPTY,
             ExtraLargeIcon = null,
             SmallIcon = null,
             JumboIcon = null,
@@ -33,10 +33,10 @@ namespace PicSum.Job.Entities
 
         public string FilePath { get; internal set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
-        public DateTime CreateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
-        public DateTime UpdateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
-        public DateTime TakenDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
-        public DateTime RgistrationDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime CreateDate { get; internal set; } = DateTimeExtensions.EMPTY;
+        public DateTime UpdateDate { get; internal set; } = DateTimeExtensions.EMPTY;
+        public DateTime TakenDate { get; internal set; } = DateTimeExtensions.EMPTY;
+        public DateTime RgistrationDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public Image? ExtraLargeIcon { get; internal set; } = null;
         public Image? SmallIcon { get; internal set; } = null;
         public Image? JumboIcon { get; internal set; } = null;

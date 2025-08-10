@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -15,8 +15,8 @@ namespace SWF.Core.ImageAccessor
         private ImageFileTakenDateCacheEntity()
         {
             this.FilePath = string.Empty;
-            this.TakenDate = FileUtil.EMPTY_DATETIME;
-            this.UpdateDate = FileUtil.EMPTY_DATETIME;
+            this.TakenDate = DateTimeExtensions.EMPTY;
+            this.UpdateDate = DateTimeExtensions.EMPTY;
         }
 
         public ImageFileTakenDateCacheEntity(string filePath, DateTime takenDate, DateTime updateDate)

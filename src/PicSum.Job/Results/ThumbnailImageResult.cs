@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -20,7 +20,7 @@ namespace PicSum.Job.Results
             ThumbnailHeight = 0,
             SourceWidth = 0,
             SourceHeight = 0,
-            FileUpdateDate = FileUtil.EMPTY_DATETIME,
+            FileUpdateDate = DateTimeExtensions.EMPTY,
         };
 
         public string FilePath { get; internal set; } = string.Empty;

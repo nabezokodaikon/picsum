@@ -57,7 +57,7 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return await this.Get(filePath, isGetThumbnail, FileUtil.EMPTY_DATETIME);
+            return await this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY);
         }
 
         private async ValueTask<FileShallowInfoEntity> GetFileInfo(
@@ -119,7 +119,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = FileUtil.EMPTY_DATETIME,
+                TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon,
                 JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
@@ -163,7 +163,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = FileUtil.EMPTY_DATETIME,
+                TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)
@@ -180,9 +180,9 @@ namespace PicSum.Job.Logics
                 FileName = FileUtil.GetFileName(filePath),
                 IsFile = false,
                 IsImageFile = false,
-                CreateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
-                UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
-                TakenDate = FileUtil.ROOT_DIRECTORY_DATETIME,
+                CreateDate = DateTimeExtensions.EMPTY,
+                UpdateDate = DateTimeExtensions.EMPTY,
+                TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
                 JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon

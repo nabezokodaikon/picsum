@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
 
@@ -11,12 +11,12 @@ namespace PicSum.Job.Results
         public static readonly TakenDateResult COMPLETED = new()
         {
             FilePath = string.Empty,
-            TakenDate = FileUtil.EMPTY_DATETIME,
+            TakenDate = DateTimeExtensions.EMPTY,
             IsCompleted = true,
         };
 
         public string FilePath { get; internal set; } = string.Empty;
-        public DateTime TakenDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime TakenDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public bool IsCompleted { get; internal set; } = false;
 
         private TakenDateResult()

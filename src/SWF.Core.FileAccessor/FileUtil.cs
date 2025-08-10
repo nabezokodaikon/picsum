@@ -17,9 +17,6 @@ namespace SWF.Core.FileAccessor
         public const string ROOT_DIRECTORY_TYPE_NAME = "System root";
         public const string ROOT_DIRECTORY_PATH = "36f780fdbda5b2b2ce85c9ebb57086d1880ae757";
 
-        public static readonly DateTime ROOT_DIRECTORY_DATETIME = DateTime.MinValue;
-        public static readonly DateTime EMPTY_DATETIME = DateTime.MinValue;
-
         /// <summary>
         /// ファイルパスがシステムルートであるか確認します。
         /// </summary>
@@ -290,7 +287,7 @@ namespace SWF.Core.FileAccessor
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                return FileUtil.ROOT_DIRECTORY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             try
@@ -330,7 +327,7 @@ namespace SWF.Core.FileAccessor
 
             if (FileUtil.IsSystemRoot(filePath))
             {
-                return FileUtil.ROOT_DIRECTORY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             try
@@ -701,23 +698,23 @@ namespace SWF.Core.FileAccessor
 
             if (fileSize < 1024)
             {
-                return $"{fileSize.ToString()} B";
+                return $"{fileSize} B";
             }
             else if (fileSize < Math.Pow(1024f, 2))
             {
-                return $"{Math.Round(fileSize / 1024f, 0).ToString()} KB";
+                return $"{Math.Round(fileSize / 1024f, 0)} KB";
             }
             else if (fileSize < Math.Pow(1024f, 3))
             {
-                return $"{Math.Round(fileSize / Math.Pow(1024f, 2), 2).ToString()} MB";
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 2), 2)} MB";
             }
             else if (fileSize < Math.Pow(1024f, 4))
             {
-                return $"{Math.Round(fileSize / Math.Pow(1024f, 3), 2).ToString()} GB";
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 3), 2)} GB";
             }
             else
             {
-                return $"{Math.Round(fileSize / Math.Pow(1024f, 4), 2).ToString()} TB";
+                return $"{Math.Round(fileSize / Math.Pow(1024f, 4), 2)} TB";
             }
         }
 
@@ -897,7 +894,7 @@ namespace SWF.Core.FileAccessor
                 return string.Empty;
             }
 
-            return new string(buffer.Slice(index));
+            return new string(buffer[index..]);
         }
 
         private static string CreateFileAccessErrorMessage(string path)

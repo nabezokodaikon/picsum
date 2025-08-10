@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
@@ -16,7 +16,7 @@ namespace PicSum.Job.Entities
             ThumbnailHeight = 0,
             SourceWidth = 0,
             SourceHeight = 0,
-            FileUpdateDate = FileUtil.EMPTY_DATETIME,
+            FileUpdateDate = DateTimeExtensions.EMPTY,
             ThumbnailBuffer = null,
         };
 
@@ -25,7 +25,7 @@ namespace PicSum.Job.Entities
         public int ThumbnailHeight { get; internal set; } = 0;
         public int SourceWidth { get; internal set; } = 0;
         public int SourceHeight { get; internal set; } = 0;
-        public DateTime FileUpdateDate { get; internal set; } = FileUtil.EMPTY_DATETIME;
+        public DateTime FileUpdateDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public byte[]? ThumbnailBuffer { get; internal set; } = null;
     }
 }

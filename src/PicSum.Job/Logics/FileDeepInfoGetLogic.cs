@@ -61,9 +61,9 @@ namespace PicSum.Job.Logics
                 FilePath = FileUtil.ROOT_DIRECTORY_PATH,
                 FileName = FileUtil.ROOT_DIRECTORY_NAME,
                 FileType = FileUtil.ROOT_DIRECTORY_TYPE_NAME,
-                CreateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
-                UpdateDate = FileUtil.ROOT_DIRECTORY_DATETIME,
-                TakenDate = FileUtil.EMPTY_DATETIME,
+                CreateDate = DateTimeExtensions.EMPTY,
+                UpdateDate = DateTimeExtensions.EMPTY,
+                TakenDate = DateTimeExtensions.EMPTY,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -83,7 +83,7 @@ namespace PicSum.Job.Logics
                 FileType = FileUtil.GetTypeName(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = FileUtil.EMPTY_DATETIME,
+                TakenDate = DateTimeExtensions.EMPTY,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -104,7 +104,7 @@ namespace PicSum.Job.Logics
                 FileType = FileUtil.GetTypeName(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = FileUtil.EMPTY_DATETIME,
+                TakenDate = DateTimeExtensions.EMPTY,
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
@@ -246,7 +246,7 @@ namespace PicSum.Job.Logics
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(ex);
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
         }
 
@@ -259,7 +259,7 @@ namespace PicSum.Job.Logics
             catch (ImageUtilException ex)
             {
                 this.WriteErrorLog(ex);
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
         }
     }

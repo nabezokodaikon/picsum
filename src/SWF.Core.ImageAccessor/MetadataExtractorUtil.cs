@@ -2,7 +2,6 @@ using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using MetadataExtractor.Formats.Xmp;
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -24,18 +23,18 @@ namespace SWF.Core.ImageAccessor
                     var directories = ImageMetadataReader.ReadMetadata(fs);
 
                     var date = GetTakenDateByExifSubIfdDirectory(directories);
-                    if (date != FileUtil.EMPTY_DATETIME)
+                    if (!date.IsEmpty())
                     {
                         return date;
                     }
 
                     date = GetTakenDateByXmpDirectory(directories);
-                    if (date != FileUtil.EMPTY_DATETIME)
+                    if (!date.IsEmpty())
                     {
                         return date;
                     }
 
-                    return FileUtil.EMPTY_DATETIME;
+                    return DateTimeExtensions.EMPTY;
                 }
             }
         }
@@ -46,12 +45,12 @@ namespace SWF.Core.ImageAccessor
             var dir = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
             if (dir == null)
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             if (!dir.TryGetDateTime(ExifSubIfdDirectory.TagDateTimeOriginal, out DateTime dateTimeOriginal))
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             return dateTimeOriginal;
@@ -63,17 +62,17 @@ namespace SWF.Core.ImageAccessor
             var dir = directories.OfType<XmpDirectory>().FirstOrDefault();
             if (dir == null)
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             if (!dir.GetXmpProperties().TryGetValue("xmp:CreateDate", out string? createDateString))
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             if (!DateTimeOffset.TryParse(createDateString, out DateTimeOffset createDateOffset))
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             return createDateOffset.DateTime;

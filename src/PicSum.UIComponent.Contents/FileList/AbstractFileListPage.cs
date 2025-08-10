@@ -601,13 +601,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != null && item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderBy(item => item.TakenDate)
                             .ToArray();
                         var b = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == null || item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
                         filterList = [.. a.Concat(b)];
@@ -616,13 +616,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != null && item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderByDescending(item => item.TakenDate)
                             .ToArray();
                         var b = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == null || item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
                         filterList = [.. a.Concat(b)];
@@ -631,8 +631,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 case FileSortMode.AddDate:
                     filterList.Sort((x, y) =>
                     {
-                        var xDate = x.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
-                        var yDate = y.RgistrationDate.GetValueOrDefault(FileUtil.EMPTY_DATETIME);
+                        var xDate = x.RgistrationDate.GetValueOrDefault(DateTimeExtensions.EMPTY);
+                        var yDate = y.RgistrationDate.GetValueOrDefault(DateTimeExtensions.EMPTY);
                         if (isAscending)
                         {
                             if (xDate == yDate)

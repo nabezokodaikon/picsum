@@ -497,19 +497,19 @@ namespace PicSum.UIComponent.InfoPanel
                     }
                 }
 
-                if (this.FileInfo.CreateDate != FileUtil.EMPTY_DATETIME)
+                if (!this.FileInfo.CreateDate.IsEmpty())
                 {
                     this.fileInfoLabel.CreateDate
                         = $"{this.FileInfo.CreateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
-                if (this.FileInfo.UpdateDate != FileUtil.EMPTY_DATETIME)
+                if (!this.FileInfo.UpdateDate.IsEmpty())
                 {
                     this.fileInfoLabel.UpdateDate
                         = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
-                if (this.FileInfo.TakenDate != FileUtil.EMPTY_DATETIME)
+                if (!this.FileInfo.TakenDate.IsEmpty())
                 {
                     this.fileInfoLabel.TakenDate
                         = $"{this.FileInfo.TakenDate:yyyy/MM/dd HH:mm:ss}";

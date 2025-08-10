@@ -1,4 +1,4 @@
-using SWF.Core.FileAccessor;
+using SWF.Core.Base;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
         {
             FilePath = string.Empty,
             Bitmap = null,
-            UpdateDate = FileUtil.EMPTY_DATETIME,
+            UpdateDate = DateTimeExtensions.EMPTY,
         };
 
         private bool _disposed = false;

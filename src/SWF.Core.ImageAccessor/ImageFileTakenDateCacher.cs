@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Runtime.Versioning;
 
@@ -60,7 +61,7 @@ namespace SWF.Core.ImageAccessor
         {
             if (!ImageUtil.CanRetainExifImageFormat(filePath))
             {
-                return FileUtil.EMPTY_DATETIME;
+                return DateTimeExtensions.EMPTY;
             }
 
             lock (this._cacheLock)

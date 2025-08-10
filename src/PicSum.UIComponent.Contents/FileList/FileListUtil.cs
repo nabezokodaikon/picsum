@@ -113,14 +113,14 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .Where(item => !item.TakenDate.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderBy(item => item.TakenDate)
                             .Select(item => item.FilePath)
                             .ToArray();
                         var b = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .Select(item => item.FilePath)
                             .ToArray();
@@ -130,14 +130,14 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != FileUtil.EMPTY_DATETIME)
+                            .Where(item => !item.TakenDate.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderByDescending(item => item.TakenDate)
                             .Select(item => item.FilePath)
                             .ToArray();
                         var b = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == FileUtil.EMPTY_DATETIME)
+                            .Where(item => item.TakenDate.IsEmpty())
                             .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .Select(item => item.FilePath)
                             .ToArray();
