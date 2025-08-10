@@ -303,8 +303,6 @@ namespace PicSum.Main.UIComponent
                             this._browsePanel.AddFavoriteDirectoryListTab();
                         }
                     }
-
-                    LOGGER.Debug("初回表示されました。");
                 }
 
                 this.SetControlRegion();
