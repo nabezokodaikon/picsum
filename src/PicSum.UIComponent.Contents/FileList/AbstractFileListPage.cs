@@ -166,6 +166,11 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 this.InitializeComponent();
 
+                if (param.SortInfo != null)
+                {
+                    this.SortInfo = param.SortInfo;
+                }
+
                 this.IsShowFileName = FileListPageConfig.INSTANCE.IsShowFileName;
                 this.IsShowDirectory = FileListPageConfig.INSTANCE.IsShowDirectory;
                 this.IsShowImageFile = FileListPageConfig.INSTANCE.IsShowImageFile;
@@ -915,6 +920,12 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SortInfo.ActiveSortMode = FileSortMode.UpdateDate;
             this.SetSort();
             this.SetFilter();
+            this.Set();
+        }
+
+        protected virtual void Set()
+        {
+
         }
 
         private void ToolBar_TakenDateSortButtonClick(object sender, EventArgs e)
