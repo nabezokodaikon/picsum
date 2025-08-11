@@ -65,7 +65,7 @@ namespace SWF.Core.Base
 
             if (this._enable || this._stopwatch?.ElapsedMilliseconds > Threshold)
             {
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4")} ms: {this._message}: ");
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4")} ms | {this._message} ");
             }
 #endif
             GC.SuppressFinalize(this);
