@@ -7,7 +7,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ResourceAccessor;
 using System;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 
 namespace PicSum.Main.Mng
 {
@@ -16,7 +15,7 @@ namespace PicSum.Main.Mng
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
     internal sealed partial class ResourceManager
-        : IAsyncDisposable
+        : IDisposable
     {
         private static readonly Logger LOGGER = Log.GetLogger();
 
@@ -87,10 +86,10 @@ namespace PicSum.Main.Mng
             }
         }
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
             var closingJob = new ClosingSyncJob();
-            await closingJob.Execute();
+            closingJob.Execute();
 
             Config.INSTANCE.WindowState = BrowseConfig.INSTANCE.WindowState;
             Config.INSTANCE.WindowLocaionX = BrowseConfig.INSTANCE.WindowLocaion.X;

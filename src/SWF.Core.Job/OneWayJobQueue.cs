@@ -7,7 +7,7 @@ namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class OneWayJobQueue
-        : IAsyncDisposable
+        : IDisposable
     {
         private static readonly Logger LOGGER = Log.GetLogger();
         private static readonly string TASK_NAME = $"{typeof(OneWayJobQueue).Name} Task";
@@ -33,7 +33,7 @@ namespace SWF.Core.Job
                 this._cancellationTokenSource.Token);
         }
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
@@ -49,7 +49,7 @@ namespace SWF.Core.Job
             try
             {
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                await this._task;
+                this._task.GetAwaiter().GetResult();
                 LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
             catch (OperationCanceledException)

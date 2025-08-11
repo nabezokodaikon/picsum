@@ -12,18 +12,18 @@ namespace PicSum.Job.SyncJobs
     public sealed class ClosingSyncJob
         : AbstractSyncJob
     {
-        public async ValueTask Execute()
+        public void Execute()
         {
             using (TimeMeasuring.Run(true, "ClosingSyncJob.Execute"))
             {
-                await Instance<JobCaller>.Value.DisposeAsync();
+                Instance<JobCaller>.Value.Dispose();
                 Instance<IFileIconCacher>.Value.Dispose();
                 Instance<IThumbnailCacher>.Value.Dispose();
                 Instance<IImageFileCacher>.Value.Dispose();
                 Instance<IImageFileSizeCacher>.Value.Dispose();
                 Instance<IImageFileTakenDateCacher>.Value.Dispose();
-                await Instance<IFileInfoDB>.Value.DisposeAsync();
-                await Instance<IThumbnailDB>.Value.DisposeAsync();
+                Instance<IFileInfoDB>.Value.Dispose();
+                Instance<IThumbnailDB>.Value.Dispose();
             }
         }
     }

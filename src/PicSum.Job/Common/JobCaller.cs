@@ -9,7 +9,7 @@ namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public sealed partial class JobCaller(SynchronizationContext context)
-        : IAsyncDisposable
+        : IDisposable
     {
         private bool _disposed = false;
 
@@ -39,26 +39,26 @@ namespace PicSum.Job.Common
         public readonly Lazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(
             () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
                 return;
             }
 
-            await this._oneWayJobQueue.Value.DisposeAsync();
-            await this._twoWayJobQueue.Value.DisposeAsync();
+            this._oneWayJobQueue.Value.Dispose();
+            this._twoWayJobQueue.Value.Dispose();
 
-            await this.ImageFileReadJob.Value.DisposeAsync();
-            await this.ImageFileLoadingJob.Value.DisposeAsync();
-            await this.ImageFileCacheJob.Value.DisposeAsync();
-            await this.ThumbnailsGetJob.Value.DisposeAsync();
-            await this.TakenDatesGetJob.Value.DisposeAsync();
-            await this.FileDeepInfoGetJob.Value.DisposeAsync();
-            await this.FileDeepInfoLoadingJob.Value.DisposeAsync();
-            await this.AddressInfoGetJob.Value.DisposeAsync();
-            await this.PipeServerJob.Value.DisposeAsync();
-            await this.GCCollectRunJob.Value.DisposeAsync();
+            this.ImageFileReadJob.Value.Dispose();
+            this.ImageFileLoadingJob.Value.Dispose();
+            this.ImageFileCacheJob.Value.Dispose();
+            this.ThumbnailsGetJob.Value.Dispose();
+            this.TakenDatesGetJob.Value.Dispose();
+            this.FileDeepInfoGetJob.Value.Dispose();
+            this.FileDeepInfoLoadingJob.Value.Dispose();
+            this.AddressInfoGetJob.Value.Dispose();
+            this.PipeServerJob.Value.Dispose();
+            this.GCCollectRunJob.Value.Dispose();
 
             this._disposed = true;
 

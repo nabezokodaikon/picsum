@@ -7,7 +7,7 @@ namespace SWF.Core.Job
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
-        : IAsyncDisposable
+        : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
         where TJobParameter : class, IJobParameter
         where TJobResult : class, IJobResult
@@ -43,7 +43,7 @@ namespace SWF.Core.Job
                 this._cancellationTokenSource.Token);
         }
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
@@ -60,7 +60,7 @@ namespace SWF.Core.Job
             try
             {
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                await this._task;
+                this._task.GetAwaiter().GetResult();
                 LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
             catch (OperationCanceledException)

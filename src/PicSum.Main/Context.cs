@@ -78,10 +78,10 @@ namespace PicSum.Main
             form.Show();
         }
 
-        private async void BrowseManager_BrowseNothing(object sender, EventArgs e)
+        private void BrowseManager_BrowseNothing(object sender, EventArgs e)
         {
             this.IsDisposed = true;
-            await this._resourceManager.DisposeAsync();
+            this._resourceManager.Dispose();
             this.ExitThread();
         }
     }

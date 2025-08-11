@@ -7,7 +7,7 @@ namespace SWF.Core.DatabaseAccessor
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     public abstract class AbstractDatabase
-        : IAsyncDisposable
+        : IDisposable
     {
         private static void CreateDB(string filePath, string tablesCreateSql)
         {
@@ -90,11 +90,11 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
-                return ValueTask.CompletedTask;
+                return;
             }
 
             if (this._persistentConnection != null)
@@ -114,8 +114,6 @@ namespace SWF.Core.DatabaseAccessor
             this._disposed = true;
 
             GC.SuppressFinalize(this);
-
-            return ValueTask.CompletedTask;
         }
     }
 }
