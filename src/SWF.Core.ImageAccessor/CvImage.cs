@@ -179,9 +179,26 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage"))
+            if (this._zoomValue > 1f)
             {
-                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Area);
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Magnification"))
+                {
+                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Cubic);
+                }
+            }
+            else if (this._zoomValue < 1f)
+            {
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Minification"))
+                {
+                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Area);
+                }
+            }
+            else
+            {
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Default"))
+                {
+                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Nearest);
+                }
             }
         }
 
@@ -191,7 +208,7 @@ namespace SWF.Core.ImageAccessor
 
             using (TimeMeasuring.Run(false, "CvImage.DrawLowQualityZoomImage"))
             {
-                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Linear);
+                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Nearest);
             }
         }
 
@@ -265,9 +282,26 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage"))
+            if (this.Width > destRect.Width || this.Height > destRect.Height)
             {
-                this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Minification"))
+                {
+                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
+                }
+            }
+            else if (this.Width < destRect.Width || this.Height < destRect.Height)
+            {
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Magnification"))
+                {
+                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Cubic);
+                }
+            }
+            else
+            {
+                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Default"))
+                {
+                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Nearest);
+                }
             }
         }
 
