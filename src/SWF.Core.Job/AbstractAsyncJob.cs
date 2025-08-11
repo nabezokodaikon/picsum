@@ -71,7 +71,7 @@ namespace SWF.Core.Job
 
         internal bool CanUIThreadAccess()
         {
-            if (Thread.CurrentThread.Name != AppConstants.UI_THREAD_NAME)
+            if (!AppConstants.IsUIThread())
             {
                 throw new InvalidOperationException("現在のスレッドがUIスレッドではありません。");
             }

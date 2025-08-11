@@ -30,7 +30,7 @@ namespace PicSum.Main
                 {
                     TimeMeasuring.Threshold = CommandLineArgs.GetThreshold();
 
-                    Thread.CurrentThread.Name = AppConstants.UI_THREAD_NAME;
+                    AppConstants.SetUIThreadName();
 
                     BootTimeMeasurement.Start();
 

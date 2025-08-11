@@ -1,11 +1,29 @@
+using System.Runtime.CompilerServices;
+
 namespace SWF.Core.Base
 {
     public static class AppConstants
     {
-        public const string UI_THREAD_NAME = "UI";
+        private const string UI_THREAD_NAME = "UI";
+
         public const string MUTEX_NAME = "fadae40f7f7e837033b2ac472808f03e7c9cce257210a11ff9cf4b8bf8b1ce0d";
         public const string PIPE_NAME = "2cb501081d1ec16e2feb1988139bcba70f0539d98b80d2d2fc83d0e167814331";
         public const float DEFAULT_ZOOM_VALUE = 1f;
+
+        public static void SetUIThreadName()
+        {
+            if (Thread.CurrentThread.Name != null)
+            {
+                throw new InvalidOperationException("UIスレッド名が設定できません。");
+            }
+
+            Thread.CurrentThread.Name = UI_THREAD_NAME;
+        }
+
+        public static bool IsUIThread()
+        {
+            return Thread.CurrentThread.Name == UI_THREAD_NAME;
+        }
     }
 
     /// <summary>

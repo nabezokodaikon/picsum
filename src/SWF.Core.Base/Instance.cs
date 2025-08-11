@@ -27,7 +27,7 @@ namespace SWF.Core.Base
                 throw new InvalidOperationException("インスタンスが既に設定されています。");
             }
 
-            if (Thread.CurrentThread.Name != AppConstants.UI_THREAD_NAME)
+            if (!AppConstants.IsUIThread())
             {
                 throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
             }
