@@ -18,17 +18,17 @@ namespace SWF.Core.Base
             Thread.CurrentThread.Name = UI_THREAD_NAME;
         }
 
-        public static bool IsUIThread()
+        public static void ThrowIfNotUIThread()
         {
-            return Thread.CurrentThread.Name == UI_THREAD_NAME;
+            if (Thread.CurrentThread.Name != UI_THREAD_NAME)
+            {
+                throw new InvalidOperationException("UIスレッドではありません。");
+            }
         }
 
         public static SynchronizationContext GetUIThreadContext()
         {
-            if (!IsUIThread())
-            {
-                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
-            }
+            ThrowIfNotUIThread();
 
             if (SynchronizationContext.Current == null)
             {

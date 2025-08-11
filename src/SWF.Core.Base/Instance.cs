@@ -27,10 +27,7 @@ namespace SWF.Core.Base
                 throw new InvalidOperationException("インスタンスが既に設定されています。");
             }
 
-            if (!AppConstants.IsUIThread())
-            {
-                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
-            }
+            AppConstants.ThrowIfNotUIThread();
 
             _lazyValue = lazyValue;
         }

@@ -10,20 +10,14 @@ namespace SWF.Core.Base
 
         public static void Start()
         {
-            if (!AppConstants.IsUIThread())
-            {
-                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
-            }
+            AppConstants.ThrowIfNotUIThread();
 
             _instance ??= new();
         }
 
         public static void Stop()
         {
-            if (!AppConstants.IsUIThread())
-            {
-                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
-            }
+            AppConstants.ThrowIfNotUIThread();
 
             _instance?.Stop_();
         }
