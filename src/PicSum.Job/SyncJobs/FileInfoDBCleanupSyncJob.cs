@@ -11,16 +11,16 @@ namespace PicSum.Job.SyncJobs
     public sealed class FileInfoDBCleanupSyncJob
         : AbstractSyncJob
     {
-        public async ValueTask Execute()
+        public void Execute()
         {
             using (TimeMeasuring.Run(true, "FileInfoDBCleanupSyncJob.Execute"))
             {
-                await this.Cleanup();
-                await this.Vacuum();
+                this.Cleanup().GetAwaiter().GetResult();
+                this.Vacuum().GetAwaiter().GetResult();
             }
         }
 
-        private async ValueTask Cleanup()
+        private async Task Cleanup()
         {
             var readSql = new AllFilesReadSql();
             await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
@@ -39,7 +39,7 @@ namespace PicSum.Job.SyncJobs
             }
         }
 
-        private async ValueTask Vacuum()
+        private async Task Vacuum()
         {
             await using (var con = await Instance<IFileInfoDB>.Value.Connect())
             {
