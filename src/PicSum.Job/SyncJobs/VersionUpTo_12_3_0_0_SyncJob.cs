@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.SyncJobs
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class VersionUpTo_12_3_0_0_Job
+    public sealed class VersionUpTo_12_3_0_0_SyncJob
         : AbstractSyncJob
     {
         public async ValueTask Execute()

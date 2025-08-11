@@ -41,7 +41,7 @@ namespace PicSum.Main
             {
                 LOGGER.Info($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
 
-                var job = new VersionUpTo_12_2_1_0_Job();
+                var job = new VersionUpTo_12_2_1_0_SyncJob();
                 job.Execute();
             }
         }
@@ -57,7 +57,7 @@ namespace PicSum.Main
             {
                 LOGGER.Info($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
-                var job = new VersionUpTo_12_2_2_0_Job();
+                var job = new VersionUpTo_12_2_2_0_SyncJob();
                 job.Execute();
             }
         }
@@ -73,7 +73,7 @@ namespace PicSum.Main
             {
                 LOGGER.Info($"バージョンが'{this._12_3_0_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
-                var job = new VersionUpTo_12_3_0_0_Job();
+                var job = new VersionUpTo_12_3_0_0_SyncJob();
                 job.Execute();
             }
         }
