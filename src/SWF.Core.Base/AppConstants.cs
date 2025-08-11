@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace SWF.Core.Base
 {
     public static class AppConstants
