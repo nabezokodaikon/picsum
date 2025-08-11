@@ -29,7 +29,7 @@ namespace PicSum.Job.Jobs
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = await this.GetFiles(param.Tag);
+            var dtos = await this.GetFiles(param.Tag).WithConfig();
 
             using (TimeMeasuring.Run(true, "FilesGetByTagJob Parallel.ForEachAsync"))
             {
@@ -55,7 +55,7 @@ namespace PicSum.Job.Jobs
                                 try
                                 {
                                     var info = await getInfoLogic.Get(
-                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate);
+                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate).WithConfig();
                                     if (info != FileShallowInfoEntity.EMPTY)
                                     {
                                         infoList.Add(info);
@@ -65,7 +65,7 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            });
+                            }).WithConfig();
                     }
                     catch (OperationCanceledException)
                     {
@@ -79,7 +79,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<FileByTagDto[]> GetFiles(string tag)
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new FilesGetByTagLogic(this);
                 return logic.Execute(con, tag);

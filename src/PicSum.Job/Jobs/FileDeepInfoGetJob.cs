@@ -25,7 +25,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var result = await this.CreateCallbackResult(param);
+            var result = await this.CreateCallbackResult(param).WithConfig();
 
             this.ThrowIfJobCancellationRequested();
 
@@ -56,7 +56,7 @@ namespace PicSum.Job.Jobs
 
                     this.ThrowIfJobCancellationRequested();
 
-                    await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+                    await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
                         fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
@@ -85,7 +85,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
                 result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);

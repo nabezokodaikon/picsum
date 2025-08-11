@@ -56,7 +56,7 @@ namespace PicSum.Job.Jobs
                                 }
 
                                 var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight);
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).WithConfig();
                                 if (param.IsExecuteCallback
                                     && bf != ThumbnailCacheEntity.EMPTY
                                     && bf.ThumbnailBuffer != null)
@@ -91,7 +91,7 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    );
+                    ).WithConfig();
                 }
                 catch (OperationCanceledException) { }
             }

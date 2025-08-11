@@ -29,7 +29,7 @@ namespace PicSum.Job.Logics
             if (FileUtil.IsExistsFile(filePath))
             {
                 return await this.GetFileInfo(
-                    filePath, isGetThumbnail, addDate);
+                    filePath, isGetThumbnail, addDate).WithConfig();
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -44,7 +44,7 @@ namespace PicSum.Job.Logics
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return await this.GetDirectoryInfo(
-                    filePath, isGetThumbnail, addDate);
+                    filePath, isGetThumbnail, addDate).WithConfig();
             }
             else
             {
@@ -57,7 +57,7 @@ namespace PicSum.Job.Logics
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return await this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY);
+            return await this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY).WithConfig();
         }
 
         private async ValueTask<FileShallowInfoEntity> GetFileInfo(
@@ -85,7 +85,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath);
+            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
@@ -130,7 +130,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath);
+            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {

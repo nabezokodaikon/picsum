@@ -2,6 +2,7 @@ using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
@@ -20,7 +21,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            await Task.Delay(10, this.CancellationToken);
+            await Task.Delay(10, this.CancellationToken).WithConfig();
 
             var result = this.CreateCallbackResult(param);
             this.Callback(result);

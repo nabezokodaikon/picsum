@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Data.SQLite;
 using System.Runtime.Versioning;
@@ -57,7 +58,7 @@ namespace SWF.Core.DatabaseAccessor
 
         public async ValueTask<IDatabaseConnection> Connect()
         {
-            await this._lockObject.WaitAsync();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
@@ -74,7 +75,7 @@ namespace SWF.Core.DatabaseAccessor
 
         public async ValueTask<IDatabaseConnection> ConnectWithTransaction()
         {
-            await this._lockObject.WaitAsync();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {

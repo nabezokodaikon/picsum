@@ -1,6 +1,7 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Results;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -31,7 +32,7 @@ namespace PicSum.Job.Jobs
             {
                 addressInfo.DirectoryPath = FileUtil.ROOT_DIRECTORY_PATH;
                 addressInfo.DirectoryList.Add(
-                    await logic.Get(param.Value, false));
+                    await logic.Get(param.Value, false).WithConfig());
                 addressInfo.HasSubDirectory = true;
             }
             else
@@ -61,7 +62,7 @@ namespace PicSum.Job.Jobs
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    var info = await logic.Get(directory, false);
+                    var info = await logic.Get(directory, false).WithConfig();
                     if (info == FileShallowInfoEntity.EMPTY)
                     {
                         break;
@@ -72,7 +73,7 @@ namespace PicSum.Job.Jobs
                 }
 
                 addressInfo.DirectoryList.Insert(
-                    0, await logic.Get(FileUtil.ROOT_DIRECTORY_PATH, false));
+                    0, await logic.Get(FileUtil.ROOT_DIRECTORY_PATH, false).WithConfig());
             }
 
             this.Callback(addressInfo);

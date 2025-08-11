@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
         {
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = await this.GetBookmarks();
+            var dtos = await this.GetBookmarks().WithConfig();
 
             using (TimeMeasuring.Run(true, "BookmarksGetJob Parallel.ForEachAsync"))
             {
@@ -46,7 +46,7 @@ namespace PicSum.Job.Jobs
                                 try
                                 {
                                     var info = await getInfoLogic.Get(
-                                        dto.FilePath, true, dto.RegistrationDate);
+                                        dto.FilePath, true, dto.RegistrationDate).WithConfig();
                                     if (info != FileShallowInfoEntity.EMPTY)
                                     {
                                         infoList.Add(info);
@@ -56,7 +56,7 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            });
+                            }).WithConfig();
                     }
                     catch (OperationCanceledException)
                     {
@@ -70,7 +70,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<BookmarkDto[]> GetBookmarks()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var getBookmarkLogic = new BookmarksGetLogic(this);
                 return getBookmarkLogic.Execute(con);

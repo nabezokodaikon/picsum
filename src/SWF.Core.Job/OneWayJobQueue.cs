@@ -119,7 +119,7 @@ namespace SWF.Core.Job
 
                     if (!job.IsJobCancel)
                     {
-                        await job.ExecuteWrapper(token);
+                        await job.ExecuteWrapper(token).WithConfig();
                     }
                 }
             }

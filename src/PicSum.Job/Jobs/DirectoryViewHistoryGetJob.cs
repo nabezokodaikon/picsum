@@ -20,13 +20,13 @@ namespace PicSum.Job.Jobs
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();
 
-            foreach (var directoryPath in await this.GetHistories())
+            foreach (var directoryPath in await this.GetHistories().WithConfig())
             {
                 this.ThrowIfJobCancellationRequested();
 
                 try
                 {
-                    var info = await logic.Get(directoryPath, false);
+                    var info = await logic.Get(directoryPath, false).WithConfig();
                     if (info != FileShallowInfoEntity.EMPTY)
                     {
                         result.Add(info);
@@ -44,7 +44,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<string[]> GetHistories()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new DirectoryViewHistoryGetLogic(this);
                 return logic.Execute(con);

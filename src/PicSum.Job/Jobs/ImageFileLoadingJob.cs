@@ -12,6 +12,8 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileLoadingJob
         : AbstractTwoWayJob<ImageFileReadParameter, ImageFileReadResult>
     {
+        private const int MILLISECONDS_DELAY = 10;
+
         protected override async ValueTask Execute(ImageFileReadParameter parameter)
         {
             if (parameter.FilePathList == null)
@@ -46,36 +48,31 @@ namespace PicSum.Job.Jobs
                     && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width <= subSize.Height)
                 {
-                    await this.Delay();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue));
+                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue).WithConfig());
 
-                    await this.Delay();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue));
+                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue).WithConfig());
                 }
                 else
                 {
-                    await this.Delay();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
+                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
                 }
             }
             else
             {
-                await this.Delay();
+                await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
                 this.Callback(await logic.CreateLoadingResult(
-                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
+                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
             }
-        }
-
-        private async ValueTask Delay()
-        {
-            await Task.Delay(10, this.CancellationToken);
         }
     }
 }

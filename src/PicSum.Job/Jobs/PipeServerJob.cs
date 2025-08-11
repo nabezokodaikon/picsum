@@ -24,13 +24,13 @@ namespace PicSum.Job.Jobs
                     PipeTransmissionMode.Byte,
                     PipeOptions.Asynchronous))
                 {
-                    await pipeServer.WaitForConnectionAsync(this.CancellationToken);
+                    await pipeServer.WaitForConnectionAsync(this.CancellationToken).WithConfig();
 
                     this.ThrowIfJobCancellationRequested();
 
                     using (var reader = new StreamReader(pipeServer))
                     {
-                        var receivedArgs = await reader.ReadLineAsync();
+                        var receivedArgs = await reader.ReadLineAsync().WithConfig();
                         if (!string.IsNullOrEmpty(receivedArgs)
                             && FileUtil.CanAccess(receivedArgs)
                             && ImageUtil.IsImageFile(receivedArgs))

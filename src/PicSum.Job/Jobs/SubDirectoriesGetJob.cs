@@ -1,5 +1,6 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Runtime.Versioning;
@@ -30,7 +31,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = await logic.Get(subDirectory, false);
+                    var info = await logic.Get(subDirectory, false).WithConfig();
                     if (info != FileShallowInfoEntity.EMPTY)
                     {
                         result.Add(info);

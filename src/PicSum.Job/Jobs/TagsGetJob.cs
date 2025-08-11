@@ -15,13 +15,13 @@ namespace PicSum.Job.Jobs
     {
         protected async override ValueTask Execute()
         {
-            var result = new ListResult<string>(await this.GetTags());
+            var result = new ListResult<string>(await this.GetTags().WithConfig());
             this.Callback(result);
         }
 
         private async ValueTask<string[]> GetTags()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new TagsGetLogic(this);
                 return logic.Execute(con);

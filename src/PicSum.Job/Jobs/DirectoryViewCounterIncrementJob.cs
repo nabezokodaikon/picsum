@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
             {
                 var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
                 if (!incrementDirectoryViewCounter.Execute(con, param.Value))

@@ -16,7 +16,7 @@ namespace PicSum.Job.Jobs
     {
         protected override async ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
-            var dtos = await this.GetOrCreateFileList();
+            var dtos = await this.GetOrCreateFileList().WithConfig();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
@@ -40,7 +40,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = await getInfoLogic.Get(dto.Value, true);
+                        var info = await getInfoLogic.Get(dto.Value, true).WithConfig();
                         if (info != FileShallowInfoEntity.EMPTY)
                         {
                             infoList.Add(info);
@@ -58,7 +58,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
                 var dtos = logic.Execute(con);
@@ -68,7 +68,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));

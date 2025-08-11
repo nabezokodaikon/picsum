@@ -66,7 +66,7 @@ namespace PicSum.Job.Jobs
 
                                 try
                                 {
-                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail);
+                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).WithConfig();
                                     if (info != FileShallowInfoEntity.EMPTY)
                                     {
                                         infoList.Add(info);
@@ -76,7 +76,7 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            });
+                            }).WithConfig();
                     }
                     catch (OperationCanceledException)
                     {
@@ -85,7 +85,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
                 var directoryState = getDirectoryStateLogic.Execute(con, param.DirectoryPath);
