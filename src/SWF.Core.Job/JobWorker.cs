@@ -29,15 +29,11 @@ namespace SWF.Core.Job
                 SingleWriter = true
             });
         private readonly List<AbstractAsyncJob> _currentJobList = [];
-        private readonly SynchronizationContext _context;
 
-        public TwoWayJob(SynchronizationContext? context)
+        public TwoWayJob()
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
-
             LOGGER.Trace($"{TASK_NAME} を開始します。");
 
-            this._context = context;
             this._task = Task.Run(
                 this.DoWork,
                 this._cancellationTokenSource.Token);
@@ -98,9 +94,10 @@ namespace SWF.Core.Job
 
             if (callback != null)
             {
+                var context = AppConstants.GetUIThreadContext();
                 job.CallbackAction = _ =>
                 {
-                    this._context.Post(state =>
+                    context.Post(state =>
                     {
                         if (job.CanUIThreadAccess() && state is TJobResult result)
                         {
@@ -181,24 +178,24 @@ namespace SWF.Core.Job
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class TwoWayJob<TJob, TJobResult>(SynchronizationContext? context)
-        : TwoWayJob<TJob, EmptyParameter, TJobResult>(context)
+    public sealed partial class TwoWayJob<TJob, TJobResult>()
+        : TwoWayJob<TJob, EmptyParameter, TJobResult>()
         where TJob : AbstractTwoWayJob<TJobResult>, new()
         where TJobResult : class, IJobResult
     {
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayJob<TJob, TJobParameter>(SynchronizationContext? context)
-        : TwoWayJob<TJob, TJobParameter, EmptyResult>(context)
+    public sealed partial class OneWayJob<TJob, TJobParameter>()
+        : TwoWayJob<TJob, TJobParameter, EmptyResult>()
         where TJob : AbstractOneWayJob<TJobParameter>, new()
         where TJobParameter : class, IJobParameter
     {
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class OneWayJob<TJob>(SynchronizationContext? context)
-        : TwoWayJob<TJob, EmptyParameter, EmptyResult>(context)
+    public sealed partial class OneWayJob<TJob>()
+        : TwoWayJob<TJob, EmptyParameter, EmptyResult>()
         where TJob : AbstractOneWayJob, new()
     {
     }

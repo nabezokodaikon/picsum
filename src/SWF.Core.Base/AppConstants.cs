@@ -22,6 +22,30 @@ namespace SWF.Core.Base
         {
             return Thread.CurrentThread.Name == UI_THREAD_NAME;
         }
+
+        public static SynchronizationContext GetUIThreadContext()
+        {
+            if (!IsUIThread())
+            {
+                throw new InvalidOperationException("UIスレッド以外から呼び出されました。");
+            }
+
+            if (SynchronizationContext.Current == null)
+            {
+                using (TimeMeasuring.Run(true, "AppConstants.GetUIThreadContext new WindowsFormsSynchronizationContext()"))
+                {
+                    SynchronizationContext.SetSynchronizationContext(
+                        new WindowsFormsSynchronizationContext());
+                }
+            }
+
+            if (SynchronizationContext.Current == null)
+            {
+                throw new NullReferenceException("同期コンテキストが生成できませんでした。");
+            }
+
+            return SynchronizationContext.Current;
+        }
     }
 
     /// <summary>

@@ -14,7 +14,6 @@ namespace SWF.Core.Job
 
         private bool _disposed = false;
         private bool _isShuttingDown = false;
-        private readonly SynchronizationContext _context;
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly Channel<AbstractAsyncJob> _jobsChannel
@@ -27,13 +26,10 @@ namespace SWF.Core.Job
             });
         private readonly Dictionary<Type, AbstractAsyncJob> _currentJobDictionary = [];
 
-        public TwoWayJobQueue(SynchronizationContext? context)
+        public TwoWayJobQueue()
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
-
             LOGGER.Trace($"{TASK_NAME} を開始します。");
 
-            this._context = context;
             this._task = Task.Run(
                 this.DoWork,
                 this._cancellationTokenSource.Token);
@@ -103,9 +99,10 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
+            var context = AppConstants.GetUIThreadContext();
             job.CallbackAction = _ =>
             {
-                this._context.Post(state =>
+                context.Post(state =>
                 {
                     if (job.CanUIThreadAccess() && state is TJobResult result)
                     {
@@ -154,9 +151,10 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
+            var context = AppConstants.GetUIThreadContext();
             job.CallbackAction = _ =>
             {
-                this._context.Post(state =>
+                context.Post(state =>
                 {
                     if (job.CanUIThreadAccess() && state is TJobResult result)
                     {

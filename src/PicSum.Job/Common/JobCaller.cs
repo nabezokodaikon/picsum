@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Common
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class JobCaller(SynchronizationContext context)
+    public sealed partial class JobCaller
         : IDisposable
     {
         private bool _disposed = false;
@@ -16,28 +16,28 @@ namespace PicSum.Job.Common
         private readonly Lazy<OneWayJobQueue> _oneWayJobQueue = new(
             () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         private readonly Lazy<TwoWayJobQueue> _twoWayJobQueue = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         public readonly Lazy<TwoWayJob<ImageFileReadJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileReadJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<ImageFileLoadingJob, ImageFileReadParameter, ImageFileReadResult>> ImageFileLoadingJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<OneWayJob<ImageFileCacheJob, ImageFileCacheParameter>> ImageFileCacheJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<ThumbnailsGetJob, ThumbnailsGetParameter, ThumbnailImageResult>> ThumbnailsGetJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<TakenDatesGetJob, TakenDatesGetParameter, TakenDateResult>> TakenDatesGetJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<FileDeepInfoGetJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoGetJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<FileDeepInfoLoadingJob, FileDeepInfoGetParameter, FileDeepInfoGetResult>> FileDeepInfoLoadingJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<AddressInfoGetJob, ValueParameter<string>, AddressInfoGetResult>> AddressInfoGetJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<TwoWayJob<PipeServerJob, ValueResult<string>>> PipeServerJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
         public readonly Lazy<OneWayJob<GCCollectRunJob>> GCCollectRunJob = new(
-            () => new(context), LazyThreadSafetyMode.ExecutionAndPublication);
+            () => new(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         public void Dispose()
         {

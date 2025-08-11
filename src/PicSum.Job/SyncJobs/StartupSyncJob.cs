@@ -5,7 +5,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using System.Runtime.Versioning;
-using System.Windows.Forms;
 
 namespace PicSum.Job.SyncJobs
 {
@@ -45,16 +44,8 @@ namespace PicSum.Job.SyncJobs
                     () => new ImageFileTakenDateCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
-                SynchronizationContext.SetSynchronizationContext(
-                    new WindowsFormsSynchronizationContext());
-
-                if (SynchronizationContext.Current == null)
-                {
-                    throw new NullReferenceException("同期コンテキストが生成されていません。");
-                }
-
                 Instance<JobCaller>.Initialize(new Lazy<JobCaller>(
-                    () => new JobCaller(SynchronizationContext.Current),
+                    () => new JobCaller(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
             }
         }
