@@ -172,6 +172,25 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public Bitmap ToBitmap()
+        {
+            if (this._mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            return OpenCVUtil.ToBitmap(this._mat);
+        }
+
+        public RectangleF GetZoomRectange(RectangleF srcRect)
+        {
+            return new RectangleF(
+                srcRect.X * this._scaleValue / this._zoomValue,
+                srcRect.Y * this._scaleValue / this._zoomValue,
+                srcRect.Width * this._scaleValue / this._zoomValue,
+                srcRect.Height * this._scaleValue / this._zoomValue);
+        }
+
         public void DrawZoomImage(
             Graphics g,
             RectangleF destRect,
@@ -186,27 +205,19 @@ namespace SWF.Core.ImageAccessor
             {
                 using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
                 {
-                    var zoomValue = this._zoomValue;
-                    var scaleValue = this._scaleValue;
-                    var width = destRect.Width;
-                    var height = destRect.Height;
-
-                    var point = new OpenCvSharp.Point(
-                        srcRect.X * scaleValue / zoomValue,
-                        srcRect.Y * scaleValue / zoomValue);
-                    var size = new OpenCvSharp.Size(
-                        srcRect.Width * scaleValue / zoomValue,
-                        srcRect.Height * scaleValue / zoomValue);
-
+                    var zoomRect = this.GetZoomRectange(srcRect);
+                    var point = new OpenCvSharp.Point(zoomRect.X, zoomRect.Y);
+                    var size = new OpenCvSharp.Size(zoomRect.Width, zoomRect.Height);
                     var roi = new OpenCvSharp.Rect(point, size);
+
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
-                    using (var bmp = OpenCVUtil.Resize(cropped, width, height))
+                    using (var bmp = OpenCVUtil.Resize(cropped, destRect.Width, destRect.Height))
                     {
                         using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage DrawImage"))
                         {
                             g.DrawImage(bmp,
                                 destRect,
-                                new RectangleF(0, 0, width, height),
+                                new RectangleF(0, 0, destRect.Width, destRect.Height),
                                 GraphicsUnit.Pixel);
                         }
                     }

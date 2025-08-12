@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
         private static readonly ImageEncodingParam WEBP_QUALITY
             = new(ImwriteFlags.WebPQuality, 70);
 
-        private static Bitmap ToBitmap(Mat mat)
+        public static Bitmap ToBitmap(Mat mat)
         {
             using (TimeMeasuring.Run(false, "OpenCVUtil.ToBitmap"))
             {
