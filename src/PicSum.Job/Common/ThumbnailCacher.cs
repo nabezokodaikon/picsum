@@ -25,7 +25,7 @@ namespace PicSum.Job.Common
         public ThumbnailCacher()
         {
 #pragma warning disable CA2012
-            var con = Instance<IThumbnailDB>.Value.Connect().Result;
+            var con = Instance<IThumbnailDB>.Value.Connect().GetAwaiter().GetResult();
 
             try
             {
