@@ -129,6 +129,40 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
+        public void DrawOriginalThumbnailImage(
+            Graphics g, RectangleF destRect, RectangleF srcRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+            {
+                var zoomRect = this.GetZoomRectange(srcRect);
+                g.DrawImage(bmp, destRect, zoomRect, GraphicsUnit.Pixel);
+            }
+        }
+
+        public void DrawResizeThumbnailImage(
+            Graphics g, RectangleF destRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._mat == null)
+            {
+                throw new NullReferenceException("MatがNullです。");
+            }
+
+            using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+            {
+                var srcRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
+                g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+            }
+        }
+
         public Bitmap CreateScaleImage(float scale)
         {
             if (this._mat == null)
@@ -170,25 +204,6 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
-        }
-
-        public Bitmap ToBitmap()
-        {
-            if (this._mat == null)
-            {
-                throw new NullReferenceException("MatがNullです。");
-            }
-
-            return OpenCVUtil.ToBitmap(this._mat);
-        }
-
-        public RectangleF GetZoomRectange(RectangleF srcRect)
-        {
-            return new RectangleF(
-                srcRect.X * this._scaleValue / this._zoomValue,
-                srcRect.Y * this._scaleValue / this._zoomValue,
-                srcRect.Width * this._scaleValue / this._zoomValue,
-                srcRect.Height * this._scaleValue / this._zoomValue);
         }
 
         public void DrawZoomImage(
@@ -294,6 +309,15 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
+        }
+
+        private RectangleF GetZoomRectange(RectangleF srcRect)
+        {
+            return new RectangleF(
+                srcRect.X * this._scaleValue / this._zoomValue,
+                srcRect.Y * this._scaleValue / this._zoomValue,
+                srcRect.Width * this._scaleValue / this._zoomValue,
+                srcRect.Height * this._scaleValue / this._zoomValue);
         }
     }
 }

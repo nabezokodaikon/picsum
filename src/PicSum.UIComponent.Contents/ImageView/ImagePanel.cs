@@ -633,22 +633,14 @@ namespace PicSum.UIComponent.Contents.ImageView
                     {
                         if (this._sizeMode == ImageSizeMode.Original)
                         {
-                            using (var bmp = image.ToBitmap())
-                            {
-                                var destRect = this.GetImageDestRectangle();
-                                var srcRect = this.GetImageSrcRectangle();
-                                var zoomRect = image.GetZoomRectange(srcRect);
-                                g.DrawImage(bmp, destRect, zoomRect, GraphicsUnit.Pixel);
-                            }
+                            var destRect = this.GetImageDestRectangle();
+                            var srcRect = this.GetImageSrcRectangle();
+                            image.DrawOriginalThumbnailImage(g, destRect, srcRect);
                         }
                         else
                         {
-                            using (var bmp = image.ToBitmap())
-                            {
-                                var destRect = this.GetImageDestRectangle();
-                                var srcRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
-                                g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
-                            }
+                            var destRect = this.GetImageDestRectangle();
+                            image.DrawResizeThumbnailImage(g, destRect);
                         }
                     }
                     else
