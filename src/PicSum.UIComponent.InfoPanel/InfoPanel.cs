@@ -603,6 +603,7 @@ namespace PicSum.UIComponent.InfoPanel
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             if (e.IsSelected)
             {

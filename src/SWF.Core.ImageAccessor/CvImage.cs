@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using System.Drawing.Drawing2D;
 using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
@@ -127,7 +126,6 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(brush, nameof(brush));
 
-            g.CompositingMode = CompositingMode.SourceCopy;
             g.FillRectangle(brush, destRect);
         }
 
@@ -183,8 +181,6 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new NullReferenceException("MatがNullです。");
             }
-
-            g.CompositingMode = CompositingMode.SourceOver;
 
             try
             {
@@ -248,8 +244,6 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new NullReferenceException("MatがNullです。");
             }
-
-            g.CompositingMode = CompositingMode.SourceOver;
 
             try
             {

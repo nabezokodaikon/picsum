@@ -649,6 +649,7 @@ namespace SWF.UIComponent.TabOperation
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             foreach (var tab in this._tabList.FindAll((t) => t != this._activeTab))
             {

@@ -601,7 +601,6 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DrawErrorImage(Graphics g)
         {
-            g.CompositingMode = CompositingMode.SourceOver;
             g.DrawString(
                 $"Failed to load file",
                 Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
@@ -623,7 +622,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var destRect = this.GetImageDestRectangle();
                         image.DrawEmptyImage(g, Brushes.LightGray, destRect);
 
-                        g.CompositingMode = CompositingMode.SourceOver;
                         g.DrawString(
                             FileUtil.GetFileName(this.FilePath),
                             Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
@@ -663,8 +661,6 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             using (TimeMeasuring.Run(false, "ImagePanel.DrawThumbnailPanel"))
             {
-                g.CompositingMode = CompositingMode.SourceOver;
-
                 var panelRect = this.GetThumbnailPanelRectangle();
                 g.DrawImage(this._thumbnailPanelImage, panelRect);
 

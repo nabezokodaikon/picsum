@@ -145,6 +145,7 @@ namespace PicSum.UIComponent.AddressBar
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             e.Graphics.FillRectangle(Palette.OUT_LINE_BRUSH, this.ClientRectangle);
             e.Graphics.FillRectangle(Palette.INNER_BRUSH, this.GetInnerRectangle());

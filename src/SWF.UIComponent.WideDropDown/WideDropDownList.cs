@@ -376,6 +376,7 @@ namespace SWF.UIComponent.WideDropDown
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             if (this.Icon != null)
             {

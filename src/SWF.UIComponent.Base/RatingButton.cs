@@ -64,6 +64,7 @@ namespace SWF.UIComponent.Base
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             var icon = this.Icon;
             var w = Math.Min(icon.Width * this._scale, this.Width);
