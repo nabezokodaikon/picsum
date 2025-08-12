@@ -637,26 +637,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            if (image.IsThumbnailImage)
-                            {
-                                image.DrawLowQualityZoomImage(g, destRect, srcRect);
-                            }
-                            else
-                            {
-                                image.DrawHighQualityZoomImage(g, destRect, srcRect);
-                            }
+                            image.DrawZoomImage(g, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            if (image.IsThumbnailImage)
-                            {
-                                image.DrawLowQualityResizeImage(g, destRect);
-                            }
-                            else
-                            {
-                                image.DrawHighQualityResizeImage(g, destRect);
-                            }
+                            image.DrawResizeImage(g, destRect);
                         }
                     }
                 }

@@ -27,34 +27,71 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Resize(Mat srcMat, float newWidth, float newHeight, InterpolationFlags flag)
+        public static Bitmap Resize(Mat srcMat, float newWidth, float newHeight)
         {
             ArgumentNullException.ThrowIfNull(srcMat, nameof(srcMat));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat"))
+            var size = new OpenCvSharp.Size(newWidth, newHeight);
+            using (var destMat = new Mat(size, srcMat.Type()))
             {
-                var size = new OpenCvSharp.Size(newWidth, newHeight);
-                using (var destMat = new Mat(size, srcMat.Type()))
+                if (srcMat.Width > newWidth || srcMat.Height > newHeight)
                 {
-                    Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
-                    return ToBitmap(destMat);
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat: Area"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
+                    }
                 }
+                else if (srcMat.Width < newWidth || srcMat.Height < newHeight)
+                {
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat: Cubic"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Cubic);
+                    }
+                }
+                else
+                {
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Mat: Nearest"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Nearest);
+                    }
+                }
+
+                return ToBitmap(destMat);
             }
         }
 
-        public static Mat Resize(Bitmap srcBmp, float width, float height, InterpolationFlags flag)
+        public static Mat Resize(Bitmap srcBmp, float width, float height)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap"))
+            var size = new OpenCvSharp.Size(width, height);
+            using (var srcMat = ToMat(srcBmp))
             {
-                var size = new OpenCvSharp.Size(width, height);
-                using (var srcMat = ToMat(srcBmp))
+                var destMat = new Mat(size, srcMat.Type());
+
+                if (srcMat.Width > width || srcMat.Height > height)
                 {
-                    var destMat = new Mat(size, srcMat.Type());
-                    Cv2.Resize(srcMat, destMat, size, 0, 0, flag);
-                    return destMat;
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Area"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
+                    }
                 }
+                else if (srcMat.Width < width || srcMat.Height < height)
+                {
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Cubic"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Cubic);
+                    }
+                }
+                else
+                {
+                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Nearest"))
+                    {
+                        Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Nearest);
+                    }
+                }
+
+                return destMat;
             }
         }
 

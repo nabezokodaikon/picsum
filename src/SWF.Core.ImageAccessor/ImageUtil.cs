@@ -162,11 +162,11 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        internal static OpenCvSharp.Mat Resize(Bitmap srcBmp, float width, float height, OpenCvSharp.InterpolationFlags flag)
+        internal static OpenCvSharp.Mat Resize(Bitmap srcBmp, float width, float height)
         {
             ArgumentNullException.ThrowIfNull(srcBmp, nameof(srcBmp));
 
-            return OpenCVUtil.Resize(srcBmp, width, height, flag);
+            return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
         internal static Size GetImageSize(string filePath)

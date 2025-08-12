@@ -556,7 +556,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new RectangleF(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
-                    ThumbnailUtil.DrawHighQualityFileThumbnail(
+                    ThumbnailUtil.DrawFileThumbnail(
                         this,
                         e.Graphics,
                         this.Thumbnail.ThumbnailImage,
@@ -565,7 +565,7 @@ namespace PicSum.UIComponent.InfoPanel
                 }
                 else
                 {
-                    ThumbnailUtil.DrawHighQualityDirectoryThumbnail(
+                    ThumbnailUtil.DrawDirectoryThumbnail(
                         this,
                         e.Graphics,
                         this.Thumbnail.ThumbnailImage,

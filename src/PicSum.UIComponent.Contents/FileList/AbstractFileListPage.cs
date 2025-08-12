@@ -765,12 +765,12 @@ namespace PicSum.UIComponent.Contents.FileList
                 var thumbRect = this.GetThumbnailRectangle(e, itemTextHeight);
                 if (item.IsFile)
                 {
-                    ThumbnailUtil.DrawLowQualityFileThumbnail(
+                    ThumbnailUtil.DrawFileThumbnail(
                         this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
                 }
                 else
                 {
-                    ThumbnailUtil.DrawLowQualityDirectoryThumbnail(
+                    ThumbnailUtil.DrawDirectoryThumbnail(
                         this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
                 }
 

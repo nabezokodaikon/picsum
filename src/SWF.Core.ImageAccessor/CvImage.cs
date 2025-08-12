@@ -145,8 +145,7 @@ namespace SWF.Core.ImageAccessor
             {
                 using (TimeMeasuring.Run(false, "CvImage.CreateScaleImage"))
                 {
-                    return OpenCVUtil.Resize(
-                        this._mat, width, height, OpenCvSharp.InterpolationFlags.Area);
+                    return OpenCVUtil.Resize(this._mat, width, height);
                 }
             }
             catch (NotSupportedException ex)
@@ -175,48 +174,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawHighQualityZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._zoomValue > 1f)
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Magnification"))
-                {
-                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Cubic);
-                }
-            }
-            else if (this._zoomValue < 1f)
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Minification"))
-                {
-                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Area);
-                }
-            }
-            else
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityZoomImage Default"))
-                {
-                    this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Nearest);
-                }
-            }
-        }
-
-        public void DrawLowQualityZoomImage(Graphics g, RectangleF destRect, RectangleF srcRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            using (TimeMeasuring.Run(false, "CvImage.DrawLowQualityZoomImage"))
-            {
-                this.DrawZoomImage(g, destRect, srcRect, OpenCvSharp.InterpolationFlags.Nearest);
-            }
-        }
-
-        private void DrawZoomImage(
+        public void DrawZoomImage(
             Graphics g,
             RectangleF destRect,
-            RectangleF srcRect,
-            OpenCvSharp.InterpolationFlags flag)
+            RectangleF srcRect)
         {
             if (this._mat == null)
             {
@@ -243,7 +204,7 @@ namespace SWF.Core.ImageAccessor
 
                     var roi = new OpenCvSharp.Rect(point, size);
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
-                    using (var bmp = OpenCVUtil.Resize(cropped, width, height, flag))
+                    using (var bmp = OpenCVUtil.Resize(cropped, width, height))
                     {
                         using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage DrawImage"))
                         {
@@ -281,44 +242,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawHighQualityResizeImage(Graphics g, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this.Width > destRect.Width || this.Height > destRect.Height)
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Minification"))
-                {
-                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Area);
-                }
-            }
-            else if (this.Width < destRect.Width || this.Height < destRect.Height)
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Magnification"))
-                {
-                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Cubic);
-                }
-            }
-            else
-            {
-                using (TimeMeasuring.Run(false, "CvImage.DrawHighQualityResizeImage Default"))
-                {
-                    this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Nearest);
-                }
-            }
-        }
-
-        public void DrawLowQualityResizeImage(Graphics g, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            using (TimeMeasuring.Run(false, "CvImage.DrawLowQualityResizeImage"))
-            {
-                this.DrawResizeImage(g, destRect, OpenCvSharp.InterpolationFlags.Nearest);
-            }
-        }
-
-        public void DrawResizeImage(Graphics g, RectangleF destRect, OpenCvSharp.InterpolationFlags flag)
+        public void DrawResizeImage(Graphics g, RectangleF destRect)
         {
             if (this._mat == null)
             {
@@ -332,7 +256,7 @@ namespace SWF.Core.ImageAccessor
                 var width = destRect.Width;
                 var height = destRect.Height;
 
-                using (var bmp = OpenCVUtil.Resize(this._mat, width, height, flag))
+                using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
                 {
                     using (TimeMeasuring.Run(false, "CvImage.DrawResizeImage DrawImage"))
                     {
