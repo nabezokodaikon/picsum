@@ -11,7 +11,6 @@ namespace SWF.Core.ImageAccessor
         private const int CACHE_CAPACITY = 10000;
 
         private bool _disposed = false;
-        private readonly List<ImageFileSizeCacheEntity> _cacheList = new(CACHE_CAPACITY);
         private readonly Dictionary<string, ImageFileSizeCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
         private readonly Lock _cacheLock = new();
 
@@ -75,19 +74,10 @@ namespace SWF.Core.ImageAccessor
                             return;
                         }
 
-                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
                         this._cacheDictionary.Remove(cache.FilePath);
                     }
 
-                    if (this._cacheList.Count > CACHE_CAPACITY)
-                    {
-                        var removeCache = this._cacheList[0];
-                        this._cacheList.RemoveAt(0);
-                        this._cacheDictionary.Remove(removeCache.FilePath);
-                    }
-
                     this._cacheDictionary.Add(newCache.FilePath, newCache);
-                    this._cacheList.Add(newCache);
                 }
             }
         }
@@ -150,19 +140,10 @@ namespace SWF.Core.ImageAccessor
                             return;
                         }
 
-                        this._cacheList.RemoveAll(_ => _.FilePath == cache.FilePath);
                         this._cacheDictionary.Remove(cache.FilePath);
                     }
 
-                    if (this._cacheList.Count > CACHE_CAPACITY)
-                    {
-                        var removeCache = this._cacheList[0];
-                        this._cacheList.RemoveAt(0);
-                        this._cacheDictionary.Remove(removeCache.FilePath);
-                    }
-
                     this._cacheDictionary.Add(newCache.FilePath, newCache);
-                    this._cacheList.Add(newCache);
                 }
             }
         }
