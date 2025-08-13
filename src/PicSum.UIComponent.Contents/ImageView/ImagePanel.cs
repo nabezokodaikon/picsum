@@ -635,7 +635,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawOriginalThumbnailImage(g, destRect, srcRect);
+                            image.DrawZoomThumbnailImage(g, destRect, srcRect);
                         }
                         else
                         {

@@ -129,7 +129,7 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
-        public void DrawOriginalThumbnailImage(
+        public void DrawZoomThumbnailImage(
             Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -139,10 +139,13 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("MatがNullです。");
             }
 
-            using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+            using (TimeMeasuring.Run(false, "CvImage.DrawZoomThumbnailImage"))
             {
-                var zoomRect = this.GetZoomRectange(srcRect);
-                g.DrawImage(bmp, destRect, zoomRect, GraphicsUnit.Pixel);
+                using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                {
+                    var zoomRect = this.GetZoomRectange(srcRect);
+                    g.DrawImage(bmp, destRect, zoomRect, GraphicsUnit.Pixel);
+                }
             }
         }
 
@@ -156,10 +159,13 @@ namespace SWF.Core.ImageAccessor
                 throw new NullReferenceException("MatがNullです。");
             }
 
-            using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+            using (TimeMeasuring.Run(false, "CvImage.DrawResizeThumbnailImage"))
             {
-                var srcRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
-                g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                {
+                    var srcRect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                }
             }
         }
 
