@@ -1,5 +1,6 @@
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using System.Collections.Concurrent;
 using System.Runtime.Versioning;
 using WinApi;
 
@@ -13,12 +14,10 @@ namespace SWF.Core.ResourceAccessor
         : IFileIconCacher
     {
         private bool _disposed = false;
-        private readonly Lock _smallIconCashLock = new();
-        private readonly Lock _extralargeIconCashLock = new();
-        private readonly Lock _jumboIconCashLock = new();
-        private readonly Dictionary<string, Bitmap> _smallIconCash = [];
-        private readonly Dictionary<string, Bitmap> _extralargeIconCash = [];
-        private readonly Dictionary<string, Bitmap> _jumboIconCash = [];
+
+        private readonly ConcurrentDictionary<string, Bitmap> _smallIconCash = [];
+        private readonly ConcurrentDictionary<string, Bitmap> _extralargeIconCash = [];
+        private readonly ConcurrentDictionary<string, Bitmap> _jumboIconCash = [];
         private readonly Lazy<Bitmap> _emptyFileIcon = new(
             () => (Bitmap)ResourceFiles.EmptyIcon.Value,
             LazyThreadSafetyMode.ExecutionAndPublication);
@@ -154,20 +153,8 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-
-            lock (this._smallIconCashLock)
-            {
-                if (this._smallIconCash.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-                else
-                {
-                    var icon = FileIconUtil.GetSmallIconByFilePath(filePath);
-                    this._smallIconCash.Add(ex, icon);
-                    return icon;
-                }
-            }
+            return this._smallIconCash.GetOrAdd(
+                ex, key => FileIconUtil.GetSmallIconByFilePath(filePath));
         }
 
         public Image GetExtraLargeFileIcon(string filePath)
@@ -180,20 +167,8 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-
-            lock (this._extralargeIconCashLock)
-            {
-                if (this._extralargeIconCash.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-                else
-                {
-                    var icon = FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE);
-                    this._extralargeIconCash.Add(ex, icon);
-                    return icon;
-                }
-            }
+            return this._extralargeIconCash.GetOrAdd(
+                ex, key => FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_EXTRALARGE));
         }
 
         public Bitmap GetJumboFileIcon(string filePath)
@@ -206,20 +181,8 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-
-            lock (this._jumboIconCashLock)
-            {
-                if (this._jumboIconCash.TryGetValue(ex, out var cashIcon))
-                {
-                    return cashIcon;
-                }
-                else
-                {
-                    var icon = FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
-                    this._jumboIconCash.Add(ex, icon);
-                    return icon;
-                }
-            }
+            return this._jumboIconCash.GetOrAdd(
+                ex, key => FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO));
         }
     }
 }
