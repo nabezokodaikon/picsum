@@ -14,7 +14,7 @@ namespace PicSum.Main.Mng
     /// ブラウザ管理クラス
     /// </summary>
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed class BrowseManager
+    internal sealed class BrowseManager
     {
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PicSum.Main.Mng
         /// アクティブなブラウザを取得します。
         /// </summary>
         /// <returns></returns>
-        public BrowseForm GetActiveBrowse()
+        internal BrowseForm GetActiveBrowse()
         {
             if (this.browseList.Count > 0)
             {

@@ -10,6 +10,9 @@ namespace SWF.Core.ImageAccessor
     {
         public static void DrawText(Graphics srcDc, string text, Font font, Rectangle bounds, Color color, TextFormatFlags flags)
         {
+            ArgumentNullException.ThrowIfNull(srcDc, nameof(srcDc));
+            ArgumentNullException.ThrowIfNull(font, nameof(font));
+
             DrawGrassText(srcDc, text, font, bounds, color, flags);
         }
 

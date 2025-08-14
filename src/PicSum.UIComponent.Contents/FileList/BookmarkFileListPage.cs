@@ -80,9 +80,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter param)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
-            return FileListUtil.ImageFilesGetActionForBookmark(param);
+            return FileListUtil.ImageFilesGetActionForBookmark(parameter);
         }
 
         protected override void OnMoveNextButtonClick(EventArgs e)

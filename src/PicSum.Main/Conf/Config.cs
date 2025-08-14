@@ -11,7 +11,7 @@ namespace PicSum.Main.Conf
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
     [MemoryPackable]
-    public sealed partial class Config
+    internal sealed partial class Config
     {
         public static readonly Config INSTANCE = new();
 

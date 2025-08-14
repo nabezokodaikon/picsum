@@ -14,6 +14,7 @@ namespace PicSum.Job.Jobs
     {
         protected override ValueTask Execute(NextDirectoryGetParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             if (param.CurrentParameter == null)
             {

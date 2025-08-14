@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.Common
 
         protected AbstractPageParameter Parameter { get; private set; }
 
-        public AbstractBrowsePage(AbstractPageParameter parameter)
+        protected AbstractBrowsePage(AbstractPageParameter parameter)
         {
             this.Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }

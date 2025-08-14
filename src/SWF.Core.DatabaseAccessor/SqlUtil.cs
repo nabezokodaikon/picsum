@@ -58,7 +58,7 @@ namespace SWF.Core.DatabaseAccessor
                 {
                     newText.Append('(');
 
-                    var text = oldText.Replace("{", "").Replace("}", "");
+                    var text = oldText.Replace("{", "", StringComparison.Ordinal).Replace("}", "", StringComparison.Ordinal);
 
                     foreach (var paramString in paramStringList)
                     {
@@ -78,7 +78,7 @@ namespace SWF.Core.DatabaseAccessor
 
                 newText.Append(')');
 
-                return sqlText.Replace(oldText, newText.ToString());
+                return sqlText.Replace(oldText, newText.ToString(), StringComparison.Ordinal);
             }
         }
 

@@ -29,6 +29,8 @@ namespace PicSum.Job.Jobs
 
         protected override ValueTask Execute(TakenDatesGetParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             var files = param.FilePathList
                 .AsEnumerable()
                 .Where(ImageUtil.CanRetainExifImageFormat)

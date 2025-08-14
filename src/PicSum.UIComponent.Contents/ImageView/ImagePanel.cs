@@ -81,7 +81,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             {
                 if (!this.HasImage)
                 {
-                    throw new NullReferenceException("イメージが存在しません。");
+                    throw new InvalidOperationException("イメージが存在しません。");
                 }
 
                 return this._image.Size;
@@ -188,7 +188,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             const float ERROR_IMAGE_SCALE = 1.0f;
             if (!this.HasImage)
             {
-                throw new NullReferenceException("イメージが存在しません。");
+                throw new InvalidOperationException("イメージが存在しません。");
             }
 
             if (this._isError)

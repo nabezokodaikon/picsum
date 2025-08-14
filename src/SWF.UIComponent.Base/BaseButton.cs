@@ -166,6 +166,8 @@ namespace SWF.UIComponent.Base
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
+
             if (e.Button == MouseButtons.Left)
             {
                 this._isLeftClick = !this._isLeftClick;

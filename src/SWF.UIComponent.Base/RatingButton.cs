@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 namespace SWF.UIComponent.Base
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal partial class RatingButton
+    internal sealed partial class RatingButton
         : BasePaintingControl
     {
         private static readonly Size DEFAULT_SIZE = new(48, 48);

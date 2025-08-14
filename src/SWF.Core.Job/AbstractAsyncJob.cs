@@ -29,7 +29,7 @@ namespace SWF.Core.Job
 
         internal ISender? Sender { get; set; } = null;
 
-        public AbstractAsyncJob()
+        protected AbstractAsyncJob()
         {
             this._id = JobID.GetNew();
             this._name = $"{this.GetType().Name} {this._id}";
@@ -101,11 +101,12 @@ namespace SWF.Core.Job
         internal TParameter? Parameter { get; set; } = null;
         internal Action<TResult>? CallbackAction { get; set; } = null;
 
-        public AbstractTwoWayJob()
+        protected AbstractTwoWayJob()
         {
 
         }
 
+#pragma warning disable CA1031
         internal override async ValueTask ExecuteWrapper(CancellationToken token)
         {
             this.CancellationToken = token;
@@ -148,6 +149,7 @@ namespace SWF.Core.Job
                 }
             }
         }
+#pragma warning restore CA1031
 
         protected virtual ValueTask Execute(TParameter parameter)
         {

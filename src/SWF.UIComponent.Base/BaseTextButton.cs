@@ -21,6 +21,8 @@ namespace SWF.UIComponent.Base
 
         protected override void Draw(PaintEventArgs e)
         {
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
+
             if (string.IsNullOrEmpty(this.Text))
             {
                 return;

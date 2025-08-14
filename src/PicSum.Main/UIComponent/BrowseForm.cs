@@ -1,4 +1,3 @@
-using NLog;
 using PicSum.Job.Parameters;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Common;
@@ -15,11 +14,9 @@ using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    public partial class BrowseForm
+    internal sealed partial class BrowseForm
         : GrassForm, ISender
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
-
         private const float PADDING_TOP = 8f;
 
         private static bool isStartUp = true;

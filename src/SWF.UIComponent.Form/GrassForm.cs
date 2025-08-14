@@ -24,8 +24,10 @@ namespace SWF.UIComponent.Form
 
         private static Version GetWindowsVersion()
         {
-            var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX();
-            osVersionInfo.dwOSVersionInfoSize = Marshal.SizeOf(typeof(WinApiMembers.OSVERSIONINFOEX));
+            var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX
+            {
+                dwOSVersionInfoSize = Marshal.SizeOf(typeof(WinApiMembers.OSVERSIONINFOEX))
+            };
             var _ = WinApiMembers.RtlGetVersion(ref osVersionInfo);
             return new Version(osVersionInfo.dwMajorVersion, osVersionInfo.dwMinorVersion, osVersionInfo.dwBuildNumber);
         }
@@ -285,6 +287,8 @@ namespace SWF.UIComponent.Form
 
         protected void AttachResizeEvents(Control current)
         {
+            ArgumentNullException.ThrowIfNull(current, nameof(current));
+
             current.MouseMove += this.ChildMouseMoveHandler;
             current.MouseDown += this.ChildMouseDownHandler;
 
@@ -296,6 +300,8 @@ namespace SWF.UIComponent.Form
 
         protected void DetachResizeEvents(Control current)
         {
+            ArgumentNullException.ThrowIfNull(current, nameof(current));
+
             current.MouseMove -= this.ChildMouseMoveHandler;
             current.MouseDown -= this.ChildMouseDownHandler;
 
@@ -478,7 +484,7 @@ namespace SWF.UIComponent.Form
             if (hitTest != 0)
             {
                 WinApi.WinApiMembers.ReleaseCapture();
-                WinApi.WinApiMembers.SendMessage(this.Handle, 0xA1, hitTest, 0);
+                _ = WinApi.WinApiMembers.SendMessage(this.Handle, 0xA1, hitTest, 0);
             }
         }
     }

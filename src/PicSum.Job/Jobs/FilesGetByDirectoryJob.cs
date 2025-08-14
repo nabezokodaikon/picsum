@@ -22,6 +22,8 @@ namespace PicSum.Job.Jobs
 
         protected override ValueTask Execute(FilesGetByDirectoryParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             if (string.IsNullOrEmpty(param.DirectoryPath))
             {
                 this.Callback(new DirectoryGetResult()

@@ -136,7 +136,7 @@ namespace SWF.Core.ImageAccessor
 
             if (this._mat == null)
             {
-                throw new NullReferenceException("MatがNullです。");
+                throw new InvalidOperationException("MatがNullです。");
             }
 
             using (TimeMeasuring.Run(false, "CvImage.DrawZoomThumbnailImage"))
@@ -156,7 +156,7 @@ namespace SWF.Core.ImageAccessor
 
             if (this._mat == null)
             {
-                throw new NullReferenceException("MatがNullです。");
+                throw new InvalidOperationException("MatがNullです。");
             }
 
             using (TimeMeasuring.Run(false, "CvImage.DrawResizeThumbnailImage"))
@@ -173,7 +173,7 @@ namespace SWF.Core.ImageAccessor
         {
             if (this._mat == null)
             {
-                throw new NullReferenceException("MatがNullです。");
+                throw new InvalidOperationException("MatがNullです。");
             }
 
             var width = this.Width * scale;
@@ -217,9 +217,11 @@ namespace SWF.Core.ImageAccessor
             RectangleF destRect,
             RectangleF srcRect)
         {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
             if (this._mat == null)
             {
-                throw new NullReferenceException("MatがNullです。");
+                throw new InvalidOperationException("MatがNullです。");
             }
 
             try
@@ -272,9 +274,11 @@ namespace SWF.Core.ImageAccessor
 
         public void DrawResizeImage(Graphics g, RectangleF destRect)
         {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
             if (this._mat == null)
             {
-                throw new NullReferenceException("MatがNullです。");
+                throw new InvalidOperationException("MatがNullです。");
             }
 
             try

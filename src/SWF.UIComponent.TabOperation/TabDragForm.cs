@@ -37,7 +37,7 @@ namespace SWF.UIComponent.TabOperation
         private float GetDrawTabWidthOffset()
         {
             const float DRAW_TAB_WIDHT_OFFSET = 8;
-            var hwnd = WinApiMembers.WindowFromPoint(
+            _ = WinApiMembers.WindowFromPoint(
                 new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
             var scale = WindowUtil.GetCursorWindowScale();
             return DRAW_TAB_WIDHT_OFFSET * scale;

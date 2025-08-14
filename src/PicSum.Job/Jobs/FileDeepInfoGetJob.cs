@@ -20,6 +20,8 @@ namespace PicSum.Job.Jobs
     {
         protected override ValueTask Execute(FileDeepInfoGetParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             if (param.FilePathList == null)
             {
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
@@ -38,7 +40,7 @@ namespace PicSum.Job.Jobs
         {
             if (param.FilePathList == null)
             {
-                throw new NullReferenceException("ファイルパスリストがNULLです。");
+                throw new InvalidOperationException("ファイルパスリストがNULLです。");
             }
 
             var result = new FileDeepInfoGetResult

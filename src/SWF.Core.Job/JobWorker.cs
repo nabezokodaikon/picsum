@@ -101,6 +101,7 @@ namespace SWF.Core.Job
                     {
                         if (job.CanUIThreadAccess() && state is TJobResult result)
                         {
+#pragma warning disable CA1031
                             try
                             {
                                 callback(result);
@@ -109,6 +110,7 @@ namespace SWF.Core.Job
                             {
                                 LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                             }
+#pragma warning restore CA1031
                         }
                     }, _);
                 };
@@ -143,6 +145,7 @@ namespace SWF.Core.Job
             this.StartJob(sender, null, null);
         }
 
+#pragma warning disable CA1031
         private async Task DoWork()
         {
             LOGGER.Trace($"{TASK_NAME} が開始されました。");
@@ -175,6 +178,7 @@ namespace SWF.Core.Job
                 LOGGER.Trace($"{TASK_NAME} が終了します。");
             }
         }
+#pragma warning restore CA1031
     }
 
     [SupportedOSPlatform("windows10.0.17763.0")]

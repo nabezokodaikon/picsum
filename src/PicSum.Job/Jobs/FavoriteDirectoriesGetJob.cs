@@ -16,6 +16,8 @@ namespace PicSum.Job.Jobs
     {
         protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();

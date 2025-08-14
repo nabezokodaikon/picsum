@@ -22,7 +22,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this._page == null)
                 {
-                    throw new NullReferenceException("ページが設定されていません。");
+                    throw new InvalidOperationException("ページが設定されていません。");
                 }
 
                 return this._page.Title;
@@ -35,7 +35,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this._page == null)
                 {
-                    throw new NullReferenceException("ページが設定されていません。");
+                    throw new InvalidOperationException("ページが設定されていません。");
                 }
 
                 return this._page.Icon;
@@ -84,7 +84,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this._page == null)
                 {
-                    throw new NullReferenceException("ページが設定されていません。");
+                    throw new InvalidOperationException("ページが設定されていません。");
                 }
 
                 return this._page;
@@ -113,7 +113,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (this._page == null)
             {
-                throw new NullReferenceException("ページが設定されていません。");
+                throw new InvalidOperationException("ページが設定されていません。");
             }
 
             return (T)this._page;
@@ -143,7 +143,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (this._page == null)
             {
-                throw new NullReferenceException("ページが設定されていません。");
+                throw new InvalidOperationException("ページが設定されていません。");
             }
 
             this._page.DrawingTabPage(e);
@@ -153,7 +153,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (this._page == null)
             {
-                throw new NullReferenceException("ページが設定されていません。");
+                throw new InvalidOperationException("ページが設定されていません。");
             }
 
             var w = this._page.Width;

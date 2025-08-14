@@ -39,18 +39,18 @@ namespace PicSum.Main
                 return -1;
             }
 
-            if (!arg.StartsWith("--threshold="))
+            if (!arg.StartsWith("--threshold=", StringComparison.Ordinal))
             {
                 return -1;
             }
 
-            var equalsIndex = arg.IndexOf('=');
+            var equalsIndex = arg.IndexOf('=', StringComparison.Ordinal);
             if (equalsIndex < 0)
             {
                 return -1;
             }
 
-            var numberString = arg.Substring(equalsIndex + 1);
+            var numberString = arg[(equalsIndex + 1)..];
             if (!int.TryParse(numberString, out int threshold))
             {
                 return -1;

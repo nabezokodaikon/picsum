@@ -22,7 +22,7 @@ using System.Windows.Forms;
 namespace PicSum.Main.UIComponent
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    public sealed partial class BrowsePanel
+    internal sealed partial class BrowsePanel
         : BaseControl, ISender
     {
         private const int INFOPANEL_WIDTH = 240;

@@ -10,7 +10,7 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly SolidBrush OUTLINE_BRUSH = new(Color.FromArgb(128, 128, 128));
         private static readonly SolidBrush INNER_BRUSH = new(Color.FromArgb(250, 250, 250));
-        private static readonly int TOP = 28;
+        private const int TOP = 28;
 
         private readonly TabSwitch _tabSwitch;
 
@@ -23,6 +23,8 @@ namespace SWF.UIComponent.TabOperation
 
         public void Draw(Graphics g)
         {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
             var scale = WindowUtil.GetCurrentWindowScale(this._tabSwitch);
             this.DrawOutline(g, scale);
             this.DrawInnerRectangle(g, scale);

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace PicSum.UIComponent.InfoPanel
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal partial class InfoLabel
+    internal sealed partial class InfoLabel
         : BasePaintingControl
     {
         private static readonly Color TEXT_COLOR = Color.FromArgb(
@@ -17,7 +17,7 @@ namespace PicSum.UIComponent.InfoPanel
             SystemColors.ControlText.R,
             SystemColors.ControlText.G,
             SystemColors.ControlText.B);
-        private static readonly SolidBrush TEXT_BRUSH = new SolidBrush(TEXT_COLOR);
+        private static readonly SolidBrush TEXT_BRUSH = new(TEXT_COLOR);
         private static readonly StringFormat STRING_FORMAT = new()
         {
             Alignment = StringAlignment.Near,

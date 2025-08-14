@@ -7,7 +7,7 @@ namespace SWF.Core.Job
     {
         private readonly IAsyncJob Job;
 
-        public AbstractAsyncLogic(IAsyncJob job)
+        protected AbstractAsyncLogic(IAsyncJob job)
         {
             ArgumentNullException.ThrowIfNull(job, nameof(job));
 

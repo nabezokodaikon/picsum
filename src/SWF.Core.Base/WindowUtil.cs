@@ -23,6 +23,8 @@ namespace SWF.Core.Base
 
         public static float GetCurrentWindowScale(Control control)
         {
+            ArgumentNullException.ThrowIfNull(control, nameof(control));
+
             using (TimeMeasuring.Run(false, "WindowUtil.GetCurrentWindowScale"))
             {
                 var dpi = WinApiMembers.GetDpiForWindow(control.Handle);

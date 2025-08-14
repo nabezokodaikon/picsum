@@ -21,6 +21,7 @@ namespace SWF.Core.ResourceAccessor
                 {
                     if (hSuccess != IntPtr.Zero)
                     {
+#pragma warning disable CA1031
                         try
                         {
                             using (var icon = Icon.FromHandle(sh.hIcon))
@@ -30,6 +31,7 @@ namespace SWF.Core.ResourceAccessor
                         }
                         catch (Exception) { }
                     }
+#pragma warning restore CA1031
                 }
                 finally
                 {
@@ -59,6 +61,7 @@ namespace SWF.Core.ResourceAccessor
                 {
                     if (hSuccess != IntPtr.Zero)
                     {
+#pragma warning disable CA1031
                         try
                         {
                             using (var icon = Icon.FromHandle(sh.hIcon))
@@ -67,6 +70,7 @@ namespace SWF.Core.ResourceAccessor
                             }
                         }
                         catch (Exception) { }
+#pragma warning restore CA1031
                     }
                 }
                 finally
@@ -121,6 +125,7 @@ namespace SWF.Core.ResourceAccessor
 
                     try
                     {
+#pragma warning disable CA1031
                         try
                         {
                             using (var icon = Icon.FromHandle(hicon))
@@ -129,6 +134,7 @@ namespace SWF.Core.ResourceAccessor
                             }
                         }
                         catch (Exception) { }
+#pragma warning restore CA1031
                     }
                     finally
                     {

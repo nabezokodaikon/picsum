@@ -37,7 +37,7 @@ namespace PicSum.UIComponent.InfoPanel
             = new(4, 446, 508, 32);
         private static readonly Rectangle TAG_FLOW_LIST_DEFAULT_BOUNDS
             = new(4, 478, 508, 231);
-        private static readonly int VERTICAL_DEFAULT_TOP_MARGIN = 28;
+        private const int VERTICAL_DEFAULT_TOP_MARGIN = 28;
 
         public event EventHandler<SelectedTagEventArgs> SelectedTag;
 
@@ -357,17 +357,17 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (this.FilePathList == null || this.TagList == null)
             {
-                throw new NullReferenceException("ファイルの情報が存在しません。");
+                throw new InvalidOperationException("ファイルの情報が存在しません。");
             }
 
             if (string.IsNullOrEmpty(tag))
             {
-                throw new Exception("NULLまたは長さ0の文字列は、タグに登録できません。");
+                throw new InvalidOperationException("NULLまたは長さ0の文字列は、タグに登録できません。");
             }
 
             if (this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll))
             {
-                throw new Exception("既に登録されているタグです。");
+                throw new InvalidOperationException("既に登録されているタグです。");
             }
 
             var param = new FileTagUpdateParameter
@@ -402,17 +402,17 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (this.FilePathList == null || this.TagList == null)
             {
-                throw new NullReferenceException("ファイルの情報が存在しません。");
+                throw new InvalidOperationException("ファイルの情報が存在しません。");
             }
 
             if (string.IsNullOrEmpty(tag))
             {
-                throw new Exception("タグがNULLまたは長さ0の文字列です。");
+                throw new InvalidOperationException("タグがNULLまたは長さ0の文字列です。");
             }
 
             if (!this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal)))
             {
-                throw new Exception("リストに存在しないタグを指定しました。");
+                throw new InvalidOperationException("リストに存在しないタグを指定しました。");
             }
 
             var param = new FileTagUpdateParameter
@@ -638,7 +638,7 @@ namespace PicSum.UIComponent.InfoPanel
             var destTextSize = itemTextSize;
             while (destTextSize.Width > itemWidth)
             {
-                destText = destText.Substring(0, destText.Length - 1);
+                destText = destText[..^1];
                 destTextSize = TextRenderer.MeasureText($"{destText}...", itemFont);
             }
             destText = itemText == destText ? itemText : $"{destText}...";

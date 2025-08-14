@@ -25,7 +25,31 @@ namespace SWF.Core.Base
                     Assembly.Load(assemblyName);
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentNullException ex)
+            {
+                ConsoleUtil.Write(true,
+                    $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                );
+            }
+            catch (ArgumentException ex)
+            {
+                ConsoleUtil.Write(true,
+                    $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                );
+            }
+            catch (FileNotFoundException ex)
+            {
+                ConsoleUtil.Write(true,
+                    $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                );
+            }
+            catch (FileLoadException ex)
+            {
+                ConsoleUtil.Write(true,
+                    $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"
+                );
+            }
+            catch (BadImageFormatException ex)
             {
                 ConsoleUtil.Write(true,
                     $"アセンブリ読み込みエラー: {criticalType.Assembly.GetName().Name}. Error: {ex.Message}"

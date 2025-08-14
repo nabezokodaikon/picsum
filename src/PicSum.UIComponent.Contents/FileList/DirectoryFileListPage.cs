@@ -185,9 +185,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter param)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
-            return FileListUtil.ImageFilesGetActionForDirectory(param);
+            return FileListUtil.ImageFilesGetActionForDirectory(parameter);
         }
 
         protected override void FileContextMenu_Opening(object sender, CancelEventArgs e)

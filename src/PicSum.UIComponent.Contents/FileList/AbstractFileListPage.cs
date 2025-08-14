@@ -159,7 +159,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public AbstractFileListPage(AbstractPageParameter param)
+        protected AbstractFileListPage(AbstractPageParameter param)
             : base(param)
         {
             using (TimeMeasuring.Run(true, "AbstractFileListPage.New"))
@@ -436,7 +436,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewPageParameter paramter);
+        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter);
 
         protected virtual void OnSelectedItemChange()
         {
@@ -1222,6 +1222,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected virtual void FileContextMenu_Opening(object sender, CancelEventArgs e)
         {
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
+
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Length > 0)
             {

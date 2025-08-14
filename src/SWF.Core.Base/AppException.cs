@@ -14,5 +14,10 @@ namespace SWF.Core.Base
         {
 
         }
+
+        private AppException()
+        {
+
+        }
     }
 }

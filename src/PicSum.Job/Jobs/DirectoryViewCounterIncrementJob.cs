@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 namespace PicSum.Job.Jobs
 {
     [SupportedOSPlatform("windows10.0.17763.0")]
-    internal class DirectoryViewCounterIncrementJob
+    internal sealed class DirectoryViewCounterIncrementJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
         protected override ValueTask Execute(ValueParameter<string> param)

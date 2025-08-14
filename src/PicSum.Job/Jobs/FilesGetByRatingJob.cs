@@ -22,6 +22,8 @@ namespace PicSum.Job.Jobs
 
         protected override ValueTask Execute(FilesGetByRatingParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = this.GetFiles(param.RatingValue);

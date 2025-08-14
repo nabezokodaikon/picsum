@@ -16,6 +16,8 @@ namespace PicSum.Job.Jobs
     {
         protected override ValueTask Execute(ImageFileGetByDirectoryParameter param)
         {
+            ArgumentNullException.ThrowIfNull(param, nameof(param));
+
             var result = new ImageFilesGetByDirectoryResult();
 
             if (FileUtil.IsExistsDirectory(param.FilePath))

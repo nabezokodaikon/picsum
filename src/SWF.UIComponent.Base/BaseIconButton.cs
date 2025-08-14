@@ -14,6 +14,8 @@ namespace SWF.UIComponent.Base
 
         protected override void Draw(PaintEventArgs e)
         {
+            ArgumentNullException.ThrowIfNull(e, nameof(e));
+
             if (this.Image == null)
             {
                 return;

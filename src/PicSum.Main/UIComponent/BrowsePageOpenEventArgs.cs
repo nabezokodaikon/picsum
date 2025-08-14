@@ -6,7 +6,7 @@ namespace PicSum.Main.UIComponent
     /// <summary>
     /// ブラウザコンテンツ表示イベントクラス
     /// </summary>
-    public sealed class BrowsePageOpenEventArgs
+    internal sealed class BrowsePageOpenEventArgs
         : EventArgs
     {
         public IPageParameter PageParameter { get; private set; }
