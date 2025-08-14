@@ -1,7 +1,7 @@
 namespace SWF.Core.DatabaseAccessor
 {
     public interface IDatabaseConnection
-        : IAsyncDisposable
+        : IDisposable
     {
         void Commit();
         bool Update(SqlBase sql);

@@ -14,7 +14,7 @@ namespace PicSum.Job.Jobs
     internal sealed class FileTagUpdateJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
-        protected async override ValueTask Execute(FileTagUpdateParameter param)
+        protected override ValueTask Execute(FileTagUpdateParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
@@ -43,6 +43,8 @@ namespace PicSum.Job.Jobs
 
                 con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

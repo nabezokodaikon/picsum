@@ -10,11 +10,11 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryViewCounterDeleteJob
         : AbstractOneWayJob<ListParameter<string>>
     {
-        protected override async ValueTask Execute(ListParameter<string> param)
+        protected override ValueTask Execute(ListParameter<string> param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var logic = new DirectoryViewCounterDeleteLogic(this);
 
@@ -25,6 +25,8 @@ namespace PicSum.Job.Jobs
 
                 con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

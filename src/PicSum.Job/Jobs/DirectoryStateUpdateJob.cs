@@ -14,14 +14,14 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryStateUpdateJob
         : AbstractOneWayJob<DirectoryStateParameter>
     {
-        protected override async ValueTask Execute(DirectoryStateParameter param)
+        protected override ValueTask Execute(DirectoryStateParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
             {
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
                 if (!updateDirectoryState.Execute(con, param))
@@ -33,6 +33,8 @@ namespace PicSum.Job.Jobs
 
                 con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

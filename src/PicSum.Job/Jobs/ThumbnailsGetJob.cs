@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected async override ValueTask Execute(ThumbnailsGetParameter param)
+        protected override ValueTask Execute(ThumbnailsGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -38,25 +38,25 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    await Parallel.ForEachAsync(
+                    Parallel.ForEach(
                         filePathList,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (filePath, token) =>
+                        filePath =>
                         {
                             try
                             {
                                 if (this.IsJobCancel)
                                 {
                                     cts.Cancel();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
-                                var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).WithConfig();
+                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight);
                                 if (param.IsExecuteCallback
                                     && bf != ThumbnailCacheEntity.EMPTY
                                     && bf.ThumbnailBuffer != null)
@@ -91,10 +91,12 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    ).WithConfig();
+                    );
                 }
                 catch (OperationCanceledException) { }
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

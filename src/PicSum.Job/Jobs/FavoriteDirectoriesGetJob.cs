@@ -14,9 +14,9 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override async ValueTask Execute(FavoriteDirectoriesGetParameter param)
+        protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
-            var dtos = await this.GetOrCreateFileList().WithConfig();
+            var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
@@ -40,7 +40,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = await getInfoLogic.Get(dto.Value, true).WithConfig();
+                        var info = getInfoLogic.Get(dto.Value, true);
                         if (info != FileShallowInfoEntity.EMPTY)
                         {
                             infoList.Add(info);
@@ -54,11 +54,13 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback([.. infoList]);
+
+            return ValueTask.CompletedTask;
         }
 
-        private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
+        private SingleValueDto<string>[] GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
                 var dtos = logic.Execute(con);
@@ -68,7 +70,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -90,7 +92,7 @@ namespace PicSum.Job.Jobs
                 con.Commit();
             }
 
-            return await this.GetOrCreateFileList();
+            return this.GetOrCreateFileList();
         }
     }
 }

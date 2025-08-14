@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Data.SQLite;
 using System.Runtime.Versioning;
@@ -40,7 +39,7 @@ namespace SWF.Core.DatabaseAccessor
         private readonly string _filePath;
         private readonly bool _isPersistent;
         private SQLiteConnection? _persistentConnection;
-        private readonly SemaphoreSlim _lockObject = new(1, 1);
+        private readonly Lock _lockObject = new();
 
         protected AbstractDatabase(string filePath, string tablesCreateSql, bool isPersistent)
         {
@@ -56,9 +55,9 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public async ValueTask<IDatabaseConnection> Connect()
+        public IDatabaseConnection Connect()
         {
-            await this._lockObject.WaitAsync().WithConfig();
+            this._lockObject.Enter();
 
             if (this._isPersistent)
             {
@@ -73,9 +72,9 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public async ValueTask<IDatabaseConnection> ConnectWithTransaction()
+        public IDatabaseConnection ConnectWithTransaction()
         {
-            await this._lockObject.WaitAsync().WithConfig();
+            this._lockObject.Enter();
 
             if (this._isPersistent)
             {
@@ -109,7 +108,6 @@ namespace SWF.Core.DatabaseAccessor
             }
 
             this._persistentConnection = null;
-            this._lockObject.Dispose();
 
             this._disposed = true;
 

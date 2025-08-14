@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<FileShallowInfoEntity> Get(
+        public FileShallowInfoEntity Get(
             string filePath, bool isGetThumbnail, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -28,8 +28,8 @@ namespace PicSum.Job.Logics
 
             if (FileUtil.IsExistsFile(filePath))
             {
-                return await this.GetFileInfo(
-                    filePath, isGetThumbnail, addDate).WithConfig();
+                return this.GetFileInfo(
+                    filePath, isGetThumbnail, addDate);
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -43,8 +43,8 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return await this.GetDirectoryInfo(
-                    filePath, isGetThumbnail, addDate).WithConfig();
+                return this.GetDirectoryInfo(
+                    filePath, isGetThumbnail, addDate);
             }
             else
             {
@@ -52,15 +52,15 @@ namespace PicSum.Job.Logics
             }
         }
 
-        public async ValueTask<FileShallowInfoEntity> Get(
+        public FileShallowInfoEntity Get(
             string filePath, bool isGetThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return await this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY).WithConfig();
+            return this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY);
         }
 
-        private async ValueTask<FileShallowInfoEntity> GetFileInfo(
+        private FileShallowInfoEntity GetFileInfo(
             string filePath, bool isGetThumbnail, DateTime addDate)
         {
             var (createDate, updateDate, _) = FileUtil.GetFileInfo(filePath);
@@ -85,7 +85,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
@@ -105,7 +105,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<FileShallowInfoEntity> GetDirectoryInfo(
+        private FileShallowInfoEntity GetDirectoryInfo(
             string filePath, bool isGetThumbnail, DateTime addDate)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
@@ -130,7 +130,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var thumbnailBuffer = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
+            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
             if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {

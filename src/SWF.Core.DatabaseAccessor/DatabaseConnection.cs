@@ -9,13 +9,13 @@ namespace SWF.Core.DatabaseAccessor
         : IDatabaseConnection
     {
         private bool _disposed = false;
-        private readonly SemaphoreSlim _lockObject;
+        private readonly Lock _lockObject;
         private readonly SQLiteConnection _connection;
         private readonly SQLiteTransaction? _transaction = null;
         private readonly bool _isDispose;
         private bool _isCommitted = false;
 
-        public DatabaseConnection(SemaphoreSlim lockObject, string filePath, bool isTransaction)
+        public DatabaseConnection(Lock lockObject, string filePath, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -31,7 +31,7 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = true;
         }
 
-        public DatabaseConnection(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
+        public DatabaseConnection(Lock lockObject, SQLiteConnection connection, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
 
@@ -46,11 +46,11 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = false;
         }
 
-        public ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
-                return ValueTask.CompletedTask;
+                return;
             }
 
             if (this._transaction != null)
@@ -68,13 +68,11 @@ namespace SWF.Core.DatabaseAccessor
                 this._connection.Dispose();
             }
 
-            this._lockObject.Release();
+            this._lockObject.Exit();
 
             this._disposed = true;
 
             GC.SuppressFinalize(this);
-
-            return ValueTask.CompletedTask;
         }
 
         public void Commit()

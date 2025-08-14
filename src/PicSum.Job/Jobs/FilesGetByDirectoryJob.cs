@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override async ValueTask Execute(FilesGetByDirectoryParameter param)
+        protected override ValueTask Execute(FilesGetByDirectoryParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
             {
@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
                     FileInfoList = [],
                 });
 
-                return;
+                return ValueTask.CompletedTask;
             }
 
             var result = new DirectoryGetResult
@@ -43,30 +43,30 @@ namespace PicSum.Job.Jobs
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
 
-            using (TimeMeasuring.Run(true, "FilesGetByDirectoryJob Parallel.ForEachAsync"))
+            using (TimeMeasuring.Run(true, "FilesGetByDirectoryJob Parallel.ForEach"))
             {
                 using (var cts = new CancellationTokenSource())
                 {
                     try
                     {
-                        await Parallel.ForEachAsync(
+                        Parallel.ForEach(
                             files,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            async (file, token) =>
+                            file =>
                             {
                                 if (this.IsJobCancel)
                                 {
                                     cts.Cancel();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).WithConfig();
+                                    var info = getInfoLogic.Get(file, param.IsGetThumbnail);
                                     if (info != FileShallowInfoEntity.EMPTY)
                                     {
                                         infoList.Add(info);
@@ -76,16 +76,16 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            }).WithConfig();
+                            });
                     }
                     catch (OperationCanceledException)
                     {
-                        return;
+                        return ValueTask.CompletedTask;
                     }
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDB>.Value.Connect())
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
                 var directoryState = getDirectoryStateLogic.Execute(con, param.DirectoryPath);
@@ -94,6 +94,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
+
+            return ValueTask.CompletedTask;
         }
     }
 }
