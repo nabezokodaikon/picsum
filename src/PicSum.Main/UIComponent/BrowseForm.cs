@@ -158,8 +158,10 @@ namespace PicSum.Main.UIComponent
         {
             if (disposing)
             {
-
+                this._browsePanel.Dispose();
             }
+
+            this._browsePanel = null;
 
             base.Dispose(disposing);
         }

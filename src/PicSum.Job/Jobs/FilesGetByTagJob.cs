@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
 
             if (string.IsNullOrEmpty(param.Tag))
             {
-                throw new InvalidOperationException("タグが設定されていません。");
+                throw new NotSupportedException("タグが設定されていません。");
             }
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);

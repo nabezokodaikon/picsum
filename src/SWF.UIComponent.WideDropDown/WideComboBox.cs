@@ -57,6 +57,17 @@ namespace SWF.UIComponent.WideDropDown
             this._dropDownList.ItemMouseClick += this.DropDownList_ItemMouseClick;
         }
 
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._dropDownList.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         public void SetControlsBounds(float scale)
         {
             this.SuspendLayout();

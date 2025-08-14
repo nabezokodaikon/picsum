@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
 
             if (param.FilePathList == null)
             {
-                throw new InvalidOperationException("ファイルパスリストがNULLです。");
+                throw new NotSupportedException("ファイルパスリストがNULLです。");
             }
 
             await Task.Delay(10, this.CancellationToken).WithConfig();
@@ -33,7 +33,7 @@ namespace PicSum.Job.Jobs
         {
             if (param.FilePathList == null)
             {
-                throw new InvalidOperationException("ファイルパスリストがNULLです。");
+                throw new NotSupportedException("ファイルパスリストがNULLです。");
             }
 
             if (param.FilePathList.Length == 1)

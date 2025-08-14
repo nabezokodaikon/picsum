@@ -93,7 +93,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (isBegin)
             {
-                throw new SystemException("既にドラッグ操作が開始されています。");
+                throw new InvalidOperationException("既にドラッグ操作が開始されています。");
             }
 
             fromScreenPoint = Cursor.Position;
@@ -115,7 +115,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (!isBegin)
             {
-                throw new SystemException("ドラッグ操作が開始されていません。");
+                throw new InvalidOperationException("ドラッグ操作が開始されていません。");
             }
 
             var targetTab = tab;
@@ -137,7 +137,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (!isBegin)
             {
-                throw new SystemException("ドラッグ操作が開始されていません。");
+                throw new InvalidOperationException("ドラッグ操作が開始されていません。");
             }
 
             var toScreenPoint = Cursor.Position;
@@ -260,7 +260,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                throw new NullReferenceException("フォーム内にタブスイッチコントロールが存在しません。");
+                throw new InvalidOperationException("フォーム内にタブスイッチコントロールが存在しません。");
             }
         }
 

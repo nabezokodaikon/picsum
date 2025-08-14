@@ -408,7 +408,7 @@ namespace PicSum.Main.UIComponent
 
             if (this.tabSwitch.ActiveTab == null)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
             this.AddPageEventHandler(this.tabSwitch.SetPreviewHistory<AbstractBrowsePage>());
@@ -424,7 +424,7 @@ namespace PicSum.Main.UIComponent
 
             if (this.tabSwitch.ActiveTab == null)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
             this.AddPageEventHandler(this.tabSwitch.SetNextPageHistory<AbstractBrowsePage>());
@@ -516,7 +516,7 @@ namespace PicSum.Main.UIComponent
                 }
                 else
                 {
-                    throw new Exception("ファイル実行種別が不正です。");
+                    throw new NotSupportedException("ファイル実行種別が不正です。");
                 }
             }
         }

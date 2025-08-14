@@ -50,7 +50,7 @@ namespace PicSum.Job.Jobs
                 }
                 else
                 {
-                    throw new InvalidOperationException($"不正なパスが指定されました。'{param.Value}'");
+                    throw new NotSupportedException($"不正なパスが指定されました。'{param.Value}'");
                 }
 
                 addressInfo.DirectoryPath = directory;

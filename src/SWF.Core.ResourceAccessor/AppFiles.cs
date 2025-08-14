@@ -44,13 +44,13 @@ namespace SWF.Core.ResourceAccessor
             var appFile = Environment.ProcessPath;
             if (string.IsNullOrEmpty(appFile))
             {
-                throw new NullReferenceException("実行ファイルパスが取得できません。");
+                throw new InvalidOperationException("実行ファイルパスが取得できません。");
             }
 
             var appDir = Path.GetDirectoryName(appFile);
             if (string.IsNullOrEmpty(appDir))
             {
-                throw new NullReferenceException("実行ディレクトリが取得できません。");
+                throw new InvalidOperationException("実行ディレクトリが取得できません。");
             }
 
             return appDir;

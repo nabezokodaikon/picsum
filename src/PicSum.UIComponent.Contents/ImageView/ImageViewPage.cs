@@ -807,7 +807,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.MaximumIndex = 0;
             }
 
-            var selectedFilePath = this._parameter.SelectedFilePath != string.Empty ?
+            var selectedFilePath = !string.IsNullOrEmpty(this._parameter.SelectedFilePath) ?
                 this._parameter.SelectedFilePath : e.SelectedFilePath;
             var index = Array.IndexOf(this._filePathList, selectedFilePath);
             if (index < 0)
@@ -959,7 +959,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
             else
             {
-                throw new InvalidOperationException($"不正な画像表示モードです。DisplayMode: '{this._displayMode}'");
+                throw new NotSupportedException($"不正な画像表示モードです。DisplayMode: '{this._displayMode}'");
             }
 
             this.SettingImagePanelLayout(e);

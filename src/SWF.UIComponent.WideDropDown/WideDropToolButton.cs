@@ -43,6 +43,16 @@ namespace SWF.UIComponent.WideDropDown
             this.LostFocus += this.WideDropToolButton_LostFocus;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._dropDownList.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         public void SetItems(string[] items)
         {
             ArgumentNullException.ThrowIfNull(items, nameof(items));

@@ -16,6 +16,7 @@ namespace SWF.Core.Base
             {
                 var config = new LoggingConfiguration();
 
+#pragma warning disable CA2000
                 var logfile = new FileTarget("logfile")
                 {
                     FileName = Path.Combine(logDirectory, "app.log"),
@@ -24,6 +25,7 @@ namespace SWF.Core.Base
                     ArchiveAboveSize = 10 * 1024 * 1024,
                     MaxArchiveFiles = 30,
                 };
+#pragma warning restore CA2000
 #if DEBUG
                 config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 #else

@@ -73,7 +73,7 @@ namespace SWF.Core.ResourceAccessor
                 Size.Medium => 14,
                 Size.Large => 18,
                 Size.ExtraLarge => 22,
-                _ => throw new InvalidOperationException("未定義のフォントサイズです。"),
+                _ => throw new NotSupportedException("未定義のフォントサイズです。"),
             };
         }
     }

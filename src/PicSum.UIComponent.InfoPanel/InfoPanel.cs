@@ -285,6 +285,9 @@ namespace PicSum.UIComponent.InfoPanel
                     icon.Dispose();
                 }
                 this._tagIconCache.Clear();
+
+                this._foreColorBrush.Dispose();
+                this._stringFormat.Dispose();
             }
 
             this.disposed = true;
@@ -357,17 +360,17 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (this.FilePathList == null || this.TagList == null)
             {
-                throw new InvalidOperationException("ファイルの情報が存在しません。");
+                throw new NotSupportedException("ファイルの情報が存在しません。");
             }
 
             if (string.IsNullOrEmpty(tag))
             {
-                throw new InvalidOperationException("NULLまたは長さ0の文字列は、タグに登録できません。");
+                throw new NotSupportedException("NULLまたは長さ0の文字列は、タグに登録できません。");
             }
 
             if (this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal) && t.IsAll))
             {
-                throw new InvalidOperationException("既に登録されているタグです。");
+                throw new NotSupportedException("既に登録されているタグです。");
             }
 
             var param = new FileTagUpdateParameter
@@ -402,17 +405,17 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (this.FilePathList == null || this.TagList == null)
             {
-                throw new InvalidOperationException("ファイルの情報が存在しません。");
+                throw new NotSupportedException("ファイルの情報が存在しません。");
             }
 
             if (string.IsNullOrEmpty(tag))
             {
-                throw new InvalidOperationException("タグがNULLまたは長さ0の文字列です。");
+                throw new NotSupportedException("タグがNULLまたは長さ0の文字列です。");
             }
 
             if (!this.TagList.Any(t => t.Tag.Equals(tag, StringComparison.Ordinal)))
             {
-                throw new InvalidOperationException("リストに存在しないタグを指定しました。");
+                throw new NotSupportedException("リストに存在しないタグを指定しました。");
             }
 
             var param = new FileTagUpdateParameter

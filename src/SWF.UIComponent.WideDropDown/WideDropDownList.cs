@@ -409,7 +409,7 @@ namespace SWF.UIComponent.WideDropDown
             var itemWidth = e.ItemRectangle.Width - iconWidth;
             while (destTextSize.Width > itemWidth)
             {
-                destText = destText.Substring(0, destText.Length - 1);
+                destText = destText[..^1];
                 destTextSize = TextRenderer.MeasureText($"{destText}...", font);
             }
             destText = itemText == destText ? itemText : $"{destText}...";

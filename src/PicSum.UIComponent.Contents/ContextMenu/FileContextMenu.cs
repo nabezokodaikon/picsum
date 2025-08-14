@@ -53,6 +53,31 @@ namespace PicSum.UIComponent.Contents.ContextMenu
         private readonly ToolStripMenuItem _nameCopyMenuItem = new("Copy name");
         private readonly ToolStripMenuItem _removeFromListMenuItem = new("Remove from list");
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._fileActiveTabOpenMenuItem.Dispose();
+                this._fileNewTabOpenMenuItem.Dispose();
+                this._fileNewWindowOpenMenuItem.Dispose();
+                this._fileBookmarkMenuItem.Dispose();
+
+                this._selectApplicationMenuItem.Dispose();
+                this._saveDirectoryOpenMenuItem.Dispose();
+
+                this._directoryActiveTabOpenMenuItem.Dispose();
+                this._directoryNewTabOpenMenuItem.Dispose();
+                this._directoryNewWindowOpenMenuItem.Dispose();
+                this._explorerOpenMenuItem.Dispose();
+
+                this._pathCopyMenuItem.Dispose();
+                this._nameCopyMenuItem.Dispose();
+                this._removeFromListMenuItem.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool VisibleFileActiveTabOpenMenuItem
         {

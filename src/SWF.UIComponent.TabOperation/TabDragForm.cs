@@ -148,7 +148,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (this._regionImage != null)
             {
-                throw new Exception("領域のイメージが初期化されていません。");
+                throw new InvalidOperationException("領域のイメージが初期化されていません。");
             }
 
             var scale = WindowUtil.GetCursorWindowScale();

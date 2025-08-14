@@ -135,7 +135,7 @@ namespace PicSum.UIComponent.AddressBar
             var itemWidth = e.ItemRectangle.Width - base.DropDownList.ItemHeight;
             while (destTextSize.Width > itemWidth)
             {
-                destText = destText.Substring(0, destText.Length - 1);
+                destText = destText[..^1];
                 destTextSize = TextRenderer.MeasureText($"{destText}...", font);
             }
             destText = srcText == destText ? srcText : $"{destText}...";

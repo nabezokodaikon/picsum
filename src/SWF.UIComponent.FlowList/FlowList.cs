@@ -220,6 +220,16 @@ namespace SWF.UIComponent.FlowList
             this.LostFocus += this.FlowList_LostFocus;
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._scrollBar.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         protected override bool IsInputKey(Keys keyData)
         {
             var kcode = keyData & Keys.KeyCode;

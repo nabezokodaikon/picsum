@@ -96,7 +96,7 @@ namespace SWF.UIComponent.TabOperation
             if (this._list.Count < 1 ||
                 this._index - 1 < 0)
             {
-                throw new IndexOutOfRangeException("コンテンツパラメータの前の履歴が存在しません。");
+                throw new InvalidOperationException("コンテンツパラメータの前の履歴が存在しません。");
             }
 
             this._index--;
@@ -108,7 +108,7 @@ namespace SWF.UIComponent.TabOperation
             if (this._list.Count < 1 ||
                 this._index + 1 > this._list.Count - 1)
             {
-                throw new IndexOutOfRangeException("コンテンツパラメータの次の履歴が存在しません。");
+                throw new InvalidOperationException("コンテンツパラメータの次の履歴が存在しません。");
             }
 
             this._index++;
@@ -120,7 +120,7 @@ namespace SWF.UIComponent.TabOperation
             if (this._list.Count < 1 ||
                 this._index > this._list.Count - 1)
             {
-                throw new IndexOutOfRangeException("コンテンツパラメータの現在の履歴が存在しません。");
+                throw new InvalidOperationException("コンテンツパラメータの現在の履歴が存在しません。");
             }
 
             return this._list[this._index].CreatePage();

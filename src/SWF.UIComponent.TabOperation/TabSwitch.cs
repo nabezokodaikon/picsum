@@ -388,7 +388,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (this._activeTab == null)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
             if (!this._activeTab.HasPreviewPage)
@@ -419,7 +419,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (this._activeTab == null)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
             if (!this._activeTab.HasNextPage)
@@ -449,7 +449,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (this._activeTab == null)
             {
-                throw new NullReferenceException("アクティブなタブが存在しません。");
+                throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
             if (!this._activeTab.HasPage)
@@ -809,7 +809,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this._activeTab == null)
                 {
-                    throw new NullReferenceException("アクティブなタブがNULLです。");
+                    throw new InvalidOperationException("アクティブなタブがNULLです。");
                 }
 
                 if (this.GetHeaderRectangle().Contains(e.X, e.Y))
@@ -885,7 +885,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (!this._dropPoint.HasValue)
             {
-                throw new Exception("ドロップされている座標がNULLです。");
+                throw new InvalidOperationException("ドロップされている座標がNULLです。");
             }
 
             if (this.GetHeaderRectangle().Contains(this._dropPoint.Value))
@@ -1067,7 +1067,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                throw new NullReferenceException("フォーム内にコンテンツコンテナが存在しません。");
+                throw new NotSupportedException("フォーム内にコンテンツコンテナが存在しません。");
             }
         }
 
@@ -1106,7 +1106,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                throw new Exception("タブスイッチはフォームに格納されていません。");
+                throw new InvalidOperationException("タブスイッチはフォームに格納されていません。");
             }
         }
 

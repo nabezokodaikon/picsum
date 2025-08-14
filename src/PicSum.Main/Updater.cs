@@ -5,7 +5,7 @@ using System;
 
 namespace PicSum.Main
 {
-    internal class Updater
+    internal sealed class Updater
     {
         private static readonly Logger LOGGER = Log.GetLogger();
 

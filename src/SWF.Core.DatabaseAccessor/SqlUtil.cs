@@ -9,7 +9,8 @@ namespace SWF.Core.DatabaseAccessor
     [SupportedOSPlatform("windows10.0.17763.0")]
     public static partial class SqlUtil
     {
-        private const string NUMBERING_SQL_PARAMETER_FORMAT = "{0}_{1}";
+        private static readonly CompositeFormat NUMBERING_SQL_PARAMETER_FORMAT
+            = CompositeFormat.Parse("{0}_{1}");
 
         // 番号付パラメータ名正規表現
         [GeneratedRegex("_\\d+$")]
@@ -63,7 +64,7 @@ namespace SWF.Core.DatabaseAccessor
                     foreach (var paramString in paramStringList)
                     {
                         var r = new Regex($"{paramString}\\s|{paramString}$");
-                        text = r.Replace(text, string.Format(NUMBERING_SQL_PARAMETER_FORMAT + " ", paramString, i.ToString()));
+                        text = r.Replace(text, string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramString, i.ToString()));
                     }
 
                     newText.Append(text);
@@ -206,7 +207,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.String));
             }
@@ -223,7 +224,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, size, DbType.String));
             }
@@ -240,7 +241,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Int32));
             }
@@ -257,7 +258,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Boolean));
             }
@@ -274,7 +275,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.DateTime));
             }
@@ -291,7 +292,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Binary));
             }

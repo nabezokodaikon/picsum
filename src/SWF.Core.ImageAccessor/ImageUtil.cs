@@ -37,10 +37,10 @@ namespace SWF.Core.ImageAccessor
         private static IShellApplication GetSell()
         {
             var type = Type.GetTypeFromProgID("Shell.Application")
-                ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
+                ?? throw new InvalidOperationException("Shell.Applicationを取得できませんでした。");
 
             var obj = Activator.CreateInstance(type)
-                ?? throw new NullReferenceException("Shell.Applicationを取得できませんでした。");
+                ?? throw new InvalidOperationException("Shell.Applicationを取得できませんでした。");
 
             return (IShellApplication)obj;
         }

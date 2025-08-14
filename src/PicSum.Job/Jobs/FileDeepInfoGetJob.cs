@@ -40,7 +40,7 @@ namespace PicSum.Job.Jobs
         {
             if (param.FilePathList == null)
             {
-                throw new InvalidOperationException("ファイルパスリストがNULLです。");
+                throw new NotSupportedException("ファイルパスリストがNULLです。");
             }
 
             var result = new FileDeepInfoGetResult
