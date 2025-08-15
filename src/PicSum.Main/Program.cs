@@ -32,7 +32,7 @@ namespace PicSum.Main
                     AppConstants.SetUIThreadName();
                     ConsoleUtil.Write(true, $"Program.Main 3");
 
-                    TimeMeasuring.Threshold = CommandLineArgs.GetThreshold();
+                    TimeMeasuring.SetThreshold(CommandLineArgs.GetThreshold());
                     ConsoleUtil.Write(true, $"Program.Main 4");
 
                     WindowsFormsSynchronizationContext.AutoInstall = false;
