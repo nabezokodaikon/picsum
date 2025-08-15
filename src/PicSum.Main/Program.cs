@@ -23,19 +23,27 @@ namespace PicSum.Main
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main()
         {
-            ConsoleUtil.Write(true, $"Program.Main");
+            ConsoleUtil.Write(true, $"Program.Main 1");
             if (MUTEX.WaitOne(TimeSpan.Zero, true))
             {
+                ConsoleUtil.Write(true, $"Program.Main 2");
                 try
                 {
-                    TimeMeasuring.Threshold = CommandLineArgs.GetThreshold();
-
                     AppConstants.SetUIThreadName();
+                    ConsoleUtil.Write(true, $"Program.Main 3");
 
-                    BootTimeMeasurement.Start();
+                    TimeMeasuring.Threshold = CommandLineArgs.GetThreshold();
+                    ConsoleUtil.Write(true, $"Program.Main 4");
+
+                    WindowsFormsSynchronizationContext.AutoInstall = false;
+                    ConsoleUtil.Write(true, $"Program.Main 5");
 
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
+                    ConsoleUtil.Write(true, $"Program.Main 6");
+
+                    BootTimeMeasurement.Start();
+                    ConsoleUtil.Write(true, $"Program.Main 7");
 
                     AssemblyPreloader.OptimizeStartup(
                         typeof(Accessibility.AnnoScope),
