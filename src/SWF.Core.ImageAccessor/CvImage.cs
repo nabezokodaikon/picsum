@@ -236,13 +236,10 @@ namespace SWF.Core.ImageAccessor
                     using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
                     using (var bmp = OpenCVUtil.Resize(cropped, destRect.Width, destRect.Height))
                     {
-                        using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage DrawImage"))
-                        {
-                            g.DrawImage(bmp,
-                                destRect,
-                                new RectangleF(0, 0, destRect.Width, destRect.Height),
-                                GraphicsUnit.Pixel);
-                        }
+                        g.DrawImage(bmp,
+                            destRect,
+                            new RectangleF(0, 0, destRect.Width, destRect.Height),
+                            GraphicsUnit.Pixel);
                     }
                 }
             }
@@ -286,9 +283,9 @@ namespace SWF.Core.ImageAccessor
                 var width = destRect.Width;
                 var height = destRect.Height;
 
-                using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
+                using (TimeMeasuring.Run(true, "CvImage.DrawResizeImage"))
                 {
-                    using (TimeMeasuring.Run(false, "CvImage.DrawResizeImage DrawImage"))
+                    using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
                     {
                         g.DrawImage(bmp, destRect,
                             new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
