@@ -13,7 +13,7 @@ namespace SWF.Core.Base
         {
             if (Thread.CurrentThread.Name != null)
             {
-                throw new InvalidOperationException("UIスレッド名が設定できません。");
+                throw new InvalidOperationException("UIスレッド名が既に設定されています。");
             }
 
             Thread.CurrentThread.Name = UI_THREAD_NAME;
