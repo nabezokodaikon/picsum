@@ -283,7 +283,7 @@ namespace SWF.Core.ImageAccessor
                 var width = destRect.Width;
                 var height = destRect.Height;
 
-                using (TimeMeasuring.Run(true, "CvImage.DrawResizeImage"))
+                using (TimeMeasuring.Run(false, "CvImage.DrawResizeImage"))
                 {
                     using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
                     {
