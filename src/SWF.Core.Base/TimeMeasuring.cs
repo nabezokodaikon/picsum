@@ -12,6 +12,11 @@ namespace SWF.Core.Base
         {
             AppConstants.ThrowIfNotUIThread();
 
+            if (threshold < 0)
+            {
+                return;
+            }
+
             _threshold = threshold;
         }
 
