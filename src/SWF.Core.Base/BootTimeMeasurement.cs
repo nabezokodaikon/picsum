@@ -1,57 +1,35 @@
-using NLog;
 using System.Diagnostics;
 
 namespace SWF.Core.Base
 {
-    public sealed class BootTimeMeasurement
+    public static class BootTimeMeasurement
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
-        private static BootTimeMeasurement? _instance;
+        private static Stopwatch? _stopwatch = null;
 
         public static void Start()
         {
             AppConstants.ThrowIfNotUIThread();
 
-            _instance ??= new();
+            if (_stopwatch != null)
+            {
+                throw new InvalidOperationException("起動時間の計測は開始されています。");
+            }
+
+            _stopwatch = Stopwatch.StartNew();
         }
 
         public static void Stop()
         {
             AppConstants.ThrowIfNotUIThread();
 
-            _instance?.Stop_();
-        }
-
-        private readonly Stopwatch _sw;
-        private long _isRunning = 0;
-
-        private bool IsRunning
-        {
-            get
+            if (_stopwatch == null)
             {
-                return Interlocked.Read(ref this._isRunning) == 1;
+                throw new InvalidOperationException("起動時間の計測は開始されていません。");
             }
-            set
-            {
-                Interlocked.Exchange(ref this._isRunning, Convert.ToInt64(value));
-            }
-        }
 
-        private BootTimeMeasurement()
-        {
-            this.IsRunning = true;
-            this._sw = Stopwatch.StartNew();
-        }
-
-        private void Stop_()
-        {
-            if (this.IsRunning)
-            {
-                this._sw?.Stop();
-                ConsoleUtil.Write(true, $"{this._sw?.ElapsedMilliseconds.ToString("D4")} ms | Boot End");
-                LOGGER.Info($"Boot End: {this._sw?.ElapsedMilliseconds} ms");
-                this.IsRunning = false;
-            }
+            _stopwatch.Stop();
+            ConsoleUtil.Write(true, $"{_stopwatch.ElapsedMilliseconds.ToString("D4")} ms | Boot End");
+            Log.GetLogger().Info($"Boot End: {_stopwatch.ElapsedMilliseconds} ms");
         }
     }
 }
