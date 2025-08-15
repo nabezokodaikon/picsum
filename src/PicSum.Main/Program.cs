@@ -64,7 +64,7 @@ namespace PicSum.Main
                         typeof(Windows.Storage.AppDataPaths),
 #endif
                         typeof(MemoryPack.BitPackFormatterAttribute),
-                        typeof(NLog.Attributes.LogLevelTypeConverter),
+                        typeof(NLog.GlobalDiagnosticsContext),
 
                         typeof(HeyRed.ImageSharp.Heif.DecodingMode),
                         typeof(ImageMagick.AlphaOption),
