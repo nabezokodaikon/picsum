@@ -35,23 +35,23 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         // 画像ファイルメニュー項目
         private readonly ToolStripMenuItem _fileActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem _fileNewTabOpenMenuItem = new("Open in new tab");
-        private readonly ToolStripMenuItem _fileNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem _fileBookmarkMenuItem = new("Add to bookmark");
+        private readonly ToolStripMenuItem _fileNewTabOpenMenuItem = new("Open in New Tab");
+        private readonly ToolStripMenuItem _fileNewWindowOpenMenuItem = new("Open in New Window");
+        private readonly ToolStripMenuItem _fileBookmarkMenuItem = new("Add to Bookmark");
 
         // ファイルメニュー項目
-        private readonly ToolStripMenuItem _selectApplicationMenuItem = new("Open in other application");
-        private readonly ToolStripMenuItem _saveDirectoryOpenMenuItem = new("Open save folder");
+        private readonly ToolStripMenuItem _selectApplicationMenuItem = new("Open in Other Application");
+        private readonly ToolStripMenuItem _saveDirectoryOpenMenuItem = new("Show in Explorer");
 
         // フォルダメニュー項目
         private readonly ToolStripMenuItem _directoryActiveTabOpenMenuItem = new("Open");
-        private readonly ToolStripMenuItem _directoryNewTabOpenMenuItem = new("Open in new tab");
-        private readonly ToolStripMenuItem _directoryNewWindowOpenMenuItem = new("Open in new window");
-        private readonly ToolStripMenuItem _explorerOpenMenuItem = new("Open in explorer");
+        private readonly ToolStripMenuItem _directoryNewTabOpenMenuItem = new("Open in New Tab");
+        private readonly ToolStripMenuItem _directoryNewWindowOpenMenuItem = new("Open in New Window");
+        private readonly ToolStripMenuItem _explorerOpenMenuItem = new("Show in Explorer");
 
-        private readonly ToolStripMenuItem _pathCopyMenuItem = new("Copy path");
-        private readonly ToolStripMenuItem _nameCopyMenuItem = new("Copy name");
-        private readonly ToolStripMenuItem _removeFromListMenuItem = new("Remove from list");
+        private readonly ToolStripMenuItem _pathCopyMenuItem = new("Copy Path");
+        private readonly ToolStripMenuItem _nameCopyMenuItem = new("Copy Name");
+        private readonly ToolStripMenuItem _removeFromListMenuItem = new("Remove from List");
 
         protected override void Dispose(bool disposing)
         {
