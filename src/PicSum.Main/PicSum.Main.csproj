@@ -65,7 +65,9 @@
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
-
+	<IlcInstructionSet>native</IlcInstructionSet>
+	<IlcMaxVectorTBitWidth>512</IlcMaxVectorTBitWidth>
+	
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
@@ -95,6 +97,8 @@
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
+	<IlcInstructionSet>native</IlcInstructionSet>
+	<IlcMaxVectorTBitWidth>512</IlcMaxVectorTBitWidth>
 
   </PropertyGroup>
 
