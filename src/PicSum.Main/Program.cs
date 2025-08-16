@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace PicSum.Main
 {
-    internal sealed class Program
+    internal static class Program
     {
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
