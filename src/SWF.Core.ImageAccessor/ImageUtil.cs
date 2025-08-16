@@ -71,8 +71,8 @@ namespace SWF.Core.ImageAccessor
                     return root
                         .Children()
                         .OfType<FileInfo>()
-                        .Where(file => FileUtil.CanAccess(file.FullName) && IsImageFile(file.FullName))
-                        .Select(file => file.FullName)
+                        .Where(static file => FileUtil.CanAccess(file.FullName) && IsImageFile(file.FullName))
+                        .Select(static file => file.FullName)
                         .ToArray();
                 }
                 catch (ArgumentNullException)

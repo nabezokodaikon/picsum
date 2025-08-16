@@ -49,8 +49,8 @@ namespace PicSum.Main
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
-                            () => Config.INSTANCE.Load()
+                            static () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
+                            static () => Config.INSTANCE.Load()
                         ];
 
                         Parallel.ForEach(

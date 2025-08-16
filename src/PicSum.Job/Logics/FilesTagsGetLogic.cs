@@ -45,12 +45,12 @@ namespace PicSum.Job.Logics
 
                 return new ListEntity<FileTagInfoEntity>(dtoList
                     .AsValueEnumerable()
-                    .GroupBy(dto => dto.Value)
+                    .GroupBy(static dto => dto.Value)
                     .Select(dtos =>
                     {
                         var tags = dtos
                             .AsValueEnumerable()
-                            .Select(dto => dto.Value)
+                            .Select(static dto => dto.Value)
                             .ToArray();
 
 #pragma warning disable CS8601 // Null 参照代入の可能性があります。

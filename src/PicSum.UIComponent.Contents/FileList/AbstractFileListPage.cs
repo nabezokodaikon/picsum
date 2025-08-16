@@ -328,8 +328,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
             var imageFiles = this._masterFileDictionary
                 .AsEnumerable()
-                .Where(item => ImageUtil.IsImageFile(item.Value.FilePath))
-                .Select(item => item.Value.FilePath)
+                .Where(static item => ImageUtil.IsImageFile(item.Value.FilePath))
+                .Select(static item => item.Value.FilePath)
                 .ToArray();
 
             if (imageFiles.Length > 0)
@@ -601,14 +601,14 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(item => item.TakenDate)
+                            .Where(static item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(static item => item.TakenDate)
                             .ToArray();
                         var b = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Where(static item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
                         filterList = [.. a.Concat(b)];
                     }
@@ -616,14 +616,14 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(item => item.TakenDate)
+                            .Where(static item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(static item => item.TakenDate)
                             .ToArray();
                         var b = filterList
                             .AsEnumerable()
-                            .Where(item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Where(static item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
                         filterList = [.. a.Concat(b)];
                     }

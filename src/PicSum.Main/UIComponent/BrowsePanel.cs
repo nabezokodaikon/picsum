@@ -59,7 +59,7 @@ namespace PicSum.Main.UIComponent
                             FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(subParamter.FilePath));
 
                             var eventArgs = new GetImageFilesEventArgs(
-                                [.. e.FilePathList.OrderBy(_ => _, NaturalStringComparer.WINDOWS)],
+                                [.. e.FilePathList.OrderBy(static _ => _, NaturalStringComparer.WINDOWS)],
                                 e.SelectedFilePath, title,
                                 Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                             parameter.OnGetImageFiles(eventArgs);

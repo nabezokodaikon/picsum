@@ -33,18 +33,18 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FileName, NaturalStringComparer.WINDOWS)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FileName, NaturalStringComparer.WINDOWS)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                     else
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FileName, NaturalStringComparer.WINDOWS)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderByDescending(static file => file.FileName, NaturalStringComparer.WINDOWS)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                 case FileSortMode.FilePath:
@@ -52,18 +52,18 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                     else
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderByDescending(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderByDescending(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                 case FileSortMode.CreateDate:
@@ -71,20 +71,20 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(file => file.CreateDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(static file => file.CreateDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                     else
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(file => file.CreateDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(static file => file.CreateDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                 case FileSortMode.UpdateDate:
@@ -92,20 +92,20 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(file => file.UpdateDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(static file => file.UpdateDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                     else
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(file => file.UpdateDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(static file => file.UpdateDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                 case FileSortMode.TakenDate:
@@ -113,16 +113,16 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = files
                             .AsEnumerable()
-                            .Where(item => !item.TakenDate.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(item => item.TakenDate)
-                            .Select(item => item.FilePath)
+                            .Where(static item => !item.TakenDate.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(static item => item.TakenDate)
+                            .Select(static item => item.FilePath)
                             .ToArray();
                         var b = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(item => item.FilePath)
+                            .Where(static item => item.TakenDate.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(static item => item.FilePath)
                             .ToArray();
                         return [.. a.Concat(b)];
                     }
@@ -130,16 +130,16 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var a = files
                             .AsEnumerable()
-                            .Where(item => !item.TakenDate.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(item => item.TakenDate)
-                            .Select(item => item.FilePath)
+                            .Where(static item => !item.TakenDate.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(static item => item.TakenDate)
+                            .Select(static item => item.FilePath)
                             .ToArray();
                         var b = files
                             .AsEnumerable()
-                            .Where(item => item.TakenDate.IsEmpty())
-                            .OrderBy(item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(item => item.FilePath)
+                            .Where(static item => item.TakenDate.IsEmpty())
+                            .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(static item => item.FilePath)
                             .ToArray();
                         return [.. a.Concat(b)];
                     }
@@ -148,27 +148,27 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderBy(file => file.RgistrationDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderBy(static file => file.RgistrationDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                     else
                     {
                         return files
                             .AsValueEnumerable()
-                            .Where(file => file.IsImageFile)
-                            .OrderBy(file => file.FilePath, NaturalStringComparer.WINDOWS)
-                            .OrderByDescending(file => file.RgistrationDate)
-                            .Select(file => file.FilePath)
+                            .Where(static file => file.IsImageFile)
+                            .OrderBy(static file => file.FilePath, NaturalStringComparer.WINDOWS)
+                            .OrderByDescending(static file => file.RgistrationDate)
+                            .Select(static file => file.FilePath)
                             .ToArray();
                     }
                 default:
                     return files
                         .AsValueEnumerable()
-                        .Where(file => file.IsImageFile)
-                        .Select(file => file.FilePath)
+                        .Where(static file => file.IsImageFile)
+                        .Select(static file => file.FilePath)
                         .ToArray();
             }
         }
@@ -212,9 +212,10 @@ namespace PicSum.UIComponent.Contents.FileList
                         var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
                         var imageFiles = e.FileInfoList
-                            .Where(fileInfo => fileInfo.IsImageFile)
-                            .OrderBy(fileInfo => fileInfo.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(fileInfo => fileInfo.FilePath)
+                            .AsEnumerable()
+                            .Where(static fileInfo => fileInfo.IsImageFile)
+                            .OrderBy(static fileInfo => fileInfo.FilePath, NaturalStringComparer.WINDOWS)
+                            .Select(static fileInfo => fileInfo.FilePath)
                             .ToArray();
 
                         var eventArgs = new GetImageFilesEventArgs(

@@ -23,10 +23,10 @@ namespace PicSum.Job.Logics
 
             return [.. dtoList
                 .AsValueEnumerable()
-                .GroupBy(file => file.Tag)
-                .Where(file => file.Any(f => FileUtil.CanAccess(f.FilePath)))
-                .Select(file => file.First().Tag)
-                .OrderBy(tag => tag, NaturalStringComparer.WINDOWS)];
+                .GroupBy(static file => file.Tag)
+                .Where(static file => file.Any(static f => FileUtil.CanAccess(f.FilePath)))
+                .Select(static file => file.First().Tag)
+                .OrderBy(static tag => tag, NaturalStringComparer.WINDOWS)];
         }
     }
 }

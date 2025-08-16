@@ -484,6 +484,7 @@ namespace SWF.Core.FileAccessor
             {
                 return Directory
                     .EnumerateFiles(directoryPath)
+                    .AsEnumerable()
                     .Where(CanAccess);
             }
             catch (ArgumentNullException)
@@ -538,7 +539,7 @@ namespace SWF.Core.FileAccessor
                     return root
                         .Children()
                         .OfType<DirectoryInfo>()
-                        .Where(dir => CanAccess(dir.FullName))
+                        .Where(static dir => CanAccess(dir.FullName))
                         .Any();
                 }
                 catch (ArgumentNullException)
@@ -575,7 +576,7 @@ namespace SWF.Core.FileAccessor
                 {
                     return [.. GetDrives()
                         .AsEnumerable()
-                        .OrderBy(drive => drive, NaturalStringComparer.WINDOWS)];
+                        .OrderBy(static drive => drive, NaturalStringComparer.WINDOWS)];
                 }
                 else
                 {
@@ -598,9 +599,9 @@ namespace SWF.Core.FileAccessor
                         return root
                             .Children()
                             .OfType<DirectoryInfo>()
-                            .Where(dir => CanAccess(dir.FullName))
-                            .OrderBy(dir => dir.FullName, NaturalStringComparer.WINDOWS)
-                            .Select(dir => dir.FullName)
+                            .Where(static dir => CanAccess(dir.FullName))
+                            .OrderBy(static dir => dir.FullName, NaturalStringComparer.WINDOWS)
+                            .Select(static dir => dir.FullName)
                             .ToArray();
                     }
                     else
@@ -608,8 +609,8 @@ namespace SWF.Core.FileAccessor
                         return root
                             .Children()
                             .OfType<DirectoryInfo>()
-                            .Where(dir => CanAccess(dir.FullName))
-                            .Select(dir => dir.FullName)
+                            .Where(static dir => CanAccess(dir.FullName))
+                            .Select(static dir => dir.FullName)
                             .ToArray();
                     }
                 }
@@ -660,8 +661,8 @@ namespace SWF.Core.FileAccessor
 
                         return root
                             .Children()
-                            .Where(dir => CanAccess(dir.FullName))
-                            .Select(dir => dir.FullName)
+                            .Where(static dir => CanAccess(dir.FullName))
+                            .Select(static dir => dir.FullName)
                             .ToArray();
                     }
                     catch (ArgumentNullException)
@@ -850,7 +851,7 @@ namespace SWF.Core.FileAccessor
             try
             {
                 var drives = DriveInfo.GetDrives()
-                    .Select(drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"));
+                    .Select(static drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"));
                 return drives;
             }
             catch (IOException ex)
