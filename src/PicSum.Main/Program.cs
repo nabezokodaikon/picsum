@@ -4,7 +4,6 @@ using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,20 +13,17 @@ namespace PicSum.Main
     internal sealed class Program
         : MarshalByRefObject
     {
-        private static readonly Mutex MUTEX = new(true, AppConstants.MUTEX_NAME);
-
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
         [STAThread]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static void Main()
         {
             ConsoleUtil.Write(true, $"Program.Main 1");
-            if (MUTEX.WaitOne(TimeSpan.Zero, true))
+            using (var mutex = new Mutex(true, AppConstants.MUTEX_NAME, out var createdNew))
             {
                 ConsoleUtil.Write(true, $"Program.Main 2");
-                try
+                if (createdNew)
                 {
                     AppConstants.SetUIThreadName();
                     ConsoleUtil.Write(true, $"Program.Main 3");
@@ -137,33 +133,29 @@ namespace PicSum.Main
 
                     logger.Info("アプリケーションを終了します。\n");
                 }
-                finally
+                else
                 {
-                    MUTEX.ReleaseMutex();
-                }
-            }
-            else
-            {
-                var filePath = CommandLineArgs.GetImageFilePathCommandLineArgs();
-                if (string.IsNullOrEmpty(filePath))
-                {
-                    return;
-                }
-
-                try
-                {
-                    using (var pipeClient = new NamedPipeClientStream(".", AppConstants.PIPE_NAME, PipeDirection.Out))
+                    var filePath = CommandLineArgs.GetImageFilePathCommandLineArgs();
+                    if (string.IsNullOrEmpty(filePath))
                     {
-                        pipeClient.Connect(1000);
-                        using (var writer = new StreamWriter(pipeClient) { AutoFlush = true })
+                        return;
+                    }
+
+                    try
+                    {
+                        using (var pipeClient = new NamedPipeClientStream(".", AppConstants.PIPE_NAME, PipeDirection.Out))
                         {
-                            writer.WriteLine(filePath);
+                            pipeClient.Connect(1000);
+                            using (var writer = new StreamWriter(pipeClient) { AutoFlush = true })
+                            {
+                                writer.WriteLine(filePath);
+                            }
                         }
                     }
-                }
-                catch (IOException)
-                {
-                    return;
+                    catch (IOException)
+                    {
+                        return;
+                    }
                 }
             }
         }
