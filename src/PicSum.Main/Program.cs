@@ -11,7 +11,6 @@ using System.Windows.Forms;
 namespace PicSum.Main
 {
     internal sealed class Program
-        : MarshalByRefObject
     {
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
