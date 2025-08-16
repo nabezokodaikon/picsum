@@ -42,7 +42,7 @@ namespace PicSum.Main
                     BootTimeMeasurement.Start();
                     ConsoleUtil.Write(true, $"Program.Main 7");
 
-                    AssemblyPreloader.OptimizeStartup(GetTypes());
+                    //AssemblyPreloader.OptimizeStartup(GetTypes());
 
                     AppFiles.CreateApplicationDirectories();
 
