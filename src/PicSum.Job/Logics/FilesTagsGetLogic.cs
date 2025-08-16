@@ -62,7 +62,7 @@ namespace PicSum.Job.Logics
 #pragma warning restore CS8601 // Null 参照代入の可能性があります。
 
                     })
-                    .OrderBy(ent => ent.Tag, NaturalStringComparer.WINDOWS)
+                    .OrderBy(static ent => ent.Tag, NaturalStringComparer.WINDOWS)
                     .ToArray());
             }
         }

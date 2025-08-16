@@ -71,7 +71,7 @@ namespace SWF.Core.Job
 
         public void BeginCancel()
         {
-            this._currentJobList.ForEach(_ => _.BeginCancel());
+            this._currentJobList.ForEach(static _ => _.BeginCancel());
             this._currentJobList.Clear();
         }
 

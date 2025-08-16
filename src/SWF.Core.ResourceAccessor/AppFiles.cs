@@ -13,25 +13,25 @@ namespace SWF.Core.ResourceAccessor
             GetApplicationDirectory,
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> LOG_DIRECTORY = new(
-            () => Path.Combine(APPLICATION_DIRECTORY.Value, "log"),
+            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "log"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> CONFIG_DIRECTORY = new(
-            () => Path.Combine(APPLICATION_DIRECTORY.Value, "config"),
+            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "config"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> CONFIG_FILE = new(
-            () => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"),
+            static () => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> DATABASE_DIRECTORY = new(
-            () => Path.Combine(APPLICATION_DIRECTORY.Value, "db"),
+            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "db"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(
-            () => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"),
+            static () => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(
-            () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
+            static () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> THUMBNAIL_CACHE_FILE = new(
-            () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.cache"),
+            static () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.cache"),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
         private static string GetApplicationDirectory()

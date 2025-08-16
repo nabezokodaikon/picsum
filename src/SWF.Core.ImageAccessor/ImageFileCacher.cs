@@ -48,7 +48,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return this.Get(filePath, cache =>
+            return this.Get(filePath, static cache =>
             {
                 if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
                 {

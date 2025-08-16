@@ -130,8 +130,8 @@ namespace SWF.Core.ImageAccessor
                     var imageFile = root
                         .Children()
                         .OfType<FileInfo>()
-                        .OrderBy(file => file.FullName, NaturalStringComparer.WINDOWS)
-                        .FirstOrDefault(file =>
+                        .OrderBy(static file => file.FullName, NaturalStringComparer.WINDOWS)
+                        .FirstOrDefault(static file =>
                         {
                             return FileUtil.CanAccess(file.FullName) && IsImageFile(file.FullName);
                         });

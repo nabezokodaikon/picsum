@@ -17,35 +17,35 @@ namespace PicSum.Job.SyncJobs
             using (TimeMeasuring.Run(true, "StartupSyncJob.Execute"))
             {
                 Instance<IFileInfoDB>.Initialize(new Lazy<IFileInfoDB>(
-                    () => new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value),
+                    static () => new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IThumbnailDB>.Initialize(new Lazy<IThumbnailDB>(
-                    () => new ThumbnailDB(AppFiles.THUMBNAIL_DATABASE_FILE.Value),
+                    static () => new ThumbnailDB(AppFiles.THUMBNAIL_DATABASE_FILE.Value),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IFileIconCacher>.Initialize(new Lazy<IFileIconCacher>(
-                    () => new FileIconCacher(),
+                    static () => new FileIconCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IThumbnailCacher>.Initialize(new Lazy<IThumbnailCacher>(
-                    () => new ThumbnailCacher(),
+                    static () => new ThumbnailCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IImageFileCacher>.Initialize(new Lazy<IImageFileCacher>(
-                    () => new ImageFileCacher(),
+                    static () => new ImageFileCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IImageFileSizeCacher>.Initialize(new Lazy<IImageFileSizeCacher>(
-                    () => new ImageFileSizeCacher(),
+                    static () => new ImageFileSizeCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IImageFileTakenDateCacher>.Initialize(new Lazy<IImageFileTakenDateCacher>(
-                    () => new ImageFileTakenDateCacher(),
+                    static () => new ImageFileTakenDateCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<JobCaller>.Initialize(new Lazy<JobCaller>(
-                    () => new JobCaller(),
+                    static () => new JobCaller(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
             }
         }

@@ -16,7 +16,7 @@ namespace SWF.Core.ImageAccessor
         private static Mat GetDestMat()
         {
             return DEST_MAT_CACHE.GetOrAdd(
-                Environment.CurrentManagedThreadId, id => new Mat());
+                Environment.CurrentManagedThreadId, static id => new Mat());
         }
 
         public static Bitmap ToBitmap(Mat mat)
