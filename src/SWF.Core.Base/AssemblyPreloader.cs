@@ -58,7 +58,7 @@ namespace SWF.Core.Base
         }
 
         // アプリケーション起動時の最適化メソッド
-        public static void OptimizeStartup(params Type[] criticalTypes)
+        public static void OptimizeStartup(Type[] criticalTypes)
         {
             ArgumentNullException.ThrowIfNull(criticalTypes, nameof(criticalTypes));
 
