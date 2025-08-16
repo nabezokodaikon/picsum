@@ -15,6 +15,11 @@ namespace PicSum.Main.Conf
     {
         public static readonly Config INSTANCE = new();
 
+        public static string GetCurrentVersion()
+        {
+            return $"{AppInfo.CURRENT_VERSION.Major}.{AppInfo.CURRENT_VERSION.Minor}.{AppInfo.CURRENT_VERSION.Build}.{AppInfo.CURRENT_VERSION.Revision}";
+        }
+
         public FormWindowState WindowState { get; set; }
         public int WindowLocaionX { get; set; }
         public int WindowLocaionY { get; set; }
@@ -92,11 +97,6 @@ namespace PicSum.Main.Conf
         public string GetOldVersion()
         {
             return $"{this.MajorVersion}.{this.MinorVersion}.{this.BuildVersion}.{this.RevisionVersion}";
-        }
-
-        public string GetCurrentVersion()
-        {
-            return $"{AppInfo.CURRENT_VERSION.Major}.{AppInfo.CURRENT_VERSION.Minor}.{AppInfo.CURRENT_VERSION.Build}.{AppInfo.CURRENT_VERSION.Revision}";
         }
 
         private void SetDefautlConfgs()
