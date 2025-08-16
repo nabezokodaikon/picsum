@@ -8,10 +8,10 @@ namespace SWF.Core.ImageAccessor
     public sealed partial class ImageFileCacher
         : IImageFileCacher
     {
-        private const int CACHE_CAPACITY = 10;
+        private const int CACHE_CAPACITY = 4;
 
         private bool _disposed = false;
-        private readonly List<ImageFileCacheEntity> _cacheList = new(CACHE_CAPACITY);
+        private readonly LinkedList<ImageFileCacheEntity> _cacheList = new();
         private readonly Dictionary<string, ImageFileCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
         private readonly Lock _cacheLock = new();
 
@@ -87,11 +87,19 @@ namespace SWF.Core.ImageAccessor
 
             lock (this._cacheLock)
             {
-                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 1"))
                 {
-                    if (updateDate == cache.UpdateDate)
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        return;
+                        if (updateDate == cache.UpdateDate)
+                        {
+                            if (this._cacheList.Remove(cache))
+                            {
+                                this._cacheList.AddFirst(cache);
+                            }
+
+                            return;
+                        }
                     }
                 }
             }
@@ -101,25 +109,37 @@ namespace SWF.Core.ImageAccessor
 
             lock (this._cacheLock)
             {
-                if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Create 2"))
                 {
-                    if (updateDate == cache.UpdateDate)
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        newCache.Dispose();
-                        return;
+                        if (updateDate == cache.UpdateDate)
+                        {
+                            newCache.Dispose();
+
+                            if (this._cacheList.Remove(cache))
+                            {
+                                this._cacheList.AddFirst(cache);
+                            }
+
+                            return;
+                        }
                     }
-                }
 
-                if (this._cacheList.Count > CACHE_CAPACITY)
-                {
-                    var removeCache = this._cacheList[0];
-                    this._cacheList.RemoveAt(0);
-                    this._cacheDictionary.Remove(removeCache.FilePath);
-                    removeCache.Dispose();
-                }
+                    if (this._cacheList.Count > CACHE_CAPACITY)
+                    {
+                        var removeCache = this._cacheList.Last;
+                        if (removeCache != null)
+                        {
+                            this._cacheList.RemoveLast();
+                            this._cacheDictionary.Remove(removeCache.Value.FilePath);
+                            removeCache.Value.Dispose();
+                        }
+                    }
 
-                this._cacheDictionary.Add(newCache.FilePath, newCache);
-                this._cacheList.Add(newCache);
+                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                    this._cacheList.AddFirst(newCache);
+                }
             }
         }
 
@@ -127,16 +147,21 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
-            {
-                var updateDate = FileUtil.GetUpdateDate(filePath);
+            var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                lock (this._cacheLock)
+            lock (this._cacheLock)
+            {
+                using (TimeMeasuring.Run(true, $"ImageFileCacher.Get {typeof(T)}"))
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
                         if (updateDate == cache.UpdateDate)
                         {
+                            if (this._cacheList.Remove(cache))
+                            {
+                                this._cacheList.AddFirst(cache);
+                            }
+
                             return resultFunc(cache);
                         }
                     }
