@@ -33,7 +33,7 @@ namespace PicSum.Job.Jobs
 
             var files = param.FilePathList
                 .AsEnumerable()
-                .Where(ImageUtil.CanRetainExifImageFormat)
+                .Where(static _ => ImageUtil.CanRetainExifImageFormat(_))
                 .ToArray();
             if (files.Length < 1)
             {

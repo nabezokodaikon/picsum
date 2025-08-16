@@ -485,7 +485,7 @@ namespace SWF.Core.FileAccessor
                 return Directory
                     .EnumerateFiles(directoryPath)
                     .AsEnumerable()
-                    .Where(CanAccess);
+                    .Where(static _ => CanAccess(_));
             }
             catch (ArgumentNullException)
             {
