@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Targets;
+using System.Runtime.CompilerServices;
 
 namespace SWF.Core.Base
 {
@@ -7,6 +8,7 @@ namespace SWF.Core.Base
     {
         private static Logger? _logger = null;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Initialize(string logDirectory)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(logDirectory, nameof(logDirectory));
@@ -40,6 +42,7 @@ namespace SWF.Core.Base
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Logger GetLogger()
         {
             if (_logger == null)
