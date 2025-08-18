@@ -46,11 +46,9 @@ namespace SWF.Core.FileAccessor
                         .GetDrives()
                         .Any(d => StringUtil.CompareFilePath(d.Name, filePath));
                 }
-                catch (IOException)
-                {
-                    return false;
-                }
-                catch (UnauthorizedAccessException)
+                catch (Exception ex) when (
+                    ex is IOException ||
+                    ex is UnauthorizedAccessException)
                 {
                     return false;
                 }
@@ -130,31 +128,14 @@ namespace SWF.Core.FileAccessor
 
                     return (attributes & WinApiMembers.FILE_ATTRIBUTE_HIDDEN) == 0;
                 }
-                catch (ArgumentNullException)
-                {
-                    return false;
-                }
-                catch (InvalidOperationException)
-                {
-                    return false;
-                }
-                catch (SecurityException)
-                {
-                    return false;
-                }
-                catch (ArgumentException)
-                {
-                    return false;
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    return false;
-                }
-                catch (PathTooLongException)
-                {
-                    return false;
-                }
-                catch (NotSupportedException)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is InvalidOperationException ||
+                    ex is SecurityException ||
+                    ex is ArgumentException ||
+                    ex is UnauthorizedAccessException ||
+                    ex is PathTooLongException ||
+                    ex is NotSupportedException)
                 {
                     return false;
                 }
@@ -188,11 +169,9 @@ namespace SWF.Core.FileAccessor
 
                     return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
                 }
-                catch (IOException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (UnauthorizedAccessException ex)
+                catch (Exception ex) when (
+                    ex is IOException ||
+                    ex is UnauthorizedAccessException)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -209,7 +188,8 @@ namespace SWF.Core.FileAccessor
 
                     return name;
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex) when (
+                    ex is ArgumentException)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -241,11 +221,9 @@ namespace SWF.Core.FileAccessor
 
                     return parent;
                 }
-                catch (ArgumentException ex)
-                {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (PathTooLongException ex)
+                catch (Exception ex) when (
+                    ex is ArgumentException ||
+                    ex is PathTooLongException)
                 {
                     throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -294,23 +272,12 @@ namespace SWF.Core.FileAccessor
             {
                 return File.GetCreationTime(filePath);
             }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is UnauthorizedAccessException ||
+                ex is PathTooLongException ||
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -334,23 +301,12 @@ namespace SWF.Core.FileAccessor
             {
                 return File.GetLastWriteTime(filePath);
             }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is UnauthorizedAccessException ||
+                ex is PathTooLongException ||
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -370,27 +326,13 @@ namespace SWF.Core.FileAccessor
                 var fi = new FileInfo(filePath);
                 return fi.Length;
             }
-            catch (SecurityException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is SecurityException ||
+                ex is UnauthorizedAccessException ||
+                ex is PathTooLongException ||
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -405,27 +347,13 @@ namespace SWF.Core.FileAccessor
                 var fi = new FileInfo(filePath);
                 return (fi.CreationTime, fi.LastWriteTime, fi.Length);
             }
-            catch (SecurityException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is SecurityException ||
+                ex is UnauthorizedAccessException ||
+                ex is PathTooLongException ||
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -440,27 +368,13 @@ namespace SWF.Core.FileAccessor
                 var fi = new DirectoryInfo(filePath);
                 return (fi.CreationTime, fi.LastWriteTime);
             }
-            catch (SecurityException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is SecurityException ||
+                ex is UnauthorizedAccessException ||
+                ex is PathTooLongException ||
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -487,31 +401,14 @@ namespace SWF.Core.FileAccessor
                     .AsEnumerable()
                     .Where(static _ => CanAccess(_));
             }
-            catch (ArgumentNullException)
-            {
-                return [];
-            }
-            catch (ArgumentException)
-            {
-                return [];
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return [];
-            }
-            catch (PathTooLongException)
-            {
-                return [];
-            }
-            catch (IOException)
-            {
-                return [];
-            }
-            catch (SecurityException)
-            {
-                return [];
-            }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex) when (
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is DirectoryNotFoundException ||
+                ex is PathTooLongException ||
+                ex is IOException ||
+                ex is SecurityException ||
+                ex is UnauthorizedAccessException)
             {
                 return [];
             }
@@ -542,19 +439,11 @@ namespace SWF.Core.FileAccessor
                         .Where(static dir => CanAccess(dir.FullName))
                         .Any();
                 }
-                catch (ArgumentNullException)
-                {
-                    return false;
-                }
-                catch (SecurityException)
-                {
-                    return false;
-                }
-                catch (ArgumentException)
-                {
-                    return false;
-                }
-                catch (PathTooLongException)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is SecurityException ||
+                    ex is ArgumentException ||
+                    ex is PathTooLongException)
                 {
                     return false;
                 }
@@ -614,19 +503,11 @@ namespace SWF.Core.FileAccessor
                             .ToArray();
                     }
                 }
-                catch (ArgumentNullException)
-                {
-                    return [];
-                }
-                catch (SecurityException)
-                {
-                    return [];
-                }
-                catch (ArgumentException)
-                {
-                    return [];
-                }
-                catch (PathTooLongException)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is SecurityException ||
+                    ex is ArgumentException ||
+                    ex is PathTooLongException)
                 {
                     return [];
                 }
@@ -665,19 +546,11 @@ namespace SWF.Core.FileAccessor
                             .Select(static dir => dir.FullName)
                             .ToArray();
                     }
-                    catch (ArgumentNullException)
-                    {
-                        return [];
-                    }
-                    catch (SecurityException)
-                    {
-                        return [];
-                    }
-                    catch (ArgumentException)
-                    {
-                        return [];
-                    }
-                    catch (PathTooLongException)
+                    catch (Exception ex) when (
+                        ex is ArgumentNullException ||
+                        ex is SecurityException ||
+                        ex is ArgumentException ||
+                        ex is PathTooLongException)
                     {
                         return [];
                     }
@@ -748,19 +621,11 @@ namespace SWF.Core.FileAccessor
                     p.Start();
                 }
             }
-            catch (Win32Exception ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PlatformNotSupportedException ex)
+            catch (Exception ex) when (
+                ex is Win32Exception ||
+                ex is ObjectDisposedException ||
+                ex is InvalidOperationException ||
+                ex is PlatformNotSupportedException)
             {
                 throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -854,11 +719,9 @@ namespace SWF.Core.FileAccessor
                     .Select(static drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"));
                 return drives;
             }
-            catch (IOException ex)
-            {
-                throw new FileUtilException("ドライブリストの取得に失敗しました。", ex);
-            }
-            catch (UnauthorizedAccessException ex)
+            catch (Exception ex) when (
+                ex is IOException ||
+                ex is UnauthorizedAccessException)
             {
                 throw new FileUtilException("ドライブリストの取得に失敗しました。", ex);
             }
