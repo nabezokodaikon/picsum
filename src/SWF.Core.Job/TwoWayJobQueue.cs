@@ -30,9 +30,11 @@ namespace SWF.Core.Job
         {
             LOGGER.Trace($"{TASK_NAME} を開始します。");
 
-            this._task = Task.Run(
+            this._task = Task.Factory.StartNew(
                 this.DoWork,
-                this._cancellationTokenSource.Token);
+                this._cancellationTokenSource.Token,
+                TaskCreationOptions.LongRunning,
+                TaskScheduler.Default);
         }
 
         public void Dispose()
