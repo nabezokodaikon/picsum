@@ -71,11 +71,9 @@ namespace PicSum.Main.Conf
                     this.BuildVersion = config.BuildVersion;
                     this.RevisionVersion = config.RevisionVersion;
                 }
-                catch (FileNotFoundException)
-                {
-                    this.SetDefautlConfgs();
-                }
-                catch (MemoryPackSerializationException)
+                catch (Exception ex) when (
+                    ex is FileNotFoundException ||
+                    ex is MemoryPackSerializationException)
                 {
                     this.SetDefautlConfgs();
                 }

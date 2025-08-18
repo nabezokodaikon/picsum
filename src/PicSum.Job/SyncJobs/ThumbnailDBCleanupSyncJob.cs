@@ -41,23 +41,12 @@ namespace PicSum.Job.SyncJobs
                         File.Delete($"{thumbnailFile}");
                     }
                 }
-                catch (DirectoryNotFoundException ex)
-                {
-                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
-                }
-                catch (PathTooLongException ex)
-                {
-                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
-                }
-                catch (IOException ex)
-                {
-                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
-                }
-                catch (NotSupportedException ex)
-                {
-                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
-                }
-                catch (UnauthorizedAccessException ex)
+                catch (Exception ex) when (
+                    ex is DirectoryNotFoundException ||
+                    ex is PathTooLongException ||
+                    ex is IOException ||
+                    ex is NotSupportedException ||
+                    ex is UnauthorizedAccessException)
                 {
                     Log.GetLogger().Error(ex, ERROR_MESSAGE);
                 }

@@ -186,27 +186,13 @@ namespace SWF.Core.ImageAccessor
                     return OpenCVUtil.Resize(this._mat, width, height);
                 }
             }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (NotImplementedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (OpenCvSharp.OpenCVException ex)
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException ||
+                ex is OpenCvSharp.OpenCVException)
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
@@ -243,27 +229,13 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
             }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (NotImplementedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (OpenCvSharp.OpenCVException ex)
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException ||
+                ex is OpenCvSharp.OpenCVException)
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
@@ -292,27 +264,13 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
             }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (ObjectDisposedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (NotImplementedException ex)
-            {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
-            }
-            catch (OpenCvSharp.OpenCVException ex)
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException ||
+                ex is OpenCvSharp.OpenCVException)
             {
                 throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
             }
