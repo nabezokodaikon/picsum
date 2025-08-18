@@ -4,7 +4,6 @@ using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 using System.Data;
-using System.Runtime.Versioning;
 using ZLinq;
 
 namespace PicSum.Job.Logics
@@ -12,7 +11,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

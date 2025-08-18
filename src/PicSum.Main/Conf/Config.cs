@@ -4,12 +4,11 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.Conf
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     [MemoryPackable]
     internal sealed partial class Config
     {

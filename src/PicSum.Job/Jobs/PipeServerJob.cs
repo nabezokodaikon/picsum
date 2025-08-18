@@ -3,11 +3,10 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.IO.Pipes;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class PipeServerJob
         : AbstractTwoWayJob<ValueResult<string>>
     {

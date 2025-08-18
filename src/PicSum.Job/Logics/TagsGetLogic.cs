@@ -4,7 +4,6 @@ using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.Core.StringAccessor;
-using System.Runtime.Versioning;
 using ZLinq;
 
 namespace PicSum.Job.Logics
@@ -12,7 +11,7 @@ namespace PicSum.Job.Logics
     /// <summary>
     /// タグの一覧を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class TagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

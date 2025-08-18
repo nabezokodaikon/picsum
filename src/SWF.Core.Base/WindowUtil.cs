@@ -1,10 +1,9 @@
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using WinApi;
 
 namespace SWF.Core.Base
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class WindowUtil
     {
         private const float BASE_DPI = 96f;

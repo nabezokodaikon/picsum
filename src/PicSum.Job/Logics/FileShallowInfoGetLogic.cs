@@ -5,14 +5,13 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
 {
     /// <summary>
     /// ファイルの浅い情報を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

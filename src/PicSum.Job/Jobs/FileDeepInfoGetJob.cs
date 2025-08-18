@@ -7,14 +7,13 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// ファイルの深い情報取得非同期ジョブ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {

@@ -2,7 +2,6 @@ using SWF.UIComponent.FlowList;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.AddressBar
@@ -10,7 +9,7 @@ namespace PicSum.UIComponent.AddressBar
     /// <summary>
     /// ドロップダウンリスト
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class DropDownList
         : ToolStripDropDown
     {

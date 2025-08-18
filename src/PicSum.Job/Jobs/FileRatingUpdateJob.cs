@@ -3,14 +3,13 @@ using PicSum.Job.Logics;
 using PicSum.Job.Parameters;
 using SWF.Core.Base;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// ファイルの評価値を更新します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class FileRatingUpdateJob
         : AbstractOneWayJob<FileRatingUpdateParameter>
     {

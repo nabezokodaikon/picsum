@@ -1,11 +1,10 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ZoomMenuItem
         : ToolStripMenuItem
     {

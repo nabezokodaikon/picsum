@@ -11,12 +11,11 @@ using SWF.Core.StringAccessor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Versioning;
 using ZLinq;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class FileListUtil
     {
         private static string[] GetSortFiles(

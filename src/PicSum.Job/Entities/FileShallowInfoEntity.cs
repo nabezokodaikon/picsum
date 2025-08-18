@@ -1,14 +1,13 @@
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
 {
     /// <summary>
     /// ファイルの浅い情報エンティティ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class FileShallowInfoEntity
     {
         public static readonly FileShallowInfoEntity EMPTY = new()

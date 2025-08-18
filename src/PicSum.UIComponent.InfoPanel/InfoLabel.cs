@@ -3,12 +3,11 @@ using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Base;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class InfoLabel
         : BasePaintingControl
     {

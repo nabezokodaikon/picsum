@@ -1,10 +1,9 @@
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using WinApi;
 
 namespace SWF.Core.ResourceAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class FileIconUtil
     {
         public static Bitmap GetSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder, WinApiMembers.ShellFileInfoFlags shil)

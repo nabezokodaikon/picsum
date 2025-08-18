@@ -4,14 +4,13 @@ using SWF.Core.StringAccessor;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Security;
 using System.Xml;
 using ZLinq;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class ImageUtil
     {
         internal const string AVIF_FILE_EXTENSION = ".avif";

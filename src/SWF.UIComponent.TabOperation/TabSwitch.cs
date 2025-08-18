@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
@@ -16,7 +15,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ切替コントロール
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class TabSwitch
         : BasePaintingControl
     {

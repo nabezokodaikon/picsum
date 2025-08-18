@@ -13,11 +13,10 @@ using SixLabors.ImageSharp.Formats.Tiff;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class SixLaborsUtil
     {
         private static readonly DecoderOptions DECODER_OPTIONS = new()

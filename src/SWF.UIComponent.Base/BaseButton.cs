@@ -1,11 +1,10 @@
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Base
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public partial class BaseButton
         : Button
     {

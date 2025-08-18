@@ -5,7 +5,6 @@ using SWF.UIComponent.Base;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
@@ -14,7 +13,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// ドラッグ中のコンテンツを表示するフォーム
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class TabDragForm
         : BaseForm
     {

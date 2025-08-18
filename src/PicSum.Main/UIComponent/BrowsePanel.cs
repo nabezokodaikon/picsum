@@ -16,12 +16,11 @@ using SWF.UIComponent.WideDropDown;
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class BrowsePanel
         : BaseControl, ISender
     {

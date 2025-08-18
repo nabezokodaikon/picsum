@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 
@@ -27,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public abstract partial class AbstractFileListPage
         : AbstractBrowsePage, ISender
     {

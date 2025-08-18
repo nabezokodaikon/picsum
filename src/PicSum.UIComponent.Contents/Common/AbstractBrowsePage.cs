@@ -2,7 +2,6 @@ using PicSum.UIComponent.Contents.Parameter;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.Common
@@ -10,7 +9,7 @@ namespace PicSum.UIComponent.Contents.Common
     /// <summary>
     /// コンテンツ基底クラス
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public abstract class AbstractBrowsePage
         : PagePanel
     {

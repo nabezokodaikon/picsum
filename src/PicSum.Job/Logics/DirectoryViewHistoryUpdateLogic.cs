@@ -1,14 +1,13 @@
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
 {
     /// <summary>
     /// フォルダの表示履歴を追加します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class DirectoryViewHistoryUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {

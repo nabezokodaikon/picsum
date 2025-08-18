@@ -1,7 +1,6 @@
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
 using System;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -9,7 +8,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// コンテンツコンテナ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class PageContainer
         : BaseControl
     {

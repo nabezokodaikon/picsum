@@ -3,12 +3,11 @@ using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public partial class WideComboBox
         : BasePaintingControl
     {

@@ -2,13 +2,12 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 using WinApi;
 
 namespace SWF.UIComponent.WideDropDown
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class InputTextBox
         : TextBox
     {

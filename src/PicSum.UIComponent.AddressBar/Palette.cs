@@ -1,10 +1,9 @@
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.AddressBar
 {
     // TODO: フォントキャッシュのDispose処理。
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class Palette
     {
         private static readonly Color TEXT_COLOR = Color.FromArgb(

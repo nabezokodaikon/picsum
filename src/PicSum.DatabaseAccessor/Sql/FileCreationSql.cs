@@ -1,12 +1,11 @@
 using SWF.Core.DatabaseAccessor;
-using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Sql
 {
     /// <summary>
     /// ファイルM作成
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class FileCreationSql
         : SqlBase
     {

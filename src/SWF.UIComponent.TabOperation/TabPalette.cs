@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -8,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブパレットクラス
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class TabPalette
     {
         public static readonly Color TITLE_COLOR = Color.FromArgb(0, 64, 64, 64);

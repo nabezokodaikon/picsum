@@ -7,7 +7,6 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using System.Drawing;
-using System.Runtime.Versioning;
 using ZLinq;
 
 namespace PicSum.Job.Jobs
@@ -15,7 +14,7 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// サムネイルを取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ThumbnailsGetJob
         : AbstractTwoWayJob<ThumbnailsGetParameter, ThumbnailImageResult>
     {

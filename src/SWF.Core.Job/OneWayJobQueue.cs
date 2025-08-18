@@ -1,11 +1,10 @@
 using NLog;
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 using System.Threading.Channels;
 
 namespace SWF.Core.Job
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class OneWayJobQueue
         : IDisposable
     {

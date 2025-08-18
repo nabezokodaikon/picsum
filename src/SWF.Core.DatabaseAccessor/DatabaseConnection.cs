@@ -1,10 +1,9 @@
 using System.Data;
 using System.Data.SQLite;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.DatabaseAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class DatabaseConnection
         : IDatabaseConnection
     {

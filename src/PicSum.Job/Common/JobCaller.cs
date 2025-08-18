@@ -3,11 +3,10 @@ using PicSum.Job.Jobs;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Common
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class JobCaller
         : IDisposable
     {

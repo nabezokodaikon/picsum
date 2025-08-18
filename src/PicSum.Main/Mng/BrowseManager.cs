@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.Main.Mng
@@ -13,7 +12,7 @@ namespace PicSum.Main.Mng
     /// <summary>
     /// ブラウザ管理クラス
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class BrowseManager
     {
 

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
@@ -13,7 +12,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// フローリストコントロール
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class FlowList
         : BasePaintingControl
     {

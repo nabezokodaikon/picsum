@@ -1,14 +1,13 @@
 using PicSum.Job.Parameters;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// 次のフォルダを取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class NextDirectoryGetJob
         : AbstractTwoWayJob<NextDirectoryGetParameter, ValueResult<string>>
     {

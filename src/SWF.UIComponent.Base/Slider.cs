@@ -1,14 +1,13 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
 using System.ComponentModel;
-using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Base
 {
     /// <summary>
     /// スライダーコントロール
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public partial class Slider
         : BasePaintingControl
     {

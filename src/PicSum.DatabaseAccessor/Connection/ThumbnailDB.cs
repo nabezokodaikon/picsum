@@ -1,12 +1,11 @@
 using SWF.Core.DatabaseAccessor;
-using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Connection
 {
     /// <summary>
     /// thumb.sqlite コネクション
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class ThumbnailDB(string dbFilePath)
         : AbstractDatabase(dbFilePath, TABLE_CREATE_SQL, true), IThumbnailDB
     {

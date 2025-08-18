@@ -3,14 +3,13 @@ using SWF.Core.StringAccessor;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Security;
 using WinApi;
 using ZLinq;
 
 namespace SWF.Core.FileAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class FileUtil
     {
         public const string ROOT_DIRECTORY_NAME = "PC";

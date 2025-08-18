@@ -3,11 +3,10 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class TakenDatesGetJob
         : AbstractTwoWayJob<TakenDatesGetParameter, TakenDateResult>
     {

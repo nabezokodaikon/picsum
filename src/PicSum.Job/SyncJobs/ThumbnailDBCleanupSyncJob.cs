@@ -4,11 +4,10 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.SyncJobs
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ThumbnailDBCleanupSyncJob
         : AbstractSyncJob
     {

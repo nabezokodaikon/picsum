@@ -1,11 +1,10 @@
 using SWF.Core.Base;
 using System;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class PageDrawArea
     {
         private static readonly SolidBrush OUTLINE_BRUSH = new(Color.FromArgb(128, 128, 128));

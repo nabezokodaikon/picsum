@@ -13,14 +13,13 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
     /// <summary>
     /// フォルダファイルリストコンテンツ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class DirectoryFileListPage
         : AbstractFileListPage
     {

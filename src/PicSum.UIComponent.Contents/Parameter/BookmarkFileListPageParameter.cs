@@ -1,10 +1,9 @@
 using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
-using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class BookmarkFileListPageParameter
         : AbstractPageParameter
     {

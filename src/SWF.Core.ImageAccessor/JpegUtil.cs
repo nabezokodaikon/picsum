@@ -1,9 +1,8 @@
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class JpegUtil
     {
         public static Bitmap ReadImageFile(Stream fs)

@@ -8,7 +8,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageView
@@ -16,7 +15,7 @@ namespace PicSum.UIComponent.Contents.ImageView
     /// <summary>
     /// 画像パネルコントロール
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class ImagePanel
         : BasePaintingControl
     {

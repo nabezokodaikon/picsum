@@ -1,13 +1,12 @@
 using SWF.Core.Base;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Parameters
 {
     /// <summary>
     /// フォルダ状態
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class DirectoryStateParameter
         : IJobParameter
     {

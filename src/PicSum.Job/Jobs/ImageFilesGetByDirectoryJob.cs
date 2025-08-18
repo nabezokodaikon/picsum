@@ -3,14 +3,13 @@ using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// フォルダ内の画像ファイルを検索します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ImageFilesGetByDirectoryJob
         : AbstractTwoWayJob<ImageFileGetByDirectoryParameter, ImageFilesGetByDirectoryResult>
     {

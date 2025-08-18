@@ -7,14 +7,13 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using System.Collections.Concurrent;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// ファイルを評価値で検索します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class FilesGetByRatingJob
         : AbstractTwoWayJob<FilesGetByRatingParameter, ListResult<FileShallowInfoEntity>>
     {

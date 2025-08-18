@@ -1,10 +1,9 @@
 using SWF.Core.Base;
 using System.IO.MemoryMappedFiles;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.FileAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class CacheFileController
         : IDisposable
     {

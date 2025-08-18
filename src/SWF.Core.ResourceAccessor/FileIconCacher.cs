@@ -1,7 +1,6 @@
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Collections.Concurrent;
-using System.Runtime.Versioning;
 using WinApi;
 
 namespace SWF.Core.ResourceAccessor
@@ -9,7 +8,7 @@ namespace SWF.Core.ResourceAccessor
     /// <summary>
     /// ファイルアイコンキャッシュクラス
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class FileIconCacher
         : IFileIconCacher
     {

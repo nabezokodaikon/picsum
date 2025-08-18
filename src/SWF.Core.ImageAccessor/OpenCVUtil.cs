@@ -2,11 +2,10 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.Base;
 using System.Collections.Concurrent;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class OpenCVUtil
     {
         private static readonly ImageEncodingParam WEBP_QUALITY

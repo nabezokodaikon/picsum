@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ImageView
@@ -22,7 +21,7 @@ namespace PicSum.UIComponent.Contents.ImageView
     /// <summary>
     /// 画像ビューアコンテンツ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class ImageViewPage
         : AbstractBrowsePage, ISender
     {

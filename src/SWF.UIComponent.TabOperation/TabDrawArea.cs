@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -8,7 +7,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブ描画領域
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class TabDrawArea
     {
         private static readonly SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH

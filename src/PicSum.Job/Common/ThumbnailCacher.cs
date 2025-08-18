@@ -6,14 +6,13 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Common
 {
     /// <summary>
     /// サムネイルを読込みます。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class ThumbnailCacher
         : IThumbnailCacher
     {

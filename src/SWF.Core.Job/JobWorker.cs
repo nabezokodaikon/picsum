@@ -1,11 +1,10 @@
 using NLog;
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 using System.Threading.Channels;
 
 namespace SWF.Core.Job
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
         : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
@@ -183,7 +182,7 @@ namespace SWF.Core.Job
 #pragma warning restore CA1031
     }
 
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class TwoWayJob<TJob, TJobResult>()
         : TwoWayJob<TJob, EmptyParameter, TJobResult>()
         where TJob : AbstractTwoWayJob<TJobResult>, new()
@@ -191,7 +190,7 @@ namespace SWF.Core.Job
     {
     }
 
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class OneWayJob<TJob, TJobParameter>()
         : TwoWayJob<TJob, TJobParameter, EmptyResult>()
         where TJob : AbstractOneWayJob<TJobParameter>, new()
@@ -199,7 +198,7 @@ namespace SWF.Core.Job
     {
     }
 
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class OneWayJob<TJob>()
         : TwoWayJob<TJob, EmptyParameter, EmptyResult>()
         where TJob : AbstractOneWayJob, new()

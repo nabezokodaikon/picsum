@@ -1,12 +1,11 @@
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
 {
     /// <summary>
     /// サムネイルバッファエンティティ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ThumbnailCacheEntity
     {
         public static readonly ThumbnailCacheEntity EMPTY = new()

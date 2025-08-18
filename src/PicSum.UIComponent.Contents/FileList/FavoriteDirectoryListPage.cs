@@ -12,11 +12,10 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class FavoriteDirectoryListPage
         : AbstractFileListPage
     {

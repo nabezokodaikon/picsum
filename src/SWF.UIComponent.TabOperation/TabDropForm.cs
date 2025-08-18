@@ -1,11 +1,10 @@
 using SWF.UIComponent.Base;
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class TabDropForm
         : BaseForm
     {

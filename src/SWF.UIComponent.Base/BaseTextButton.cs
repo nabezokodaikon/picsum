@@ -1,10 +1,9 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.Base
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public class BaseTextButton
         : BaseButton
     {

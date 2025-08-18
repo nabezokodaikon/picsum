@@ -3,11 +3,10 @@ using ImageMagick.Factories;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal static class MagickUtil
     {
         private static readonly MagickFactory MAGICK_FACTORY = new();

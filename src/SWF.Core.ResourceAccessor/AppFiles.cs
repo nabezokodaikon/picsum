@@ -1,10 +1,9 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ResourceAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class AppFiles
     {
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP

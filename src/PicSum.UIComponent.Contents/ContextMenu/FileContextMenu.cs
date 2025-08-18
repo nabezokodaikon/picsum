@@ -4,7 +4,6 @@ using SWF.Core.ResourceAccessor;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.ContextMenu
@@ -12,7 +11,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
     /// <summary>
     /// ファイルコンテキストメニュー
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class FileContextMenu
         : ContextMenuStrip
     {

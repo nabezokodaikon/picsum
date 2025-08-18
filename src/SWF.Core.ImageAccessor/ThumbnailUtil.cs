@@ -1,9 +1,8 @@
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class ThumbnailUtil
     {
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";

@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
@@ -7,7 +6,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 垂直スクロールバー拡張
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed partial class VScrollBarEx
         : VScrollBar
     {

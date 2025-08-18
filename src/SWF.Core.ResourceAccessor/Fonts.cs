@@ -1,8 +1,6 @@
-using System.Runtime.Versioning;
-
 namespace SWF.Core.ResourceAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class Fonts
     {
         public enum Size

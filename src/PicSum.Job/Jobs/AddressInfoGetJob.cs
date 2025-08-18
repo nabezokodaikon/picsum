@@ -3,14 +3,13 @@ using PicSum.Job.Logics;
 using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Jobs
 {
     /// <summary>
     /// アドレスの情報を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class AddressInfoGetJob
         : AbstractTwoWayJob<ValueParameter<string>, AddressInfoGetResult>
     {

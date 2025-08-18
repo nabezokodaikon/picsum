@@ -15,12 +15,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed partial class InfoPanel
         : ToolPanel, ISender
     {

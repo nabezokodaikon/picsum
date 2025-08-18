@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Runtime.Versioning;
 using System.Windows.Forms.Design;
 
 namespace SWF.UIComponent.Base
@@ -7,7 +6,7 @@ namespace SWF.UIComponent.Base
     /// <summary>
     /// ツールストリップスライダー
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
     public partial class ToolStripSlider : ToolStripControlHost
     {

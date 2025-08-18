@@ -2,11 +2,10 @@ using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using MetadataExtractor.Formats.Xmp;
 using SWF.Core.Base;
-using System.Runtime.Versioning;
 
 namespace SWF.Core.ImageAccessor
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public static class MetadataExtractorUtil
     {
         private const int FILE_READ_BUFFER_SIZE = 128;

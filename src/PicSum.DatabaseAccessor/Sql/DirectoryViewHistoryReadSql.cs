@@ -1,13 +1,12 @@
 using PicSum.DatabaseAccessor.Dto;
 using SWF.Core.DatabaseAccessor;
-using System.Runtime.Versioning;
 
 namespace PicSum.DatabaseAccessor.Sql
 {
     /// <summary>
     /// フォルダの表示履歴を取得します。
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class DirectoryViewHistoryReadSql
         : SqlBase<DirectoryViewHistoryDto>
     {

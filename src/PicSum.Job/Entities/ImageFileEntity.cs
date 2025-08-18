@@ -1,13 +1,12 @@
 using SWF.Core.ImageAccessor;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Entities
 {
     /// <summary>
     /// 画像ファイルエンティティ
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class ImageFileEntity
     {
         public static readonly ImageFileEntity EMPTY = new()

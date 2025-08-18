@@ -1,11 +1,10 @@
 using SWF.Core.Base;
 using System;
 using System.Drawing;
-using System.Runtime.Versioning;
 
 namespace SWF.UIComponent.TabOperation
 {
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class AddTabButtonDrawArea
     {
         private static float GetScale(TabSwitch tabSwitch)

@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
@@ -7,7 +6,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブをドロップアウトしたイベント
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     public sealed class TabDropoutedEventArgs
         : TabEventArgs
     {

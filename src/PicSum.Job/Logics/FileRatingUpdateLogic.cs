@@ -1,14 +1,13 @@
 using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
-using System.Runtime.Versioning;
 
 namespace PicSum.Job.Logics
 {
     /// <summary>
     /// ファイル指定評価T更新
     /// </summary>
-    [SupportedOSPlatform("windows10.0.17763.0")]
+
     internal sealed class FileRatingUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
