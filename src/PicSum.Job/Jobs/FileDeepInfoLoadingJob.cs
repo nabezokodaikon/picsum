@@ -50,17 +50,10 @@ namespace PicSum.Job.Jobs
                     result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
                     return result;
                 }
-                catch (JobCancelException)
-                {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw;
-                }
-                catch (FileUtilException)
-                {
-                    result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    throw;
-                }
-                catch (ImageUtilException)
+                catch (Exception ex) when (
+                    ex is JobCancelException ||
+                    ex is FileUtilException ||
+                    ex is ImageUtilException)
                 {
                     result.FileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     throw;

@@ -95,12 +95,9 @@ namespace PicSum.Job.Logics
             {
                 return Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).Size;
             }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(ex);
-                return ImageUtil.EMPTY_SIZE;
-            }
-            catch (ImageUtilException ex)
+            catch (Exception ex) when (
+                ex is FileUtilException ||
+                ex is ImageUtilException)
             {
                 this.WriteErrorLog(ex);
                 return ImageUtil.EMPTY_SIZE;
@@ -263,12 +260,9 @@ namespace PicSum.Job.Logics
                     }
                 }
             }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(ex);
-                return CvImage.EMPTY;
-            }
-            catch (ImageUtilException ex)
+            catch (Exception ex) when (
+                ex is FileUtilException ||
+                ex is ImageUtilException)
             {
                 this.WriteErrorLog(ex);
                 return CvImage.EMPTY;

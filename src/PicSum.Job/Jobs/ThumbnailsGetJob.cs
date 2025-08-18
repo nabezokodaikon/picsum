@@ -84,11 +84,9 @@ namespace PicSum.Job.Jobs
                                     this.Callback(img);
                                 }
                             }
-                            catch (FileUtilException ex)
-                            {
-                                this.WriteErrorLog(ex);
-                            }
-                            catch (ImageUtilException ex)
+                            catch (Exception ex) when (
+                                ex is FileUtilException ||
+                                ex is ImageUtilException)
                             {
                                 this.WriteErrorLog(ex);
                             }

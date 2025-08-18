@@ -660,12 +660,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                         }
                     }
                 }
-                catch (ImageUtilException ex)
-                {
-                    LOGGER.Error($"{ex}");
-                    this.DrawErrorImage(g);
-                }
-                catch (OverflowException ex)
+                catch (Exception ex) when (
+                    ex is ImageUtilException ||
+                    ex is OverflowException)
                 {
                     LOGGER.Error($"{ex}");
                     this.DrawErrorImage(g);

@@ -225,12 +225,9 @@ namespace PicSum.Job.Logics
                     }
                 }
             }
-            catch (FileUtilException ex)
-            {
-                this.WriteErrorLog(ex);
-                return CvImage.EMPTY;
-            }
-            catch (ImageUtilException ex)
+            catch (Exception ex) when (
+                ex is FileUtilException ||
+                ex is ImageUtilException)
             {
                 this.WriteErrorLog(ex);
                 return CvImage.EMPTY;

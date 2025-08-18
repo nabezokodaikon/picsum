@@ -75,13 +75,9 @@ namespace PicSum.Job.Jobs
                     fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     throw;
                 }
-                catch (FileUtilException ex)
-                {
-                    fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
-                    this.WriteErrorLog(ex);
-                    return FileDeepInfoGetResult.ERROR;
-                }
-                catch (ImageUtilException ex)
+                catch (Exception ex) when (
+                    ex is FileUtilException ||
+                    ex is ImageUtilException)
                 {
                     fileInfo?.Thumbnail?.ThumbnailImage?.Dispose();
                     this.WriteErrorLog(ex);
