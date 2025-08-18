@@ -75,19 +75,11 @@ namespace SWF.Core.ImageAccessor
                         .Select(static file => file.FullName)
                         .ToArray();
                 }
-                catch (ArgumentNullException)
-                {
-                    return [];
-                }
-                catch (SecurityException)
-                {
-                    return [];
-                }
-                catch (ArgumentException)
-                {
-                    return [];
-                }
-                catch (PathTooLongException)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is SecurityException ||
+                    ex is ArgumentException ||
+                    ex is PathTooLongException)
                 {
                     return [];
                 }
@@ -102,11 +94,9 @@ namespace SWF.Core.ImageAccessor
             {
                 return MetadataExtractorUtil.GetTakenDate(filePath);
             }
-            catch (MetadataExtractor.ImageProcessingException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (IOException ex)
+            catch (Exception ex) when (
+                ex is MetadataExtractor.ImageProcessingException ||
+                ex is IOException)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -143,19 +133,11 @@ namespace SWF.Core.ImageAccessor
 
                     return imageFile.FullName;
                 }
-                catch (ArgumentNullException)
-                {
-                    return string.Empty;
-                }
-                catch (SecurityException)
-                {
-                    return string.Empty;
-                }
-                catch (ArgumentException)
-                {
-                    return string.Empty;
-                }
-                catch (PathTooLongException)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is SecurityException ||
+                    ex is ArgumentException ||
+                    ex is PathTooLongException)
                 {
                     return string.Empty;
                 }
@@ -265,71 +247,24 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
                 }
-                catch (ArgumentNullException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (ArgumentException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (NotSupportedException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (FileNotFoundException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (SecurityException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (DirectoryNotFoundException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (PathTooLongException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (EndOfStreamException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (IOException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (COMException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (XmlException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (InvalidDataException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (SixLabors.ImageSharp.InvalidImageContentException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
-                {
-                    throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-                }
-                catch (LibHeifSharp.HeifException ex)
+                catch (Exception ex) when (
+                    ex is ArgumentNullException ||
+                    ex is ArgumentException ||
+                    ex is NotSupportedException ||
+                    ex is FileNotFoundException ||
+                    ex is SecurityException ||
+                    ex is DirectoryNotFoundException ||
+                    ex is PathTooLongException ||
+                    ex is EndOfStreamException ||
+                    ex is ObjectDisposedException ||
+                    ex is IOException ||
+                    ex is UnauthorizedAccessException ||
+                    ex is COMException ||
+                    ex is XmlException ||
+                    ex is InvalidDataException ||
+                    ex is SixLabors.ImageSharp.InvalidImageContentException ||
+                    ex is SixLabors.ImageSharp.UnknownImageFormatException ||
+                    ex is LibHeifSharp.HeifException)
                 {
                     throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
                 }
@@ -507,63 +442,22 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
             }
-            catch (ArgumentException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (NotSupportedException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SecurityException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (PathTooLongException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (IOException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (XmlException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SixLabors.ImageSharp.InvalidImageContentException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (SixLabors.ImageSharp.UnknownImageFormatException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (LibHeifSharp.HeifException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ImageMagick.MagickException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (OutOfMemoryException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (InvalidOperationException ex)
+            catch (Exception ex) when (
+                ex is ArgumentException ||
+                ex is NotSupportedException ||
+                ex is FileNotFoundException ||
+                ex is SecurityException ||
+                ex is DirectoryNotFoundException ||
+                ex is PathTooLongException ||
+                ex is IOException ||
+                ex is UnauthorizedAccessException ||
+                ex is XmlException ||
+                ex is SixLabors.ImageSharp.InvalidImageContentException ||
+                ex is SixLabors.ImageSharp.UnknownImageFormatException ||
+                ex is LibHeifSharp.HeifException ||
+                ex is ImageMagick.MagickException ||
+                ex is OutOfMemoryException ||
+                ex is InvalidOperationException)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
@@ -633,11 +527,9 @@ namespace SWF.Core.ImageAccessor
                             $"未対応の画像ファイルが指定されました。'{filePath}'");
                 }
             }
-            catch (ImageMagick.MagickException ex)
-            {
-                throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
-            }
-            catch (ArgumentException ex)
+            catch (Exception ex) when (
+                ex is ImageMagick.MagickException ||
+                ex is ArgumentException)
             {
                 throw new ImageUtilException(CreateFileAccessErrorMessage(filePath), ex);
             }
