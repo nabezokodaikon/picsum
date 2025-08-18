@@ -20,8 +20,7 @@ namespace SWF.Core.Base
 
             using (TimeMeasuring.Run(true, "Log.Initialize"))
             {
-#pragma warning disable CA2000 // スコープを失う前にオブジェクトを破棄
-                _logger = new LogFactory().Setup().LoadConfiguration(builder =>
+                _logger = LogManager.Setup().LoadConfiguration(builder =>
                 {
                     builder.ForLogger().FilterMinLevel(
 #if DEBUG
@@ -38,7 +37,6 @@ namespace SWF.Core.Base
                         MaxArchiveFiles = 30,
                     });
                 }).GetLogger("mylogger");
-#pragma warning restore CA2000
             }
         }
 
