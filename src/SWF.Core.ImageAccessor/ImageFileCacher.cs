@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
 
             return this.Get(filePath, static cache =>
             {
-                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
+                if (!cache.IsEmpty && cache.Bitmap != null)
                 {
                     return cache.Bitmap.Size;
                 }
@@ -66,7 +66,7 @@ namespace SWF.Core.ImageAccessor
 
             return this.Get(filePath, cache =>
             {
-                if (cache != ImageFileCacheEntity.EMPTY && cache.Bitmap != null)
+                if (!cache.IsEmpty && cache.Bitmap != null)
                 {
                     return new CvImage(
                         filePath, OpenCVUtil.ToMat(cache.Bitmap), zoomValue);

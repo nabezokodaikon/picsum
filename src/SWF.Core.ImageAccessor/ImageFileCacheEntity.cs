@@ -16,6 +16,14 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly int _hashCode;
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public string FilePath { get; private set; } = string.Empty;
         public Bitmap? Bitmap { get; private set; }
         public DateTime UpdateDate { get; private set; }
