@@ -382,7 +382,7 @@ namespace PicSum.UIComponent.InfoPanel
             var tagInfo = this.TagList.FirstOrDefault(
                 t => t.Tag.Equals(tag, StringComparison.Ordinal),
                 FileTagInfoEntity.EMPTY);
-            if (tagInfo != FileTagInfoEntity.EMPTY)
+            if (!tagInfo.IsEmpty)
             {
                 tagInfo.IsAll = true;
                 this.tagFlowList.Invalidate();

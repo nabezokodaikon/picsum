@@ -11,6 +11,14 @@ namespace PicSum.Job.Entities
             IsAll = false,
         };
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public string Tag { get; set; } = string.Empty;
         public bool IsAll { get; set; }
     }
