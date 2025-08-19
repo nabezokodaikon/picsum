@@ -94,7 +94,7 @@ namespace PicSum.Job.Common
                 }
 
                 var cache = this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight);
-                if (cache != ThumbnailCacheEntity.EMPTY)
+                if (!cache.IsEmpry)
                 {
                     return cache;
                 }
@@ -114,7 +114,7 @@ namespace PicSum.Job.Common
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
-                if (cache != ThumbnailCacheEntity.EMPTY)
+                if (!cache.IsEmpry)
                 {
                     return cache;
                 }
@@ -132,7 +132,7 @@ namespace PicSum.Job.Common
         private ThumbnailCacheEntity GetFileCache(string filePath)
         {
             var cache = this.GetDBCache(filePath);
-            if (cache != ThumbnailCacheEntity.EMPTY)
+            if (!cache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 if (cache.FileUpdateDate >= updateDate)
@@ -153,7 +153,7 @@ namespace PicSum.Job.Common
             string filePath, int thumbWidth, int thumbHeight)
         {
             var dbCache = this.GetDBCache(filePath);
-            if (dbCache != ThumbnailCacheEntity.EMPTY)
+            if (!dbCache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -186,7 +186,7 @@ namespace PicSum.Job.Common
             string directoryPath, int thumbWidth, int thumbHeight)
         {
             var dbCache = this.GetDBCache(directoryPath);
-            if (dbCache != ThumbnailCacheEntity.EMPTY)
+            if (!dbCache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(directoryPath);
 

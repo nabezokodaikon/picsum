@@ -1,5 +1,4 @@
 using PicSum.Job.Common;
-using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -59,7 +58,7 @@ namespace PicSum.Job.Jobs
                                 var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                                     filePath, param.ThumbnailWidth, param.ThumbnailHeight);
                                 if (param.IsExecuteCallback
-                                    && bf != ThumbnailCacheEntity.EMPTY
+                                    && !bf.IsEmpry
                                     && bf.ThumbnailBuffer != null)
                                 {
                                     Instance<IImageFileSizeCacher>.Value.Set(

@@ -19,6 +19,14 @@ namespace PicSum.Job.Entities
             ThumbnailBuffer = null,
         };
 
+        public bool IsEmpry
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public string FilePath { get; internal set; } = string.Empty;
         public int ThumbnailWidth { get; internal set; } = 0;
         public int ThumbnailHeight { get; internal set; } = 0;

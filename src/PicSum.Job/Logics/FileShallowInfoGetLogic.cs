@@ -85,7 +85,7 @@ namespace PicSum.Job.Logics
             }
 
             var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
+            if (!thumbnailBuffer.IsEmpry
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
                 info.ThumbnailImage = new CvImage(
@@ -130,7 +130,7 @@ namespace PicSum.Job.Logics
             }
 
             var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-            if (thumbnailBuffer != ThumbnailCacheEntity.EMPTY
+            if (!thumbnailBuffer.IsEmpry
                 && thumbnailBuffer.ThumbnailBuffer != null)
             {
                 info.ThumbnailImage = new CvImage(

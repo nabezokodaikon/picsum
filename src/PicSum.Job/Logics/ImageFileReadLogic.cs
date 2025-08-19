@@ -1,5 +1,4 @@
 using PicSum.Job.Common;
-using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
 using SWF.Core.Base;
@@ -273,7 +272,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(false, "ImageFileReadLogic.GetThumbnail"))
             {
                 var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-                if (cache != ThumbnailCacheEntity.EMPTY
+                if (!cache.IsEmpry
                     && cache.ThumbnailBuffer != null)
                 {
                     return new CvImage(
