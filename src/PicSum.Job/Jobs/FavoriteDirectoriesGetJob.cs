@@ -42,7 +42,7 @@ namespace PicSum.Job.Jobs
                     try
                     {
                         var info = getInfoLogic.Get(dto.Value, true);
-                        if (info != FileShallowInfoEntity.EMPTY)
+                        if (!info.IsEmpty)
                         {
                             infoList.Add(info);
                         }

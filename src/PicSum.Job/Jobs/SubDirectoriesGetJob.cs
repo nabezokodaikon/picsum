@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
                 try
                 {
                     var info = logic.Get(subDirectory, false);
-                    if (info != FileShallowInfoEntity.EMPTY)
+                    if (!info.IsEmpty)
                     {
                         result.Add(info);
                     }

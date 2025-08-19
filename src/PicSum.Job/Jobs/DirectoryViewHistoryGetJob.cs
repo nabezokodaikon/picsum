@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 try
                 {
                     var info = logic.Get(directoryPath, false);
-                    if (info != FileShallowInfoEntity.EMPTY)
+                    if (!info.IsEmpty)
                     {
                         result.Add(info);
                     }

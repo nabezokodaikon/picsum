@@ -1,4 +1,3 @@
-using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using PicSum.Job.Results;
 using SWF.Core.FileAccessor;
@@ -63,7 +62,7 @@ namespace PicSum.Job.Jobs
                     this.ThrowIfJobCancellationRequested();
 
                     var info = logic.Get(directory, false);
-                    if (info == FileShallowInfoEntity.EMPTY)
+                    if (info.IsEmpty)
                     {
                         break;
                     }

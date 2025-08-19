@@ -30,6 +30,14 @@ namespace PicSum.Job.Entities
             IsImageFile = false,
         };
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public string FilePath { get; internal set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
         public DateTime CreateDate { get; internal set; } = DateTimeExtensions.EMPTY;
