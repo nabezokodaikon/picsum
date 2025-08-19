@@ -172,7 +172,7 @@ namespace SWF.Core.FileAccessor
                     ex is IOException ||
                     ex is UnauthorizedAccessException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    throw new FileUtilException($"ファイル名を取得できませんでした。{filePath}", ex);
                 }
             }
             else
@@ -190,7 +190,7 @@ namespace SWF.Core.FileAccessor
                 catch (Exception ex) when (
                     ex is ArgumentException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    throw new FileUtilException($"ファイル名を取得できませんでした。{filePath}", ex);
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace SWF.Core.FileAccessor
                     ex is ArgumentException ||
                     ex is PathTooLongException)
                 {
-                    throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                    throw new FileUtilException($"親ディレクトリパスを取得できませんでした。{filePath}", ex);
                 }
             }
         }
@@ -278,7 +278,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"作成日時を取得できませんでした。{filePath}", ex);
             }
         }
 
@@ -307,7 +307,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"更新日時を取得できませんでした。{filePath}", ex);
             }
         }
 
@@ -333,7 +333,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"ファイルサイズを取得できませんでした。{filePath}", ex);
             }
         }
 
@@ -354,7 +354,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"ファイル情報を取得できませんでした。{filePath}", ex);
             }
         }
 
@@ -375,7 +375,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"ディレクトリ情報を取得できませんでした。{filePath}", ex);
             }
         }
 
@@ -626,7 +626,7 @@ namespace SWF.Core.FileAccessor
                 ex is InvalidOperationException ||
                 ex is PlatformNotSupportedException)
             {
-                throw new FileUtilException(CreateFileAccessErrorMessage(filePath), ex);
+                throw new FileUtilException($"ファイルを実行できませんでした。{filePath}", ex);
             }
         }
 
@@ -758,13 +758,6 @@ namespace SWF.Core.FileAccessor
             }
 
             return new string(buffer[index..]);
-        }
-
-        private static string CreateFileAccessErrorMessage(string path)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(path, nameof(path));
-
-            return $"'{path}'のアクセスに失敗しました。";
         }
     }
 }
