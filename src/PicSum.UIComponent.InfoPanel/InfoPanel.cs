@@ -77,7 +77,7 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
-                else if (this._fileInfoSource.FileInfo == FileDeepInfoEntity.EMPTY)
+                else if (this._fileInfoSource.FileInfo.IsEmpty)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
@@ -483,7 +483,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             this._fileInfoSource = result;
 
-            if (this.FileInfo != FileDeepInfoEntity.EMPTY
+            if (!this.FileInfo.IsEmpty
                 && !this.FileInfo.IsError)
             {
                 this.fileInfoLabel.FileName = this.FileInfo.FileName;
