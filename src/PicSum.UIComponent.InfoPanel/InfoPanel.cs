@@ -73,7 +73,7 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this._fileInfoSource == FileDeepInfoGetResult.ERROR)
+                else if (this._fileInfoSource.IsError)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }

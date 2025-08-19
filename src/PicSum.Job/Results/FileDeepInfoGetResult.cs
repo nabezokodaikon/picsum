@@ -15,7 +15,6 @@ namespace PicSum.Job.Results
             FilePathList = null,
             FileInfo = FileDeepInfoEntity.EMPTY,
             TagInfoList = null,
-            IsError = false,
         };
 
         public static readonly FileDeepInfoGetResult ERROR = new()
@@ -23,12 +22,19 @@ namespace PicSum.Job.Results
             FilePathList = null,
             FileInfo = FileDeepInfoEntity.ERROR,
             TagInfoList = null,
-            IsError = true,
         };
+
+        public bool IsError
+        {
+            get
+            {
+                return this == ERROR;
+            }
+        }
 
         public string[]? FilePathList { get; internal set; }
         public FileDeepInfoEntity FileInfo { get; internal set; } = FileDeepInfoEntity.EMPTY;
         public ListEntity<FileTagInfoEntity>? TagInfoList { get; internal set; }
-        public bool IsError { get; private set; }
+
     }
 }
