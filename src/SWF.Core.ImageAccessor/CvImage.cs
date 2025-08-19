@@ -181,7 +181,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException($"スケールイメージの作成に失敗しました。{this._filePath}", ex);
+                throw new ImageUtilException($"スケールイメージの作成に失敗しました。", this._filePath, ex);
             }
         }
 
@@ -224,7 +224,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException($"ズームイメージの描画に失敗しました。{this._filePath}", ex);
+                throw new ImageUtilException($"ズームイメージの描画に失敗しました。", this._filePath, ex);
             }
         }
 
@@ -259,7 +259,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。{this._filePath}", ex);
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
             }
         }
 
