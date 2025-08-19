@@ -20,6 +20,14 @@ namespace SWF.Core.ImageAccessor
         public readonly bool IsLoadingImage;
         public readonly bool IsThumbnailImage;
 
+        public bool IsEmpry
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public CvImage(string filePath, OpenCvSharp.Mat mat, SizeF size, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

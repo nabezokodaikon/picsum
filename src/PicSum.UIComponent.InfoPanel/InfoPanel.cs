@@ -544,7 +544,7 @@ namespace PicSum.UIComponent.InfoPanel
                 this.DrawErrorMessage(e.Graphics, rect);
             }
             else if (this.Thumbnail != ThumbnailImageResult.EMPTY
-                && this.Thumbnail.ThumbnailImage != CvImage.EMPTY)
+                && !this.Thumbnail.ThumbnailImage.IsEmpry)
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;

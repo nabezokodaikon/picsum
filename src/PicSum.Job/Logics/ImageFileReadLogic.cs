@@ -53,7 +53,7 @@ namespace PicSum.Job.Logics
                             Image = image,
                             Thumbnail = thumbnail,
                             IsEmpty = false,
-                            IsError = image == CvImage.EMPTY,
+                            IsError = image.IsEmpry,
                         },
                     };
                 }
@@ -70,7 +70,7 @@ namespace PicSum.Job.Logics
             int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
             var thumbnail = this.GetThumbnail(filePath, imageSize, zoomValue);
-            var isEmpty = thumbnail == CvImage.EMPTY;
+            var isEmpty = thumbnail.IsEmpry;
             var image = isEmpty ? new CvImage(filePath, imageSize, zoomValue) : thumbnail;
 
             return new()
@@ -244,7 +244,7 @@ namespace PicSum.Job.Logics
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
                     var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
-                    if (image != CvImage.EMPTY)
+                    if (!image.IsEmpry)
                     {
                         return image;
                     }

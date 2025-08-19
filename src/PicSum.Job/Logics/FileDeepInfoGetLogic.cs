@@ -209,7 +209,7 @@ namespace PicSum.Job.Logics
                 using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFile Get Cache"))
                 {
                     var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
-                    if (image != CvImage.EMPTY)
+                    if (!image.IsEmpry)
                     {
                         return image;
                     }

@@ -213,7 +213,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.HasImage = false;
 
-            if (this._image != CvImage.EMPTY)
+            if (!this._image.IsEmpry)
             {
                 this._image.Dispose();
                 this._image = CvImage.EMPTY;
