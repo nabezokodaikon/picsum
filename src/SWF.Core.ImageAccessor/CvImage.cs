@@ -8,18 +8,6 @@ namespace SWF.Core.ImageAccessor
     {
         public static readonly CvImage EMPTY = new(SizeF.Empty);
 
-        private static string CreateErrorMessage(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return $"描画に失敗しました。";
-            }
-            else
-            {
-                return $"'{filePath}'の描画に失敗しました。";
-            }
-        }
-
         private bool _disposed = false;
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
@@ -193,7 +181,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+                throw new ImageUtilException($"スケールイメージの作成に失敗しました。{this._filePath}", ex);
             }
         }
 
@@ -236,7 +224,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+                throw new ImageUtilException($"ズームイメージの描画に失敗しました。{this._filePath}", ex);
             }
         }
 
@@ -271,7 +259,7 @@ namespace SWF.Core.ImageAccessor
                 ex is NotImplementedException ||
                 ex is OpenCvSharp.OpenCVException)
             {
-                throw new ImageUtilException(CreateErrorMessage(this._filePath), ex);
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。{this._filePath}", ex);
             }
         }
 
