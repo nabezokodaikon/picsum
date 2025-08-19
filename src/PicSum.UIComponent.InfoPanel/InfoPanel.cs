@@ -81,7 +81,7 @@ namespace PicSum.UIComponent.InfoPanel
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
-                else if (this._fileInfoSource.FileInfo == FileDeepInfoEntity.ERROR)
+                else if (this._fileInfoSource.FileInfo.IsError)
                 {
                     return FileDeepInfoEntity.ERROR;
                 }
@@ -484,7 +484,7 @@ namespace PicSum.UIComponent.InfoPanel
             this._fileInfoSource = result;
 
             if (this.FileInfo != FileDeepInfoEntity.EMPTY
-                && this.FileInfo != FileDeepInfoEntity.ERROR)
+                && !this.FileInfo.IsError)
             {
                 this.fileInfoLabel.FileName = this.FileInfo.FileName;
                 this.fileInfoLabel.FileType = this.FileInfo.FileType;
@@ -538,7 +538,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (this.FileInfo == FileDeepInfoEntity.ERROR)
+            if (this.FileInfo.IsError)
             {
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawErrorMessage(e.Graphics, rect);

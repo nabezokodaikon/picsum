@@ -26,7 +26,6 @@ namespace PicSum.Job.Entities
             FileIcon = null,
             Rating = 0,
             Thumbnail = ThumbnailImageResult.EMPTY,
-            IsError = false,
         };
 
         public static readonly FileDeepInfoEntity ERROR = new()
@@ -44,8 +43,23 @@ namespace PicSum.Job.Entities
             FileIcon = null,
             Rating = 0,
             Thumbnail = ThumbnailImageResult.EMPTY,
-            IsError = true,
         };
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
+        public bool IsError
+        {
+            get
+            {
+                return this == ERROR;
+            }
+        }
 
         public string FilePath { get; internal set; } = string.Empty;
         public string FileName { get; internal set; } = string.Empty;
@@ -60,6 +74,5 @@ namespace PicSum.Job.Entities
         public Image? FileIcon { get; internal set; } = null;
         public int Rating { get; internal set; } = 0;
         public ThumbnailImageResult Thumbnail { get; internal set; } = ThumbnailImageResult.EMPTY;
-        public bool IsError { get; private set; } = false;
     }
 }
