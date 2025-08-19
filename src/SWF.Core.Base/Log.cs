@@ -13,7 +13,7 @@ namespace SWF.Core.Base
 
             if (_logger != null)
             {
-                throw new InvalidOperationException("ƒƒK[‚Í‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚·B");
+                throw new InvalidOperationException("ãƒ­ã‚¬ãƒ¼ã¯åˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã™ã€‚");
             }
 
             using (TimeMeasuring.Run(true, "Log.Initialize"))
@@ -42,7 +42,7 @@ namespace SWF.Core.Base
         {
             if (_logger == null)
             {
-                throw new InvalidOperationException("ƒƒK[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+                throw new InvalidOperationException("ãƒ­ã‚¬ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
             }
 
             return _logger;

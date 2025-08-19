@@ -12,7 +12,7 @@ namespace SWF.Core.Base
 
             if (_stopwatch != null)
             {
-                throw new InvalidOperationException("‹N“®ŠÔ‚ÌŒv‘ª‚ÍŠJn‚³‚ê‚Ä‚¢‚Ü‚·B");
+                throw new InvalidOperationException("èµ·å‹•æ™‚é–“ã®è¨ˆæ¸¬ã¯é–‹å§‹ã•ã‚Œã¦ã„ã¾ã™ã€‚");
             }
 
             _stopwatch = Stopwatch.StartNew();
@@ -24,7 +24,7 @@ namespace SWF.Core.Base
 
             if (_stopwatch == null)
             {
-                throw new InvalidOperationException("‹N“®ŠÔ‚ÌŒv‘ª‚ÍŠJn‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+                throw new InvalidOperationException("èµ·å‹•æ™‚é–“ã®è¨ˆæ¸¬ã¯é–‹å§‹ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
             }
 
             _stopwatch.Stop();
