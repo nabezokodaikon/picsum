@@ -321,7 +321,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ClearInfo()
         {
-            if (this.Thumbnail != ThumbnailImageResult.EMPTY
+            if (!this.Thumbnail.IsEmpty
                 && this.Thumbnail.ThumbnailImage != null)
             {
                 this.Thumbnail.ThumbnailImage.Dispose();
@@ -543,7 +543,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
                 this.DrawErrorMessage(e.Graphics, rect);
             }
-            else if (this.Thumbnail != ThumbnailImageResult.EMPTY
+            else if (!this.Thumbnail.IsEmpty
                 && !this.Thumbnail.ThumbnailImage.IsEmpry)
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;

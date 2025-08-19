@@ -22,6 +22,14 @@ namespace PicSum.Job.Results
             FileUpdateDate = DateTimeExtensions.EMPTY,
         };
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public string FilePath { get; internal set; } = string.Empty;
         public CvImage? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
