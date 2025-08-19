@@ -24,6 +24,14 @@ namespace PicSum.Job.Results
             TagInfoList = null,
         };
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return this == EMPTY;
+            }
+        }
+
         public bool IsError
         {
             get

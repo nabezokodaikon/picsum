@@ -54,7 +54,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this._fileInfoSource != FileDeepInfoGetResult.EMPTY && this._fileInfoSource.FilePathList != null)
+                if (!this._fileInfoSource.IsEmpty && this._fileInfoSource.FilePathList != null)
                 {
                     return this._fileInfoSource.FilePathList;
                 }
@@ -69,7 +69,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this._fileInfoSource == FileDeepInfoGetResult.EMPTY)
+                if (this._fileInfoSource.IsEmpty)
                 {
                     return FileDeepInfoEntity.EMPTY;
                 }
@@ -109,7 +109,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             get
             {
-                if (this._fileInfoSource != FileDeepInfoGetResult.EMPTY && this._fileInfoSource.TagInfoList != null)
+                if (!this._fileInfoSource.IsEmpty && this._fileInfoSource.TagInfoList != null)
                 {
                     return this._fileInfoSource.TagInfoList;
                 }
@@ -661,7 +661,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
-            if (this._fileInfoSource == FileDeepInfoGetResult.EMPTY)
+            if (this._fileInfoSource.IsEmpty)
             {
                 return;
             }
