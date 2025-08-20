@@ -1,4 +1,3 @@
-using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
@@ -16,7 +15,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public FileShallowInfoEntity Get(
-            string filePath, bool isGetThumbnail, DateTime addDate)
+            string filePath, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -28,7 +27,7 @@ namespace PicSum.Job.Logics
             if (FileUtil.IsExistsFile(filePath))
             {
                 return this.GetFileInfo(
-                    filePath, isGetThumbnail, addDate);
+                    filePath, addDate);
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -43,7 +42,7 @@ namespace PicSum.Job.Logics
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return this.GetDirectoryInfo(
-                    filePath, isGetThumbnail, addDate);
+                    filePath, addDate);
             }
             else
             {
@@ -52,15 +51,15 @@ namespace PicSum.Job.Logics
         }
 
         public FileShallowInfoEntity Get(
-            string filePath, bool isGetThumbnail)
+            string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return this.Get(filePath, isGetThumbnail, DateTimeExtensions.EMPTY);
+            return this.Get(filePath, DateTimeExtensions.EMPTY);
         }
 
         private FileShallowInfoEntity GetFileInfo(
-            string filePath, bool isGetThumbnail, DateTime addDate)
+            string filePath, DateTime addDate)
         {
             var (createDate, updateDate, _) = FileUtil.GetFileInfo(filePath);
 
@@ -79,33 +78,11 @@ namespace PicSum.Job.Logics
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
             };
 
-            if (!isGetThumbnail)
-            {
-                return info;
-            }
-
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-            if (!thumbnailBuffer.IsEmpry
-                && thumbnailBuffer.ThumbnailBuffer != null)
-            {
-                info.ThumbnailImage = new CvImage(
-                    filePath,
-                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer));
-                info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
-                info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
-                info.SourceWidth = thumbnailBuffer.SourceWidth;
-                info.SourceHeight = thumbnailBuffer.SourceHeight;
-
-                return info;
-            }
-            else
-            {
-                return info;
-            }
+            return info;
         }
 
         private FileShallowInfoEntity GetDirectoryInfo(
-            string filePath, bool isGetThumbnail, DateTime addDate)
+            string filePath, DateTime addDate)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
 
@@ -124,28 +101,7 @@ namespace PicSum.Job.Logics
                 JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
             };
 
-            if (!isGetThumbnail)
-            {
-                return info;
-            }
-
-            var thumbnailBuffer = Instance<IThumbnailCacher>.Value.GetCache(filePath);
-            if (!thumbnailBuffer.IsEmpry
-                && thumbnailBuffer.ThumbnailBuffer != null)
-            {
-                info.ThumbnailImage = new CvImage(
-                    filePath,
-                    ThumbnailUtil.ToImage(thumbnailBuffer.ThumbnailBuffer));
-                info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
-                info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
-                info.SourceWidth = thumbnailBuffer.SourceWidth;
-                info.SourceHeight = thumbnailBuffer.SourceHeight;
-                return info;
-            }
-            else
-            {
-                return info;
-            }
+            return info;
         }
 
         private FileShallowInfoEntity GetDriveInfo(

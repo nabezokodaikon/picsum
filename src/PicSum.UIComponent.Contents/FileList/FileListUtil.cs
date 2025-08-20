@@ -181,7 +181,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var jobParameter = new FilesGetByDirectoryParameter()
                 {
                     DirectoryPath = param.SourcesKey,
-                    IsGetThumbnail = false,
                 };
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
@@ -203,7 +202,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var jobParameter = new FilesGetByDirectoryParameter()
                 {
                     DirectoryPath = FileUtil.GetParentDirectoryPath(param.SelectedFilePath),
-                    IsGetThumbnail = false,
                 };
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
@@ -233,7 +231,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var jobParameter = new FilesGetByRatingParameter()
                 {
                     RatingValue = int.Parse(param.SourcesKey),
-                    IsGetThumbnail = false,
                 };
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(sender, jobParameter, e =>
@@ -255,7 +252,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 var jobParameter = new FilesGetByTagParameter()
                 {
                     Tag = param.SourcesKey,
-                    IsGetThumbnail = false,
                 };
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(sender, jobParameter, e =>

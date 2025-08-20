@@ -41,7 +41,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = getInfoLogic.Get(dto.Value, true);
+                        var info = getInfoLogic.Get(dto.Value);
                         if (!info.IsEmpty)
                         {
                             infoList.Add(info);

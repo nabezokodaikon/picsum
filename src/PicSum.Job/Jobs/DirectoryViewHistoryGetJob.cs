@@ -25,7 +25,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = logic.Get(directoryPath, false);
+                    var info = logic.Get(directoryPath);
                     if (!info.IsEmpty)
                     {
                         result.Add(info);

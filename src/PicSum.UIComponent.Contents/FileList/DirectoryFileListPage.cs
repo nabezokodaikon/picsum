@@ -84,7 +84,6 @@ namespace PicSum.UIComponent.Contents.FileList
             var getParam = new FilesGetByDirectoryParameter()
             {
                 DirectoryPath = this._parameter.DirectoryPath,
-                IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, getParam, _ =>
