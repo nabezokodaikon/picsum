@@ -67,7 +67,7 @@ namespace PicSum.Job.Jobs
 
                                 try
                                 {
-                                    var info = getInfoLogic.Get(file);
+                                    var info = getInfoLogic.Get(file, param.IsGetThumbnail);
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);

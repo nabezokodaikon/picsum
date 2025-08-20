@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
             {
                 addressInfo.DirectoryPath = FileUtil.ROOT_DIRECTORY_PATH;
                 addressInfo.DirectoryList.Add(
-                    logic.Get(param.Value));
+                    logic.Get(param.Value, false));
                 addressInfo.HasSubDirectory = true;
             }
             else
@@ -61,7 +61,7 @@ namespace PicSum.Job.Jobs
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    var info = logic.Get(directory);
+                    var info = logic.Get(directory, false);
                     if (info.IsEmpty)
                     {
                         break;
@@ -72,7 +72,7 @@ namespace PicSum.Job.Jobs
                 }
 
                 addressInfo.DirectoryList.Insert(
-                    0, logic.Get(FileUtil.ROOT_DIRECTORY_PATH));
+                    0, logic.Get(FileUtil.ROOT_DIRECTORY_PATH, false));
             }
 
             this.Callback(addressInfo);

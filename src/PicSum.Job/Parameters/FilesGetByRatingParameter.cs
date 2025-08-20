@@ -6,5 +6,6 @@ namespace PicSum.Job.Parameters
         : IJobParameter
     {
         public int RatingValue { get; set; }
+        public bool IsGetThumbnail { get; set; }
     }
 }

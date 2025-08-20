@@ -6,5 +6,6 @@ namespace PicSum.Job.Parameters
         : IJobParameter
     {
         public string DirectoryPath { get; set; } = string.Empty;
+        public bool IsGetThumbnail { get; set; }
     }
 }

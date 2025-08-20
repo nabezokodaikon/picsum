@@ -31,7 +31,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = logic.Get(subDirectory);
+                    var info = logic.Get(subDirectory, false);
                     if (!info.IsEmpty)
                     {
                         result.Add(info);

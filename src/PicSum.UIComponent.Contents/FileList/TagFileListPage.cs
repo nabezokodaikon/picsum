@@ -63,6 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new FilesGetByTagParameter()
             {
                 Tag = this._parameter.Tag,
+                IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(this, param, _ =>

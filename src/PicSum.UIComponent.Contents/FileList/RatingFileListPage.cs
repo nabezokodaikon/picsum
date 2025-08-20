@@ -63,6 +63,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var param = new FilesGetByRatingParameter()
             {
                 RatingValue = this._parameter.RatingValue,
+                IsGetThumbnail = true,
             };
 
             Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
