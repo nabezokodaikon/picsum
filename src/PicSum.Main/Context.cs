@@ -78,10 +78,20 @@ namespace PicSum.Main
             form.Show();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && !this.IsDisposed)
+            {
+                this._resourceManager.Dispose();
+            }
+
+            this.IsDisposed = true;
+
+            base.Dispose(disposing);
+        }
+
         private void BrowseManager_BrowseNothing(object sender, EventArgs e)
         {
-            this.IsDisposed = true;
-            this._resourceManager.Dispose();
             this.ExitThread();
         }
     }
