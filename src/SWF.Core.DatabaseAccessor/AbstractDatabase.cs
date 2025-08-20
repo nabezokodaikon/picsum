@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Data.SQLite;
 
@@ -38,7 +39,7 @@ namespace SWF.Core.DatabaseAccessor
         private readonly string _filePath;
         private readonly bool _isPersistent;
         private SQLiteConnection? _persistentConnection;
-        private readonly Lock _lockObject = new();
+        private readonly SemaphoreSlim _lockObject = new(1, 1);
 
         protected AbstractDatabase(string filePath, string tablesCreateSql, bool isPersistent)
         {
@@ -54,37 +55,41 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public IDatabaseConnection Connect()
+        public async ValueTask<IDatabaseConnection> Connect()
         {
-            this._lockObject.Enter();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new DatabaseConnection(
-                    this._lockObject, this._persistentConnection, false);
+                var con = new DatabaseConnection();
+                await con.Initialize(this._lockObject, this._persistentConnection, false).WithConfig();
+                return con;
             }
             else
             {
-                return new DatabaseConnection(
-                    this._lockObject, this._filePath, false);
+                var con = new DatabaseConnection();
+                await con.Initialize(this._lockObject, this._filePath, false).WithConfig();
+                return con;
             }
         }
 
-        public IDatabaseConnection ConnectWithTransaction()
+        public async ValueTask<IDatabaseConnection> ConnectWithTransaction()
         {
-            this._lockObject.Enter();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                return new DatabaseConnection(
-                    this._lockObject, this._persistentConnection, true);
+                var con = new DatabaseConnection();
+                await con.Initialize(this._lockObject, this._persistentConnection, true).WithConfig();
+                return con;
             }
             else
             {
-                return new DatabaseConnection(
-                    this._lockObject, this._filePath, true);
+                var con = new DatabaseConnection();
+                await con.Initialize(this._lockObject, this._filePath, true).WithConfig();
+                return con;
             }
         }
 
@@ -104,6 +109,8 @@ namespace SWF.Core.DatabaseAccessor
                 }
 
                 this._persistentConnection?.Dispose();
+
+                this._lockObject?.Dispose();
             }
 
             this._persistentConnection = null;

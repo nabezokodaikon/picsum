@@ -14,36 +14,38 @@ namespace PicSum.Job.SyncJobs
         {
             using (TimeMeasuring.Run(true, "FileInfoDBCleanupSyncJob.Execute"))
             {
-                this.Cleanup();
-                this.Vacuum();
+#pragma warning disable CA2012
+                this.Cleanup().GetAwaiter().GetResult();
+                this.Vacuum().GetAwaiter().GetResult();
+#pragma warning restore CA2012
             }
         }
 
-        private void Cleanup()
+        private async ValueTask Cleanup()
         {
             var readSql = new AllFilesReadSql();
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
             {
-                var fileList = con.ReadList(readSql);
+                var fileList = await con.ReadList(readSql).WithConfig();
                 foreach (var file in fileList)
                 {
                     if (!FileUtil.CanAccess(file.FilePath))
                     {
                         var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
-                        con.Update(cleanupSql);
+                        await con.Update(cleanupSql).WithConfig();
                     }
                 }
 
-                con.Commit();
+                await con.Commit().WithConfig();
             }
         }
 
-        private void Vacuum()
+        private async ValueTask Vacuum()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
-                con.ReadLine(cleanupSql);
+                await con.ReadLine(cleanupSql).WithConfig();
             }
         }
     }

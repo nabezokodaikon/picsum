@@ -1,14 +1,14 @@
 namespace SWF.Core.DatabaseAccessor
 {
     public interface IDatabaseConnection
-        : IDisposable
+        : IAsyncDisposable
     {
-        void Commit();
-        bool Update(SqlBase sql);
-        TDto[] ReadList<TDto>(SqlBase<TDto> sql)
+        ValueTask Commit();
+        ValueTask<bool> Update(SqlBase sql);
+        ValueTask<TDto[]> ReadList<TDto>(SqlBase<TDto> sql)
             where TDto : IDto, new();
-        TDto? ReadLine<TDto>(SqlBase<TDto> sql)
+        ValueTask<TDto?> ReadLine<TDto>(SqlBase<TDto> sql)
             where TDto : class, IDto, new();
-        T? ReadValue<T>(SqlBase sql);
+        ValueTask<T?> ReadValue<T>(SqlBase sql);
     }
 }

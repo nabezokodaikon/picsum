@@ -65,10 +65,10 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal ImageFileReadResult CreateLoadingResult(
+        internal async ValueTask<ImageFileReadResult> CreateLoadingResult(
             int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
-            var thumbnail = this.GetThumbnail(filePath, imageSize, zoomValue);
+            var thumbnail = await this.GetThumbnail(filePath, imageSize, zoomValue).WithConfig();
             var isEmpty = thumbnail.IsEmpry;
             var image = isEmpty ? new CvImage(filePath, imageSize, zoomValue) : thumbnail;
 
@@ -267,11 +267,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private CvImage GetThumbnail(string filePath, Size imageSize, float zoomValue)
+        private async ValueTask<CvImage> GetThumbnail(string filePath, Size imageSize, float zoomValue)
         {
             using (TimeMeasuring.Run(false, "ImageFileReadLogic.GetThumbnail"))
             {
-                var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
+                var cache = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
                 if (!cache.IsEmpry
                     && cache.ThumbnailBuffer != null)
                 {

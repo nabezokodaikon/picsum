@@ -1,4 +1,5 @@
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 
@@ -11,13 +12,13 @@ namespace PicSum.Job.Logics
     internal sealed class FileTagDeleteLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public void Execute(IDatabaseConnection con, string filePath, string tag)
+        public async ValueTask Execute(IDatabaseConnection con, string filePath, string tag)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagDeletionSql(filePath, tag);
-            con.Update(sql);
+            await con.Update(sql).WithConfig();
         }
     }
 }

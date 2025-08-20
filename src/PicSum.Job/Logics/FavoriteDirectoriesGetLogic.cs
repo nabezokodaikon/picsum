@@ -9,12 +9,12 @@ namespace PicSum.Job.Logics
     internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public SingleValueDto<string>[] Execute(IDatabaseConnection con)
+        public async ValueTask<SingleValueDto<string>[]> Execute(IDatabaseConnection con)
         {
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetLogic.Execute"))
             {
                 var sql = new FavoriteDirectoriesReadSql();
-                var dtoList = con.ReadList<SingleValueDto<string>>(sql);
+                var dtoList = await con.ReadList<SingleValueDto<string>>(sql).WithConfig();
                 return dtoList;
             }
         }

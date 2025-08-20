@@ -12,19 +12,18 @@ namespace PicSum.Job.Jobs
     public sealed class TagsGetJob
         : AbstractTwoWayJob<ListResult<string>>
     {
-        protected override ValueTask Execute()
+        protected override async ValueTask Execute()
         {
-            var result = new ListResult<string>(this.GetTags());
+            var result = new ListResult<string>(await this.GetTags().WithConfig());
             this.Callback(result);
-            return ValueTask.CompletedTask;
         }
 
-        private string[] GetTags()
+        private async ValueTask<string[]> GetTags()
         {
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new TagsGetLogic(this);
-                return logic.Execute(con);
+                return await logic.Execute(con).WithConfig();
             }
         }
     }

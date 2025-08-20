@@ -1,4 +1,5 @@
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 
@@ -8,12 +9,12 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewCounterIncrementLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public bool Execute(IDatabaseConnection con, string directoryPath)
+        public async ValueTask<bool> Execute(IDatabaseConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterIncrementSql(directoryPath);
-            return con.Update(sql);
+            return await con.Update(sql).WithConfig();
         }
     }
 }

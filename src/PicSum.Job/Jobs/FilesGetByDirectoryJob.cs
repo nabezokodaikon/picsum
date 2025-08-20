@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override ValueTask Execute(FilesGetByDirectoryParameter param)
+        protected override async ValueTask Execute(FilesGetByDirectoryParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
                     FileInfoList = [],
                 });
 
-                return ValueTask.CompletedTask;
+                return;
             }
 
             var result = new DirectoryGetResult
@@ -50,24 +50,24 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        Parallel.ForEach(
+                        await Parallel.ForEachAsync(
                             files,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            file =>
+                            async (file, token) =>
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    await cts.CancelAsync().WithConfig();
+                                    token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = getInfoLogic.Get(file, param.IsGetThumbnail);
+                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).WithConfig();
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -77,26 +77,24 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            });
+                            }).WithConfig();
                     }
                     catch (OperationCanceledException)
                     {
-                        return ValueTask.CompletedTask;
+                        return;
                     }
                 }
             }
 
-            using (var con = Instance<IFileInfoDB>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
-                var directoryState = getDirectoryStateLogic.Execute(con, param.DirectoryPath);
+                var directoryState = await getDirectoryStateLogic.Execute(con, param.DirectoryPath).WithConfig();
                 result.FileInfoList = [.. infoList];
                 result.DirectoryState = directoryState;
             }
 
             this.Callback(result);
-
-            return ValueTask.CompletedTask;
         }
     }
 }
