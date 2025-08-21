@@ -41,7 +41,10 @@ namespace PicSum.UIComponent.Contents.ImageView
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
 
+#pragma warning disable CA2213 // リソースを保持する変数。
         private readonly Image _thumbnailPanelImage = ResourceFiles.ThumbnailPanelIcon.Value;
+#pragma warning restore CA2213
+
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
         private ImageAlign _align = ImageAlign.Center;
         private bool _isShowThumbnailPanel = false;

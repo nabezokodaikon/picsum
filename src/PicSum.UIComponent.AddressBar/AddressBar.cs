@@ -27,8 +27,11 @@ namespace PicSum.UIComponent.AddressBar
         private readonly DirectoryHistoryDrawItem _directoryHistoryItem = new();
         private string _currentDirectoryPath = null;
         private readonly List<DrawItemBase> _addressItems = [];
+
+#pragma warning disable CA2213 // 描画対象を一時保持する。
         private DrawItemBase _mousePointItem = null;
         private DrawItemBase _mouseDownItem = null;
+#pragma warning restore CA2213
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal string DropDownDirectory { get; set; } = string.Empty;

@@ -16,7 +16,6 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler<SelectedDirectoryEventArgs> SelectedDirectory;
 
         protected bool _disposed = false;
-        private AddressBar _addressBar = null;
         private bool _isMousePoint = false;
         private bool _isMouseDown = false;
         private float _x = 0;
@@ -24,17 +23,7 @@ namespace PicSum.UIComponent.AddressBar
         private float _width = 0;
         private float _height = 0;
 
-        public AddressBar AddressBar
-        {
-            get
-            {
-                return this._addressBar;
-            }
-            set
-            {
-                this._addressBar = value;
-            }
-        }
+        public AddressBar AddressBar { get; set; }
 
         public bool IsMousePoint
         {
@@ -180,7 +169,7 @@ namespace PicSum.UIComponent.AddressBar
             this.DropDownOpened = null;
             this.DropDownClosed = null;
             this.SelectedDirectory = null;
-            this._addressBar = null;
+            this.AddressBar = null;
 
             GC.SuppressFinalize(this);
         }
@@ -188,14 +177,14 @@ namespace PicSum.UIComponent.AddressBar
         protected float GetDropDownItemHeight()
         {
             const int DROPDOWN_ITEM_HEIGHT = 32;
-            var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             return DROPDOWN_ITEM_HEIGHT * scale;
         }
 
         protected float GetMinimumDropDownWidth()
         {
             const int MINIMUM_DROPDOWN_WIDHT = 128;
-            var scale = WindowUtil.GetCurrentWindowScale(this._addressBar);
+            var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             return MINIMUM_DROPDOWN_WIDHT * scale;
         }
 

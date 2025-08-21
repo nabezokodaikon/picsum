@@ -224,7 +224,10 @@ namespace SWF.UIComponent.FlowList
             if (disposing)
             {
                 this._scrollBar.Dispose();
+                this._itemTextFormat?.Dispose();
             }
+
+            this._itemTextFormat = null;
 
             base.Dispose(disposing);
         }

@@ -62,11 +62,23 @@ namespace SWF.UIComponent.Base
             }
         }
 
+#pragma warning disable CA2000
         public ToolStripSlider()
             : base(new Slider())
         {
             this.Slider.Size = new(96, 24);
             this.Slider.BackColor = Color.FromArgb(250, 250, 250);
+        }
+#pragma warning restore CA2000
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.Control.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         protected override void OnSubscribeControlEvents(Control? control)

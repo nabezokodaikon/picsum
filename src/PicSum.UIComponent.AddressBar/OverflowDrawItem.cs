@@ -10,8 +10,10 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class OverflowDrawItem
         : DropDownDrawItemBase, IDisposable
     {
+#pragma warning disable CA2213 // リソースを保持する変数。
         private readonly Image _mousePointImage = ResourceFiles.SmallArrowLeftIcon.Value;
         private readonly Image _mouseDownImage = ResourceFiles.SmallArrowDownIcon.Value;
+#pragma warning restore CA2213
 
         public OverflowDrawItem()
         {

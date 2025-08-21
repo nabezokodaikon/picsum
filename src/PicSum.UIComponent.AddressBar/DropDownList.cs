@@ -17,6 +17,8 @@ namespace PicSum.UIComponent.AddressBar
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler ItemExecute;
 
+        private readonly FlowList _flowList;
+
         public new string Name
         {
             get
@@ -76,11 +78,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemCount;
+                return this._flowList.ItemCount;
             }
             set
             {
-                this.FlowList.ItemCount = value;
+                this._flowList.ItemCount = value;
             }
         }
 
@@ -93,11 +95,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemHeight;
+                return this._flowList.ItemHeight;
             }
             set
             {
-                this.FlowList.ItemHeight = value;
+                this._flowList.ItemHeight = value;
             }
         }
 
@@ -109,7 +111,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextColor;
+                return this._flowList.ItemTextColor;
             }
         }
 
@@ -121,7 +123,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.SelectedItemColor;
+                return this._flowList.SelectedItemColor;
             }
         }
 
@@ -133,7 +135,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.FocusItemColor;
+                return this._flowList.FocusItemColor;
             }
         }
 
@@ -145,7 +147,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.MousePointItemColor;
+                return this._flowList.MousePointItemColor;
             }
         }
 
@@ -158,11 +160,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextTrimming;
+                return this._flowList.ItemTextTrimming;
             }
             set
             {
-                this.FlowList.ItemTextTrimming = value;
+                this._flowList.ItemTextTrimming = value;
             }
         }
 
@@ -175,11 +177,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextAlignment;
+                return this._flowList.ItemTextAlignment;
             }
             set
             {
-                this.FlowList.ItemTextAlignment = value;
+                this._flowList.ItemTextAlignment = value;
             }
         }
 
@@ -192,11 +194,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextLineAlignment;
+                return this._flowList.ItemTextLineAlignment;
             }
             set
             {
-                this.FlowList.ItemTextLineAlignment = value;
+                this._flowList.ItemTextLineAlignment = value;
             }
         }
 
@@ -209,11 +211,11 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextFormatFlags;
+                return this._flowList.ItemTextFormatFlags;
             }
             set
             {
-                this.FlowList.ItemTextFormatFlags = value;
+                this._flowList.ItemTextFormatFlags = value;
             }
         }
 
@@ -222,7 +224,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextBrush;
+                return this._flowList.ItemTextBrush;
             }
         }
 
@@ -231,7 +233,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.SelectedItemBrush;
+                return this._flowList.SelectedItemBrush;
             }
         }
 
@@ -240,7 +242,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.FocusItemBrush;
+                return this._flowList.FocusItemBrush;
             }
         }
 
@@ -249,7 +251,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.MousePointItemBrush;
+                return this._flowList.MousePointItemBrush;
             }
         }
 
@@ -258,7 +260,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.ItemTextFormat;
+                return this._flowList.ItemTextFormat;
             }
         }
 
@@ -279,7 +281,7 @@ namespace PicSum.UIComponent.AddressBar
             {
                 base.BackColor = value;
                 this.ToolStripItem.BackColor = value;
-                this.FlowList.BackColor = value;
+                this._flowList.BackColor = value;
             }
         }
 
@@ -310,7 +312,7 @@ namespace PicSum.UIComponent.AddressBar
         {
             get
             {
-                return this.FlowList.GetScrollBarWidth();
+                return this._flowList.GetScrollBarWidth();
             }
         }
 
@@ -319,14 +321,6 @@ namespace PicSum.UIComponent.AddressBar
             get
             {
                 return (ToolStripControlHost)this.Items[0];
-            }
-        }
-
-        private FlowList FlowList
-        {
-            get
-            {
-                return (FlowList)this.ToolStripItem.Control;
             }
         }
 
@@ -347,21 +341,32 @@ namespace PicSum.UIComponent.AddressBar
 
             this.DoubleBuffered = true;
 
-            this.Items.Add(new ToolStripControlHost(new FlowList()));
+            this._flowList = new();
+            this.Items.Add(new ToolStripControlHost(this._flowList));
             this.Padding = new Padding(2, 1, 2, 0);
 
             this.ToolStripItem.AutoSize = false;
             this.ToolStripItem.BackColor = this.BackColor;
 
-            this.FlowList.Dock = DockStyle.Fill;
-            this.FlowList.IsLileList = true;
-            this.FlowList.ItemSpace = 0;
-            this.FlowList.IsMultiSelect = false;
-            this.FlowList.BackColor = this.BackColor;
+            this._flowList.Dock = DockStyle.Fill;
+            this._flowList.IsLileList = true;
+            this._flowList.ItemSpace = 0;
+            this._flowList.IsMultiSelect = false;
+            this._flowList.BackColor = this.BackColor;
 
-            this.FlowList.DrawItem += new(this.FlowList_Drawitem);
-            this.FlowList.ItemExecute += new(this.FlowList_ItemExecute);
-            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
+            this._flowList.DrawItem += new(this.FlowList_Drawitem);
+            this._flowList.ItemExecute += new(this.FlowList_ItemExecute);
+            this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._flowList.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -369,7 +374,7 @@ namespace PicSum.UIComponent.AddressBar
         /// </summary>
         public void BeginUpdate()
         {
-            this.FlowList.BeginUpdate();
+            this._flowList.BeginUpdate();
         }
 
         /// <summary>
@@ -377,7 +382,7 @@ namespace PicSum.UIComponent.AddressBar
         /// </summary>
         public void EndUpdate()
         {
-            this.FlowList.EndUpdate();
+            this._flowList.EndUpdate();
         }
 
         /// <summary>
@@ -385,7 +390,7 @@ namespace PicSum.UIComponent.AddressBar
         /// </summary>
         public void ClearSelectedItems()
         {
-            this.FlowList.ClearSelectedItems();
+            this._flowList.ClearSelectedItems();
         }
 
         /// <summary>
@@ -394,7 +399,7 @@ namespace PicSum.UIComponent.AddressBar
         /// <param name="itemIndex"></param>
         public void SelectItem(int itemIndex)
         {
-            this.FlowList.SelectItem(itemIndex);
+            this._flowList.SelectItem(itemIndex);
         }
 
         /// <summary>
@@ -403,8 +408,8 @@ namespace PicSum.UIComponent.AddressBar
         /// <returns>座標上に項目が存在する場合は、項目のインデックス。存在しない場合は-1を返します。</returns>
         public int IndexFromScreenPoint()
         {
-            var clientPoint = this.FlowList.PointToClient(Cursor.Position);
-            return this.FlowList.IndexFromPoint(clientPoint.X, clientPoint.Y);
+            var clientPoint = this._flowList.PointToClient(Cursor.Position);
+            return this._flowList.IndexFromPoint(clientPoint.X, clientPoint.Y);
         }
 
         /// <summary>
@@ -413,7 +418,7 @@ namespace PicSum.UIComponent.AddressBar
         /// <returns></returns>
         public int[] GetSelectedIndexs()
         {
-            return this.FlowList.GetSelectedIndexs();
+            return this._flowList.GetSelectedIndexs();
         }
 
         private void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)

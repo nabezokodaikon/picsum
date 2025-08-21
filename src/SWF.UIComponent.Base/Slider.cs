@@ -19,7 +19,10 @@ namespace SWF.UIComponent.Base
         public event EventHandler? ValueChanging;
         public event EventHandler? ValueChanged;
 
+#pragma warning disable CA2213 // リソースファイルの保持に使用する。
         private readonly Image _button = ResourceFiles.SliderButtonIcon.Value;
+#pragma warning restore CA2213
+
         private float _buttonPointX = ResourceFiles.SliderButtonIcon.Value.Width / 2f;
         private int _maximumValue = 100;
         private int _minimumValue = 0;
