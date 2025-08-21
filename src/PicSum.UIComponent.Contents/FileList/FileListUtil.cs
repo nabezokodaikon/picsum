@@ -115,15 +115,13 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Where(static item => !item.TakenDate.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderBy(static item => item.TakenDate)
-                            .Select(static item => item.FilePath)
-                            .ToArray();
+                            .Select(static item => item.FilePath);
                         var b = files
                             .AsEnumerable()
                             .Where(static item => item.TakenDate.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(static item => item.FilePath)
-                            .ToArray();
-                        return [.. a.Concat(b)];
+                            .Select(static item => item.FilePath);
+                        return [.. a.AsEnumerable().Concat(b)];
                     }
                     else
                     {
@@ -132,15 +130,13 @@ namespace PicSum.UIComponent.Contents.FileList
                             .Where(static item => !item.TakenDate.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderByDescending(static item => item.TakenDate)
-                            .Select(static item => item.FilePath)
-                            .ToArray();
+                            .Select(static item => item.FilePath);
                         var b = files
                             .AsEnumerable()
                             .Where(static item => item.TakenDate.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
-                            .Select(static item => item.FilePath)
-                            .ToArray();
-                        return [.. a.Concat(b)];
+                            .Select(static item => item.FilePath);
+                        return [.. a.AsEnumerable().Concat(b)];
                     }
                 case FileSortMode.AddDate:
                     if (isAscending)
