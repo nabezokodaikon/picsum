@@ -24,7 +24,6 @@ namespace SWF.Core.ImageAccessor
         internal const string PNG_FILE_EXTENSION = ".png";
         internal const string SVG_FILE_EXTENSION = ".svg";
         internal const string WEBP_FILE_EXTENSION = ".webp";
-        private const int LARGE_IMAGE_SIZE = 2000 * 2000;
 
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
         private static readonly string[] RETAIN_EXIF_IMAGE_FORMAT = GetRetainExifImageFormat();
