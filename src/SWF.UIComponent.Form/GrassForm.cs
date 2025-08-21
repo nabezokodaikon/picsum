@@ -18,8 +18,7 @@ namespace SWF.UIComponent.Form
         private const int RESIZE_MARGIN = 8;
 
         private static readonly Version OS_VERSION = GetWindowsVersion();
-        private static readonly Color ACTIVE_WINDOW_COLOR = Color.FromArgb(64, 68, 71);
-        private static readonly Color DEACTIVATE_WINDOWCOLOR = Color.FromArgb(107, 109, 111);
+        private static readonly Color WINDOW_COLOR = Color.FromArgb(64, 68, 71);
 
         private static Version GetWindowsVersion()
         {
@@ -209,7 +208,7 @@ namespace SWF.UIComponent.Form
 
         private void GrassForm_Activated(object sender, EventArgs e)
         {
-            this.SetWindowColor(ACTIVE_WINDOW_COLOR);
+            this.SetWindowColor(WINDOW_COLOR);
         }
 
         private void GrassForm_Deactivate(object sender, EventArgs e)

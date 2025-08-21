@@ -8,8 +8,6 @@ namespace SWF.UIComponent.TabOperation
     internal sealed partial class TabDropForm
         : BaseForm
     {
-        private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
-
         public TabDropForm()
         {
             this.FormBorderStyle = FormBorderStyle.None;
