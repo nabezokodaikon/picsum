@@ -381,7 +381,7 @@ namespace SWF.Core.ImageAccessor
                     {
                         using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
                         {
-                            return ConvertIfGrayscale(SixLaborsUtil.ReadImageFile(fs), fs);
+                            return SixLaborsUtil.ReadImageFile(fs);
                         }
                     }
                     else if (IsBmpFile(formatName))
