@@ -20,8 +20,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<string[]> GetTags()
         {
-            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
-            await using (con)
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var logic = new TagsGetLogic(this);
                 return await logic.Execute(con).WithConfig();

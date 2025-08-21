@@ -25,8 +25,7 @@ namespace PicSum.Job.SyncJobs
         private async ValueTask UpdateTDirectoryViewHistoryTable()
         {
             var updateSql = new VersionUpTo_12_2_2_0_Sql();
-            var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().ConfigureAwait(false);
-            await using (con)
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
             {
                 await con.Update(updateSql).WithConfig();
                 await con.Commit().WithConfig();
@@ -35,8 +34,7 @@ namespace PicSum.Job.SyncJobs
 
         private async ValueTask Vacuum()
         {
-            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
-            await using (con)
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
                 await con.ReadLine(cleanupSql).WithConfig();

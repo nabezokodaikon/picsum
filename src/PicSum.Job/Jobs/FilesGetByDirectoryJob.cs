@@ -86,8 +86,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
-            await using (con)
+            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
                 var directoryState = await getDirectoryStateLogic.Execute(con, param.DirectoryPath).WithConfig();
