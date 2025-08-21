@@ -13,7 +13,8 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().ConfigureAwait(false);
+            await using (con)
             {
                 var logic = new DirectoryViewCounterDeleteLogic(this);
 

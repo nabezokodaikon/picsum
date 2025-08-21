@@ -59,7 +59,8 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
+            await using (con)
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
                 var dtos = await logic.Execute(con).WithConfig();
@@ -69,7 +70,8 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().ConfigureAwait(false);
+            await using (con)
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));

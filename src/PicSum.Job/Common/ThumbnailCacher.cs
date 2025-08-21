@@ -240,7 +240,8 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
             {
-                await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                var con = await Instance<IThumbnailDB>.Value.Connect().ConfigureAwait(false);
+                await using (con)
                 {
                     var sql = new ThumbnailReadByFileSql(filePath);
                     var dto = await con.ReadLine(sql).WithConfig();
@@ -293,7 +294,8 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                        var con = await Instance<IThumbnailDB>.Value.Connect().ConfigureAwait(false);
+                        await using (con)
                         {
                             var exists = await con.ReadValue<long>(
                                 new ThumbnailExistsByFileSql(targetFilePath)).WithConfig();
@@ -363,7 +365,8 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                        var con = await Instance<IThumbnailDB>.Value.Connect().ConfigureAwait(false);
+                        await using (con)
                         {
                             if (this._cacheFileController == null)
                             {

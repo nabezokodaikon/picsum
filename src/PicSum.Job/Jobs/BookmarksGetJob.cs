@@ -69,7 +69,8 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<BookmarkDto[]> GetBookmarks()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
+            await using (con)
             {
                 var getBookmarkLogic = new BookmarksGetLogic(this);
                 return await getBookmarkLogic.Execute(con).WithConfig();

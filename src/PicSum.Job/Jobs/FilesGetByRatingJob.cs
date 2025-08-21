@@ -75,7 +75,8 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<FileByRatingDto[]> GetFiles(int ratingValue)
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
+            await using (con)
             {
                 var logic = new FilesGetByRatingLogic(this);
                 return await logic.Execute(con, ratingValue).WithConfig();

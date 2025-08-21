@@ -24,7 +24,8 @@ namespace PicSum.Job.SyncJobs
         private async ValueTask Cleanup()
         {
             var readSql = new AllFilesReadSql();
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().ConfigureAwait(false);
+            await using (con)
             {
                 var fileList = await con.ReadList(readSql).WithConfig();
                 foreach (var file in fileList)
@@ -42,7 +43,8 @@ namespace PicSum.Job.SyncJobs
 
         private async ValueTask Vacuum()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            var con = await Instance<IFileInfoDB>.Value.Connect().ConfigureAwait(false);
+            await using (con)
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
                 await con.ReadLine(cleanupSql).WithConfig();
