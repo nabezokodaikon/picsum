@@ -17,7 +17,6 @@ namespace SWF.UIComponent.TabOperation
         public event EventHandler<DrawTabEventArgs> DrawTabPage;
 
         private string _title = string.Empty;
-        private Image _icon = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Title
@@ -35,17 +34,7 @@ namespace SWF.UIComponent.TabOperation
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Icon
-        {
-            get
-            {
-                return this._icon;
-            }
-            set
-            {
-                this._icon = value;
-            }
-        }
+        public Image Icon { get; set; }
 
         /// <summary>
         /// コンテンツを再描画します。

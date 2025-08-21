@@ -19,10 +19,13 @@ namespace SWF.UIComponent.TabOperation
     {
         private static readonly Color TRANSPARENT_COLOR = Color.FromArgb(0, 0, 0, 0);
 
-        private TabDropForm _tabDropForm = null;
         private TabDrawArea _tabDrawArea = null;
         private DrawTabEventArgs _drawTabEventArgs = null;
+
+#pragma warning disable CA2213 // TabInfoを保持しているTabSwitchを保持する変数。
         private TabSwitch _tabSwitch = null;
+#pragma warning restore CA2213
+
         private Bitmap _regionImage = null;
         private Action<DrawTabEventArgs> _drawTabPageMethod = null;
 
@@ -57,14 +60,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        private TabDropForm TabDropForm
-        {
-            get
-            {
-                this._tabDropForm ??= new TabDropForm();
-                return this._tabDropForm;
-            }
-        }
+        private TabDropForm TabDropForm { get; } = new();
 
         private TabDrawArea TabDrawArea
         {
@@ -201,6 +197,18 @@ namespace SWF.UIComponent.TabOperation
                 this._regionImage.Dispose();
                 this._regionImage = null;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._regionImage?.Dispose();
+            }
+
+            this._regionImage = null;
+
+            base.Dispose(disposing);
         }
 
         private void TabDragForm_LocationChanged(object sender, EventArgs e)

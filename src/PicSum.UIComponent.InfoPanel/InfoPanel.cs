@@ -42,8 +42,11 @@ namespace PicSum.UIComponent.InfoPanel
 
         private bool disposed = false;
 
-        private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
+#pragma warning disable CA2213 // キャッシュを保持する変数。
         private Image _tagIcon = null;
+#pragma warning restore CA2213
+
+        private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
         private readonly Dictionary<float, Bitmap> _tagIconCache = [];
         private string _contextMenuOperationTag = string.Empty;
         private readonly SolidBrush _foreColorBrush;
@@ -296,9 +299,9 @@ namespace PicSum.UIComponent.InfoPanel
 
         private Bitmap GetTagIcon(float scale)
         {
-            if (this._tagIconCache.TryGetValue(scale, out var font))
+            if (this._tagIconCache.TryGetValue(scale, out var icon))
             {
-                return font;
+                return icon;
             }
 
             var newTagIcon = new Bitmap(

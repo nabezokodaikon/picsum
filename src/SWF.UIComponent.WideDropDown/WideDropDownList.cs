@@ -21,6 +21,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private readonly Control _owner;
         private readonly List<string> _itemList = [];
+        private readonly FlowList.FlowList _flowList;
 
         public new string Name
         {
@@ -81,7 +82,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextColor;
+                return this._flowList.ItemTextColor;
             }
         }
 
@@ -93,7 +94,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.SelectedItemColor;
+                return this._flowList.SelectedItemColor;
             }
         }
 
@@ -105,7 +106,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.MousePointItemColor;
+                return this._flowList.MousePointItemColor;
             }
         }
 
@@ -118,11 +119,11 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextTrimming;
+                return this._flowList.ItemTextTrimming;
             }
             set
             {
-                this.FlowList.ItemTextTrimming = value;
+                this._flowList.ItemTextTrimming = value;
             }
         }
 
@@ -135,11 +136,11 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextAlignment;
+                return this._flowList.ItemTextAlignment;
             }
             set
             {
-                this.FlowList.ItemTextAlignment = value;
+                this._flowList.ItemTextAlignment = value;
             }
         }
 
@@ -152,11 +153,11 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextLineAlignment;
+                return this._flowList.ItemTextLineAlignment;
             }
             set
             {
-                this.FlowList.ItemTextLineAlignment = value;
+                this._flowList.ItemTextLineAlignment = value;
             }
         }
 
@@ -169,11 +170,11 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextFormatFlags;
+                return this._flowList.ItemTextFormatFlags;
             }
             set
             {
-                this.FlowList.ItemTextFormatFlags = value;
+                this._flowList.ItemTextFormatFlags = value;
             }
         }
 
@@ -182,7 +183,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.ItemTextFormat;
+                return this._flowList.ItemTextFormat;
             }
         }
 
@@ -203,7 +204,7 @@ namespace SWF.UIComponent.WideDropDown
             {
                 base.BackColor = value;
                 this.ToolStripItem.BackColor = value;
-                this.FlowList.BackColor = value;
+                this._flowList.BackColor = value;
             }
         }
 
@@ -214,7 +215,7 @@ namespace SWF.UIComponent.WideDropDown
         {
             get
             {
-                return this.FlowList.GetScrollBarWidth();
+                return this._flowList.GetScrollBarWidth();
             }
         }
 
@@ -229,14 +230,6 @@ namespace SWF.UIComponent.WideDropDown
             get
             {
                 return (ToolStripControlHost)this.Items[0];
-            }
-        }
-
-        private FlowList.FlowList FlowList
-        {
-            get
-            {
-                return (FlowList.FlowList)((ToolStripControlHost)this.Items[0]).Control;
             }
         }
 
@@ -262,49 +255,60 @@ namespace SWF.UIComponent.WideDropDown
 
             this.DoubleBuffered = true;
 
-            this.Items.Add(new ToolStripControlHost(new FlowList.FlowList()));
+            this._flowList = new FlowList.FlowList();
+            this.Items.Add(new ToolStripControlHost(this._flowList));
             this.Padding = new Padding(2, 1, 2, 0);
 
             this.ToolStripItem.AutoSize = false;
             this.ToolStripItem.BackColor = this.BackColor;
             this.ToolStripItem.Size = new Size(BACKGROUND_DEFAULT_SIZE.Width, BACKGROUND_DEFAULT_SIZE.Height);
 
-            this.FlowList.BackColor = Color.White;
-            this.FlowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
-            this.FlowList.ItemTextLineAlignment = StringAlignment.Center;
-            this.FlowList.ItemTextAlignment = StringAlignment.Near;
-            this.FlowList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
-            this.FlowList.Dock = DockStyle.Fill;
-            this.FlowList.IsLileList = false;
-            this.FlowList.ItemSpace = 0;
-            this.FlowList.IsMultiSelect = false;
-            this.FlowList.SetItemSize(ITEM_DEFAULT_SIZE.Width, ITEM_DEFAULT_SIZE.Height);
-            this.FlowList.CanKeyDown = false;
+            this._flowList.BackColor = Color.White;
+            this._flowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
+            this._flowList.ItemTextLineAlignment = StringAlignment.Center;
+            this._flowList.ItemTextAlignment = StringAlignment.Near;
+            this._flowList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
+            this._flowList.Dock = DockStyle.Fill;
+            this._flowList.IsLileList = false;
+            this._flowList.ItemSpace = 0;
+            this._flowList.IsMultiSelect = false;
+            this._flowList.SetItemSize(ITEM_DEFAULT_SIZE.Width, ITEM_DEFAULT_SIZE.Height);
+            this._flowList.CanKeyDown = false;
 
-            this.FlowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
-            this.FlowList.DrawItem += new(this.FlowList_DrawItem);
+            this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
+            this._flowList.DrawItem += new(this.FlowList_DrawItem);
 
             this.Opening += this.WideDropDownList_Opening;
             this.Invalidated += this.WideDropDownList_Invalidated;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._flowList.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         public void SetItems(string[] itemList)
         {
             ArgumentNullException.ThrowIfNull(itemList, nameof(itemList));
 
-            this.FlowList.BeginUpdate();
+            this._flowList.BeginUpdate();
 
             try
             {
                 this._itemList.Clear();
                 this._itemList.AddRange(itemList);
 
-                this.FlowList.ClearSelectedItems();
-                this.FlowList.ItemCount = this._itemList.Count;
+                this._flowList.ClearSelectedItems();
+                this._flowList.ItemCount = this._itemList.Count;
             }
             finally
             {
-                this.FlowList.EndUpdate();
+                this._flowList.EndUpdate();
             }
         }
 
@@ -318,15 +322,15 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            this.FlowList.BeginUpdate();
+            this._flowList.BeginUpdate();
 
             try
             {
-                this.FlowList.SelectItem(index);
+                this._flowList.SelectItem(index);
             }
             finally
             {
-                this.FlowList.EndUpdate();
+                this._flowList.EndUpdate();
             }
         }
 
@@ -336,14 +340,14 @@ namespace SWF.UIComponent.WideDropDown
             this.ToolStripItem.Size = new(
                 (int)(BACKGROUND_DEFAULT_SIZE.Width * scale),
                 (int)(BACKGROUND_DEFAULT_SIZE.Height * scale));
-            this.FlowList.SetItemSize(
+            this._flowList.SetItemSize(
                 (int)(ITEM_DEFAULT_SIZE.Width * scale),
                 (int)(ITEM_DEFAULT_SIZE.Height * scale));
         }
 
         private void WideDropDownList_Invalidated(object sender, InvalidateEventArgs e)
         {
-            this.FlowList.Invalidate();
+            this._flowList.Invalidate();
         }
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
@@ -385,17 +389,17 @@ namespace SWF.UIComponent.WideDropDown
 
             if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(this.FlowList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this._flowList.SelectedItemBrush, e.ItemRectangle);
             }
 
             if (e.IsFocus)
             {
-                e.Graphics.FillRectangle(this.FlowList.FocusItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this._flowList.FocusItemBrush, e.ItemRectangle);
             }
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(this.FlowList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this._flowList.MousePointItemBrush, e.ItemRectangle);
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
@@ -423,7 +427,7 @@ namespace SWF.UIComponent.WideDropDown
                 destText,
                 font,
                 textRect.Location,
-                this.FlowList.ItemTextBrush.Color,
+                this._flowList.ItemTextBrush.Color,
                 TextFormatFlags.Top);
         }
 
@@ -439,7 +443,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            var indexs = this.FlowList.GetSelectedIndexs();
+            var indexs = this._flowList.GetSelectedIndexs();
             if (indexs.Length < 1)
             {
                 return;

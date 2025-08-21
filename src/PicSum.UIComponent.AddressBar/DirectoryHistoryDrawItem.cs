@@ -14,7 +14,9 @@ namespace PicSum.UIComponent.AddressBar
     internal sealed partial class DirectoryHistoryDrawItem
         : DropDownDrawItemBase, IDisposable
     {
+#pragma warning disable CA2213 // リソースを保持する。
         private readonly Image _drawImage = ResourceFiles.SmallArrowDownIcon.Value;
+#pragma warning restore CA2213
 
         public DirectoryHistoryDrawItem()
         {
