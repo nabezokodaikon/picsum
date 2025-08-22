@@ -420,7 +420,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 else if (IsPngFile(formatName))
                 {
-                    using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileWithVarious: Png"))
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Png"))
                     {
                         return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
