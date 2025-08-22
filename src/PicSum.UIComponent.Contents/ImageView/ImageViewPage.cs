@@ -254,11 +254,11 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
-        private async void ImageViewPage_Loaded(object sender, EventArgs e)
+        private void ImageViewPage_Loaded(object sender, EventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             this.RedrawPage(scale);
-            await this._parameter.ImageFilesGetAction(this._parameter)(this);
+            this._parameter.ImageFilesGetAction(this._parameter)(this);
         }
 
         private void ImageViewPage_MouseWheel(object sender, MouseEventArgs e)
@@ -1332,11 +1332,11 @@ namespace PicSum.UIComponent.Contents.ImageView
             Clipboard.SetText(FileUtil.GetFileName(e.FilePathList[0]));
         }
 
-        private async void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
+        private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            await Instance<JobCaller>.Value.EnqueueBookmarkUpdateJob(this, paramter);
+            Instance<JobCaller>.Value.EnqueueBookmarkUpdateJob(this, paramter);
         }
     }
 }

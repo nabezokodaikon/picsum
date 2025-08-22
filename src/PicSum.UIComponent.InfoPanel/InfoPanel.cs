@@ -15,7 +15,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.InfoPanel
@@ -359,7 +358,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private async ValueTask AddTag(string tag)
+        private void AddTag(string tag)
         {
             if (this.FilePathList == null || this.TagList == null)
             {
@@ -381,7 +380,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            await Instance<JobCaller>.Value.EnqueueFileTagUpdateJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagUpdateJob(this, param);
 
             var tagInfo = this.TagList.FirstOrDefault(
                 t => t.Tag.Equals(tag, StringComparison.Ordinal),
@@ -404,7 +403,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private async ValueTask DeleteTag(string tag)
+        private void DeleteTag(string tag)
         {
             if (this.FilePathList == null || this.TagList == null)
             {
@@ -426,7 +425,7 @@ namespace PicSum.UIComponent.InfoPanel
                 Tag = tag,
                 FilePathList = this.FilePathList
             };
-            await Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
@@ -663,7 +662,7 @@ namespace PicSum.UIComponent.InfoPanel
                 TextFormatFlags.Top);
         }
 
-        private async void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
+        private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
         {
             if (this._fileInfoSource.IsEmpty)
             {
@@ -675,7 +674,7 @@ namespace PicSum.UIComponent.InfoPanel
                 FilePathList = this._fileInfoSource.FilePathList,
                 RatingValue = this.ratingBar.Value
             };
-            await Instance<JobCaller>.Value.EnqueueFileRatingUpdateJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileRatingUpdateJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
@@ -693,24 +692,24 @@ namespace PicSum.UIComponent.InfoPanel
             this._contextMenuOperationTag = tagInfo.Tag;
         }
 
-        private async void TagDeleteMenuItem_Click(object sender, EventArgs e)
+        private void TagDeleteMenuItem_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this._contextMenuOperationTag))
             {
                 return;
             }
 
-            await this.DeleteTag(this._contextMenuOperationTag);
+            this.DeleteTag(this._contextMenuOperationTag);
         }
 
-        private async void TagToAllEntryMenuItem_Click(object sender, EventArgs e)
+        private void TagToAllEntryMenuItem_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this._contextMenuOperationTag))
             {
                 return;
             }
 
-            await this.AddTag(this._contextMenuOperationTag);
+            this.AddTag(this._contextMenuOperationTag);
         }
 
         private void TagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -757,7 +756,7 @@ namespace PicSum.UIComponent.InfoPanel
                 });
         }
 
-        private async void WideComboBox_AddItem(object sender, AddItemEventArgs e)
+        private void WideComboBox_AddItem(object sender, AddItemEventArgs e)
         {
             if (this.FilePathList == null || this.TagList == null)
             {
@@ -774,7 +773,7 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            await this.AddTag(e.Item);
+            this.AddTag(e.Item);
         }
     }
 }

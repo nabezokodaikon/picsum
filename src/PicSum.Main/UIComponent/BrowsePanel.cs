@@ -16,7 +16,6 @@ using SWF.UIComponent.WideDropDown;
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
@@ -35,12 +34,12 @@ namespace PicSum.Main.UIComponent
         private static readonly Rectangle PREVIEW_BUTTON_DEFAULT_BOUNDS = new(3, 3, 32, 28);
         private static readonly Rectangle HOME_BUTTON_DEFAULT_BOUNDS = new(3, 5, 32, 28);
 
-        public static Func<ImageViewPageParameter, Func<ISender, ValueTask>> GetImageFilesAction(
+        public static Func<ImageViewPageParameter, Action<ISender>> GetImageFilesAction(
             ImageFileGetByDirectoryParameter subParamter)
         {
             return (parameter) =>
             {
-                return async sender =>
+                return sender =>
                 {
                     var dir = FileUtil.IsExistsDirectory(subParamter.FilePath) switch
                     {
@@ -49,8 +48,8 @@ namespace PicSum.Main.UIComponent
                     };
 
                     var dirPrameter = new ValueParameter<string>(dir);
-                    await Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(sender, dirPrameter);
-                    await Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, dirPrameter);
+                    Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(sender, dirPrameter);
+                    Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, dirPrameter);
 
                     Instance<JobCaller>.Value.EnqueueImageFilesGetByDirectoryJob(sender, subParamter, e =>
                         {

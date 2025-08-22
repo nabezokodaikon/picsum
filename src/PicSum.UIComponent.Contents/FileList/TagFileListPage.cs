@@ -10,7 +10,6 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -91,19 +90,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override async ValueTask OnRemoveFile(string[] filePathList)
+        protected override void OnRemoveFile(string[] filePathList)
         {
             var param = new FileTagUpdateParameter
             {
                 FilePathList = filePathList,
                 Tag = this._parameter.Tag
             };
-            await Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
+            Instance<JobCaller>.Value.EnqueueFileTagDeleteJob(this, param);
 
             this.RemoveFile(filePathList);
         }
 
-        protected override Func<ISender, ValueTask> GetImageFilesGetAction(ImageViewPageParameter param)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter param)
         {
             return FileListUtil.ImageFilesGetActionForTag(param);
         }

@@ -64,69 +64,69 @@ namespace PicSum.Job.Common
             GC.SuppressFinalize(this);
         }
 
-        public async ValueTask EnqueueBookmarkUpdateJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueBookmarkUpdateJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<BookmarkUpdateJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<BookmarkUpdateJob, ValueParameter<string>>(sender, parameter);
         }
 
-        public async ValueTask EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
+        public void EnqueueDirectoryStateUpdateJob(ISender sender, DirectoryStateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryStateUpdateJob, DirectoryStateParameter>(sender, parameter);
         }
 
-        public async ValueTask EnqueueDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueDirectoryViewHistoryAddJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryUpdateJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryUpdateJob, ValueParameter<string>>(sender, parameter);
         }
 
-        public async ValueTask EnqueueDirectoryViewCounterIncrementJob(ISender sender, ValueParameter<string> parameter)
+        public void EnqueueDirectoryViewCounterIncrementJob(ISender sender, ValueParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<DirectoryViewCounterIncrementJob, ValueParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewCounterIncrementJob, ValueParameter<string>>(sender, parameter);
         }
 
-        public async ValueTask EnqueueBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
+        public void EnqueueBookmarkDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            await this._oneWayJobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<BookmarkDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
-        public async ValueTask EnqueueDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
+        public void EnqueueDirectoryViewCounterDeleteJob(ISender sender, ListParameter<string> parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
-            await this._oneWayJobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewCounterDeleteJob, ListParameter<string>>(sender, parameter);
         }
 
-        public async ValueTask EnqueueFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
+        public void EnqueueFileRatingUpdateJob(ISender sender, FileRatingUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileRatingUpdateJob, FileRatingUpdateParameter>(sender, parameter);
         }
 
-        public async ValueTask EnqueueFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
+        public void EnqueueFileTagDeleteJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileTagDeleteJob, FileTagUpdateParameter>(sender, parameter);
         }
 
-        public async ValueTask EnqueueFileTagUpdateJob(ISender sender, FileTagUpdateParameter parameter)
+        public void EnqueueFileTagUpdateJob(ISender sender, FileTagUpdateParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
-            await this._oneWayJobQueue.Value.Enqueue<FileTagUpdateJob, FileTagUpdateParameter>(sender, parameter);
+            this._oneWayJobQueue.Value.Enqueue<FileTagUpdateJob, FileTagUpdateParameter>(sender, parameter);
         }
 
         public void EnqueueTagsGetJob(
