@@ -284,7 +284,7 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
             {
-                using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));
@@ -354,7 +354,7 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
             {
-                using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));

@@ -149,7 +149,7 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
-        internal static Size GetImageSize(string filePath)
+        internal static async ValueTask<Size> GetImageSize(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.GetImageSize"))
             {
@@ -157,13 +157,13 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return GetImageSizeWithVarious(filePath);
+                    return await GetImageSizeWithVarious(filePath).WithConfig();
                 }
                 catch (ImageUtilException ex)
                 {
                     Log.GetLogger().Error(ex);
 
-                    using (var bmp = ReadImageFile(filePath))
+                    using (var bmp = await ReadImageFile(filePath).WithConfig())
                     {
                         return bmp.Size;
                     }
@@ -171,7 +171,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Size GetImageSizeWithVarious(string filePath)
+        private static async ValueTask<Size> GetImageSizeWithVarious(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeWithVarious"))
             {
@@ -184,65 +184,64 @@ namespace SWF.Core.ImageAccessor
                         return GetImageSizeWithShell(filePath);
                     }
 
-                    using (var fs = new FileStream(filePath,
-                         FileMode.Open, FileAccess.Read, FileShare.Read, 64, FileOptions.SequentialScan))
+                    var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                    using var ms = new MemoryStream(data);
+
+                    if (IsSvgFile(filePath))
                     {
-                        if (IsSvgFile(filePath))
+                        return SvgUtil.GetImageSize(ms);
+                    }
+
+                    var formatName = await SixLaborsUtil.DetectFormat(ms);
+
+                    if (IsAvifFile(formatName))
+                    {
+                        return LibHeifSharpUtil.GetImageSize(ms);
+                    }
+                    else if (IsBmpFile(formatName))
+                    {
+                        var size = BitmapUtil.GetImageSize(ms);
+                        if (size == EMPTY_SIZE)
                         {
-                            return SvgUtil.GetImageSize(fs);
+                            throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                         }
 
-                        var formatName = SixLaborsUtil.DetectFormat(fs);
+                        return size;
+                    }
+                    else if (IsGifFile(formatName))
+                    {
+                        return await SixLaborsUtil.GetImageSize(ms).WithConfig();
+                    }
+                    else if (IsHeicFile(formatName))
+                    {
+                        return LibHeifSharpUtil.GetImageSize(ms);
+                    }
+                    else if (IsHeifFile(formatName))
+                    {
+                        return LibHeifSharpUtil.GetImageSize(ms);
+                    }
+                    else if (IsJpegFile(formatName))
+                    {
+                        return JpegUtil.GetImageSize(ms);
+                    }
+                    else if (IsPngFile(formatName))
+                    {
+                        var size = PngUtil.GetImageSize(ms);
+                        if (size == EMPTY_SIZE)
+                        {
+                            throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
+                        }
 
-                        if (IsAvifFile(formatName))
-                        {
-                            return LibHeifSharpUtil.GetImageSize(fs);
-                        }
-                        else if (IsBmpFile(formatName))
-                        {
-                            var size = BitmapUtil.GetImageSize(fs);
-                            if (size == EMPTY_SIZE)
-                            {
-                                throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
-                            }
-
-                            return size;
-                        }
-                        else if (IsGifFile(formatName))
-                        {
-                            return SixLaborsUtil.GetImageSize(fs);
-                        }
-                        else if (IsHeicFile(formatName))
-                        {
-                            return LibHeifSharpUtil.GetImageSize(fs);
-                        }
-                        else if (IsHeifFile(formatName))
-                        {
-                            return LibHeifSharpUtil.GetImageSize(fs);
-                        }
-                        else if (IsJpegFile(formatName))
-                        {
-                            return JpegUtil.GetImageSize(fs);
-                        }
-                        else if (IsPngFile(formatName))
-                        {
-                            var size = PngUtil.GetImageSize(fs);
-                            if (size == EMPTY_SIZE)
-                            {
-                                throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
-                            }
-
-                            return size;
-                        }
-                        else if (IsWebpFile(formatName))
-                        {
-                            return SixLaborsUtil.GetImageSize(fs);
-                        }
-                        else
-                        {
-                            throw new ImageUtilException(
-                                $"未対応の画像ファイルが指定されました。", filePath);
-                        }
+                        return size;
+                    }
+                    else if (IsWebpFile(formatName))
+                    {
+                        return await SixLaborsUtil.GetImageSize(ms).WithConfig();
+                    }
+                    else
+                    {
+                        throw new ImageUtilException(
+                            $"未対応の画像ファイルが指定されました。", filePath);
                     }
                 }
                 catch (Exception ex) when (
@@ -332,7 +331,7 @@ namespace SWF.Core.ImageAccessor
             return RETAIN_EXIF_IMAGE_FORMAT.Any(_ => StringUtil.CompareFilePath(_, ex));
         }
 
-        public static Bitmap ReadImageFile(string filePath)
+        public static async ValueTask<Bitmap> ReadImageFile(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
             {
@@ -340,7 +339,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return ReadImageFileWithVarious(filePath);
+                    return await ReadImageFileWithVarious(filePath).WithConfig();
                 }
                 catch (ImageUtilException ex)
                 {
@@ -351,93 +350,92 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Bitmap ReadImageFileWithVarious(string filePath)
+        private static async ValueTask<Bitmap> ReadImageFileWithVarious(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {
-                using (var fs = new FileStream(filePath,
-                    FileMode.Open, FileAccess.Read, FileShare.Read, FILE_READ_BUFFER_SIZE, FileOptions.SequentialScan))
-                {
-                    if (IsIconFile(filePath))
-                    {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Icon"))
-                        using (var icon = new Icon(fs))
-                        {
-                            return ConvertIfGrayscale(icon.ToBitmap(), fs);
-                        }
-                    }
-                    else if (IsSvgFile(filePath))
-                    {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Svg"))
-                        {
-                            return SvgUtil.ReadImageFile(fs);
-                        }
-                    }
+                var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                using var ms = new MemoryStream(data);
 
-                    var formatName = SixLaborsUtil.DetectFormat(fs);
-                    if (IsAvifFile(formatName))
+                if (IsIconFile(filePath))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Icon"))
+                    using (var icon = new Icon(ms))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
-                        {
-                            return SixLaborsUtil.ReadImageFile(fs);
-                        }
+                        return ConvertIfGrayscale(icon.ToBitmap(), ms);
                     }
-                    else if (IsBmpFile(formatName))
+                }
+                else if (IsSvgFile(filePath))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Svg"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Bmp"))
-                        {
-                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        }
+                        return SvgUtil.ReadImageFile(ms);
                     }
-                    else if (IsGifFile(formatName))
+                }
+
+                var formatName = await SixLaborsUtil.DetectFormat(ms);
+                if (IsAvifFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Gif"))
-                        {
-                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        }
+                        return await SixLaborsUtil.ReadImageFile(ms);
                     }
-                    else if (IsHeicFile(formatName))
+                }
+                else if (IsBmpFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Bmp"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heic"))
-                        {
-                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heic), fs);
-                        }
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
-                    else if (IsHeifFile(formatName))
+                }
+                else if (IsGifFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Gif"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heif"))
-                        {
-                            return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heif), fs);
-                        }
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
-                    else if (IsJpegFile(formatName))
+                }
+                else if (IsHeicFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heic"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Jpeg"))
-                        {
-                            return ConvertIfGrayscale(JpegUtil.ReadImageFile(fs), fs);
-                        }
+                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heic), ms);
                     }
-                    else if (IsPngFile(formatName))
+                }
+                else if (IsHeifFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heif"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Png"))
-                        {
-                            return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
-                        }
+                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heif), ms);
                     }
-                    else if (IsWebpFile(formatName))
+                }
+                else if (IsJpegFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Jpeg"))
                     {
-                        using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Webp"))
-                        {
-                            return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
-                        }
+                        return ConvertIfGrayscale(JpegUtil.ReadImageFile(ms), ms);
                     }
-                    else
+                }
+                else if (IsPngFile(formatName))
+                {
+                    using (TimeMeasuring.Run(true, "ImageUtil.ReadImageFileWithVarious: Png"))
                     {
-                        throw new ImageUtilException(
-                            $"未対応の画像ファイルが指定されました。", filePath);
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
+                }
+                else if (IsWebpFile(formatName))
+                {
+                    using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Webp"))
+                    {
+                        return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(ms), ms);
+                    }
+                }
+                else
+                {
+                    throw new ImageUtilException(
+                        $"未対応の画像ファイルが指定されました。", filePath);
                 }
             }
             catch (Exception ex) when (
