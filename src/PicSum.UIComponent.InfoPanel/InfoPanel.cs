@@ -398,7 +398,7 @@ namespace PicSum.UIComponent.InfoPanel
                     IsAll = true
                 };
                 this.TagList.Add(tagInfo);
-                this.TagList.Sort(static (x, y) => x.Tag.CompareTo(y.Tag));
+                this.TagList.Sort(static (x, y) => string.Compare(x.Tag, y.Tag, StringComparison.Ordinal));
                 this.tagFlowList.ItemCount = this.TagList.Count;
             }
         }
