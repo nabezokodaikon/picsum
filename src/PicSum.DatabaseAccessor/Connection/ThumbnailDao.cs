@@ -6,8 +6,8 @@ namespace PicSum.DatabaseAccessor.Connection
     /// thumb.sqlite コネクション
     /// </summary>
 
-    public sealed partial class ThumbnailDB(string dbFilePath)
-        : AbstractDatabase(dbFilePath, TABLE_CREATE_SQL, true), IThumbnailDB
+    public sealed partial class ThumbnailDao(string dbFilePath)
+        : AbstractDao(dbFilePath, TABLE_CREATE_SQL, true), IThumbnailDao
     {
         private const string TABLE_CREATE_SQL =
         @"

@@ -150,13 +150,13 @@ namespace PicSum.Main
                 typeof(ZLinq.DropInGenerateTypes),
                 typeof(ZLinq.FileSystemInfoExtensions),
 
-                typeof(PicSum.DatabaseAccessor.Connection.FileInfoDB),
+                typeof(PicSum.DatabaseAccessor.Connection.FileInfoDao),
                 typeof(PicSum.Job.Common.IThumbnailCacher),
                 typeof(PicSum.UIComponent.AddressBar.AddressBar),
                 typeof(PicSum.UIComponent.Contents.Common.AbstractBrowsePage),
                 typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
 
-                typeof(SWF.Core.DatabaseAccessor.AbstractDatabase),
+                typeof(SWF.Core.DatabaseAccessor.AbstractDao),
                 typeof(SWF.Core.FileAccessor.CacheFileController),
                 typeof(SWF.Core.ImageAccessor.CvImage),
                 typeof(SWF.Core.Job.AbstractAsyncJob),

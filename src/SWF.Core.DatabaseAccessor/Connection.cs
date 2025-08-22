@@ -6,8 +6,8 @@ using System.Data.SQLite;
 namespace SWF.Core.DatabaseAccessor
 {
 
-    internal sealed class DatabaseConnection
-        : IDatabaseConnection
+    internal sealed class Connection
+        : IConnection
     {
         private bool _disposed = false;
 #pragma warning disable CA2213

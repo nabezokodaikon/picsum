@@ -18,7 +18,7 @@ namespace PicSum.Job.Jobs
 
             var addDate = DateTime.Now;
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 var updateLogic = new BookmarkUpdateLogic(this);
 

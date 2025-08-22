@@ -43,7 +43,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<string[]> GetHistories()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var logic = new DirectoryViewHistoryGetLogic(this);
                 return await logic.Execute(con).WithConfig();

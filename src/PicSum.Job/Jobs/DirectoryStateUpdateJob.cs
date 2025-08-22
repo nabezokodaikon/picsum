@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
                 if (!await updateDirectoryState.Execute(con, param).WithConfig())

@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<SingleValueDto<string>[]> Execute(IDatabaseConnection con)
+        public async ValueTask<SingleValueDto<string>[]> Execute(IConnection con)
         {
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetLogic.Execute"))
             {

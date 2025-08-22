@@ -18,7 +18,7 @@ namespace PicSum.Job.Jobs
 
             var ticks = DateTime.Now.Ticks;
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 var updateDirectoryViewHistory = new DirectoryViewHistoryUpdateLogic(this);
                 if (!await updateDirectoryViewHistory.Execute(con, param.Value, ticks).WithConfig())

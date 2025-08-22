@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
     internal sealed class BookmarksGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<BookmarkDto[]> Execute(IDatabaseConnection con)
+        public async ValueTask<BookmarkDto[]> Execute(IConnection con)
         {
             using (TimeMeasuring.Run(true, "BookmarksGetLogic.Execute"))
             {

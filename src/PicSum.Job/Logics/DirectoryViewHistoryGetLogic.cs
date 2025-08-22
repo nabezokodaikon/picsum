@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<string[]> Execute(IDatabaseConnection con)
+        public async ValueTask<string[]> Execute(IConnection con)
         {
             using (TimeMeasuring.Run(true, "DirectoryViewHistoryGetLogic.Execute"))
             {

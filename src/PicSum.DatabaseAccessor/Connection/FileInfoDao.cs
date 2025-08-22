@@ -6,8 +6,8 @@ namespace PicSum.DatabaseAccessor.Connection
     /// fileinfo.sqlite コネクション
     /// </summary>
 
-    public sealed partial class FileInfoDB(string dbFilePath)
-        : AbstractDatabase(dbFilePath, TABLE_CREATE_SQL, false), IFileInfoDB
+    public sealed partial class FileInfoDao(string dbFilePath)
+        : AbstractDao(dbFilePath, TABLE_CREATE_SQL, false), IFileInfoDao
     {
         private const string TABLE_CREATE_SQL =
         @"

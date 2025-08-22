@@ -5,7 +5,7 @@ using System.Data.SQLite;
 namespace SWF.Core.DatabaseAccessor
 {
 
-    public abstract class AbstractDatabase
+    public abstract class AbstractDao
         : IDisposable
     {
         private static void CreateDB(string filePath, string tablesCreateSql)
@@ -41,7 +41,7 @@ namespace SWF.Core.DatabaseAccessor
         private SQLiteConnection? _persistentConnection;
         private readonly SemaphoreSlim _lockObject = new(1, 1);
 
-        protected AbstractDatabase(string filePath, string tablesCreateSql, bool isPersistent)
+        protected AbstractDao(string filePath, string tablesCreateSql, bool isPersistent)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNullOrEmpty(tablesCreateSql, nameof(tablesCreateSql));
@@ -55,39 +55,39 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public async ValueTask<IDatabaseConnection> Connect()
+        public async ValueTask<IConnection> Connect()
         {
             await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new DatabaseConnection();
+                var con = new Connection();
                 await con.Initialize(this._lockObject, this._persistentConnection, false).WithConfig();
                 return con;
             }
             else
             {
-                var con = new DatabaseConnection();
+                var con = new Connection();
                 await con.Initialize(this._lockObject, this._filePath, false).WithConfig();
                 return con;
             }
         }
 
-        public async ValueTask<IDatabaseConnection> ConnectWithTransaction()
+        public async ValueTask<IConnection> ConnectWithTransaction()
         {
             await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new DatabaseConnection();
+                var con = new Connection();
                 await con.Initialize(this._lockObject, this._persistentConnection, true).WithConfig();
                 return con;
             }
             else
             {
-                var con = new DatabaseConnection();
+                var con = new Connection();
                 await con.Initialize(this._lockObject, this._filePath, true).WithConfig();
                 return con;
             }

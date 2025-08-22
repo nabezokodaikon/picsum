@@ -25,7 +25,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);

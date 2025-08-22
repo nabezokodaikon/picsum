@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
         public async ValueTask<bool> Execute(
-            IDatabaseConnection con, string filePath, int ratingValue, DateTime addDate)
+            IConnection con, string filePath, int ratingValue, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 

@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByRatingLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<FileByRatingDto[]> Execute(IDatabaseConnection con, int rating)
+        public async ValueTask<FileByRatingDto[]> Execute(IConnection con, int rating)
         {
             using (TimeMeasuring.Run(true, "FilesGetByRatingLogic.Execute"))
             {

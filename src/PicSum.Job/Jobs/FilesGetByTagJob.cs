@@ -80,7 +80,7 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<FileByTagDto[]> GetFiles(string tag)
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var logic = new FilesGetByTagLogic(this);
                 return await logic.Execute(con, tag).WithConfig();

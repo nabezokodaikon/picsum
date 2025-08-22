@@ -24,7 +24,7 @@ namespace PicSum.Job.Common
         public ThumbnailCacher()
         {
 #pragma warning disable CA2012
-            var con = Instance<IThumbnailDB>.Value.Connect().GetAwaiter().GetResult();
+            var con = Instance<IThumbnailDao>.Value.Connect().GetAwaiter().GetResult();
             try
             {
                 var position = (int)con.ReadValue<long>(new ThumbnailIDReadSql()).GetAwaiter().GetResult();
@@ -240,7 +240,7 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
             {
-                await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
                 {
                     var sql = new ThumbnailReadByFileSql(filePath);
                     var dto = await con.ReadLine(sql).WithConfig();
@@ -293,7 +293,7 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
                         {
                             var exists = await con.ReadValue<long>(
                                 new ThumbnailExistsByFileSql(targetFilePath)).WithConfig();
@@ -363,7 +363,7 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDB>.Value.Connect().WithConfig())
+                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
                         {
                             if (this._cacheFileController == null)
                             {

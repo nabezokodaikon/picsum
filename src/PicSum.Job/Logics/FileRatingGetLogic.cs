@@ -10,7 +10,7 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
 
-        public async ValueTask<int> Execute(IDatabaseConnection con, string filePath)
+        public async ValueTask<int> Execute(IConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 

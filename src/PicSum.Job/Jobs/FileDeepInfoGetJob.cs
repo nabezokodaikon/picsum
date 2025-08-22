@@ -57,7 +57,7 @@ namespace PicSum.Job.Jobs
 
                     this.ThrowIfJobCancellationRequested();
 
-                    await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+                    await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
                         fileInfo.Rating = await ratingGetLogic.Execute(con, filePath).WithConfig();
@@ -82,7 +82,7 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
                 result.TagInfoList = await tagsGetLogic.Execute(con, result.FilePathList).WithConfig();

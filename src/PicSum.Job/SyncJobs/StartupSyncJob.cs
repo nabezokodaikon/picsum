@@ -15,12 +15,12 @@ namespace PicSum.Job.SyncJobs
         {
             using (TimeMeasuring.Run(true, "StartupSyncJob.Execute"))
             {
-                Instance<IFileInfoDB>.Initialize(new Lazy<IFileInfoDB>(
-                    static () => new FileInfoDB(AppFiles.FILE_INFO_DATABASE_FILE.Value),
+                Instance<IFileInfoDao>.Initialize(new Lazy<IFileInfoDao>(
+                    static () => new FileInfoDao(AppFiles.FILE_INFO_DATABASE_FILE.Value),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
-                Instance<IThumbnailDB>.Initialize(new Lazy<IThumbnailDB>(
-                    static () => new ThumbnailDB(AppFiles.THUMBNAIL_DATABASE_FILE.Value),
+                Instance<IThumbnailDao>.Initialize(new Lazy<IThumbnailDao>(
+                    static () => new ThumbnailDao(AppFiles.THUMBNAIL_DATABASE_FILE.Value),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<IFileIconCacher>.Initialize(new Lazy<IFileIconCacher>(

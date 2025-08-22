@@ -9,7 +9,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewCounterIncrementLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<bool> Execute(IDatabaseConnection con, string directoryPath)
+        public async ValueTask<bool> Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 

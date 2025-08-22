@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
         /// 処理を実行します。
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
-        public async ValueTask Execute(IDatabaseConnection con, string directoryPath)
+        public async ValueTask Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 

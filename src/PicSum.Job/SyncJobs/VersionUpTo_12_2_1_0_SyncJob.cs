@@ -25,7 +25,7 @@ namespace PicSum.Job.SyncJobs
         private async ValueTask UpdateTRatingTable()
         {
             var updateSql = new VersionUpTo_12_2_1_0_Sql();
-            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 await con.Update(updateSql).WithConfig();
                 await con.Commit().WithConfig();
@@ -34,7 +34,7 @@ namespace PicSum.Job.SyncJobs
 
         private async ValueTask Vacuum()
         {
-            await using (var con = await Instance<IFileInfoDB>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
                 await con.ReadLine(cleanupSql).WithConfig();
