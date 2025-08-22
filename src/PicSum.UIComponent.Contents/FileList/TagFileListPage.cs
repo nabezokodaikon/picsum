@@ -59,7 +59,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private async void TagFileListPage_Loaded(object sender, EventArgs e)
+        private void TagFileListPage_Loaded(object sender, EventArgs e)
         {
             var param = new FilesGetByTagParameter()
             {
@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsGetThumbnail = true,
             };
 
-            await Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(this, param, _ =>
             {
                 if (this._disposed)
                 {

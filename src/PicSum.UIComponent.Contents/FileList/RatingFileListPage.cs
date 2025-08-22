@@ -59,7 +59,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private async void RatingFileListPage_Loaded(object sender, EventArgs e)
+        private void RatingFileListPage_Loaded(object sender, EventArgs e)
         {
             var param = new FilesGetByRatingParameter()
             {
@@ -67,7 +67,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsGetThumbnail = true,
             };
 
-            await Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(this, param, _ =>
             {
                 if (this._disposed)
                 {

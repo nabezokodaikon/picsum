@@ -59,14 +59,14 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private async void FavoriteDirectoryListPage_Loaded(object sender, EventArgs e)
+        private void FavoriteDirectoryListPage_Loaded(object sender, EventArgs e)
         {
             var param = new FavoriteDirectoriesGetParameter
             {
                 Count = FileListPageConfig.INSTANCE.FavoriteDirectoryCount
             };
 
-            await Instance<JobCaller>.Value.EnqueueFavoriteDirectoriesGetJob(this, param, _ =>
+            Instance<JobCaller>.Value.EnqueueFavoriteDirectoriesGetJob(this, param, _ =>
             {
                 if (this._disposed)
                 {

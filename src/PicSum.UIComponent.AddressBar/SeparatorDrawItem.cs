@@ -70,7 +70,7 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        public override async void OnMouseDown(MouseEventArgs e)
+        public override void OnMouseDown(MouseEventArgs e)
         {
             ArgumentNullException.ThrowIfNull(e, nameof(e));
 
@@ -86,7 +86,7 @@ namespace PicSum.UIComponent.AddressBar
 
                 base.DropDownList.Show(base.AddressBar, (int)this.Left, (int)this.Bottom);
                 var param = new ValueParameter<string>(this.Directory.DirectoryPath);
-                await Instance<JobCaller>.Value.EnqueueSubDirectoriesGetJob(this.AddressBar, param, _ =>
+                Instance<JobCaller>.Value.EnqueueSubDirectoriesGetJob(this.AddressBar, param, _ =>
                     {
                         if (this._disposed)
                         {

@@ -52,7 +52,7 @@ namespace PicSum.Main.UIComponent
                     await Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(sender, dirPrameter);
                     await Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(sender, dirPrameter);
 
-                    await Instance<JobCaller>.Value.EnqueueImageFilesGetByDirectoryJob(sender, subParamter, e =>
+                    Instance<JobCaller>.Value.EnqueueImageFilesGetByDirectoryJob(sender, subParamter, e =>
                         {
                             var title = FileUtil.IsExistsDirectory(subParamter.FilePath) ?
                             FileUtil.GetFileName(subParamter.FilePath) :
@@ -874,9 +874,9 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private async void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
+        private void TagDropToolButton_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            await Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
+            Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
                 {
                     if (this._disposed)
                     {

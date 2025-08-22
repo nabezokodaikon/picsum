@@ -63,7 +63,7 @@ namespace PicSum.UIComponent.AddressBar
                 GraphicsUnit.Pixel);
         }
 
-        public override async void OnMouseDown(MouseEventArgs e)
+        public override void OnMouseDown(MouseEventArgs e)
         {
             ArgumentNullException.ThrowIfNull(e, nameof(e));
 
@@ -76,7 +76,7 @@ namespace PicSum.UIComponent.AddressBar
                     return;
                 }
 
-                await Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryGetJob(this.AddressBar, _ =>
+                Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryGetJob(this.AddressBar, _ =>
                     {
                         if (this._disposed)
                         {

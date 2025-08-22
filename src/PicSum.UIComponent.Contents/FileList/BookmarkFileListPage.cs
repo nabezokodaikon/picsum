@@ -109,9 +109,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private async void BookmarkFileListPage_Loaded(object sender, EventArgs e)
+        private void BookmarkFileListPage_Loaded(object sender, EventArgs e)
         {
-            await Instance<JobCaller>.Value.EnqueueBookmarksGetJob(this, _ =>
+            Instance<JobCaller>.Value.EnqueueBookmarksGetJob(this, _ =>
             {
                 if (this._disposed)
                 {
