@@ -102,9 +102,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.RemoveFile(filePathList);
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter param)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
-            return FileListUtil.ImageFilesGetActionForTag(param);
+            return FileListUtil.ImageFilesGetActionForTag(parameter);
         }
 
         protected override void OnMovePreviewButtonClick(EventArgs e)

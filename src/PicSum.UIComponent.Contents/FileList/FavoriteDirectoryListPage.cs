@@ -89,16 +89,16 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnRemoveFile(string[] directoryList)
+        protected override void OnRemoveFile(string[] filePathList)
         {
-            var param = new ListParameter<string>(directoryList);
+            var param = new ListParameter<string>(filePathList);
             Instance<JobCaller>.Value.EnqueueDirectoryViewCounterDeleteJob(this, param);
-            this.RemoveFile(directoryList);
+            this.RemoveFile(filePathList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter paramter)
+        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
             throw new NotImplementedException();
         }
