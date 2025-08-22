@@ -77,19 +77,6 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public PagePanel Page
-        {
-            get
-            {
-                if (this._page == null)
-                {
-                    throw new InvalidOperationException("ページが設定されていません。");
-                }
-
-                return this._page;
-            }
-        }
-
         internal TabDrawArea DrawArea
         {
             get
@@ -106,6 +93,16 @@ namespace SWF.UIComponent.TabOperation
             this._drawArea = new(tabSwitch);
             this._historyManager.Add(param);
             this._page = param.CreatePage();
+        }
+
+        public PagePanel GetPage()
+        {
+            if (this._page == null)
+            {
+                throw new InvalidOperationException("ページが設定されていません。");
+            }
+
+            return this._page;
         }
 
         public T GetPage<T>() where T : PagePanel

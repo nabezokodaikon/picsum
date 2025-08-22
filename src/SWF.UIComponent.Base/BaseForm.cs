@@ -32,18 +32,6 @@ namespace SWF.UIComponent.Base
             }
         }
 
-        public new AutoSizeMode AutoSizeMode
-        {
-            get
-            {
-                return base.AutoSizeMode;
-            }
-            private set
-            {
-                base.AutoSizeMode = value;
-            }
-        }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new bool DoubleBuffered
         {

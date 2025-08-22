@@ -329,7 +329,7 @@ namespace SWF.UIComponent.TabOperation
 
             var tab = new TabInfo(this, param);
             this.AddTab(tab);
-            return (T)tab.Page;
+            return tab.GetPage<T>();
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace SWF.UIComponent.TabOperation
 
             var tab = new TabInfo(this, param);
             this.InsertTab(index, tab);
-            return (T)tab.Page;
+            return tab.GetPage<T>();
         }
 
         /// <summary>
@@ -364,13 +364,15 @@ namespace SWF.UIComponent.TabOperation
                 this._activeTab.ClearPage();
                 this._activeTab.OverwritePage(param);
 
+                var page = this._activeTab.GetPage<T>();
+
                 var container = this.GetContainer();
                 container.SuspendLayout();
                 container.ClearPage();
-                container.SetPage(this._activeTab.Page);
+                container.SetPage(page);
                 container.ResumeLayout(false);
 
-                return (T)this._activeTab.Page;
+                return page;
             }
             else
             {
@@ -398,15 +400,17 @@ namespace SWF.UIComponent.TabOperation
             this._activeTab.ClearPage();
             this._activeTab.CreatePreviewPage();
 
+            var page = this._activeTab.GetPage<T>();
+
             var container = this.GetContainer();
             container.SuspendLayout(); ;
             container.ClearPage();
-            container.SetPage(this._activeTab.Page);
+            container.SetPage(page);
             container.ResumeLayout(false);
 
             this.Invalidate();
 
-            return (T)this._activeTab.Page;
+            return page;
         }
 
         /// <summary>
@@ -429,13 +433,15 @@ namespace SWF.UIComponent.TabOperation
             this._activeTab.ClearPage();
             this._activeTab.CreateNextPage();
 
+            var page = this._activeTab.GetPage<T>();
+
             var container = this.GetContainer();
             container.SuspendLayout();
             container.ClearPage();
-            container.SetPage(this._activeTab.Page);
+            container.SetPage(page);
             container.ResumeLayout(false);
 
-            return (T)this._activeTab.Page;
+            return page;
         }
 
         /// <summary>
@@ -459,13 +465,15 @@ namespace SWF.UIComponent.TabOperation
             this._activeTab.ClearPage();
             this._activeTab.CloneCurrentPage();
 
+            var page = this._activeTab.GetPage<T>();
+
             var container = this.GetContainer();
             container.SuspendLayout();
             container.ClearPage();
-            container.SetPage(this._activeTab.Page);
+            container.SetPage(page);
             container.ResumeLayout(false);
 
-            return (T)this._activeTab.Page;
+            return page;
         }
 
         /// <summary>
@@ -993,7 +1001,7 @@ namespace SWF.UIComponent.TabOperation
                     var container = this.GetContainer();
                     container.SuspendLayout();
                     container.ClearPage();
-                    container.SetPage(tab.Page);
+                    container.SetPage(tab.GetPage());
                     container.ResumeLayout(false);
 
                     this._activeTab = tab;
