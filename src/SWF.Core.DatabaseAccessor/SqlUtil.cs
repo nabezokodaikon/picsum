@@ -102,7 +102,7 @@ namespace SWF.Core.DatabaseAccessor
 
             if (dic.Count == 0)
             {
-                throw new ArgumentException("番号付パラメータが存在しません。", nameof(paramList));
+                throw new InvalidOperationException("番号付パラメータが存在しません。");
             }
 
             return dic.Values.First();
