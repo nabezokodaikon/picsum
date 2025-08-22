@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SQLite;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -63,7 +64,7 @@ namespace SWF.Core.DatabaseAccessor
                     foreach (var paramString in paramStringList)
                     {
                         var r = new Regex($"{paramString}\\s|{paramString}$");
-                        text = r.Replace(text, string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramString, i.ToString()));
+                        text = r.Replace(text, string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramString, i.ToString(CultureInfo.InvariantCulture)));
                     }
 
                     newText.Append(text);
@@ -206,7 +207,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.String));
             }
@@ -223,7 +224,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, size, DbType.String));
             }
@@ -240,7 +241,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Int32));
             }
@@ -257,7 +258,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Boolean));
             }
@@ -274,7 +275,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.DateTime));
             }
@@ -291,7 +292,7 @@ namespace SWF.Core.DatabaseAccessor
 
             for (var i = 0; i < valueList.Length; i++)
             {
-                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString());
+                var param = string.Format(null, NUMBERING_SQL_PARAMETER_FORMAT, paramName, i.ToString(CultureInfo.InvariantCulture));
                 var value = valueList[i];
                 list.Add(CreateParameter(param, value, DbType.Binary));
             }

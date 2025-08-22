@@ -3,6 +3,7 @@ using ImageMagick.Factories;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using SWF.Core.Base;
+using System.Globalization;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -48,7 +49,7 @@ namespace SWF.Core.ImageAccessor
                     magickImage.Quality = 50;
                     magickImage.Settings.SetDefine(MagickFormat.Avif, "encoder", "rav1e");
                     magickImage.Settings.SetDefine(MagickFormat.Avif, "speed", "9");
-                    magickImage.Settings.SetDefine(MagickFormat.Avif, "threads", Environment.ProcessorCount.ToString());
+                    magickImage.Settings.SetDefine(MagickFormat.Avif, "threads", Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture));
                     magickImage.Settings.SetDefine(MagickFormat.Avif, "chroma-subsampling", "4:2:0");
                     magickImage.Settings.SetDefine(MagickFormat.Avif, "lossless", "false");
                     magickImage.Settings.SetDefine(MagickFormat.Avif, "tile-rows", "2");

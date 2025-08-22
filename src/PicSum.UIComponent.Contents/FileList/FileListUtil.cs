@@ -10,6 +10,7 @@ using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ZLinq;
 
@@ -228,7 +229,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var jobParameter = new FilesGetByRatingParameter()
                 {
-                    RatingValue = int.Parse(param.SourcesKey),
+                    RatingValue = int.Parse(param.SourcesKey, CultureInfo.InvariantCulture),
                     IsGetThumbnail = false,
                 };
 

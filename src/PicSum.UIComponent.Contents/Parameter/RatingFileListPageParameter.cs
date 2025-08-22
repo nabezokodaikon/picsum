@@ -1,6 +1,7 @@
 using PicSum.UIComponent.Contents.FileList;
 using SWF.UIComponent.TabOperation;
 using System;
+using System.Globalization;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
@@ -20,7 +21,7 @@ namespace PicSum.UIComponent.Contents.Parameter
             ArgumentOutOfRangeException.ThrowIfLessThan(ratingValue, 1, nameof(ratingValue));
 
             this.PageSources = PAGE_SOURCES;
-            this.SourcesKey = ratingValue.ToString();
+            this.SourcesKey = ratingValue.ToString(CultureInfo.InvariantCulture);
             this.Key = $"{this.PageSources}ListPage: {this.SourcesKey}";
             this.RatingValue = ratingValue;
             this.SelectedFilePath = string.Empty;

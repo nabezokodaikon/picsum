@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SWF.Core.Base
 {
@@ -56,7 +57,7 @@ namespace SWF.Core.Base
 
             if (this._enable || this._stopwatch?.ElapsedMilliseconds > _threshold)
             {
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4")} ms | {this._message} ");
+                Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4", CultureInfo.InvariantCulture)} ms | {this._message} ");
             }
 #endif
             GC.SuppressFinalize(this);

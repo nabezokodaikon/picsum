@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SWF.Core.Base
 {
@@ -28,7 +29,7 @@ namespace SWF.Core.Base
             }
 
             _stopwatch.Stop();
-            ConsoleUtil.Write(true, $"{_stopwatch.ElapsedMilliseconds.ToString("D4")} ms | Boot End");
+            ConsoleUtil.Write(true, $"{_stopwatch.ElapsedMilliseconds.ToString("D4", CultureInfo.InvariantCulture)} ms | Boot End");
             Log.GetLogger().Info($"Boot End: {_stopwatch.ElapsedMilliseconds} ms");
         }
     }
