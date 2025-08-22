@@ -43,3 +43,8 @@ dotnet_diagnostic.IDE0079.severity = none
 dotnet_diagnostic.IDE0290.severity = none
 
 dotnet_diagnostic.SYSLIB1054.severity = none
+
+dotnet_style_qualification_for_field = true:error    # インスタンス フィールド参照に this. を必須
+dotnet_style_qualification_for_property = true:error # インスタンス プロパティ参照に this. を必須
+dotnet_style_qualification_for_method = true:error   # インスタンス メソッド呼び出しに this. を必須
+dotnet_style_qualification_for_event = true:error    # インスタンス イベント参照に this. を必須
