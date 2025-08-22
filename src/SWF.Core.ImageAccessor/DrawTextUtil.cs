@@ -50,7 +50,7 @@ namespace SWF.Core.ImageAccessor
                 var renderer = new VisualStyleRenderer(VisualStyleElement.Window.Caption.Active);
                 var dttOpts = new WinApiMembers.DTTOPTS
                 {
-                    dwSize = Marshal.SizeOf(typeof(WinApiMembers.DTTOPTS)),
+                    dwSize = Marshal.SizeOf<WinApiMembers.DTTOPTS>(),
                     dwFlags = GetDwFlags() | WinApiMembers.DTT_COMPOSITED,
 
                     crText = ColorTranslator.ToWin32(color),

@@ -97,7 +97,7 @@ namespace SWF.Core.ResourceAccessor
                     filePath,
                     0,
                     ref shinfo,
-                    (int)Marshal.SizeOf(typeof(WinApiMembers.SHFILEINFO)),
+                    (int)Marshal.SizeOf<WinApiMembers.SHFILEINFO>(),
                     (int)WinApiMembers.ShellFileInfoFlags.SHGFI_SYSICONINDEX);
                 if (hSuccess == IntPtr.Zero)
                 {

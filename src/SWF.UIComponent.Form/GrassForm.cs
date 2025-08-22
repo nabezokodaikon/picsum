@@ -24,7 +24,7 @@ namespace SWF.UIComponent.Form
         {
             var osVersionInfo = new WinApiMembers.OSVERSIONINFOEX
             {
-                dwOSVersionInfoSize = Marshal.SizeOf(typeof(WinApiMembers.OSVERSIONINFOEX))
+                dwOSVersionInfoSize = Marshal.SizeOf<WinApiMembers.OSVERSIONINFOEX>()
             };
             var _ = WinApiMembers.RtlGetVersion(ref osVersionInfo);
             return new Version(osVersionInfo.dwMajorVersion, osVersionInfo.dwMinorVersion, osVersionInfo.dwBuildNumber);
@@ -158,8 +158,8 @@ namespace SWF.UIComponent.Form
         {
             if (m.Msg == WinApiMembers.WM_NCCALCSIZE)
             {
-                var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(
-                    m.LParam, typeof(WinApiMembers.NCCALCSIZE_PARAMS));
+                var nccsp = (WinApiMembers.NCCALCSIZE_PARAMS)Marshal.PtrToStructure<WinApiMembers.NCCALCSIZE_PARAMS>(
+                    m.LParam);
                 nccsp.rgrc0.left += 8;
                 //nccsp.rgrc0.top += 8;
                 nccsp.rgrc0.right -= 8;
@@ -181,7 +181,7 @@ namespace SWF.UIComponent.Form
             }
             else if (m.Msg == WinApiMembers.WM_GETMINMAXINFO)
             {
-                var minMaxInfo = (WinApiMembers.MINMAXINFO)Marshal.PtrToStructure(m.LParam, typeof(WinApiMembers.MINMAXINFO));
+                var minMaxInfo = Marshal.PtrToStructure<WinApiMembers.MINMAXINFO>(m.LParam);
                 minMaxInfo.ptMinTrackSize.x = 480;
                 minMaxInfo.ptMinTrackSize.y = 360;
                 Marshal.StructureToPtr(minMaxInfo, m.LParam, true);
