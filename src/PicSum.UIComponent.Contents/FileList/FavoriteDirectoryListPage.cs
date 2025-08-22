@@ -12,6 +12,7 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -89,16 +90,16 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnRemoveFile(string[] directoryList)
+        protected override async ValueTask OnRemoveFile(string[] directoryList)
         {
             var param = new ListParameter<string>(directoryList);
-            Instance<JobCaller>.Value.EnqueueDirectoryViewCounterDeleteJob(this, param);
+            await Instance<JobCaller>.Value.EnqueueDirectoryViewCounterDeleteJob(this, param);
             this.RemoveFile(directoryList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter paramter)
+        protected override Func<ISender, ValueTask> GetImageFilesGetAction(ImageViewPageParameter paramter)
         {
             throw new NotImplementedException();
         }

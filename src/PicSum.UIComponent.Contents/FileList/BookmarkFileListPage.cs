@@ -10,6 +10,7 @@ using SWF.UIComponent.TabOperation;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -68,18 +69,18 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.TitleColor, e.TitleFormatFlags);
         }
 
-        protected override void OnRemoveFile(string[] filePathList)
+        protected override async ValueTask OnRemoveFile(string[] filePathList)
         {
             var parameter = new ListParameter<string>();
             parameter.AddRange(filePathList);
-            Instance<JobCaller>.Value.EnqueueBookmarkDeleteJob(this, parameter);
+            await Instance<JobCaller>.Value.EnqueueBookmarkDeleteJob(this, parameter);
 
             base.RemoveFile(filePathList);
 
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs());
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
+        protected override Func<ISender, ValueTask> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
             return FileListUtil.ImageFilesGetActionForBookmark(parameter);
         }

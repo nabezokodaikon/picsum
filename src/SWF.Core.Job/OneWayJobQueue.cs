@@ -63,7 +63,7 @@ namespace SWF.Core.Job
             GC.SuppressFinalize(this);
         }
 
-        public void Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)
+        public async ValueTask Enqueue<TJob, TJobParameter>(ISender sender, TJobParameter parameter)
             where TJob : AbstractTwoWayJob<TJobParameter, EmptyResult>, new()
             where TJobParameter : class, IJobParameter
         {
@@ -81,12 +81,10 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-#pragma warning disable CA2012
-            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012
+            await this._jobsChannel.Writer.WriteAsync(job);
         }
 
-        public void Enqueue<TJob>(ISender sender)
+        public async ValueTask Enqueue<TJob>(ISender sender)
             where TJob : AbstractTwoWayJob<EmptyParameter, EmptyResult>, new()
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
@@ -101,9 +99,7 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-#pragma warning disable CA2012
-            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012
+            await this._jobsChannel.Writer.WriteAsync(job);
         }
 
 #pragma warning disable CA1031

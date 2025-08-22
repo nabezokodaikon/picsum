@@ -11,6 +11,7 @@ using SWF.Core.StringAccessor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ZLinq;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -168,7 +169,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        public static Action<ISender> ImageFilesGetActionForDirectory(ImageViewPageParameter param)
+        public static Func<ISender, ValueTask> ImageFilesGetActionForDirectory(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -187,10 +188,12 @@ namespace PicSum.UIComponent.Contents.FileList
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
+
+                return ValueTask.CompletedTask;
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForBookmark(ImageViewPageParameter param)
+        public static Func<ISender, ValueTask> ImageFilesGetActionForBookmark(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -217,10 +220,12 @@ namespace PicSum.UIComponent.Contents.FileList
                             imageFiles, param.SelectedFilePath, title, Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
+
+                return ValueTask.CompletedTask;
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForRating(ImageViewPageParameter param)
+        public static Func<ISender, ValueTask> ImageFilesGetActionForRating(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -239,10 +244,12 @@ namespace PicSum.UIComponent.Contents.FileList
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
+
+                return ValueTask.CompletedTask;
             };
         }
 
-        public static Action<ISender> ImageFilesGetActionForTag(ImageViewPageParameter param)
+        public static Func<ISender, ValueTask> ImageFilesGetActionForTag(ImageViewPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -264,6 +271,8 @@ namespace PicSum.UIComponent.Contents.FileList
                             param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
+
+                return ValueTask.CompletedTask;
             };
         }
     }

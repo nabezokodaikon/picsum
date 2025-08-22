@@ -5,6 +5,7 @@ using SWF.Core.Job;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
@@ -17,14 +18,14 @@ namespace PicSum.UIComponent.Contents.Parameter
     {
         public event EventHandler<GetImageFilesEventArgs> GetImageFiles;
 
-        public Func<ImageViewPageParameter, Action<ISender>> ImageFilesGetAction { get; private set; }
+        public Func<ImageViewPageParameter, Func<ISender, ValueTask>> ImageFilesGetAction { get; private set; }
         public string PageTitle { get; private set; }
         public Image PageIcon { get; private set; }
 
         public ImageViewPageParameter(
             string pageSources,
             string sourcesKey,
-            Func<ImageViewPageParameter, Action<ISender>> imageFilesGetAction,
+            Func<ImageViewPageParameter, Func<ISender, ValueTask>> imageFilesGetAction,
             string selectedFilePath,
             SortParameter sortInfo,
             string pageTitle,

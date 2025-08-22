@@ -1,6 +1,7 @@
 using SWF.Core.Base;
 using SWF.Core.Job;
 using System;
+using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.Parameter
 {
@@ -10,7 +11,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         string sourcesKey,
         string currentFilePath,
         SortParameter sortInfo,
-        Func<ImageViewPageParameter, Action<ISender>> getImageFilesAction,
+        Func<ImageViewPageParameter, Func<ISender, ValueTask>> getImageFilesAction,
         string pageTitle,
         System.Drawing.Image pageIcon,
         bool visibleBookmarkMenuItem)
@@ -30,7 +31,7 @@ namespace PicSum.UIComponent.Contents.Parameter
         public SortParameter SortInfo { get; private set; }
             = sortInfo ?? throw new ArgumentNullException(nameof(sortInfo));
 
-        public Func<ImageViewPageParameter, Action<ISender>> GetImageFilesAction { get; private set; }
+        public Func<ImageViewPageParameter, Func<ISender, ValueTask>> GetImageFilesAction { get; private set; }
             = getImageFilesAction ?? throw new ArgumentNullException(nameof(getImageFilesAction));
 
         public string PageTitle { get; private set; }

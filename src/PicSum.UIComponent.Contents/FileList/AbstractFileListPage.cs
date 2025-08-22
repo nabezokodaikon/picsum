@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -268,7 +269,7 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        protected abstract void OnRemoveFile(string[] filePathList);
+        protected abstract ValueTask OnRemoveFile(string[] filePathList);
 
         protected abstract void OnMovePreviewButtonClick(EventArgs e);
 
@@ -435,7 +436,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.SetFilter();
         }
 
-        protected abstract Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter);
+        protected abstract Func<ISender, ValueTask> GetImageFilesGetAction(ImageViewPageParameter parameter);
 
         protected virtual void OnSelectedItemChange()
         {
@@ -1157,7 +1158,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void FlowList_ItemDelete(object sender, EventArgs e)
+        private async void FlowList_ItemDelete(object sender, EventArgs e)
         {
             var filePathList = new List<string>();
             foreach (var index in this.flowList.GetSelectedIndexs())
@@ -1165,7 +1166,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 filePathList.Add(this._filterFilePathList[index]);
             }
 
-            this.OnRemoveFile([.. filePathList]);
+            await this.OnRemoveFile([.. filePathList]);
         }
 
         private void FlowList_DragStart(object sender, EventArgs e)
@@ -1338,16 +1339,16 @@ namespace PicSum.UIComponent.Contents.FileList
             Clipboard.SetText(sb.ToString().TrimEnd('\n', '\r'));
         }
 
-        private void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
+        private async void FileContextMenu_RemoveFromList(object sender, ExecuteFileListEventArgs e)
         {
-            this.OnRemoveFile(e.FilePathList);
+            await this.OnRemoveFile(e.FilePathList);
         }
 
-        private void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
+        private async void FileContextMenu_Bookmark(object sender, ExecuteFileEventArgs e)
         {
             var paramter = new ValueParameter<string>(e.FilePath);
 
-            Instance<JobCaller>.Value.EnqueueBookmarkUpdateJob(this, paramter);
+            await Instance<JobCaller>.Value.EnqueueBookmarkUpdateJob(this, paramter);
         }
     }
 }

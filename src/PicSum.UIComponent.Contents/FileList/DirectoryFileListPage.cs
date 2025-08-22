@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -63,7 +64,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                this.SaveCurrentDirectoryState();
+                this.SaveCurrentDirectoryState().GetAwaiter().GetResult();
                 this._parameter.SelectedFilePath = base.SelectedFilePath;
                 this._parameter.ScrollInfo
                     = new(this.ScrollValue, this.FlowListSize, this.ItemSize);
@@ -75,11 +76,11 @@ namespace PicSum.UIComponent.Contents.FileList
             base.Dispose(disposing);
         }
 
-        private void DirectoryFileListPage_Loaded(object sender, EventArgs e)
+        private async void DirectoryFileListPage_Loaded(object sender, EventArgs e)
         {
             var dirParam = new ValueParameter<string>(this._parameter.DirectoryPath);
-            Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(this, dirParam);
-            Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(this, dirParam);
+            await Instance<JobCaller>.Value.EnqueueDirectoryViewCounterIncrementJob(this, dirParam);
+            await Instance<JobCaller>.Value.EnqueueDirectoryViewHistoryAddJob(this, dirParam);
 
             var getParam = new FilesGetByDirectoryParameter()
             {
@@ -131,9 +132,9 @@ namespace PicSum.UIComponent.Contents.FileList
             this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
         }
 
-        protected override void OnRemoveFile(string[] filePathList)
+        protected override ValueTask OnRemoveFile(string[] filePathList)
         {
-            // 処理無し。
+            return ValueTask.CompletedTask;
         }
 
         protected override void OnMovePreviewButtonClick(EventArgs e)
@@ -184,7 +185,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
         }
 
-        protected override Action<ISender> GetImageFilesGetAction(ImageViewPageParameter parameter)
+        protected override Func<ISender, ValueTask> GetImageFilesGetAction(ImageViewPageParameter parameter)
         {
             return FileListUtil.ImageFilesGetActionForDirectory(parameter);
         }
@@ -207,7 +208,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void SaveCurrentDirectoryState()
+        private async ValueTask SaveCurrentDirectoryState()
         {
             if (base.SortMode == FileSortMode.Default)
             {
@@ -216,7 +217,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     FileSortMode.FileName,
                     true,
                     base.SelectedFilePath);
-                Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
+                await Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
             }
             else
             {
@@ -225,7 +226,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     base.SortMode,
                     base.IsAscending,
                     base.SelectedFilePath);
-                Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
+                await Instance<JobCaller>.Value.EnqueueDirectoryStateUpdateJob(this, param);
             }
         }
 
