@@ -32,7 +32,7 @@ namespace PicSum.Job.Jobs
                     await logic.GetPreviewIndex(parameter).WithConfig();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
-            var mainSize = await logic.GetImageSize(mainFilePath);
+            var mainSize = await logic.GetImageSize(mainFilePath).WithConfig();
             if (parameter.DisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
