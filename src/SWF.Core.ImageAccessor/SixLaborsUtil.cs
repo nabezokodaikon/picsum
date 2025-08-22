@@ -36,28 +36,28 @@ namespace SWF.Core.ImageAccessor
             SkipMetadata = true,
         };
 
-        public static System.Drawing.Size GetImageSize(Stream fs)
+        public static async ValueTask<System.Drawing.Size> GetImageSize(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            var imageInfo = SixLabors.ImageSharp.Image.Identify(fs);
+            var imageInfo = await SixLabors.ImageSharp.Image.IdentifyAsync(fs).WithConfig();
             return new System.Drawing.Size(imageInfo.Width, imageInfo.Height);
         }
 
-        public static string DetectFormat(Stream fs)
+        public static async ValueTask<string> DetectFormat(Stream fs)
         {
             using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
             {
-                var format = SixLabors.ImageSharp.Image.DetectFormat(DECODER_OPTIONS, fs);
+                var format = await SixLabors.ImageSharp.Image.DetectFormatAsync(DECODER_OPTIONS, fs).WithConfig();
                 return $".{format.Name}";
             }
         }
 
-        public static Bitmap ReadImageFile(Stream fs)
+        public static async ValueTask<Bitmap> ReadImageFile(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (var image = SixLabors.ImageSharp.Image.Load(DECODER_OPTIONS, fs))
+            using (var image = await SixLabors.ImageSharp.Image.LoadAsync(DECODER_OPTIONS, fs).WithConfig())
             {
                 return ImageSharpToBitmap((Image<Rgba32>)image);
             }

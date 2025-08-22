@@ -39,7 +39,7 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public void Create(string filePath)
+        public async ValueTask Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -60,7 +60,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             var newCache = new ImageFileSizeCacheEntity(
-                filePath, ImageUtil.GetImageSize(filePath), updateDate);
+                filePath, await ImageUtil.GetImageSize(filePath).WithConfig(), updateDate);
 
             lock (this._cacheLock)
             {
@@ -81,7 +81,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public ImageFileSizeCacheEntity GetOrCreate(string filePath)
+        public async ValueTask<ImageFileSizeCacheEntity> GetOrCreate(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -100,7 +100,7 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                var size = ImageUtil.GetImageSize(filePath);
+                var size = await ImageUtil.GetImageSize(filePath).WithConfig();
                 this.Set(filePath, size, updateDate);
                 return new ImageFileSizeCacheEntity(
                     filePath, size, updateDate);

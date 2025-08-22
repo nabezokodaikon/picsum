@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     internal sealed class BookmarkUpdateJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
-        protected override ValueTask Execute(ValueParameter<string> param)
+        protected override async ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -18,22 +18,20 @@ namespace PicSum.Job.Jobs
 
             var addDate = DateTime.Now;
 
-            using (var con = Instance<IFileInfoDB>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDB>.Value.ConnectWithTransaction().WithConfig())
             {
                 var updateLogic = new BookmarkUpdateLogic(this);
 
-                if (!updateLogic.Execute(con, param.Value, addDate))
+                if (!await updateLogic.Execute(con, param.Value, addDate).WithConfig())
                 {
                     var addFileMasterLogic = new FileMasterAddLogic(this);
-                    addFileMasterLogic.Execute(con, param.Value);
+                    await addFileMasterLogic.Execute(con, param.Value).WithConfig();
 
-                    updateLogic.Execute(con, param.Value, addDate);
+                    await updateLogic.Execute(con, param.Value, addDate).WithConfig();
                 }
 
-                con.Commit();
+                await con.Commit().WithConfig();
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

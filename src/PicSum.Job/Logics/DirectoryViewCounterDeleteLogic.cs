@@ -1,4 +1,5 @@
 using PicSum.DatabaseAccessor.Sql;
+using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 
@@ -15,12 +16,12 @@ namespace PicSum.Job.Logics
         /// 処理を実行します。
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
-        public void Execute(IDatabaseConnection con, string directoryPath)
+        public async ValueTask Execute(IDatabaseConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterDeletionSql(directoryPath);
-            con.Update(sql);
+            await con.Update(sql).WithConfig();
         }
     }
 }

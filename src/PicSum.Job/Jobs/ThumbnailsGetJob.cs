@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected override ValueTask Execute(ThumbnailsGetParameter param)
+        protected override async ValueTask Execute(ThumbnailsGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -38,25 +38,25 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    Parallel.ForEach(
+                    await Parallel.ForEachAsync(
                         filePathList,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        filePath =>
+                        async (filePath, token) =>
                         {
                             try
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    cts.Cancel();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    await cts.CancelAsync().WithConfig();
+                                    token.ThrowIfCancellationRequested();
                                 }
 
-                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight);
+                                var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).WithConfig();
                                 if (param.IsExecuteCallback
                                     && !bf.IsEmpry
                                     && bf.ThumbnailBuffer != null)
@@ -89,12 +89,10 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    );
+                    ).WithConfig();
                 }
                 catch (OperationCanceledException) { }
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }
