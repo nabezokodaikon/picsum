@@ -88,7 +88,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsGetThumbnail = true,
             };
 
-            Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, getParam, _ =>
+            await Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(this, getParam, _ =>
             {
                 if (this._disposed)
                 {
@@ -137,7 +137,7 @@ namespace PicSum.UIComponent.Contents.FileList
             return ValueTask.CompletedTask;
         }
 
-        protected override void OnMovePreviewButtonClick(EventArgs e)
+        protected override async void OnMovePreviewButtonClick(EventArgs e)
         {
             if (FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
@@ -150,7 +150,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 IsNext = false,
             };
 
-            Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
+            await Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {
@@ -161,7 +161,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 });
         }
 
-        protected override void OnMoveNextButtonClick(EventArgs e)
+        protected override async void OnMoveNextButtonClick(EventArgs e)
         {
             if (FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
@@ -174,7 +174,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 CurrentParameter = this._parameter.DirectoryPath,
             };
 
-            Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
+            await Instance<JobCaller>.Value.EnqueueNextDirectoryGetJob(this, param, _ =>
                 {
                     if (this._disposed)
                     {

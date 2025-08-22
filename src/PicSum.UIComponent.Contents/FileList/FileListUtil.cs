@@ -173,7 +173,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            return sender =>
+            return async sender =>
             {
                 var jobParameter = new FilesGetByDirectoryParameter()
                 {
@@ -181,15 +181,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
+                await Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e.FileInfoList, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
-
-                return ValueTask.CompletedTask;
             };
         }
 
@@ -197,7 +195,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            return sender =>
+            return async sender =>
             {
                 var jobParameter = new FilesGetByDirectoryParameter()
                 {
@@ -205,7 +203,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
+                await Instance<JobCaller>.Value.EnqueueFilesGetByDirectoryJob(sender, jobParameter, e =>
                     {
                         var title = FileUtil.GetFileName(FileUtil.GetParentDirectoryPath(param.SelectedFilePath));
 
@@ -220,8 +218,6 @@ namespace PicSum.UIComponent.Contents.FileList
                             imageFiles, param.SelectedFilePath, title, Instance<IFileIconCacher>.Value.SmallDirectoryIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
-
-                return ValueTask.CompletedTask;
             };
         }
 
@@ -229,7 +225,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            return sender =>
+            return async sender =>
             {
                 var jobParameter = new FilesGetByRatingParameter()
                 {
@@ -237,15 +233,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(sender, jobParameter, e =>
+                await Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
-
-                return ValueTask.CompletedTask;
             };
         }
 
@@ -253,7 +247,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            return sender =>
+            return async sender =>
             {
                 var jobParameter = new FilesGetByTagParameter()
                 {
@@ -261,7 +255,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     IsGetThumbnail = false,
                 };
 
-                Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(sender, jobParameter, e =>
+                await Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(sender, jobParameter, e =>
                     {
                         var sortImageFiles = GetSortFiles(e, param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
@@ -271,8 +265,6 @@ namespace PicSum.UIComponent.Contents.FileList
                             param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
                     });
-
-                return ValueTask.CompletedTask;
             };
         }
     }

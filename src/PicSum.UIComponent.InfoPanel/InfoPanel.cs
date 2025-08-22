@@ -744,9 +744,9 @@ namespace PicSum.UIComponent.InfoPanel
             this.OnSelectedTag(new SelectedTagEventArgs(PageOpenMode.AddTab, tagInfo.Tag));
         }
 
-        private void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
+        private async void WideComboBox_DropDownOpening(object sender, DropDownOpeningEventArgs e)
         {
-            Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
+            await Instance<JobCaller>.Value.EnqueueTagsGetJob(this, _ =>
                 {
                     if (this.disposed)
                     {
