@@ -59,7 +59,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     return ImageUtil.EMPTY_SIZE;
                 }
-            });
+            }).WithConfig();
         }
 
         public async ValueTask<CvImage> GetCache(string filePath, float zoomValue)
@@ -77,7 +77,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     return CvImage.EMPTY;
                 }
-            });
+            }).WithConfig();
         }
 
         public async ValueTask Create(string filePath)

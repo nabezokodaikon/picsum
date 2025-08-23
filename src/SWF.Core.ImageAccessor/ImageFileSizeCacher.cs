@@ -116,7 +116,7 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 var size = await ImageUtil.GetImageSize(filePath).WithConfig();
-                await this.Set(filePath, size, updateDate);
+                await this.Set(filePath, size, updateDate).WithConfig();
                 return new ImageFileSizeCacheEntity(
                     filePath, size, updateDate);
             }
