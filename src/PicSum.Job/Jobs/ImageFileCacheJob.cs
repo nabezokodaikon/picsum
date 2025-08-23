@@ -71,7 +71,7 @@ namespace PicSum.Job.Jobs
                                 }
 
                                 await Instance<IImageFileCacher>.Value.Create(file).WithConfig();
-                                var size = Instance<IImageFileCacher>.Value.GetSize(file);
+                                var size = await Instance<IImageFileCacher>.Value.GetSize(file).WithConfig();
                                 if (size != ImageUtil.EMPTY_SIZE)
                                 {
                                     Instance<IImageFileSizeCacher>.Value.Set(file, size);

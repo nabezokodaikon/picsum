@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly LinkedList<ImageFileCacheEntity> _cacheList = new();
         private readonly Dictionary<string, ImageFileCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
-        private readonly Lock _cacheLock = new();
+        private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
         public ImageFileCacher()
         {
@@ -38,16 +38,18 @@ namespace SWF.Core.ImageAccessor
                 {
                     cache.Dispose();
                 }
+
+                this._cacheLock.Dispose();
             }
 
             this._disposed = true;
         }
 
-        public Size GetSize(string filePath)
+        public async ValueTask<Size> GetSize(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return this.Get(filePath, static cache =>
+            return await this.Get(filePath, static cache =>
             {
                 if (!cache.IsEmpty && cache.Bitmap != null)
                 {
@@ -60,11 +62,11 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public CvImage GetCache(string filePath, float zoomValue)
+        public async ValueTask<CvImage> GetCache(string filePath, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            return this.Get(filePath, cache =>
+            return await this.Get(filePath, cache =>
             {
                 if (!cache.IsEmpty && cache.Bitmap != null)
                 {
@@ -84,7 +86,8 @@ namespace SWF.Core.ImageAccessor
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 1"))
                 {
@@ -102,11 +105,16 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
             }
+            finally
+            {
+                this._cacheLock.Release();
+            }
 
             var bitmap = await ImageUtil.ReadImageFile(filePath).WithConfig();
             var newCache = new ImageFileCacheEntity(filePath, bitmap, updateDate);
 
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 2"))
                 {
@@ -140,15 +148,20 @@ namespace SWF.Core.ImageAccessor
                     this._cacheList.AddFirst(newCache);
                 }
             }
+            finally
+            {
+                this._cacheLock.Release();
+            }
         }
 
-        private T Get<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
+        private async ValueTask<T> Get<T>(string filePath, Func<ImageFileCacheEntity, T> resultFunc)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
                 {
@@ -167,6 +180,10 @@ namespace SWF.Core.ImageAccessor
 
                     return resultFunc(ImageFileCacheEntity.EMPTY);
                 }
+            }
+            finally
+            {
+                this._cacheLock.Release();
             }
         }
     }

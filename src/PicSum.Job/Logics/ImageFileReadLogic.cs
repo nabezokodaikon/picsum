@@ -243,7 +243,7 @@ namespace PicSum.Job.Logics
             {
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
-                    var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
+                    var image = await Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue).WithConfig();
                     if (!image.IsEmpry)
                     {
                         return image;
