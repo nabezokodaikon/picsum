@@ -39,7 +39,7 @@ namespace PicSum.Job.Jobs
                                 if (this.IsJobCancel)
                                 {
                                     await cts.CancelAsync().WithConfig();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    token.ThrowIfCancellationRequested();
                                 }
 
                                 try
