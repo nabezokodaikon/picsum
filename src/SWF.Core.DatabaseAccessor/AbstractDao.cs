@@ -16,7 +16,9 @@ namespace SWF.Core.DatabaseAccessor
                 con.Open();
                 using (var cmd = con.CreateCommand())
                 {
+#pragma warning disable CA2100
                     cmd.CommandText = tablesCreateSql;
+#pragma warning restore CA2100
                     cmd.ExecuteNonQuery();
                 }
             }

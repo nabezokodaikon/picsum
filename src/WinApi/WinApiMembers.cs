@@ -316,6 +316,7 @@ namespace WinApi
         public const int ERROR_PATH_NOT_FOUND = 3;
         public const int ERROR_ACCESS_DENIED = 5;
 
+        [Flags]
         public enum FileAttributesFlags : uint
         {
             FILE_ATTRIBUTE_ARCHIVE = 0x00000020,
@@ -352,6 +353,7 @@ namespace WinApi
             SHGFI_OVERLAYINDEX = 0x000000040
         }
 
+        [Flags]
         public enum ShellSpecialFolder
         {
             CSIDL_DESKTOP = 0x0000,

@@ -105,7 +105,9 @@ namespace SWF.Core.DatabaseAccessor
 
             using (var cmd = this._connection.CreateCommand())
             {
+#pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
+#pragma warning restore CA2100
 
                 if (sql.Parameters.Length > 0)
                 {
@@ -138,7 +140,9 @@ namespace SWF.Core.DatabaseAccessor
 
             using (var cmd = this._connection.CreateCommand())
             {
+#pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
+#pragma warning restore CA2100
 
                 if (sql.Parameters.Length > 0)
                 {
@@ -180,7 +184,9 @@ namespace SWF.Core.DatabaseAccessor
 
             using (var cmd = this._connection.CreateCommand())
             {
+#pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
+#pragma warning restore CA2100
 
                 if (sql.Parameters.Length > 0)
                 {
@@ -215,7 +221,9 @@ namespace SWF.Core.DatabaseAccessor
 
             using (var cmd = this._connection.CreateCommand())
             {
+#pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
+#pragma warning restore CA2100
 
                 if (sql.Parameters.Length > 0)
                 {

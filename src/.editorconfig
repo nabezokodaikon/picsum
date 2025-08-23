@@ -7,7 +7,6 @@ dotnet_diagnostic.CA1002.severity = none
 dotnet_diagnostic.CA1008.severity = none
 dotnet_diagnostic.CA1016.severity = none
 dotnet_diagnostic.CA1024.severity = none
-dotnet_diagnostic.CA1027.severity = none
 dotnet_diagnostic.CA1028.severity = none
 dotnet_diagnostic.CA1032.severity = none
 dotnet_diagnostic.CA1034.severity = none
@@ -29,9 +28,13 @@ dotnet_diagnostic.CA1815.severity = none
 dotnet_diagnostic.CA1819.severity = none
 dotnet_diagnostic.CA1824.severity = none
 dotnet_diagnostic.CA2007.severity = none
-dotnet_diagnostic.CA2100.severity = none
 dotnet_diagnostic.CA2101.severity = none
 dotnet_diagnostic.CA5392.severity = none
+
+dotnet_diagnostic.IDE0017.severity = none
+dotnet_diagnostic.IDE0079.severity = none
+
+dotnet_diagnostic.SYSLIB1054.severity = none
 
 dotnet_style_qualification_for_field = true:error    # インスタンス フィールド参照に this. を必須
 dotnet_style_qualification_for_property = true:error # インスタンス プロパティ参照に this. を必須
