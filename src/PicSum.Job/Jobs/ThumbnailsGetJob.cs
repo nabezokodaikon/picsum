@@ -61,10 +61,10 @@ namespace PicSum.Job.Jobs
                                     && !bf.IsEmpry
                                     && bf.ThumbnailBuffer != null)
                                 {
-                                    Instance<IImageFileSizeCacher>.Value.Set(
+                                    await Instance<IImageFileSizeCacher>.Value.Set(
                                         bf.FilePath,
                                         new Size(bf.SourceWidth, bf.SourceHeight),
-                                        bf.FileUpdateDate);
+                                        bf.FileUpdateDate).WithConfig();
 
                                     var img = new ThumbnailImageResult
                                     {

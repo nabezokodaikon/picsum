@@ -5,7 +5,7 @@ namespace SWF.Core.ImageAccessor
     {
         public ValueTask Create(string filePath);
         public ValueTask<ImageFileSizeCacheEntity> GetOrCreate(string filePath);
-        public void Set(string filePath, Size size, DateTime updateDate);
-        public void Set(string filePath, Size size);
+        public ValueTask Set(string filePath, Size size, DateTime updateDate);
+        public ValueTask Set(string filePath, Size size);
     }
 }
