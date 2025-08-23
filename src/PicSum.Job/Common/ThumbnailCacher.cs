@@ -19,7 +19,7 @@ namespace PicSum.Job.Common
         private const int CACHE_CAPACITY = 100 * 1024 * 1024;
 
         private bool _disposed = false;
-        private readonly CacheFileController? _cacheFileController;
+        private readonly CacheFileController _cacheFileController;
 
         public ThumbnailCacher()
         {
@@ -257,11 +257,6 @@ namespace PicSum.Job.Common
                             FileUpdateDate = dto.FileUpdateDate
                         };
 
-                        if (this._cacheFileController == null)
-                        {
-                            throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
-                        }
-
                         thumb.ThumbnailBuffer = this._cacheFileController.Read(
                             dto.ThumbnailStartPoint, dto.ThumbnailSize);
 
@@ -299,11 +294,6 @@ namespace PicSum.Job.Common
                                 new ThumbnailExistsByFileSql(targetFilePath)).WithConfig();
                             if (exists < 1)
                             {
-                                if (this._cacheFileController == null)
-                                {
-                                    throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
-                                }
-
                                 var position = this._cacheFileController.Write(thumbBin);
                                 await con.Update(new ThumbnailOffsetUpdateSql(position)).WithConfig();
 
@@ -365,11 +355,6 @@ namespace PicSum.Job.Common
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
                         await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
                         {
-                            if (this._cacheFileController == null)
-                            {
-                                throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
-                            }
-
                             var position = this._cacheFileController.Write(thumbBin);
                             await con.Update(new ThumbnailOffsetUpdateSql(position)).WithConfig();
 
