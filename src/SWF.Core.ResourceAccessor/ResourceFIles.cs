@@ -80,7 +80,7 @@ namespace SWF.Core.ResourceAccessor
             {
                 using (var memoryStream = new MemoryStream(byteArray))
                 {
-                    return new Bitmap(memoryStream);
+                    return (Bitmap)Bitmap.FromStream(memoryStream, false, true);
                 }
             }
         }
