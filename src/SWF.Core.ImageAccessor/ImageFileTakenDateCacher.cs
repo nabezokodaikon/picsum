@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
 
         private bool _disposed = false;
         private readonly Dictionary<string, ImageFileTakenDateCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
-        private readonly Lock _cacheLock = new();
+        private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
         public ImageFileTakenDateCacher()
         {
@@ -33,15 +33,16 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-
+                this._cacheLock.Dispose();
             }
 
             this._disposed = true;
         }
 
-        public DateTime Get(string filePath)
+        public async ValueTask<DateTime> Get(string filePath)
         {
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
@@ -54,16 +55,21 @@ namespace SWF.Core.ImageAccessor
 
                 return ImageFileTakenDateCacheEntity.EMPTY.TakenDate;
             }
+            finally
+            {
+                this._cacheLock.Release();
+            }
         }
 
-        public DateTime GetOrCreate(string filePath)
+        public async ValueTask<DateTime> GetOrCreate(string filePath)
         {
             if (!ImageUtil.CanRetainExifImageFormat(filePath))
             {
                 return DateTimeExtensions.EMPTY;
             }
 
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
@@ -76,13 +82,18 @@ namespace SWF.Core.ImageAccessor
                     this._cacheDictionary.Remove(filePath);
                 }
             }
+            finally
+            {
+                this._cacheLock.Release();
+            }
 
             var newCache = new ImageFileTakenDateCacheEntity(
                 filePath,
                 ImageUtil.GetTakenDate(filePath),
                 FileUtil.GetUpdateDate(filePath));
 
-            lock (this._cacheLock)
+            await this._cacheLock.WaitAsync().WithConfig();
+            try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                 {
@@ -98,6 +109,10 @@ namespace SWF.Core.ImageAccessor
                 this._cacheDictionary.Add(filePath, newCache);
 
                 return newCache.TakenDate;
+            }
+            finally
+            {
+                this._cacheLock.Release();
             }
         }
     }

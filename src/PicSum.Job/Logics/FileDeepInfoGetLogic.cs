@@ -156,7 +156,7 @@ namespace PicSum.Job.Logics
                 FileType = FileUtil.GetTypeName(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = this.GetTakenDate(filePath),
+                TakenDate = await this.GetTakenDate(filePath).WithConfig(),
                 IsFile = true,
                 FileSize = fileSize,
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
@@ -175,7 +175,7 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            info.TakenDate = this.GetOrCreate(filePath);
+            info.TakenDate = await this.GetOrCreate(filePath).WithConfig();
             this.ThrowIfJobCancellationRequested();
 
             var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).WithConfig();
@@ -233,11 +233,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private DateTime GetOrCreate(string filePath)
+        private async ValueTask<DateTime> GetOrCreate(string filePath)
         {
             try
             {
-                return Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
+                return await Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath).WithConfig();
             }
             catch (ImageUtilException ex)
             {
@@ -246,11 +246,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private DateTime GetTakenDate(string filePath)
+        private async ValueTask<DateTime> GetTakenDate(string filePath)
         {
             try
             {
-                return Instance<IImageFileTakenDateCacher>.Value.Get(filePath);
+                return await Instance<IImageFileTakenDateCacher>.Value.Get(filePath).WithConfig();
             }
             catch (ImageUtilException ex)
             {
