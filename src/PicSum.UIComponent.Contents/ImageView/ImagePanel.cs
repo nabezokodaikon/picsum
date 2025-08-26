@@ -1,4 +1,4 @@
-using NLog;
+using Microsoft.Extensions.Logging;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using ZLogger;
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
@@ -22,7 +23,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
 
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly ILogger LOGGER = LogManager.GetLogger();
 
         private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
             = new(Color.FromArgb(128, 0, 0, 0));
@@ -666,7 +667,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     ex is ImageUtilException ||
                     ex is OverflowException)
                 {
-                    LOGGER.Error($"{ex}");
+                    LOGGER.ZLogError(ex, $"画像の描画に失敗しました。");
                     this.DrawErrorImage(g);
                 }
             }

@@ -1,6 +1,7 @@
-using NLog;
+using Microsoft.Extensions.Logging;
 using SWF.Core.Base;
 using System.Diagnostics;
+using ZLogger;
 
 namespace SWF.Core.Job
 {
@@ -8,7 +9,7 @@ namespace SWF.Core.Job
     public abstract class AbstractAsyncJob
         : IAsyncJob
     {
-        protected static readonly Logger LOGGER = Log.GetLogger();
+        protected static readonly ILogger LOGGER = LogManager.GetLogger();
 
         private readonly JobID _id;
         private readonly string _name;
@@ -46,14 +47,14 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(ex, nameof(ex));
 
-            LOGGER.Error(ex, $"{this} で例外が発生しました。");
+            LOGGER.ZLogError(ex, $"{this} で例外が発生しました。");
         }
 
         public void WriteErrorLog(string message)
         {
             ArgumentNullException.ThrowIfNull(message, nameof(message));
 
-            LOGGER.Error($"{this} で例外が発生しました。{message}");
+            LOGGER.ZLogError($"{this} で例外が発生しました。{message}");
         }
 
         public override string ToString()
@@ -112,7 +113,7 @@ namespace SWF.Core.Job
 
             using (TimeMeasuring.Run(false, this.ToString()))
             {
-                LOGGER.Trace($"{this} を実行します。");
+                LOGGER.ZLogTrace($"{this} を実行します。");
                 var sw = Stopwatch.StartNew();
                 try
                 {
@@ -127,7 +128,7 @@ namespace SWF.Core.Job
                 }
                 catch (JobCancelException)
                 {
-                    LOGGER.Trace($"{this} がキャンセルされました。");
+                    LOGGER.ZLogTrace($"{this} がキャンセルされました。");
                 }
                 catch (OperationCanceledException)
                 {
@@ -135,16 +136,16 @@ namespace SWF.Core.Job
                 }
                 catch (AppException ex)
                 {
-                    LOGGER.Error(ex, $"{this} で例外が発生しました。");
+                    LOGGER.ZLogError(ex, $"{this} で例外が発生しました。");
                 }
                 catch (Exception ex)
                 {
-                    LOGGER.Error(ex, $"{this} で補足されない例外が発生しました。");
+                    LOGGER.ZLogError(ex, $"{this} で補足されない例外が発生しました。");
                 }
                 finally
                 {
                     sw.Stop();
-                    LOGGER.Trace($"{this} が終了しました。{sw.ElapsedMilliseconds} ms");
+                    LOGGER.ZLogTrace($"{this} が終了しました。{sw.ElapsedMilliseconds} ms");
                 }
             }
         }

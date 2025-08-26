@@ -163,7 +163,7 @@ namespace SWF.Core.FileAccessor
                         .FirstOrDefault(di => di.Name == filePath || di.Name == $"{filePath}");
                     if (driveInfo == null)
                     {
-                        throw new FileUtilException($"ファイル名を取得できませんでした。", filePath);
+                        throw new FileUtilException("ファイル名を取得できませんでした。", filePath);
                     }
 
                     return $"{driveInfo.VolumeLabel}({ToRemoveLastPathSeparate(filePath)})";
@@ -172,7 +172,7 @@ namespace SWF.Core.FileAccessor
                     ex is IOException ||
                     ex is UnauthorizedAccessException)
                 {
-                    throw new FileUtilException($"ファイル名を取得できませんでした。", filePath, ex);
+                    throw new FileUtilException("ファイル名を取得できませんでした。", filePath, ex);
                 }
             }
             else
@@ -182,7 +182,7 @@ namespace SWF.Core.FileAccessor
                     var name = Path.GetFileName(filePath);
                     if (string.IsNullOrEmpty(name))
                     {
-                        throw new FileUtilException($"ファイル名を取得できませんでした。", filePath);
+                        throw new FileUtilException("ファイル名を取得できませんでした。", filePath);
                     }
 
                     return name;
@@ -190,7 +190,7 @@ namespace SWF.Core.FileAccessor
                 catch (Exception ex) when (
                     ex is ArgumentException)
                 {
-                    throw new FileUtilException($"ファイル名を取得できませんでした。", filePath, ex);
+                    throw new FileUtilException("ファイル名を取得できませんでした。", filePath, ex);
                 }
             }
         }
@@ -215,7 +215,7 @@ namespace SWF.Core.FileAccessor
                     var parent = Path.GetDirectoryName(filePath);
                     if (string.IsNullOrEmpty(parent))
                     {
-                        throw new FileUtilException($"親ディレクトリパスを取得できませんでした。", filePath);
+                        throw new FileUtilException("親ディレクトリパスを取得できませんでした。", filePath);
                     }
 
                     return parent;
@@ -224,7 +224,7 @@ namespace SWF.Core.FileAccessor
                     ex is ArgumentException ||
                     ex is PathTooLongException)
                 {
-                    throw new FileUtilException($"親ディレクトリパスを取得できませんでした。", filePath, ex);
+                    throw new FileUtilException("親ディレクトリパスを取得できませんでした。", filePath, ex);
                 }
             }
         }
@@ -278,7 +278,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException($"作成日時を取得できませんでした。", filePath, ex);
+                throw new FileUtilException("作成日時を取得できませんでした。", filePath, ex);
             }
         }
 
@@ -307,7 +307,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException($"更新日時を取得できませんでした。", filePath, ex);
+                throw new FileUtilException("更新日時を取得できませんでした。", filePath, ex);
             }
         }
 
@@ -333,7 +333,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException($"ファイルサイズを取得できませんでした。", filePath, ex);
+                throw new FileUtilException("ファイルサイズを取得できませんでした。", filePath, ex);
             }
         }
 
@@ -354,7 +354,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException($"ファイル情報を取得できませんでした。", filePath, ex);
+                throw new FileUtilException("ファイル情報を取得できませんでした。", filePath, ex);
             }
         }
 
@@ -375,7 +375,7 @@ namespace SWF.Core.FileAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException)
             {
-                throw new FileUtilException($"ディレクトリ情報を取得できませんでした。", filePath, ex);
+                throw new FileUtilException("ディレクトリ情報を取得できませんでした。", filePath, ex);
             }
         }
 
@@ -626,7 +626,7 @@ namespace SWF.Core.FileAccessor
                 ex is InvalidOperationException ||
                 ex is PlatformNotSupportedException)
             {
-                throw new FileUtilException($"ファイルを実行できませんでした。", filePath, ex);
+                throw new FileUtilException("ファイルを実行できませんでした。", filePath, ex);
             }
         }
 
@@ -662,7 +662,7 @@ namespace SWF.Core.FileAccessor
 
                 if (hr != 0)
                 {
-                    throw new FileUtilException($"PIDLの取得に失敗しました。", dirPath);
+                    throw new FileUtilException("PIDLの取得に失敗しました。", dirPath);
                 }
 
                 // ファイルのPIDLを取得

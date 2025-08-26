@@ -82,7 +82,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="6.0.3" />
+    <PackageReference Include="ZLogger" Version="2.5.10" />
   </ItemGroup>
 
   <ItemGroup>
