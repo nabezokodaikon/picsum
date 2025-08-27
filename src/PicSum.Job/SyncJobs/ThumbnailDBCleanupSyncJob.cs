@@ -4,7 +4,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using ZLogger;
 
 namespace PicSum.Job.SyncJobs
 {
@@ -48,7 +47,7 @@ namespace PicSum.Job.SyncJobs
                     ex is NotSupportedException ||
                     ex is UnauthorizedAccessException)
                 {
-                    LogManager.GetLogger().ZLogError(ex, $"{ERROR_MESSAGE}");
+                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
                 }
             }
         }

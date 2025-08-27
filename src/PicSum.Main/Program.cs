@@ -7,7 +7,6 @@ using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZLogger;
 
 namespace PicSum.Main
 {
@@ -48,7 +47,7 @@ namespace PicSum.Main
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            static () => LogManager.Initialize(AppFiles.LOG_DIRECTORY.Value),
+                            static () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
                             static () => Config.INSTANCE.Load()
                         ];
 
@@ -59,29 +58,24 @@ namespace PicSum.Main
                         );
                     }
 
-                    try
+                    var logger = Log.GetLogger();
+
+                    logger.Info("アプリケーションを開始します。");
+
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                    Application.ThreadException += Application_ThreadException;
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                    Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+
+                    using (var context = new Context())
                     {
-                        LogManager.GetLogger().ZLogInformation($"アプリケーションを開始します。");
-
-                        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-                        Application.ThreadException += Application_ThreadException;
-                        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-
-                        using (var context = new Context())
-                        {
-                            Application.Run(context);
-                        }
-
-                        LogManager.GetLogger().ZLogInformation($"アプリケーションを終了します。\n");
+                        Application.Run(context);
                     }
-                    finally
-                    {
-                        LogManager.Dispose();
-                    }
+
+                    logger.Info("アプリケーションを終了します。\n");
                 }
                 else
                 {
@@ -112,14 +106,14 @@ namespace PicSum.Main
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            LogManager.GetLogger().ZLogError(e.Exception, $"UIスレッドで補足されない例外が発生しました。");
+            Log.GetLogger().Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            LogManager.GetLogger().ZLogError(ex, $"UIスレッド以外で補足されない例外が発生しました。");
+            Log.GetLogger().Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
@@ -144,7 +138,7 @@ namespace PicSum.Main
                 typeof(Windows.Storage.AppDataPaths),
 #endif
                 typeof(MemoryPack.BitPackFormatterAttribute),
-                typeof(ZLogger.AsyncStreamLineMessageWriter),
+                typeof(NLog.GlobalDiagnosticsContext),
 
                 typeof(HeyRed.ImageSharp.Heif.DecodingMode),
                 typeof(ImageMagick.AlphaOption),

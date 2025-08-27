@@ -1,7 +1,6 @@
-using Microsoft.Extensions.Logging;
+using NLog;
 using SWF.Core.Base;
 using System.Threading.Channels;
-using ZLogger;
 
 namespace SWF.Core.Job
 {
@@ -9,7 +8,7 @@ namespace SWF.Core.Job
     public sealed class TwoWayJobQueue
         : IDisposable
     {
-        private static readonly ILogger LOGGER = LogManager.GetLogger();
+        private static readonly Logger LOGGER = Log.GetLogger();
         private static readonly string TASK_NAME = $"{typeof(TwoWayJobQueue).Name} Task";
 
         private bool _disposed = false;
@@ -28,7 +27,7 @@ namespace SWF.Core.Job
 
         public TwoWayJobQueue()
         {
-            LOGGER.ZLogTrace($"{TASK_NAME} を開始します。");
+            LOGGER.Trace($"{TASK_NAME} を開始します。");
 
             this._task = Task.Factory.StartNew(
                 this.DoWork,
@@ -46,7 +45,7 @@ namespace SWF.Core.Job
 
             this._isShuttingDown = true;
 
-            LOGGER.ZLogTrace($"{TASK_NAME} に終了リクエストを送ります。");
+            LOGGER.Trace($"{TASK_NAME} に終了リクエストを送ります。");
             foreach (var job in this._currentJobDictionary.Values)
             {
                 job.BeginCancel();
@@ -57,13 +56,13 @@ namespace SWF.Core.Job
 
             try
             {
-                LOGGER.ZLogTrace($"{TASK_NAME} の終了を待機します。");
+                LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
                 this._task.GetAwaiter().GetResult();
-                LOGGER.ZLogTrace($"{TASK_NAME} が終了しました。");
+                LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
             catch (OperationCanceledException)
             {
-                LOGGER.ZLogTrace($"{TASK_NAME} はキャンセルにより終了しました。");
+                LOGGER.Trace($"{TASK_NAME} はキャンセルにより終了しました。");
             }
 
             this._cancellationTokenSource.Dispose();
@@ -115,7 +114,7 @@ namespace SWF.Core.Job
                         }
                         catch (Exception ex)
                         {
-                            LOGGER.ZLogError(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
+                            LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                         }
                     }
 #pragma warning restore CA1031
@@ -169,7 +168,7 @@ namespace SWF.Core.Job
                         }
                         catch (Exception ex)
                         {
-                            LOGGER.ZLogError(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
+                            LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                         }
                     }
 #pragma warning restore CA1031
@@ -185,7 +184,7 @@ namespace SWF.Core.Job
 #pragma warning disable CA1031
         private async Task DoWork()
         {
-            LOGGER.ZLogTrace($"{TASK_NAME} が開始されました。");
+            LOGGER.Trace($"{TASK_NAME} が開始されました。");
 
             var token = this._cancellationTokenSource.Token;
 
@@ -203,16 +202,16 @@ namespace SWF.Core.Job
             }
             catch (OperationCanceledException)
             {
-                LOGGER.ZLogTrace($"{TASK_NAME} がキャンセルされました。");
+                LOGGER.Trace($"{TASK_NAME} がキャンセルされました。");
                 throw;
             }
             catch (Exception ex)
             {
-                LOGGER.ZLogError(ex, $"{TASK_NAME} で補足されない例外が発生しました。");
+                LOGGER.Error(ex, $"{TASK_NAME} で補足されない例外が発生しました。");
             }
             finally
             {
-                LOGGER.ZLogTrace($"{TASK_NAME} が終了します。");
+                LOGGER.Trace($"{TASK_NAME} が終了します。");
             }
         }
 #pragma warning restore CA1031

@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Xml;
 using ZLinq;
-using ZLogger;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -95,7 +94,7 @@ namespace SWF.Core.ImageAccessor
                 ex is MetadataExtractor.ImageProcessingException ||
                 ex is IOException)
             {
-                throw new ImageUtilException("撮影日を取得できませんでした。", filePath, ex);
+                throw new ImageUtilException($"撮影日を取得できませんでした。", filePath, ex);
             }
         }
 
@@ -160,7 +159,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    LogManager.GetLogger().ZLogError(ex, $"画像サイズの取得に失敗しました。");
+                    Log.GetLogger().Error(ex);
 
                     using (var bmp = await ReadImageFile(filePath).WithConfig())
                     {
@@ -202,7 +201,7 @@ namespace SWF.Core.ImageAccessor
                         var size = BitmapUtil.GetImageSize(ms);
                         if (size == EMPTY_SIZE)
                         {
-                            throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                            throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                         }
 
                         return size;
@@ -228,7 +227,7 @@ namespace SWF.Core.ImageAccessor
                         var size = PngUtil.GetImageSize(ms);
                         if (size == EMPTY_SIZE)
                         {
-                            throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                            throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                         }
 
                         return size;
@@ -240,7 +239,7 @@ namespace SWF.Core.ImageAccessor
                     else
                     {
                         throw new ImageUtilException(
-                            "未対応の画像ファイルが指定されました。", filePath);
+                            $"未対応の画像ファイルが指定されました。", filePath);
                     }
                 }
                 catch (Exception ex) when (
@@ -262,7 +261,7 @@ namespace SWF.Core.ImageAccessor
                     ex is SixLabors.ImageSharp.UnknownImageFormatException ||
                     ex is LibHeifSharp.HeifException)
                 {
-                    throw new ImageUtilException("画像サイズを取得できませんでした。", filePath, ex);
+                    throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath, ex);
                 }
             }
         }
@@ -282,13 +281,13 @@ namespace SWF.Core.ImageAccessor
                     var details = directory.GetDetailsOf(item, 31);
                     if (string.IsNullOrWhiteSpace(details))
                     {
-                        throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                        throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                     }
 
                     var v = details.Split(('x'));
                     if (v.Length != 2)
                     {
-                        throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                        throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                     }
 
                     var wText = v[0];
@@ -296,17 +295,17 @@ namespace SWF.Core.ImageAccessor
 
                     if (!int.TryParse(wText[1..].Trim(), out int w))
                     {
-                        throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                        throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                     }
 
                     if (!int.TryParse(hText[..^1].Trim(), out int h))
                     {
-                        throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                        throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                     }
 
                     if (w < 1 || h < 1)
                     {
-                        throw new ImageUtilException("画像サイズを取得できませんでした。", filePath);
+                        throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
                     }
 
                     return new Size(w, h);
@@ -342,7 +341,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    LogManager.GetLogger().ZLogError(ex, $"画像ファイルの読み込みに失敗しました。");
+                    Log.GetLogger().Error(ex);
 
                     return ReadImageFileWithImageMagick(filePath);
                 }
@@ -434,7 +433,7 @@ namespace SWF.Core.ImageAccessor
                 else
                 {
                     throw new ImageUtilException(
-                        "未対応の画像ファイルが指定されました。", filePath);
+                        $"未対応の画像ファイルが指定されました。", filePath);
                 }
             }
             catch (Exception ex) when (
@@ -454,7 +453,7 @@ namespace SWF.Core.ImageAccessor
                 ex is OutOfMemoryException ||
                 ex is InvalidOperationException)
             {
-                throw new ImageUtilException("画像ファイルを読み込めませんでした。", filePath, ex);
+                throw new ImageUtilException($"画像ファイルを読み込めませんでした。", filePath, ex);
             }
         }
 
@@ -519,14 +518,14 @@ namespace SWF.Core.ImageAccessor
                         }
                     default:
                         throw new ImageUtilException(
-                            "未対応の画像ファイルが指定されました。", filePath);
+                            $"未対応の画像ファイルが指定されました。", filePath);
                 }
             }
             catch (Exception ex) when (
                 ex is ImageMagick.MagickException ||
                 ex is ArgumentException)
             {
-                throw new ImageUtilException("画像ファイルを読み込めませんでした。", filePath, ex);
+                throw new ImageUtilException($"画像ファイルを読み込めませんでした。", filePath, ex);
             }
         }
 

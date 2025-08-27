@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+using NLog;
 using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
 using PicSum.UIComponent.Contents.Conf;
@@ -6,7 +6,6 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ResourceAccessor;
 using System;
-using ZLogger;
 
 namespace PicSum.Main.Mng
 {
@@ -17,7 +16,7 @@ namespace PicSum.Main.Mng
     internal sealed partial class ResourceManager
         : IDisposable
     {
-        private static readonly ILogger LOGGER = LogManager.GetLogger();
+        private static readonly Logger LOGGER = Log.GetLogger();
 
         /// <summary>
         /// コンストラクタ
@@ -48,14 +47,14 @@ namespace PicSum.Main.Mng
                 Config.INSTANCE.BuildVersion,
                 Config.INSTANCE.RevisionVersion);
 
-            LOGGER.ZLogInformation($"コンフィグのバージョン '{configVersion}'");
-            LOGGER.ZLogInformation($"現在のバージョン '{AppInfo.CURRENT_VERSION}'");
+            LOGGER.Info($"コンフィグのバージョン '{configVersion}'");
+            LOGGER.Info($"現在のバージョン '{AppInfo.CURRENT_VERSION}'");
 
             var isFirstLaunch = !FileUtil.IsExistsFile(AppFiles.FILE_INFO_DATABASE_FILE.Value);
 
             if (CommandLineArgs.IsCleanup())
             {
-                LOGGER.ZLogInformation($"コマンドライン引数に '--cleanup' が指定されました。");
+                LOGGER.Info("コマンドライン引数に '--cleanup' が指定されました。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -74,7 +73,7 @@ namespace PicSum.Main.Mng
 
             if (isFirstLaunch)
             {
-                LOGGER.ZLogInformation($"アプリケーションが初めて起動しました。");
+                LOGGER.Info("アプリケーションが初めて起動しました。");
             }
             else
             {

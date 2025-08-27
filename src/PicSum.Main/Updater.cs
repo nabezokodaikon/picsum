@@ -1,14 +1,13 @@
-using Microsoft.Extensions.Logging;
+using NLog;
 using PicSum.Job.SyncJobs;
 using SWF.Core.Base;
 using System;
-using ZLogger;
 
 namespace PicSum.Main
 {
     internal sealed class Updater
     {
-        private static readonly ILogger LOGGER = LogManager.GetLogger();
+        private static readonly Logger LOGGER = Log.GetLogger();
 
         private readonly Version _12_0_0_0 = new(12, 0, 0, 0);
         private readonly Version _12_2_1_0 = new(12, 2, 1, 0);
@@ -24,7 +23,7 @@ namespace PicSum.Main
 
             using (TimeMeasuring.Run(true, "VersionUpTo_12_0_0_0"))
             {
-                LOGGER.ZLogInformation($"バージョンが'{this._12_0_0_0}'未満のため、サムネイルを初期化します。");
+                LOGGER.Info($"バージョンが'{this._12_0_0_0}'未満のため、サムネイルを初期化します。");
 
                 var thumbnailDBCleanupJob = new ThumbnailDBCleanupSyncJob();
                 thumbnailDBCleanupJob.Execute();
@@ -40,7 +39,7 @@ namespace PicSum.Main
 
             using (TimeMeasuring.Run(true, "VersionUpTo_12_2_1_0"))
             {
-                LOGGER.ZLogInformation($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
+                LOGGER.Info($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
 
                 var job = new VersionUpTo_12_2_1_0_SyncJob();
                 job.Execute();
@@ -56,7 +55,7 @@ namespace PicSum.Main
 
             using (TimeMeasuring.Run(true, "VersionUpTo_12_2_2_0"))
             {
-                LOGGER.ZLogInformation($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
+                LOGGER.Info($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
                 var job = new VersionUpTo_12_2_2_0_SyncJob();
                 job.Execute();
@@ -72,7 +71,7 @@ namespace PicSum.Main
 
             using (TimeMeasuring.Run(true, "VersionUpTo_12_3_0_0"))
             {
-                LOGGER.ZLogInformation($"バージョンが'{this._12_3_0_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
+                LOGGER.Info($"バージョンが'{this._12_3_0_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
                 var job = new VersionUpTo_12_3_0_0_SyncJob();
                 job.Execute();
