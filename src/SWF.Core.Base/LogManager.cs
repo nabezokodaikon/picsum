@@ -37,9 +37,9 @@ namespace SWF.Core.Base
                     });
 
 #if DEBUG
-                    builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    builder.SetMinimumLevel(LogLevel.Trace);
 #else
-                    builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
+                    builder.SetMinimumLevel(LogLevel.Information);
 #endif
                 });
 
