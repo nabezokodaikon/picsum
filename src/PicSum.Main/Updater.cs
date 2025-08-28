@@ -7,7 +7,7 @@ namespace PicSum.Main
 {
     internal sealed class Updater
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
 
         private readonly Version _12_0_0_0 = new(12, 0, 0, 0);
         private readonly Version _12_2_1_0 = new(12, 2, 1, 0);

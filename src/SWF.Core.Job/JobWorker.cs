@@ -11,7 +11,7 @@ namespace SWF.Core.Job
         where TJobParameter : class, IJobParameter
         where TJobResult : class, IJobResult
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
         private static readonly string TASK_NAME = $"{typeof(TJob).Name} Task";
 
         private bool _disposed = false;

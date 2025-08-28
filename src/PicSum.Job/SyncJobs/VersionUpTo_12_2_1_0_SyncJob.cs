@@ -11,7 +11,7 @@ namespace PicSum.Job.SyncJobs
     {
         public void Execute()
         {
-            var logger = Log.GetLogger();
+            var logger = NLogManager.GetLogger();
             logger.Debug("バージョン'12.2.1.0'に更新します。");
 
 #pragma warning disable CA2012

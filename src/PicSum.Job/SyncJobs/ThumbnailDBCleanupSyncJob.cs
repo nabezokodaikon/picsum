@@ -47,7 +47,7 @@ namespace PicSum.Job.SyncJobs
                     ex is NotSupportedException ||
                     ex is UnauthorizedAccessException)
                 {
-                    Log.GetLogger().Error(ex, ERROR_MESSAGE);
+                    NLogManager.GetLogger().Error(ex, ERROR_MESSAGE);
                 }
             }
         }

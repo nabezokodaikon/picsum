@@ -3,7 +3,7 @@ using NLog.Targets;
 
 namespace SWF.Core.Base
 {
-    public static class Log
+    public static class NLogManager
     {
         private static Logger? _logger = null;
 

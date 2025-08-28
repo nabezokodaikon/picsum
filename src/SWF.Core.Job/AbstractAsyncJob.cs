@@ -8,7 +8,7 @@ namespace SWF.Core.Job
     public abstract class AbstractAsyncJob
         : IAsyncJob
     {
-        protected static readonly Logger LOGGER = Log.GetLogger();
+        protected static readonly Logger LOGGER = NLogManager.GetLogger();
 
         private readonly JobID _id;
         private readonly string _name;

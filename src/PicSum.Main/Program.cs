@@ -47,7 +47,7 @@ namespace PicSum.Main
                     using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
-                            static () => Log.Initialize(AppFiles.LOG_DIRECTORY.Value),
+                            static () => NLogManager.Initialize(AppFiles.LOG_DIRECTORY.Value),
                             static () => Config.INSTANCE.Load()
                         ];
 
@@ -58,7 +58,7 @@ namespace PicSum.Main
                         );
                     }
 
-                    var logger = Log.GetLogger();
+                    var logger = NLogManager.GetLogger();
 
                     logger.Info("アプリケーションを開始します。");
 
@@ -106,14 +106,14 @@ namespace PicSum.Main
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            Log.GetLogger().Fatal(e.Exception);
+            NLogManager.GetLogger().Fatal(e.Exception);
             ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            Log.GetLogger().Fatal(ex);
+            NLogManager.GetLogger().Fatal(ex);
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 

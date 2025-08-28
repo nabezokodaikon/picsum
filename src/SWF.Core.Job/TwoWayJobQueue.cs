@@ -8,7 +8,7 @@ namespace SWF.Core.Job
     public sealed class TwoWayJobQueue
         : IDisposable
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
         private static readonly string TASK_NAME = $"{typeof(TwoWayJobQueue).Name} Task";
 
         private bool _disposed = false;

@@ -16,7 +16,7 @@ namespace PicSum.Main.Mng
     internal sealed partial class ResourceManager
         : IDisposable
     {
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
 
         /// <summary>
         /// コンストラクタ

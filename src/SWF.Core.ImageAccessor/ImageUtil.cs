@@ -159,7 +159,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    Log.GetLogger().Error(ex);
+                    NLogManager.GetLogger().Error(ex);
 
                     using (var bmp = await ReadImageFile(filePath).WithConfig())
                     {
@@ -341,7 +341,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 catch (ImageUtilException ex)
                 {
-                    Log.GetLogger().Error(ex);
+                    NLogManager.GetLogger().Error(ex);
 
                     return ReadImageFileWithImageMagick(filePath);
                 }

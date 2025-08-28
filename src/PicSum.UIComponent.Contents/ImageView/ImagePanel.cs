@@ -22,7 +22,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
 
-        private static readonly Logger LOGGER = Log.GetLogger();
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
 
         private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
             = new(Color.FromArgb(128, 0, 0, 0));
