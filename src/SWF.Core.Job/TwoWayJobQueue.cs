@@ -116,8 +116,8 @@ namespace SWF.Core.Job
                         {
                             LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                         }
-                    }
 #pragma warning restore CA1031
+                    }
                 }, _);
             };
 
@@ -170,8 +170,8 @@ namespace SWF.Core.Job
                         {
                             LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
                         }
-                    }
 #pragma warning restore CA1031
+                    }
                 }, _);
             };
 
