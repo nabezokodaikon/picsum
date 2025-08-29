@@ -62,10 +62,12 @@ namespace PicSum.Main
 
                     logger.Info("アプリケーションを開始します。");
 
+#if UWP
+#else
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
                     Application.ThreadException += Application_ThreadException;
                     Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+#endif
                     Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
