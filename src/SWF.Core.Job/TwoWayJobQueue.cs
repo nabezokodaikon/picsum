@@ -107,8 +107,17 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess() && state is TJobResult result)
                     {
-                        callback(result);
+#pragma warning disable CA1031
+                        try
+                        {
+                            callback(result);
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
+                        }
                     }
+#pragma warning restore CA1031
                 }, _);
             };
 
@@ -152,8 +161,17 @@ namespace SWF.Core.Job
                 {
                     if (job.CanUIThreadAccess() && state is TJobResult result)
                     {
-                        callback(result);
+#pragma warning disable CA1031
+                        try
+                        {
+                            callback(result);
+                        }
+                        catch (Exception ex)
+                        {
+                            LOGGER.Error(ex, $"{job} がUIスレッドで補足されない例外が発生しました。");
+                        }
                     }
+#pragma warning restore CA1031
                 }, _);
             };
 
