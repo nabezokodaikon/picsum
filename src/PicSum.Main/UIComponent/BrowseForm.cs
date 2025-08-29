@@ -134,10 +134,9 @@ namespace PicSum.Main.UIComponent
                 {
                     this.CreateBrowsePanel();
                     BrowseForm.isStartUp = false;
+                    BootTimeMeasurement.Stop();
                 }
             }
-
-            BootTimeMeasurement.Stop();
         }
 
         private void BrowseForm_FormClosing(object sender, FormClosingEventArgs e)
