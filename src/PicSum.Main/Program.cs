@@ -62,6 +62,10 @@ namespace PicSum.Main
 
                     logger.Info("アプリケーションを開始します。");
 
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                    Application.ThreadException += Application_ThreadException;
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                     Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -98,6 +102,19 @@ namespace PicSum.Main
                     }
                 }
             }
+        }
+
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            NLogManager.GetLogger().Fatal(e.Exception);
+            ExceptionUtil.ShowFatalDialog("Unhandled UI Exception.", e.Exception);
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = (Exception)e.ExceptionObject;
+            NLogManager.GetLogger().Fatal(ex);
+            ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
         private static Type[] GetTypes()
