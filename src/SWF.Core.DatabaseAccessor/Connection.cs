@@ -1,7 +1,9 @@
+using NLog;
 using SWF.Core.Base;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Diagnostics;
 
 namespace SWF.Core.DatabaseAccessor
 {
@@ -9,6 +11,8 @@ namespace SWF.Core.DatabaseAccessor
     internal sealed class Connection
         : IConnection
     {
+        private static readonly Logger LOGGER = NLogManager.GetLogger();
+
         private bool _disposed = false;
 #pragma warning disable CA2213
         private SemaphoreSlim? _lockObject = null;
@@ -103,28 +107,38 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            LOGGER.Trace($"{sql.GetType().Name} を実行します。");
+            var sw = Stopwatch.StartNew();
+            try
             {
+                using (var cmd = this._connection.CreateCommand())
+                {
 #pragma warning disable CA2100
-                cmd.CommandText = sql.GetExecuteSql();
+                    cmd.CommandText = sql.GetExecuteSql();
 #pragma warning restore CA2100
 
-                if (sql.Parameters.Length > 0)
-                {
-                    cmd.Parameters.AddRange(sql.Parameters);
-                }
+                    if (sql.Parameters.Length > 0)
+                    {
+                        cmd.Parameters.AddRange(sql.Parameters);
+                    }
 
-                var result = await cmd.ExecuteNonQueryAsync().WithConfig();
-                if (result > 0)
-                {
-                    // 更新されたレコードが存在するため、Trueを返します。
-                    return true;
+                    var result = await cmd.ExecuteNonQueryAsync().WithConfig();
+                    if (result > 0)
+                    {
+                        // 更新されたレコードが存在するため、Trueを返します。
+                        return true;
+                    }
+                    else
+                    {
+                        // 更新されたレコードが存在しないため、Falseを返します。
+                        return false;
+                    }
                 }
-                else
-                {
-                    // 更新されたレコードが存在しないため、Falseを返します。
-                    return false;
-                }
+            }
+            finally
+            {
+                sw.Stop();
+                LOGGER.Trace($"{sql.GetType().Name} が終了しました。{sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -138,37 +152,47 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            LOGGER.Trace($"{sql.GetType().Name} を実行します。");
+            var sw = Stopwatch.StartNew();
+            try
             {
+                using (var cmd = this._connection.CreateCommand())
+                {
 #pragma warning disable CA2100
-                cmd.CommandText = sql.GetExecuteSql();
+                    cmd.CommandText = sql.GetExecuteSql();
 #pragma warning restore CA2100
 
-                if (sql.Parameters.Length > 0)
-                {
-                    cmd.Parameters.AddRange(sql.Parameters);
-                }
-
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).WithConfig())
-                {
-                    if (reader.HasRows)
+                    if (sql.Parameters.Length > 0)
                     {
-                        var list = new List<TDto>();
+                        cmd.Parameters.AddRange(sql.Parameters);
+                    }
 
-                        while (await reader.ReadAsync().WithConfig())
+                    using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).WithConfig())
+                    {
+                        if (reader.HasRows)
                         {
-                            var dto = new TDto();
-                            dto.Read(reader);
-                            list.Add(dto);
-                        }
+                            var list = new List<TDto>();
 
-                        return [.. list];
-                    }
-                    else
-                    {
-                        return [];
+                            while (await reader.ReadAsync().WithConfig())
+                            {
+                                var dto = new TDto();
+                                dto.Read(reader);
+                                list.Add(dto);
+                            }
+
+                            return [.. list];
+                        }
+                        else
+                        {
+                            return [];
+                        }
                     }
                 }
+            }
+            finally
+            {
+                sw.Stop();
+                LOGGER.Trace($"{sql.GetType().Name} が終了しました。{sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -182,31 +206,41 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            LOGGER.Trace($"{sql.GetType().Name} を実行します。");
+            var sw = Stopwatch.StartNew();
+            try
             {
+                using (var cmd = this._connection.CreateCommand())
+                {
 #pragma warning disable CA2100
-                cmd.CommandText = sql.GetExecuteSql();
+                    cmd.CommandText = sql.GetExecuteSql();
 #pragma warning restore CA2100
 
-                if (sql.Parameters.Length > 0)
-                {
-                    cmd.Parameters.AddRange(sql.Parameters);
-                }
+                    if (sql.Parameters.Length > 0)
+                    {
+                        cmd.Parameters.AddRange(sql.Parameters);
+                    }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).WithConfig())
-                {
-                    if (reader.HasRows)
+                    using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).WithConfig())
                     {
-                        await reader.ReadAsync().WithConfig();
-                        var dto = new TDto();
-                        dto.Read(reader);
-                        return dto;
-                    }
-                    else
-                    {
-                        return null;
+                        if (reader.HasRows)
+                        {
+                            await reader.ReadAsync().WithConfig();
+                            var dto = new TDto();
+                            dto.Read(reader);
+                            return dto;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
+            }
+            finally
+            {
+                sw.Stop();
+                LOGGER.Trace($"{sql.GetType().Name} が終了しました。{sw.ElapsedMilliseconds} ms");
             }
         }
 
@@ -219,26 +253,36 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            LOGGER.Trace($"{sql.GetType().Name} を実行します。");
+            var sw = Stopwatch.StartNew();
+            try
             {
+                using (var cmd = this._connection.CreateCommand())
+                {
 #pragma warning disable CA2100
-                cmd.CommandText = sql.GetExecuteSql();
+                    cmd.CommandText = sql.GetExecuteSql();
 #pragma warning restore CA2100
 
-                if (sql.Parameters.Length > 0)
-                {
-                    cmd.Parameters.AddRange(sql.Parameters);
-                }
+                    if (sql.Parameters.Length > 0)
+                    {
+                        cmd.Parameters.AddRange(sql.Parameters);
+                    }
 
-                var result = await cmd.ExecuteScalarAsync().WithConfig();
-                if (result != null && result != DBNull.Value)
-                {
-                    return (T)result;
+                    var result = await cmd.ExecuteScalarAsync().WithConfig();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (T)result;
+                    }
+                    else
+                    {
+                        return default;
+                    }
                 }
-                else
-                {
-                    return default;
-                }
+            }
+            finally
+            {
+                sw.Stop();
+                LOGGER.Trace($"{sql.GetType().Name} が終了しました。{sw.ElapsedMilliseconds} ms");
             }
         }
     }
