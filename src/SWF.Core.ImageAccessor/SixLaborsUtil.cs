@@ -17,7 +17,7 @@ using SWF.Core.Base;
 namespace SWF.Core.ImageAccessor
 {
 
-    internal static class ImageSharpUtil
+    internal static class SixLaborsUtil
     {
         private static readonly DecoderOptions DECODER_OPTIONS = new()
         {
