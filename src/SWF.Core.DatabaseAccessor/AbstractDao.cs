@@ -63,14 +63,12 @@ namespace SWF.Core.DatabaseAccessor
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new Connection();
-                con.Initialize(this._lockObject, this._persistentConnection, false);
+                var con = new Connection(this._lockObject, this._persistentConnection, false);
                 return con;
             }
             else
             {
-                var con = new Connection();
-                con.Initialize(this._lockObject, this._filePath, false);
+                var con = new Connection(this._lockObject, this._filePath, false);
                 return con;
             }
         }
@@ -82,14 +80,12 @@ namespace SWF.Core.DatabaseAccessor
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new Connection();
-                con.Initialize(this._lockObject, this._persistentConnection, true);
+                var con = new Connection(this._lockObject, this._persistentConnection, true);
                 return con;
             }
             else
             {
-                var con = new Connection();
-                con.Initialize(this._lockObject, this._filePath, true);
+                var con = new Connection(this._lockObject, this._filePath, true);
                 return con;
             }
         }

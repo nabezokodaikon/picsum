@@ -9,15 +9,13 @@ namespace SWF.Core.DatabaseAccessor
         : IConnection
     {
         private bool _disposed = false;
-#pragma warning disable CA2213
-        private Lock? _lockObject = null;
-        private SQLiteConnection? _connection = null;
-#pragma warning restore CA2213
-        private DbTransaction? _transaction = null;
+        private readonly Lock _lockObject;
+        private readonly SQLiteConnection _connection;
+        private readonly DbTransaction? _transaction = null;
         private bool _isDispose;
         private bool _isCommitted = false;
 
-        public void Initialize(Lock lockObject, string filePath, bool isTransaction)
+        public Connection(Lock lockObject, string filePath, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -33,7 +31,7 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = true;
         }
 
-        public void Initialize(Lock lockObject, SQLiteConnection connection, bool isTransaction)
+        public Connection(Lock lockObject, SQLiteConnection connection, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
 
@@ -55,7 +53,7 @@ namespace SWF.Core.DatabaseAccessor
                 return;
             }
 
-            if (this._transaction != null)
+            if (this._transaction is not null)
             {
                 if (!this._isCommitted)
                 {
@@ -67,13 +65,10 @@ namespace SWF.Core.DatabaseAccessor
 
             if (this._isDispose)
             {
-                if (this._connection is not null)
-                {
-                    this._connection.Dispose();
-                }
+                this._connection.Dispose();
             }
 
-            this._lockObject?.Exit();
+            this._lockObject.Exit();
 
             this._disposed = true;
 
