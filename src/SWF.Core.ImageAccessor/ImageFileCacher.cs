@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly LinkedList<ImageFileCacheEntity> _cacheList = new();
         private readonly Dictionary<string, ImageFileCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
-        private readonly SemaphoreSlim _cacheLock = new(1, 1);
+        private readonly Lock _cacheLock = new();
 
         public ImageFileCacher()
         {
@@ -38,8 +38,6 @@ namespace SWF.Core.ImageAccessor
                 {
                     cache.Dispose();
                 }
-
-                this._cacheLock.Dispose();
             }
 
             this._disposed = true;
@@ -86,7 +84,7 @@ namespace SWF.Core.ImageAccessor
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 1"))
@@ -107,13 +105,13 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
 
             var bitmap = ImageUtil.ReadImageFile(filePath);
             var newCache = new ImageFileCacheEntity(filePath, bitmap, updateDate);
 
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Create 2"))
@@ -150,7 +148,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
         }
 
@@ -160,7 +158,7 @@ namespace SWF.Core.ImageAccessor
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileCacher.Get {typeof(T)}"))
@@ -183,7 +181,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
         }
     }

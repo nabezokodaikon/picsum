@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
 
         private bool _disposed = false;
         private readonly Dictionary<string, ImageFileTakenDateCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
-        private readonly SemaphoreSlim _cacheLock = new(1, 1);
+        private readonly Lock _cacheLock = new();
 
         public ImageFileTakenDateCacher()
         {
@@ -33,7 +33,7 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-                this._cacheLock.Dispose();
+
             }
 
             this._disposed = true;
@@ -41,7 +41,7 @@ namespace SWF.Core.ImageAccessor
 
         public DateTime Get(string filePath)
         {
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -57,7 +57,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
         }
 
@@ -68,7 +68,7 @@ namespace SWF.Core.ImageAccessor
                 return DateTimeExtensions.EMPTY;
             }
 
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -84,7 +84,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
 
             var newCache = new ImageFileTakenDateCacheEntity(
@@ -92,7 +92,7 @@ namespace SWF.Core.ImageAccessor
                 ImageUtil.GetTakenDate(filePath),
                 FileUtil.GetUpdateDate(filePath));
 
-            this._cacheLock.Wait();
+            this._cacheLock.Enter();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -112,7 +112,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Release();
+                this._cacheLock.Exit();
             }
         }
     }
