@@ -36,6 +36,8 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<StartupObject>PicSum.Main.Program</StartupObject>
 
+	<InvariantGlobalization>false</InvariantGlobalization>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,7 +173,7 @@
 	<Compile Remove="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="application.ico" />
+	<Content Include="application.ico" />
   </ItemGroup>
   <ItemGroup>
 	<PackageReference Include="MemoryPack" Version="1.21.4" />
