@@ -63,7 +63,7 @@
 	<StripSymbols>true</StripSymbols>
 	<EnableDynamicLoading>false</EnableDynamicLoading>
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
-	<InvariantGlobalization>true</InvariantGlobalization>
+	<InvariantGlobalization>false</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
 
   </PropertyGroup>

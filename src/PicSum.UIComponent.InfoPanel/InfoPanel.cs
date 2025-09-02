@@ -382,9 +382,11 @@ namespace PicSum.UIComponent.InfoPanel
             };
             Instance<JobCaller>.Value.EnqueueFileTagUpdateJob(this, param);
 
+#pragma warning disable CA1309
             var tagInfo = this.TagList.FirstOrDefault(
-                t => t.Tag.Equals(tag, StringComparison.Ordinal),
+                t => t.Tag.Equals(tag, StringComparison.CurrentCulture),
                 FileTagInfoEntity.EMPTY);
+#pragma warning restore CA1309
             if (!tagInfo.IsEmpty)
             {
                 tagInfo.IsAll = true;
@@ -398,7 +400,9 @@ namespace PicSum.UIComponent.InfoPanel
                     IsAll = true
                 };
                 this.TagList.Add(tagInfo);
-                this.TagList.Sort(static (x, y) => string.Compare(x.Tag, y.Tag, StringComparison.Ordinal));
+#pragma warning disable CA1309
+                this.TagList.Sort(static (x, y) => string.Compare(x.Tag, y.Tag, StringComparison.CurrentCulture));
+#pragma warning restore CA1309                
                 this.tagFlowList.ItemCount = this.TagList.Count;
             }
         }
