@@ -10,16 +10,15 @@ namespace SWF.Core.DatabaseAccessor
     {
         private bool _disposed = false;
 #pragma warning disable CA2213
-        private SemaphoreSlim? _lockObject = null;
+        private Lock? _lockObject = null;
         private SQLiteConnection? _connection = null;
 #pragma warning restore CA2213
         private DbTransaction? _transaction = null;
         private bool _isDispose;
         private bool _isCommitted = false;
 
-        public void Initialize(SemaphoreSlim lockObject, string filePath, bool isTransaction)
+        public void Initialize(Lock lockObject, string filePath, bool isTransaction)
         {
-            ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this._lockObject = lockObject;
@@ -34,9 +33,8 @@ namespace SWF.Core.DatabaseAccessor
             this._isDispose = true;
         }
 
-        public void Initialize(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
+        public void Initialize(Lock lockObject, SQLiteConnection connection, bool isTransaction)
         {
-            ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
 
             this._lockObject = lockObject;
@@ -75,7 +73,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
             }
 
-            this._lockObject?.Release();
+            this._lockObject?.Exit();
 
             this._disposed = true;
 
