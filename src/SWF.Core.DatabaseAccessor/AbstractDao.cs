@@ -40,7 +40,7 @@ namespace SWF.Core.DatabaseAccessor
         private readonly string _filePath;
         private readonly bool _isPersistent;
         private SQLiteConnection? _persistentConnection;
-        private readonly Lock _lockObject = new();
+        private readonly SemaphoreSlim _lockObject = new(1, 1);
 
         protected AbstractDao(string filePath, string tablesCreateSql, bool isPersistent)
         {
@@ -58,7 +58,7 @@ namespace SWF.Core.DatabaseAccessor
 
         public IConnection Connect()
         {
-            this._lockObject.Enter();
+            this._lockObject.Wait();
 
             if (this._isPersistent)
             {
@@ -77,7 +77,7 @@ namespace SWF.Core.DatabaseAccessor
 
         public IConnection ConnectWithTransaction()
         {
-            this._lockObject.Enter();
+            this._lockObject.Wait();
 
             if (this._isPersistent)
             {
@@ -110,6 +110,8 @@ namespace SWF.Core.DatabaseAccessor
                 }
 
                 this._persistentConnection?.Dispose();
+
+                this._lockObject?.Dispose();
             }
 
             this._persistentConnection = null;

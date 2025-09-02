@@ -11,7 +11,7 @@ namespace SWF.Core.ImageAccessor
 
         private bool _disposed = false;
         private readonly Dictionary<string, ImageFileSizeCacheEntity> _cacheDictionary = new(CACHE_CAPACITY);
-        private readonly Lock _cacheLock = new();
+        private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
         public ImageFileSizeCacher()
         {
@@ -33,7 +33,7 @@ namespace SWF.Core.ImageAccessor
 
             if (disposing)
             {
-
+                this._cacheLock.Dispose();
             }
 
             this._disposed = true;
@@ -45,7 +45,7 @@ namespace SWF.Core.ImageAccessor
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            this._cacheLock.Enter();
+            this._cacheLock.Wait();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 1"))
@@ -61,13 +61,13 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Exit();
+                this._cacheLock.Release();
             }
 
             var newCache = new ImageFileSizeCacheEntity(
                 filePath, ImageUtil.GetImageSize(filePath), updateDate);
 
-            this._cacheLock.Enter();
+            this._cacheLock.Wait();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 2"))
@@ -87,7 +87,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Exit();
+                this._cacheLock.Release();
             }
         }
 
@@ -99,7 +99,7 @@ namespace SWF.Core.ImageAccessor
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                this._cacheLock.Enter();
+                this._cacheLock.Wait();
                 try
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -112,7 +112,7 @@ namespace SWF.Core.ImageAccessor
                 }
                 finally
                 {
-                    this._cacheLock.Exit();
+                    this._cacheLock.Release();
                 }
 
                 var size = ImageUtil.GetImageSize(filePath);
@@ -126,7 +126,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this._cacheLock.Enter();
+            this._cacheLock.Wait();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 1"))
@@ -142,13 +142,13 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Exit();
+                this._cacheLock.Release();
             }
 
             var newCache = new ImageFileSizeCacheEntity(
                 filePath, size, updateDate);
 
-            this._cacheLock.Enter();
+            this._cacheLock.Wait();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 2"))
@@ -168,7 +168,7 @@ namespace SWF.Core.ImageAccessor
             }
             finally
             {
-                this._cacheLock.Exit();
+                this._cacheLock.Release();
             }
         }
 
