@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
             }
         }
 
-        protected override ValueTask Execute(TakenDatesGetParameter param)
+        protected override async ValueTask Execute(TakenDatesGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -36,14 +36,14 @@ namespace PicSum.Job.Jobs
                 .ToArray();
             if (files.Length < 1)
             {
-                return ValueTask.CompletedTask;
+                return;
             }
 
             using (var cts = new CancellationTokenSource())
             {
                 try
                 {
-                    Parallel.For(
+                    await Parallel.ForAsync(
                         0,
                         files.Length,
                         new ParallelOptions
@@ -51,18 +51,18 @@ namespace PicSum.Job.Jobs
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        index =>
+                        async (index, token) =>
                         {
                             if (this.IsJobCancel)
                             {
-                                cts.Cancel();
-                                cts.Token.ThrowIfCancellationRequested();
+                                await cts.CancelAsync().WithConfig();
+                                token.ThrowIfCancellationRequested();
                             }
 
                             try
                             {
                                 var filePath = files[index];
-                                var takenDate = Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
+                                var takenDate = await Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath).WithConfig();
                                 if (takenDate.IsEmpty())
                                 {
                                     return;
@@ -75,11 +75,11 @@ namespace PicSum.Job.Jobs
                             {
                                 this.WriteErrorLog(ex);
                             }
-                        });
+                        }).WithConfig();
                 }
                 catch (OperationCanceledException)
                 {
-                    return ValueTask.CompletedTask;
+                    return;
                 }
             }
 
@@ -87,8 +87,6 @@ namespace PicSum.Job.Jobs
             {
                 this.Callback(TakenDateResult.COMPLETED);
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

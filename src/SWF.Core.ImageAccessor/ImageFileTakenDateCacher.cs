@@ -39,9 +39,9 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public DateTime Get(string filePath)
+        public async ValueTask<DateTime> Get(string filePath)
         {
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -61,14 +61,14 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public DateTime GetOrCreate(string filePath)
+        public async ValueTask<DateTime> GetOrCreate(string filePath)
         {
             if (!ImageUtil.CanRetainExifImageFormat(filePath))
             {
                 return DateTimeExtensions.EMPTY;
             }
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -92,7 +92,7 @@ namespace SWF.Core.ImageAccessor
                 ImageUtil.GetTakenDate(filePath),
                 FileUtil.GetUpdateDate(filePath));
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 if (this._cacheDictionary.TryGetValue(filePath, out var cache))

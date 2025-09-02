@@ -39,13 +39,13 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public void Create(string filePath)
+        public async ValueTask Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var updateDate = FileUtil.GetUpdateDate(filePath);
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 1"))
@@ -65,9 +65,9 @@ namespace SWF.Core.ImageAccessor
             }
 
             var newCache = new ImageFileSizeCacheEntity(
-                filePath, ImageUtil.GetImageSize(filePath), updateDate);
+                filePath, await ImageUtil.GetImageSize(filePath).WithConfig(), updateDate);
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 2"))
@@ -91,7 +91,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public ImageFileSizeCacheEntity GetOrCreate(string filePath)
+        public async ValueTask<ImageFileSizeCacheEntity> GetOrCreate(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -99,7 +99,7 @@ namespace SWF.Core.ImageAccessor
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
-                this._cacheLock.Wait();
+                await this._cacheLock.WaitAsync().WithConfig();
                 try
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
@@ -115,18 +115,18 @@ namespace SWF.Core.ImageAccessor
                     this._cacheLock.Release();
                 }
 
-                var size = ImageUtil.GetImageSize(filePath);
-                this.Set(filePath, size, updateDate);
+                var size = await ImageUtil.GetImageSize(filePath).WithConfig();
+                await this.Set(filePath, size, updateDate).WithConfig();
                 return new ImageFileSizeCacheEntity(
                     filePath, size, updateDate);
             }
         }
 
-        public void Set(string filePath, Size size, DateTime updateDate)
+        public async ValueTask Set(string filePath, Size size, DateTime updateDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 1"))
@@ -148,7 +148,7 @@ namespace SWF.Core.ImageAccessor
             var newCache = new ImageFileSizeCacheEntity(
                 filePath, size, updateDate);
 
-            this._cacheLock.Wait();
+            await this._cacheLock.WaitAsync().WithConfig();
             try
             {
                 using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 2"))
@@ -172,10 +172,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void Set(string filePath, Size size)
+        public async ValueTask Set(string filePath, Size size)
         {
             var updateDate = FileUtil.GetUpdateDate(filePath);
-            this.Set(filePath, size, updateDate);
+            await this.Set(filePath, size, updateDate).WithConfig();
         }
     }
 }

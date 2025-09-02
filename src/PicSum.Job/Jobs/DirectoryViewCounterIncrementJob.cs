@@ -9,27 +9,25 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryViewCounterIncrementJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
-        protected override ValueTask Execute(ValueParameter<string> param)
+        protected override async ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
-            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
             {
                 var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
-                if (!incrementDirectoryViewCounter.Execute(con, param.Value))
+                if (!await incrementDirectoryViewCounter.Execute(con, param.Value).WithConfig())
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
-                    addFileMaster.Execute(con, param.Value);
-                    incrementDirectoryViewCounter.Execute(con, param.Value);
+                    await addFileMaster.Execute(con, param.Value).WithConfig();
+                    await incrementDirectoryViewCounter.Execute(con, param.Value).WithConfig();
                 }
 
-                con.Commit();
+                await con.Commit().WithConfig();
             }
-
-            return ValueTask.CompletedTask;
         }
     }
 }

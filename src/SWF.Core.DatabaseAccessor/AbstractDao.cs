@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using System.Data.SQLite;
 
@@ -56,40 +57,40 @@ namespace SWF.Core.DatabaseAccessor
             this._isPersistent = isPersistent;
         }
 
-        public IConnection Connect()
+        public async ValueTask<IConnection> Connect()
         {
-            this._lockObject.Wait();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 var con = new Connection();
-                con.Initialize(this._lockObject, this._persistentConnection, false);
+                await con.Initialize(this._lockObject, this._persistentConnection, false).WithConfig();
                 return con;
             }
             else
             {
                 var con = new Connection();
-                con.Initialize(this._lockObject, this._filePath, false);
+                await con.Initialize(this._lockObject, this._filePath, false).WithConfig();
                 return con;
             }
         }
 
-        public IConnection ConnectWithTransaction()
+        public async ValueTask<IConnection> ConnectWithTransaction()
         {
-            this._lockObject.Wait();
+            await this._lockObject.WaitAsync().WithConfig();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 var con = new Connection();
-                con.Initialize(this._lockObject, this._persistentConnection, true);
+                await con.Initialize(this._lockObject, this._persistentConnection, true).WithConfig();
                 return con;
             }
             else
             {
                 var con = new Connection();
-                con.Initialize(this._lockObject, this._filePath, true);
+                await con.Initialize(this._lockObject, this._filePath, true).WithConfig();
                 return con;
             }
         }
