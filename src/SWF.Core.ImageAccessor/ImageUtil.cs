@@ -195,7 +195,7 @@ namespace SWF.Core.ImageAccessor
                         return SvgUtil.GetImageSize(fs);
                     }
 
-                    var formatName = SixLaborsUtil.DetectFormat(fs);
+                    var formatName = ImageSharpUtil.DetectFormat(fs);
 
                     if (IsAvifFile(formatName))
                     {
@@ -213,7 +213,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsGifFile(formatName))
                     {
-                        return SixLaborsUtil.GetImageSize(fs);
+                        return ImageSharpUtil.GetImageSize(fs);
                     }
                     else if (IsHeicFile(formatName))
                     {
@@ -239,7 +239,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsWebpFile(formatName))
                     {
-                        return SixLaborsUtil.GetImageSize(fs);
+                        return ImageSharpUtil.GetImageSize(fs);
                     }
                     else
                     {
@@ -382,12 +382,12 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                var formatName = SixLaborsUtil.DetectFormat(fs);
+                var formatName = ImageSharpUtil.DetectFormat(fs);
                 if (IsAvifFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
                     {
-                        return SixLaborsUtil.ReadImageFile(fs);
+                        return ImageSharpUtil.ReadImageFile(fs);
                     }
                 }
                 else if (IsBmpFile(formatName))
