@@ -1,6 +1,5 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
@@ -16,10 +15,10 @@ namespace PicSum.Job.Logics
     internal sealed class TagsGetLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<string[]> Execute(IConnection con)
+        public string[] Execute(IConnection con)
         {
             var sql = new AllTagsReadSql();
-            var dtoList = await con.ReadList<TagInfoDto>(sql).WithConfig();
+            var dtoList = con.ReadList<TagInfoDto>(sql);
 
             return [.. dtoList
                 .AsValueEnumerable()

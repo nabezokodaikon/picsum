@@ -13,7 +13,7 @@ namespace PicSum.Job.Jobs
     internal sealed class FileTagDeleteJob
         : AbstractOneWayJob<FileTagUpdateParameter>
     {
-        protected override async ValueTask Execute(FileTagUpdateParameter param)
+        protected override ValueTask Execute(FileTagUpdateParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -25,17 +25,19 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
             {
                 var logic = new FileTagDeleteLogic(this);
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    await logic.Execute(con, filePath, param.Tag).WithConfig();
+                    logic.Execute(con, filePath, param.Tag);
                 }
 
-                await con.Commit().WithConfig();
+                con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

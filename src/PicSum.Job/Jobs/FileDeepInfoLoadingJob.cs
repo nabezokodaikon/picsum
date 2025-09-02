@@ -24,11 +24,11 @@ namespace PicSum.Job.Jobs
 
             await Task.Delay(10, this.CancellationToken).WithConfig();
 
-            var result = await this.CreateCallbackResult(param).WithConfig();
+            var result = this.CreateCallbackResult(param);
             this.Callback(result);
         }
 
-        private async ValueTask<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
+        private FileDeepInfoGetResult CreateCallbackResult(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -46,7 +46,7 @@ namespace PicSum.Job.Jobs
                 {
                     var filePath = param.FilePathList[0];
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
-                    result.FileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false).WithConfig();
+                    result.FileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false);
                     return result;
                 }
                 catch (Exception ex) when (

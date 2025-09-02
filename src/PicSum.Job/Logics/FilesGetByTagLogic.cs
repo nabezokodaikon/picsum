@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByTagLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<FileByTagDto[]> Execute(IConnection con, string tag)
+        public FileByTagDto[] Execute(IConnection con, string tag)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "FilesGetByTagLogic.Execute"))
             {
                 var sql = new FileReadByTagSql(tag);
-                var dtoList = await con.ReadList<FileByTagDto>(sql).WithConfig();
+                var dtoList = con.ReadList<FileByTagDto>(sql);
                 return dtoList;
             }
         }

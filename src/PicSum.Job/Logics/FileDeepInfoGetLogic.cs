@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
 
         }
 
-        public async ValueTask<FileDeepInfoEntity> Get(
+        public FileDeepInfoEntity Get(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -33,8 +33,8 @@ namespace PicSum.Job.Logics
 
             if (FileUtil.IsExistsFile(filePath))
             {
-                return await this.GetFileInfo(
-                    filePath, thumbSize, isReadThumbnail).WithConfig();
+                return this.GetFileInfo(
+                    filePath, thumbSize, isReadThumbnail);
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -46,8 +46,8 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return await this.GetDirectoryInfo(
-                    filePath, thumbSize, isReadThumbnail).WithConfig();
+                return this.GetDirectoryInfo(
+                    filePath, thumbSize, isReadThumbnail);
             }
 
             return FileDeepInfoEntity.ERROR;
@@ -91,7 +91,7 @@ namespace PicSum.Job.Logics
             };
         }
 
-        private async ValueTask<FileDeepInfoEntity> GetDirectoryInfo(
+        private FileDeepInfoEntity GetDirectoryInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
@@ -121,12 +121,12 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).WithConfig();
+            var cache = Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile);
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = await this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
+            var thumbnail = this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE);
 
             this.ThrowIfJobCancellationRequested();
 
@@ -144,7 +144,7 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private async ValueTask<FileDeepInfoEntity> GetFileInfo(
+        private FileDeepInfoEntity GetFileInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             var (createDate, updateDate, fileSize) = FileUtil.GetFileInfo(filePath);
@@ -156,7 +156,7 @@ namespace PicSum.Job.Logics
                 FileType = FileUtil.GetTypeName(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = await this.GetTakenDate(filePath).WithConfig(),
+                TakenDate = this.GetTakenDate(filePath),
                 IsFile = true,
                 FileSize = fileSize,
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
@@ -175,15 +175,15 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            info.TakenDate = await this.GetOrCreate(filePath).WithConfig();
+            info.TakenDate = this.GetOrCreate(filePath);
             this.ThrowIfJobCancellationRequested();
 
-            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).WithConfig();
+            var cache = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath);
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = await this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
+            var thumbnail = this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE);
             info.IsImageFile = true;
 
             this.ThrowIfJobCancellationRequested();
@@ -202,13 +202,13 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private async ValueTask<CvImage> ReadImageFile(string filePath, float zoomValue)
+        private CvImage ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
                 using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFile Get Cache"))
                 {
-                    var image = await Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue).WithConfig();
+                    var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
                     if (!image.IsEmpry)
                     {
                         return image;
@@ -217,7 +217,7 @@ namespace PicSum.Job.Logics
 
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
-                    using (var bmp = await ImageUtil.ReadImageFile(filePath).WithConfig())
+                    using (var bmp = ImageUtil.ReadImageFile(filePath))
                     {
                         return new CvImage(
                             filePath, OpenCVUtil.ToMat(bmp), zoomValue);
@@ -233,11 +233,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<DateTime> GetOrCreate(string filePath)
+        private DateTime GetOrCreate(string filePath)
         {
             try
             {
-                return await Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath).WithConfig();
+                return Instance<IImageFileTakenDateCacher>.Value.GetOrCreate(filePath);
             }
             catch (ImageUtilException ex)
             {
@@ -246,11 +246,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<DateTime> GetTakenDate(string filePath)
+        private DateTime GetTakenDate(string filePath)
         {
             try
             {
-                return await Instance<IImageFileTakenDateCacher>.Value.Get(filePath).WithConfig();
+                return Instance<IImageFileTakenDateCacher>.Value.Get(filePath);
             }
             catch (ImageUtilException ex)
             {

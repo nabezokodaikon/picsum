@@ -9,7 +9,7 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryViewHistoryUpdateJob
         : AbstractOneWayJob<ValueParameter<string>>
     {
-        protected override async ValueTask Execute(ValueParameter<string> param)
+        protected override ValueTask Execute(ValueParameter<string> param)
         {
             if (string.IsNullOrEmpty(param.Value))
             {
@@ -18,18 +18,20 @@ namespace PicSum.Job.Jobs
 
             var ticks = DateTime.Now.Ticks;
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
             {
                 var updateDirectoryViewHistory = new DirectoryViewHistoryUpdateLogic(this);
-                if (!await updateDirectoryViewHistory.Execute(con, param.Value, ticks).WithConfig())
+                if (!updateDirectoryViewHistory.Execute(con, param.Value, ticks))
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
-                    await addFileMaster.Execute(con, param.Value).WithConfig();
-                    await updateDirectoryViewHistory.Execute(con, param.Value, ticks).WithConfig();
+                    addFileMaster.Execute(con, param.Value);
+                    updateDirectoryViewHistory.Execute(con, param.Value, ticks);
                 }
 
-                await con.Commit().WithConfig();
+                con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

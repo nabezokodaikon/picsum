@@ -30,7 +30,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Size GetImageSize(MemoryStream fs)
+        public static Size GetImageSize(Stream fs)
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 

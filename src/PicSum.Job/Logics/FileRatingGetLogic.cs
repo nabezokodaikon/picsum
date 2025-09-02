@@ -1,6 +1,5 @@
 using PicSum.DatabaseAccessor.Dto;
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 
@@ -10,12 +9,12 @@ namespace PicSum.Job.Logics
         : AbstractAsyncLogic(job)
     {
 
-        public async ValueTask<int> Execute(IConnection con, string filePath)
+        public int Execute(IConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new FileInfoReadSql(filePath);
-            var dto = await con.ReadLine<FileInfoDto>(sql).WithConfig();
+            var dto = con.ReadLine<FileInfoDto>(sql);
             if (dto != null)
             {
                 return dto.Rating;

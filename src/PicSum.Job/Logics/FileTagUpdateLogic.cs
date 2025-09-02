@@ -1,5 +1,4 @@
 using PicSum.DatabaseAccessor.Sql;
-using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
 
@@ -13,14 +12,14 @@ namespace PicSum.Job.Logics
     internal sealed class FileTagUpdateLogic(IAsyncJob job)
         : AbstractAsyncLogic(job)
     {
-        public async ValueTask<bool> Execute(
+        public bool Execute(
             IConnection con, string filePath, string tag, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagUpdateSql(filePath, tag, addDate);
-            return await con.Update(sql).WithConfig();
+            return con.Update(sql);
         }
     }
 }

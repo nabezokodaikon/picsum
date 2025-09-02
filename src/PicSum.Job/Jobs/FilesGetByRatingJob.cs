@@ -19,39 +19,39 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override async ValueTask Execute(FilesGetByRatingParameter param)
+        protected override ValueTask Execute(FilesGetByRatingParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = await this.GetFiles(param.RatingValue).WithConfig();
+            var dtos = this.GetFiles(param.RatingValue);
 
-            using (TimeMeasuring.Run(true, "FilesGetByRatingJob Parallel.ForEachAsync"))
+            using (TimeMeasuring.Run(true, "FilesGetByRatingJob Parallel.ForEach"))
             {
                 using (var cts = new CancellationTokenSource())
                 {
                     try
                     {
-                        await Parallel.ForEachAsync(
+                        Parallel.ForEach(
                             dtos,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            async (dto, token) =>
+                            dto =>
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = await getInfoLogic.Get(
-                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate).WithConfig();
+                                    var info = getInfoLogic.Get(
+                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate);
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -61,24 +61,26 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            }).WithConfig();
+                            });
                     }
                     catch (OperationCanceledException)
                     {
-                        return;
+                        return ValueTask.CompletedTask;
                     }
                 }
             }
 
             this.Callback([.. infoList]);
+
+            return ValueTask.CompletedTask;
         }
 
-        private async ValueTask<FileByRatingDto[]> GetFiles(int ratingValue)
+        private FileByRatingDto[] GetFiles(int ratingValue)
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.Connect())
             {
                 var logic = new FilesGetByRatingLogic(this);
-                return await logic.Execute(con, ratingValue).WithConfig();
+                return logic.Execute(con, ratingValue);
             }
         }
     }

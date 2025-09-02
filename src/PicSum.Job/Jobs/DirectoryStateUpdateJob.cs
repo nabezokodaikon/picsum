@@ -13,25 +13,27 @@ namespace PicSum.Job.Jobs
     internal sealed class DirectoryStateUpdateJob
         : AbstractOneWayJob<DirectoryStateParameter>
     {
-        protected override async ValueTask Execute(DirectoryStateParameter param)
+        protected override ValueTask Execute(DirectoryStateParameter param)
         {
             if (string.IsNullOrEmpty(param.DirectoryPath))
             {
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
-                if (!await updateDirectoryState.Execute(con, param).WithConfig())
+                if (!updateDirectoryState.Execute(con, param))
                 {
                     var addFileMasterLogic = new FileMasterAddLogic(this);
-                    await addFileMasterLogic.Execute(con, param.DirectoryPath).WithConfig();
-                    await updateDirectoryState.Execute(con, param).WithConfig();
+                    addFileMasterLogic.Execute(con, param.DirectoryPath);
+                    updateDirectoryState.Execute(con, param);
                 }
 
-                await con.Commit().WithConfig();
+                con.Commit();
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

@@ -15,37 +15,37 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override async ValueTask Execute()
+        protected override ValueTask Execute()
         {
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = await this.GetBookmarks().WithConfig();
+            var dtos = this.GetBookmarks();
 
-            using (TimeMeasuring.Run(true, "BookmarksGetJob Parallel.ForEachAsync"))
+            using (TimeMeasuring.Run(true, "BookmarksGetJob Parallel.ForEach"))
             {
                 using (var cts = new CancellationTokenSource())
                 {
                     try
                     {
-                        await Parallel.ForEachAsync(
+                        Parallel.ForEach(
                             dtos,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            async (dto, token) =>
+                            dto =>
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = await getInfoLogic.Get(
-                                        dto.FilePath, true, dto.RegistrationDate).WithConfig();
+                                    var info = getInfoLogic.Get(
+                                        dto.FilePath, true, dto.RegistrationDate);
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -55,24 +55,26 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            }).WithConfig();
+                            });
                     }
                     catch (OperationCanceledException)
                     {
-                        return;
+                        return ValueTask.CompletedTask;
                     }
                 }
             }
 
             this.Callback([.. infoList]);
+
+            return ValueTask.CompletedTask;
         }
 
-        private async ValueTask<BookmarkDto[]> GetBookmarks()
+        private BookmarkDto[] GetBookmarks()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.Connect())
             {
                 var getBookmarkLogic = new BookmarksGetLogic(this);
-                return await getBookmarkLogic.Execute(con).WithConfig();
+                return getBookmarkLogic.Execute(con);
             }
         }
     }
