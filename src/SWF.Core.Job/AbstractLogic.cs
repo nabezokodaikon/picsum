@@ -3,11 +3,11 @@ namespace SWF.Core.Job
     /// <summary>
     /// 非同期ロジック基底クラス
     /// </summary>
-    public abstract class AbstractAsyncLogic
+    public abstract class AbstractLogic
     {
-        private readonly IAsyncJob Job;
+        private readonly IJob Job;
 
-        protected AbstractAsyncLogic(IAsyncJob job)
+        protected AbstractLogic(IJob job)
         {
             ArgumentNullException.ThrowIfNull(job, nameof(job));
 

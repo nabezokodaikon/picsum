@@ -8,8 +8,8 @@ namespace PicSum.Job.Logics
     /// フォルダの表示履歴を追加します。
     /// </summary>
 
-    internal sealed class DirectoryViewHistoryUpdateLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryViewHistoryUpdateLogic(IJob job)
+        : AbstractLogic(job)
     {
         /// <summary>
         /// 処理を実行します。

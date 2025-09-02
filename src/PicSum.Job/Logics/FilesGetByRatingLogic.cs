@@ -10,8 +10,8 @@ namespace PicSum.Job.Logics
     /// ファイルを評価値で検索します。
     /// </summary>
 
-    internal sealed class FilesGetByRatingLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FilesGetByRatingLogic(IJob job)
+        : AbstractLogic(job)
     {
         public FileByRatingDto[] Execute(IConnection con, int rating)
         {

@@ -5,8 +5,8 @@ using System.Diagnostics;
 namespace SWF.Core.Job
 {
 
-    public abstract class AbstractAsyncJob
-        : IAsyncJob
+    public abstract class AbstractJob
+        : IJob
     {
         protected static readonly Logger LOGGER = NLogManager.GetLogger();
 
@@ -28,7 +28,7 @@ namespace SWF.Core.Job
 
         internal ISender? Sender { get; set; } = null;
 
-        protected AbstractAsyncJob()
+        protected AbstractJob()
         {
             this._id = JobID.GetNew();
             this._name = $"{this.GetType().Name} {this._id}";
@@ -91,7 +91,7 @@ namespace SWF.Core.Job
 
 
     public abstract class AbstractTwoWayJob<TParameter, TResult>
-        : AbstractAsyncJob
+        : AbstractJob
         where TParameter : class, IJobParameter
         where TResult : IJobResult
     {

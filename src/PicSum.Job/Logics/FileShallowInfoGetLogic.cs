@@ -12,8 +12,8 @@ namespace PicSum.Job.Logics
     /// ファイルの浅い情報を取得します。
     /// </summary>
 
-    internal sealed class FileShallowInfoGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FileShallowInfoGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public FileShallowInfoEntity Get(
             string filePath, bool isGetThumbnail, DateTime addDate)

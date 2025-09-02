@@ -19,15 +19,15 @@ namespace SWF.Core.Job
 
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly Channel<AbstractAsyncJob> _jobsChannel
-            = Channel.CreateBounded<AbstractAsyncJob>(new BoundedChannelOptions(1)
+        private readonly Channel<AbstractJob> _jobsChannel
+            = Channel.CreateBounded<AbstractJob>(new BoundedChannelOptions(1)
             {
                 AllowSynchronousContinuations = false,
                 FullMode = BoundedChannelFullMode.DropOldest,
                 SingleReader = true,
                 SingleWriter = true
             });
-        private readonly List<AbstractAsyncJob> _currentJobList = [];
+        private readonly List<AbstractJob> _currentJobList = [];
 
         public TwoWayJob()
         {

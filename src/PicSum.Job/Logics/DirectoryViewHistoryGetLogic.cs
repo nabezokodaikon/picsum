@@ -12,8 +12,8 @@ namespace PicSum.Job.Logics
     /// フォルダの表示履歴を取得します。
     /// </summary>
 
-    internal sealed class DirectoryViewHistoryGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryViewHistoryGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public string[] Execute(IConnection con)
         {

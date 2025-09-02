@@ -11,8 +11,8 @@ namespace PicSum.Job.Logics
     /// フォルダ状態を取得します。
     /// </summary>
 
-    internal sealed class DirectoryStateGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryStateGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public DirectoryStateParameter Execute(IConnection con, string directoryPath)
         {

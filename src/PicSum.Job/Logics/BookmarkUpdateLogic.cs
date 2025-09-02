@@ -5,8 +5,8 @@ using SWF.Core.Job;
 namespace PicSum.Job.Logics
 {
 
-    internal sealed class BookmarkUpdateLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class BookmarkUpdateLogic(IJob job)
+        : AbstractLogic(job)
     {
         public bool Execute(IConnection con, string filePath, DateTime addDate)
         {

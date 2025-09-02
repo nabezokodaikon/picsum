@@ -8,8 +8,8 @@ namespace PicSum.Job.Logics
     /// ファイルマスタに登録します。
     /// </summary>
 
-    internal sealed class FileMasterAddLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FileMasterAddLogic(IJob job)
+        : AbstractLogic(job)
     {
         /// <summary>
         /// 処理を実行します。

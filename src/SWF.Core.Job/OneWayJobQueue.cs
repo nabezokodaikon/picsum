@@ -15,8 +15,8 @@ namespace SWF.Core.Job
         private bool _isShuttingDown = false;
         private readonly Task _task;
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly Channel<AbstractAsyncJob> _jobsChannel
-            = Channel.CreateUnbounded<AbstractAsyncJob>(new UnboundedChannelOptions()
+        private readonly Channel<AbstractJob> _jobsChannel
+            = Channel.CreateUnbounded<AbstractJob>(new UnboundedChannelOptions()
             {
                 AllowSynchronousContinuations = false,
                 SingleReader = true,

@@ -6,8 +6,8 @@ using SWF.Core.Job;
 namespace PicSum.Job.Logics
 {
 
-    internal sealed class FavoriteDirectoriesGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FavoriteDirectoriesGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public SingleValueDto<string>[] Execute(IConnection con)
         {

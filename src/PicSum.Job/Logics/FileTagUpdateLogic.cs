@@ -9,8 +9,8 @@ namespace PicSum.Job.Logics
     /// </summary>
     /// <remarks>タグの存在確認として使用します。</remarks>
 
-    internal sealed class FileTagUpdateLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FileTagUpdateLogic(IJob job)
+        : AbstractLogic(job)
     {
         public bool Execute(
             IConnection con, string filePath, string tag, DateTime addDate)

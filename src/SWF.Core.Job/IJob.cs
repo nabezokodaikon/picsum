@@ -1,6 +1,6 @@
 namespace SWF.Core.Job
 {
-    public interface IAsyncJob
+    public interface IJob
     {
         public bool IsJobCancel { get; }
         public void ThrowIfJobCancellationRequested();

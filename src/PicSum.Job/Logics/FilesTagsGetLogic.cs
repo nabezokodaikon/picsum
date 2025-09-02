@@ -12,8 +12,8 @@ namespace PicSum.Job.Logics
     /// ファイルタグ取得非同期ロジック
     /// </summary>
 
-    internal sealed class FilesTagsGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FilesTagsGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public ListEntity<FileTagInfoEntity> Execute(IConnection con, string[] filePathList)
         {

@@ -12,8 +12,8 @@ namespace PicSum.Job.Logics
     /// タグの一覧を取得します。
     /// </summary>
 
-    internal sealed class TagsGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class TagsGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public string[] Execute(IConnection con)
         {

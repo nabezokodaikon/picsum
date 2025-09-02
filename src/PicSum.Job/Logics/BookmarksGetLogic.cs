@@ -7,8 +7,8 @@ using SWF.Core.Job;
 namespace PicSum.Job.Logics
 {
 
-    internal sealed class BookmarksGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class BookmarksGetLogic(IJob job)
+        : AbstractLogic(job)
     {
         public BookmarkDto[] Execute(IConnection con)
         {

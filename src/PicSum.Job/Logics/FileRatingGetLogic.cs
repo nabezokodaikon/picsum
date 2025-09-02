@@ -5,8 +5,8 @@ using SWF.Core.Job;
 
 namespace PicSum.Job.Logics
 {
-    internal sealed class FileRatingGetLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class FileRatingGetLogic(IJob job)
+        : AbstractLogic(job)
     {
 
         public int Execute(IConnection con, string filePath)

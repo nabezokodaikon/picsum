@@ -10,8 +10,8 @@ namespace PicSum.Job.Logics
     /// フォルダ状態テーブルを更新します。
     /// </summary>
 
-    internal sealed class DirectoryStateUpdateLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryStateUpdateLogic(IJob job)
+        : AbstractLogic(job)
     {
         public bool Execute(IConnection con, DirectoryStateParameter directoryState)
         {

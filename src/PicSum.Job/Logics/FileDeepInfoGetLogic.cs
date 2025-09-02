@@ -13,9 +13,9 @@ namespace PicSum.Job.Logics
     /// </summary>
 
     internal sealed class FileDeepInfoGetLogic
-        : AbstractAsyncLogic
+        : AbstractLogic
     {
-        public FileDeepInfoGetLogic(IAsyncJob job)
+        public FileDeepInfoGetLogic(IJob job)
             : base(job)
         {
 

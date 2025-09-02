@@ -8,8 +8,8 @@ namespace PicSum.Job.Logics
     /// フォルダの表示回数を削除します。
     /// </summary>
 
-    internal sealed class DirectoryViewCounterDeleteLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryViewCounterDeleteLogic(IJob job)
+        : AbstractLogic(job)
     {
         /// <summary>
         /// 処理を実行します。

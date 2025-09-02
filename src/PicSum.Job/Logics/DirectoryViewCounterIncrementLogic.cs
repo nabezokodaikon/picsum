@@ -5,8 +5,8 @@ using SWF.Core.Job;
 namespace PicSum.Job.Logics
 {
 
-    internal sealed class DirectoryViewCounterIncrementLogic(IAsyncJob job)
-        : AbstractAsyncLogic(job)
+    internal sealed class DirectoryViewCounterIncrementLogic(IJob job)
+        : AbstractLogic(job)
     {
         public bool Execute(IConnection con, string directoryPath)
         {

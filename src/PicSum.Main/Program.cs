@@ -161,7 +161,7 @@ namespace PicSum.Main
                 typeof(SWF.Core.DatabaseAccessor.AbstractDao),
                 typeof(SWF.Core.FileAccessor.CacheFileController),
                 typeof(SWF.Core.ImageAccessor.CvImage),
-                typeof(SWF.Core.Job.AbstractAsyncJob),
+                typeof(SWF.Core.Job.AbstractJob),
                 typeof(SWF.Core.ResourceAccessor.ResourceFiles),
                 typeof(SWF.Core.StringAccessor.NaturalStringComparer),
 
