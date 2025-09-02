@@ -115,7 +115,7 @@ namespace SWF.Core.Job
 
             try
             {
-                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token).ConfigureAwait(false))
+                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token).WithConfig())
                 {
                     token.ThrowIfCancellationRequested();
 
