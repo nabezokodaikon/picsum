@@ -12,7 +12,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected override async ValueTask Execute(ImageFileCacheParameter parameter)
+        protected override ValueTask Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -46,39 +46,39 @@ namespace PicSum.Job.Jobs
                 .. previewFiles];
             if (targetFiles.Length < 1)
             {
-                return;
+                return ValueTask.CompletedTask;
             }
 
             using (var cts = new CancellationTokenSource())
             {
                 try
                 {
-                    await Parallel.ForEachAsync(
+                    Parallel.ForEach(
                         targetFiles,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (file, token) =>
+                        file =>
                         {
                             try
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
-                                await Instance<IImageFileCacher>.Value.Create(file).WithConfig();
-                                var size = await Instance<IImageFileCacher>.Value.GetSize(file).WithConfig();
+                                Instance<IImageFileCacher>.Value.Create(file);
+                                var size = Instance<IImageFileCacher>.Value.GetSize(file);
                                 if (size != ImageUtil.EMPTY_SIZE)
                                 {
-                                    await Instance<IImageFileSizeCacher>.Value.Set(file, size).WithConfig();
+                                    Instance<IImageFileSizeCacher>.Value.Set(file, size);
                                 }
                                 else
                                 {
-                                    await Instance<IImageFileSizeCacher>.Value.Create(file).WithConfig();
+                                    Instance<IImageFileSizeCacher>.Value.Create(file);
                                 }
                             }
                             catch (Exception ex) when (
@@ -88,10 +88,12 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    ).WithConfig();
+                    );
                 }
                 catch (OperationCanceledException) { }
             }
+
+            return ValueTask.CompletedTask;
         }
 
         private int GetNextIndex(int currentIndex, string[] files)

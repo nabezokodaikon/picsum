@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     internal sealed class FilesTagsGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public async ValueTask<ListEntity<FileTagInfoEntity>> Execute(IConnection con, string[] filePathList)
+        public ListEntity<FileTagInfoEntity> Execute(IConnection con, string[] filePathList)
         {
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
@@ -37,7 +37,7 @@ namespace PicSum.Job.Logics
                         .ToArray();
 
                     var sql = new FileTagReadSql(targets);
-                    dtoList.AddRange(await con.ReadList<SingleValueDto<string>>(sql).WithConfig());
+                    dtoList.AddRange(con.ReadList<SingleValueDto<string>>(sql));
 
                     startIndex += TAKE_COUNT;
                 }

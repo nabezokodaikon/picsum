@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     internal sealed class ImageFileReadLogic(IJob job)
         : AbstractLogic(job)
     {
-        internal async ValueTask<ImageFileReadResult> CreateResult(
+        internal ImageFileReadResult CreateResult(
             int index,
             string filePath,
             bool isMain,
@@ -29,7 +29,7 @@ namespace PicSum.Job.Logics
             {
                 using (TimeMeasuring.Run(false, $"ImageFileReadLogic.CreateResult"))
                 {
-                    image = await this.ReadImageFile(filePath, zoomValue).WithConfig();
+                    image = this.ReadImageFile(filePath, zoomValue);
 
                     this.ThrowIfJobCancellationRequested();
 
@@ -65,10 +65,10 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal async ValueTask<ImageFileReadResult> CreateLoadingResult(
+        internal ImageFileReadResult CreateLoadingResult(
             int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
-            var thumbnail = await this.GetThumbnail(filePath, imageSize, zoomValue).WithConfig();
+            var thumbnail = this.GetThumbnail(filePath, imageSize, zoomValue);
             var isEmpty = thumbnail.IsEmpry;
             var image = isEmpty ? new CvImage(filePath, imageSize, zoomValue) : thumbnail;
 
@@ -87,11 +87,11 @@ namespace PicSum.Job.Logics
             };
         }
 
-        internal async ValueTask<Size> GetImageSize(string filePath)
+        internal Size GetImageSize(string filePath)
         {
             try
             {
-                var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).WithConfig();
+                var cache = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath);
                 return cache.Size;
             }
             catch (Exception ex) when (
@@ -103,7 +103,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal async ValueTask<int> GetNextIndex(ImageFileReadParameter parameter)
+        internal int GetNextIndex(ImageFileReadParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -131,7 +131,7 @@ namespace PicSum.Job.Logics
             else
             {
                 var currentFilePath = files[currentIndex];
-                var currentImageSize = await this.GetImageSize(currentFilePath).WithConfig();
+                var currentImageSize = this.GetImageSize(currentFilePath);
                 if (currentImageSize != ImageUtil.EMPTY_SIZE
                     && currentImageSize.Width <= currentImageSize.Height)
                 {
@@ -142,7 +142,7 @@ namespace PicSum.Job.Logics
                     }
 
                     var nextFilePath = files[nextIndex];
-                    var nextImageSize = await this.GetImageSize(nextFilePath).WithConfig();
+                    var nextImageSize = this.GetImageSize(nextFilePath);
                     if (nextImageSize != ImageUtil.EMPTY_SIZE
                         && nextImageSize.Width <= nextImageSize.Height)
                     {
@@ -174,7 +174,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        internal async ValueTask<int> GetPreviewIndex(ImageFileReadParameter parameter)
+        internal int GetPreviewIndex(ImageFileReadParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
@@ -208,7 +208,7 @@ namespace PicSum.Job.Logics
                 }
 
                 var prevFilePath1 = files[prevIndex1];
-                var prevImageSize1 = await this.GetImageSize(prevFilePath1).WithConfig();
+                var prevImageSize1 = this.GetImageSize(prevFilePath1);
                 if (prevImageSize1 != ImageUtil.EMPTY_SIZE
                     && prevImageSize1.Width <= prevImageSize1.Height)
                 {
@@ -219,7 +219,7 @@ namespace PicSum.Job.Logics
                     }
 
                     var prevFilePath2 = files[prevIndex2];
-                    var prevImageSize2 = await this.GetImageSize(prevFilePath2).WithConfig();
+                    var prevImageSize2 = this.GetImageSize(prevFilePath2);
                     if (prevImageSize2 != ImageUtil.EMPTY_SIZE
                         && prevImageSize2.Width <= prevImageSize2.Height)
                     {
@@ -237,13 +237,13 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<CvImage> ReadImageFile(string filePath, float zoomValue)
+        private CvImage ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
-                    var image = await Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue).WithConfig();
+                    var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
                     if (!image.IsEmpry)
                     {
                         return image;
@@ -252,7 +252,7 @@ namespace PicSum.Job.Logics
 
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
-                    using (var bmp = await ImageUtil.ReadImageFile(filePath).WithConfig())
+                    using (var bmp = ImageUtil.ReadImageFile(filePath))
                     {
                         return new CvImage(
                             filePath, OpenCVUtil.ToMat(bmp), zoomValue);
@@ -268,11 +268,11 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<CvImage> GetThumbnail(string filePath, Size imageSize, float zoomValue)
+        private CvImage GetThumbnail(string filePath, Size imageSize, float zoomValue)
         {
             using (TimeMeasuring.Run(false, "ImageFileReadLogic.GetThumbnail"))
             {
-                var cache = await Instance<IThumbnailCacher>.Value.GetCache(filePath).WithConfig();
+                var cache = Instance<IThumbnailCacher>.Value.GetCache(filePath);
                 if (!cache.IsEmpry
                     && cache.ThumbnailBuffer != null)
                 {

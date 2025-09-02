@@ -13,7 +13,7 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryStateUpdateLogic(IJob job)
         : AbstractLogic(job)
     {
-        public async ValueTask<bool> Execute(IConnection con, DirectoryStateParameter directoryState)
+        public bool Execute(IConnection con, DirectoryStateParameter directoryState)
         {
             ArgumentNullException.ThrowIfNull(directoryState, nameof(directoryState));
 
@@ -38,7 +38,7 @@ namespace PicSum.Job.Logics
                     directoryState.DirectoryPath,
                     (int)directoryState.SortMode,
                     directoryState.IsAscending);
-                return await con.Update(sql).WithConfig();
+                return con.Update(sql);
             }
             else
             {
@@ -47,7 +47,7 @@ namespace PicSum.Job.Logics
                     (int)directoryState.SortMode,
                     directoryState.IsAscending,
                     directoryState.SelectedFilePath);
-                return await con.Update(sql).WithConfig();
+                return con.Update(sql);
             }
         }
     }

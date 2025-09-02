@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 4;
 
-        protected override async ValueTask Execute(ThumbnailsGetParameter param)
+        protected override ValueTask Execute(ThumbnailsGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -38,33 +38,33 @@ namespace PicSum.Job.Jobs
             {
                 try
                 {
-                    await Parallel.ForEachAsync(
+                    Parallel.ForEach(
                         filePathList,
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (filePath, token) =>
+                        filePath =>
                         {
                             try
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
-                                    token.ThrowIfCancellationRequested();
+                                    cts.Cancel();
+                                    cts.Token.ThrowIfCancellationRequested();
                                 }
 
-                                var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).WithConfig();
+                                var bf = Instance<IThumbnailCacher>.Value.GetOrCreateCache(
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight);
                                 if (param.IsExecuteCallback
                                     && !bf.IsEmpry
                                     && bf.ThumbnailBuffer != null)
                                 {
-                                    await Instance<IImageFileSizeCacher>.Value.Set(
+                                    Instance<IImageFileSizeCacher>.Value.Set(
                                         bf.FilePath,
                                         new Size(bf.SourceWidth, bf.SourceHeight),
-                                        bf.FileUpdateDate).WithConfig();
+                                        bf.FileUpdateDate);
 
                                     var img = new ThumbnailImageResult
                                     {
@@ -89,10 +89,12 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    ).WithConfig();
+                    );
                 }
                 catch (OperationCanceledException) { }
             }
+
+            return ValueTask.CompletedTask;
         }
     }
 }

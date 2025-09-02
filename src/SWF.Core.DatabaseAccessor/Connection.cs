@@ -1,4 +1,3 @@
-using SWF.Core.Base;
 using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
@@ -12,30 +11,30 @@ namespace SWF.Core.DatabaseAccessor
         private bool _disposed = false;
 #pragma warning disable CA2213
         private SemaphoreSlim? _lockObject = null;
-#pragma warning restore CA2213
         private SQLiteConnection? _connection = null;
+#pragma warning restore CA2213
         private DbTransaction? _transaction = null;
         private bool _isDispose;
         private bool _isCommitted = false;
 
-        public async ValueTask Initialize(SemaphoreSlim lockObject, string filePath, bool isTransaction)
+        public void Initialize(SemaphoreSlim lockObject, string filePath, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             this._lockObject = lockObject;
             this._connection = new SQLiteConnection($"Data Source={filePath}");
-            await this._connection.OpenAsync().WithConfig();
+            this._connection.Open();
 
             if (isTransaction)
             {
-                this._transaction = await this._connection.BeginTransactionAsync().WithConfig();
+                this._transaction = this._connection.BeginTransaction();
             }
 
             this._isDispose = true;
         }
 
-        public async ValueTask Initialize(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
+        public void Initialize(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
         {
             ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
             ArgumentNullException.ThrowIfNull(connection, nameof(connection));
@@ -45,13 +44,13 @@ namespace SWF.Core.DatabaseAccessor
 
             if (isTransaction)
             {
-                this._transaction = await this._connection.BeginTransactionAsync().WithConfig();
+                this._transaction = this._connection.BeginTransaction();
             }
 
             this._isDispose = false;
         }
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
             if (this._disposed)
             {
@@ -62,17 +61,17 @@ namespace SWF.Core.DatabaseAccessor
             {
                 if (!this._isCommitted)
                 {
-                    await this._transaction.RollbackAsync().WithConfig();
+                    this._transaction.Rollback();
                 }
 
-                await this._transaction.DisposeAsync().WithConfig();
+                this._transaction.Dispose();
             }
 
             if (this._isDispose)
             {
                 if (this._connection is not null)
                 {
-                    await this._connection.DisposeAsync().WithConfig();
+                    this._connection.Dispose();
                 }
             }
 
@@ -83,18 +82,18 @@ namespace SWF.Core.DatabaseAccessor
             GC.SuppressFinalize(this);
         }
 
-        public async ValueTask Commit()
+        public void Commit()
         {
             if (this._transaction == null)
             {
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
-            await this._transaction.CommitAsync().WithConfig();
+            this._transaction.Commit();
             this._isCommitted = true;
         }
 
-        public async ValueTask<bool> Update(SqlBase sql)
+        public bool Update(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
@@ -114,7 +113,7 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteNonQueryAsync().WithConfig();
+                var result = cmd.ExecuteNonQuery();
                 if (result > 0)
                 {
                     // 更新されたレコードが存在するため、Trueを返します。
@@ -128,7 +127,7 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public async ValueTask<TDto[]> ReadList<TDto>(SqlBase<TDto> sql)
+        public TDto[] ReadList<TDto>(SqlBase<TDto> sql)
             where TDto : IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
@@ -149,13 +148,13 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).WithConfig())
+                using (var reader = cmd.ExecuteReader(CommandBehavior.Default))
                 {
                     if (reader.HasRows)
                     {
                         var list = new List<TDto>();
 
-                        while (await reader.ReadAsync().WithConfig())
+                        while (reader.Read())
                         {
                             var dto = new TDto();
                             dto.Read(reader);
@@ -172,7 +171,7 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public async ValueTask<TDto?> ReadLine<TDto>(SqlBase<TDto> sql)
+        public TDto? ReadLine<TDto>(SqlBase<TDto> sql)
                  where TDto : class, IDto, new()
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
@@ -193,11 +192,11 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).WithConfig())
+                using (var reader = cmd.ExecuteReader(CommandBehavior.SingleRow))
                 {
                     if (reader.HasRows)
                     {
-                        await reader.ReadAsync().WithConfig();
+                        reader.Read();
                         var dto = new TDto();
                         dto.Read(reader);
                         return dto;
@@ -210,7 +209,7 @@ namespace SWF.Core.DatabaseAccessor
             }
         }
 
-        public async ValueTask<T?> ReadValue<T>(SqlBase sql)
+        public T? ReadValue<T>(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
@@ -230,7 +229,7 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteScalarAsync().WithConfig();
+                var result = cmd.ExecuteScalar();
                 if (result != null && result != DBNull.Value)
                 {
                     return (T)result;

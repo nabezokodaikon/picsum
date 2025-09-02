@@ -1,6 +1,5 @@
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
-using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 
@@ -14,7 +13,7 @@ namespace PicSum.Job.Jobs
     public sealed class SubDirectoriesGetJob
         : AbstractTwoWayJob<ValueParameter<string>, ListResult<FileShallowInfoEntity>>
     {
-        protected override async ValueTask Execute(ValueParameter<string> param)
+        protected override ValueTask Execute(ValueParameter<string> param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -32,7 +31,7 @@ namespace PicSum.Job.Jobs
 
                 try
                 {
-                    var info = await logic.Get(subDirectory, false).WithConfig();
+                    var info = logic.Get(subDirectory, false);
                     if (!info.IsEmpty)
                     {
                         result.Add(info);
@@ -46,6 +45,8 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback(result);
+
+            return ValueTask.CompletedTask;
         }
     }
 }

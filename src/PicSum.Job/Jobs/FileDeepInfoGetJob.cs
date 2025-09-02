@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override async ValueTask Execute(FileDeepInfoGetParameter param)
+        protected override ValueTask Execute(FileDeepInfoGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -26,14 +26,16 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var result = await this.CreateCallbackResult(param).WithConfig();
+            var result = this.CreateCallbackResult(param);
 
             this.ThrowIfJobCancellationRequested();
 
             this.Callback(result);
+
+            return ValueTask.CompletedTask;
         }
 
-        private async ValueTask<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
+        private FileDeepInfoGetResult CreateCallbackResult(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -53,14 +55,14 @@ namespace PicSum.Job.Jobs
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    fileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true).WithConfig();
+                    fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
 
                     this.ThrowIfJobCancellationRequested();
 
-                    await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+                    using (var con = Instance<IFileInfoDao>.Value.Connect())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
-                        fileInfo.Rating = await ratingGetLogic.Execute(con, filePath).WithConfig();
+                        fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
                     }
 
                     this.ThrowIfJobCancellationRequested();
@@ -82,10 +84,10 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.Connect())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
-                result.TagInfoList = await tagsGetLogic.Execute(con, result.FilePathList).WithConfig();
+                result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
             }
 
             return result;

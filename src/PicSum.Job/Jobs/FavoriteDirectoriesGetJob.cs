@@ -13,11 +13,11 @@ namespace PicSum.Job.Jobs
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
-        protected override async ValueTask Execute(FavoriteDirectoriesGetParameter param)
+        protected override ValueTask Execute(FavoriteDirectoriesGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var dtos = await this.GetOrCreateFileList().WithConfig();
+            var dtos = this.GetOrCreateFileList();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
@@ -41,7 +41,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = await getInfoLogic.Get(dto.Value, true).WithConfig();
+                        var info = getInfoLogic.Get(dto.Value, true);
                         if (!info.IsEmpty)
                         {
                             infoList.Add(info);
@@ -55,21 +55,23 @@ namespace PicSum.Job.Jobs
             }
 
             this.Callback([.. infoList]);
+
+            return ValueTask.CompletedTask;
         }
 
-        private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
+        private SingleValueDto<string>[] GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.Connect())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
-                var dtos = await logic.Execute(con).WithConfig();
+                var dtos = logic.Execute(con);
                 if (dtos.Length > 0)
                 {
                     return dtos;
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -81,17 +83,17 @@ namespace PicSum.Job.Jobs
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    if (!await incrementDirectoryViewCounter.Execute(con, dirPath).WithConfig())
+                    if (!incrementDirectoryViewCounter.Execute(con, dirPath))
                     {
-                        await addFileMaster.Execute(con, dirPath).WithConfig();
-                        await incrementDirectoryViewCounter.Execute(con, dirPath).WithConfig();
+                        addFileMaster.Execute(con, dirPath);
+                        incrementDirectoryViewCounter.Execute(con, dirPath);
                     }
                 }
 
-                await con.Commit().WithConfig();
+                con.Commit();
             }
 
-            return await this.GetOrCreateFileList().WithConfig();
+            return this.GetOrCreateFileList();
         }
     }
 }

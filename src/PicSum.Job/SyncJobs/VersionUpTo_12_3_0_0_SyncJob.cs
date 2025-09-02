@@ -14,30 +14,28 @@ namespace PicSum.Job.SyncJobs
             var logger = NLogManager.GetLogger();
             logger.Debug("バージョン'12.3.0.0'に更新します。");
 
-#pragma warning disable CA2012
-            this.UpdateTDirectoryViewHistoryTable().GetAwaiter().GetResult();
-            this.Vacuum().GetAwaiter().GetResult();
-#pragma warning restore CA2012
+            this.UpdateTDirectoryViewHistoryTable();
+            this.Vacuum();
 
             logger.Debug("バージョン'12.3.0.0'に更新しました。");
         }
 
-        private async ValueTask UpdateTDirectoryViewHistoryTable()
+        private void UpdateTDirectoryViewHistoryTable()
         {
             var updateSql = new VersionUpTo_12_3_0_0_Sql();
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.ConnectWithTransaction())
             {
-                await con.Update(updateSql).WithConfig();
-                await con.Commit().WithConfig();
+                con.Update(updateSql);
+                con.Commit();
             }
         }
 
-        private async ValueTask Vacuum()
+        private void Vacuum()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            using (var con = Instance<IFileInfoDao>.Value.Connect())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
-                await con.ReadLine(cleanupSql).WithConfig();
+                con.ReadLine(cleanupSql);
             }
         }
     }
