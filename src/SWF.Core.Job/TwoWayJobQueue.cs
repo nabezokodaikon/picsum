@@ -57,10 +57,10 @@ namespace SWF.Core.Job
             try
             {
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                this._task.GetAwaiter().GetResult();
+                this._task.Wait();
                 LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
-            catch (OperationCanceledException)
+            catch (AggregateException ex) when (ex.InnerExceptions[0] is TaskCanceledException)
             {
                 LOGGER.Trace($"{TASK_NAME} はキャンセルにより終了しました。");
             }
