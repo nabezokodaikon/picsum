@@ -14,12 +14,12 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryStateGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public DirectoryStateParameter Execute(IConnection con, string directoryPath)
+        public async ValueTask<DirectoryStateParameter> Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryStateReadSql(directoryPath);
-            var dto = con.ReadLine<DirectoryStateDto>(sql);
+            var dto = await con.ReadLine<DirectoryStateDto>(sql).WithConfig();
             if (dto != null)
             {
                 var sortMode = (FileSortMode)dto.SortTypeId;

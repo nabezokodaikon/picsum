@@ -15,12 +15,12 @@ namespace PicSum.Job.Logics
         /// 処理を実行します。
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
-        public void Execute(IConnection con, string directoryPath)
+        public async ValueTask Execute(IConnection con, string directoryPath)
         {
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterDeletionSql(directoryPath);
-            con.Update(sql);
+            await con.Update(sql).WithConfig();
         }
     }
 }

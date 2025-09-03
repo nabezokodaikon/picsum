@@ -9,12 +9,12 @@ namespace PicSum.Job.Logics
         : AbstractLogic(job)
     {
 
-        public int Execute(IConnection con, string filePath)
+        public async ValueTask<int> Execute(IConnection con, string filePath)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new FileInfoReadSql(filePath);
-            var dto = con.ReadLine<FileInfoDto>(sql);
+            var dto = await con.ReadLine<FileInfoDto>(sql).WithConfig();
             if (dto != null)
             {
                 return dto.Rating;

@@ -13,12 +13,12 @@ namespace PicSum.Job.Logics
     internal sealed class FilesGetByRatingLogic(IJob job)
         : AbstractLogic(job)
     {
-        public FileByRatingDto[] Execute(IConnection con, int rating)
+        public async ValueTask<FileByRatingDto[]> Execute(IConnection con, int rating)
         {
             using (TimeMeasuring.Run(true, "FilesGetByRatingLogic.Execute"))
             {
                 var sql = new FileReadByRatingSql(rating);
-                var dtoList = con.ReadList<FileByRatingDto>(sql);
+                var dtoList = await con.ReadList<FileByRatingDto>(sql).WithConfig();
                 return dtoList;
             }
         }

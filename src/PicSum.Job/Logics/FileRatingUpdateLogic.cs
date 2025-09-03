@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileRatingUpdateLogic(IJob job)
         : AbstractLogic(job)
     {
-        public bool Execute(
+        public async ValueTask<bool> Execute(
             IConnection con, string filePath, int ratingValue, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
             }
 
             var sql = new RatingUpdateSql(filePath, ratingValue, addDate);
-            return con.Update(sql);
+            return await con.Update(sql).WithConfig();
         }
     }
 }

@@ -15,10 +15,10 @@ namespace PicSum.Job.Logics
     internal sealed class TagsGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public string[] Execute(IConnection con)
+        public async ValueTask<string[]> Execute(IConnection con)
         {
             var sql = new AllTagsReadSql();
-            var dtoList = con.ReadList<TagInfoDto>(sql);
+            var dtoList = await con.ReadList<TagInfoDto>(sql).WithConfig();
 
             return [.. dtoList
                 .AsValueEnumerable()

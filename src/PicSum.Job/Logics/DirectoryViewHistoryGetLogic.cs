@@ -15,12 +15,12 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public string[] Execute(IConnection con)
+        public async ValueTask<string[]> Execute(IConnection con)
         {
             using (TimeMeasuring.Run(true, "DirectoryViewHistoryGetLogic.Execute"))
             {
                 var sql = new DirectoryViewHistoryReadSql(100);
-                var dtoList = con.ReadList<DirectoryViewHistoryDto>(sql);
+                var dtoList = await con.ReadList<DirectoryViewHistoryDto>(sql).WithConfig();
                 return [.. dtoList
                     .AsValueEnumerable()
                     .Select(static dto => dto.DirectoryPath)];

@@ -57,10 +57,10 @@ namespace PicSum.Job.Jobs
 
                     this.ThrowIfJobCancellationRequested();
 
-                    using (var con = Instance<IFileInfoDao>.Value.Connect())
+                    await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
-                        fileInfo.Rating = ratingGetLogic.Execute(con, filePath);
+                        fileInfo.Rating = await ratingGetLogic.Execute(con, filePath).WithConfig();
                     }
 
                     this.ThrowIfJobCancellationRequested();
@@ -82,10 +82,10 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            using (var con = Instance<IFileInfoDao>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
-                result.TagInfoList = tagsGetLogic.Execute(con, result.FilePathList);
+                result.TagInfoList = await tagsGetLogic.Execute(con, result.FilePathList).WithConfig();
             }
 
             return result;

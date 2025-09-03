@@ -51,28 +51,28 @@ namespace PicSum.Job.Jobs
                 {
                     await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
-                    this.Callback(logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue));
+                    this.Callback(await logic.CreateLoadingResult(
+                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue).WithConfig());
 
                     await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
-                    this.Callback(logic.CreateLoadingResult(
-                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue));
+                    this.Callback(await logic.CreateLoadingResult(
+                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue).WithConfig());
                 }
                 else
                 {
                     await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
-                    this.Callback(logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
+                    this.Callback(await logic.CreateLoadingResult(
+                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
                 }
             }
             else
             {
                 await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
 
-                this.Callback(logic.CreateLoadingResult(
-                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue));
+                this.Callback(await logic.CreateLoadingResult(
+                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
             }
         }
     }

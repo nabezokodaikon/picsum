@@ -19,7 +19,7 @@ namespace PicSum.Job.Jobs
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 8;
 
-        protected override ValueTask Execute(FilesGetByTagParameter param)
+        protected override async ValueTask Execute(FilesGetByTagParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -30,7 +30,7 @@ namespace PicSum.Job.Jobs
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = this.GetFiles(param.Tag);
+            var dtos = await this.GetFiles(param.Tag).WithConfig();
 
             using (TimeMeasuring.Run(true, "FilesGetByTagJob Parallel.ForEach"))
             {
@@ -38,25 +38,25 @@ namespace PicSum.Job.Jobs
                 {
                     try
                     {
-                        Parallel.ForEach(
+                        await Parallel.ForEachAsync(
                             dtos,
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            dto =>
+                            async (dto, _) =>
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    cts.Cancel();
+                                    await cts.CancelAsync().WithConfig();
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = getInfoLogic.Get(
-                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate);
+                                    var info = await getInfoLogic.Get(
+                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate).WithConfig();
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -66,26 +66,24 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            });
+                            }).WithConfig();
                     }
                     catch (OperationCanceledException)
                     {
-                        return ValueTask.CompletedTask;
+                        return;
                     }
                 }
             }
 
             this.Callback([.. infoList]);
-
-            return ValueTask.CompletedTask;
         }
 
-        private FileByTagDto[] GetFiles(string tag)
+        private async ValueTask<FileByTagDto[]> GetFiles(string tag)
         {
-            using (var con = Instance<IFileInfoDao>.Value.Connect())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {
                 var logic = new FilesGetByTagLogic(this);
-                return logic.Execute(con, tag);
+                return await logic.Execute(con, tag).WithConfig();
             }
         }
     }
