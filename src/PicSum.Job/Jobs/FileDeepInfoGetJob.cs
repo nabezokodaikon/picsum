@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
     public sealed class FileDeepInfoGetJob
         : AbstractTwoWayJob<FileDeepInfoGetParameter, FileDeepInfoGetResult>
     {
-        protected override ValueTask Execute(FileDeepInfoGetParameter param)
+        protected override async ValueTask Execute(FileDeepInfoGetParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
@@ -26,16 +26,14 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var result = this.CreateCallbackResult(param);
+            var result = await this.CreateCallbackResult(param).WithConfig();
 
             this.ThrowIfJobCancellationRequested();
 
             this.Callback(result);
-
-            return ValueTask.CompletedTask;
         }
 
-        private FileDeepInfoGetResult CreateCallbackResult(FileDeepInfoGetParameter param)
+        private async ValueTask<FileDeepInfoGetResult> CreateCallbackResult(FileDeepInfoGetParameter param)
         {
             if (param.FilePathList == null)
             {
@@ -55,7 +53,7 @@ namespace PicSum.Job.Jobs
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    fileInfo = deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true);
+                    fileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true).WithConfig();
 
                     this.ThrowIfJobCancellationRequested();
 

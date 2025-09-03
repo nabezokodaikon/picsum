@@ -4,6 +4,7 @@ using PicSum.Job.Entities;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using System.Drawing;
 
@@ -80,7 +81,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        public ThumbnailCacheEntity GetOrCreateCache(
+        public async ValueTask<ThumbnailCacheEntity> GetOrCreateCache(
             string filePath, int thumbWidth, int thumbHeight)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -92,7 +93,7 @@ namespace PicSum.Job.Common
                     return ThumbnailCacheEntity.EMPTY;
                 }
 
-                var cache = this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight);
+                var cache = await this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight).WithConfig();
                 if (!cache.IsEmpry)
                 {
                     return cache;
@@ -112,7 +113,7 @@ namespace PicSum.Job.Common
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                var cache = this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight);
+                var cache = await this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight).WithConfig();
                 if (!cache.IsEmpry)
                 {
                     return cache;
@@ -148,7 +149,7 @@ namespace PicSum.Job.Common
             return this.GetFileCache(directoryPath);
         }
 
-        private ThumbnailCacheEntity GetOrCreateFileCache(
+        private async ValueTask<ThumbnailCacheEntity> GetOrCreateFileCache(
             string filePath, int thumbWidth, int thumbHeight)
         {
             var dbCache = this.GetDBCache(filePath);
@@ -166,8 +167,8 @@ namespace PicSum.Job.Common
                 else
                 {
                     // サムネイルを更新します。
-                    var thumb = this.UpdateDBCache(
-                        filePath, filePath, thumbWidth, thumbHeight, updateDate);
+                    var thumb = await this.UpdateDBCache(
+                        filePath, filePath, thumbWidth, thumbHeight, updateDate).WithConfig();
                     return thumb;
                 }
             }
@@ -175,13 +176,13 @@ namespace PicSum.Job.Common
             {
                 // サムネイルを作成します。
                 var updateDate = FileUtil.GetUpdateDate(filePath);
-                var thumb = this.CreateDBCache(
-                    filePath, filePath, thumbWidth, thumbHeight, updateDate);
+                var thumb = await this.CreateDBCache(
+                    filePath, filePath, thumbWidth, thumbHeight, updateDate).WithConfig();
                 return thumb;
             }
         }
 
-        private ThumbnailCacheEntity GetOrCreateDirectoryCache(
+        private async ValueTask<ThumbnailCacheEntity> GetOrCreateDirectoryCache(
             string directoryPath, int thumbWidth, int thumbHeight)
         {
             var dbCache = this.GetDBCache(directoryPath);
@@ -205,8 +206,8 @@ namespace PicSum.Job.Common
                         return ThumbnailCacheEntity.EMPTY;
                     }
 
-                    var thumb = this.UpdateDBCache(
-                        directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
+                    var thumb = await this.UpdateDBCache(
+                        directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).WithConfig();
 
                     return thumb;
                 }
@@ -221,8 +222,8 @@ namespace PicSum.Job.Common
                 }
 
                 var updateDate = FileUtil.GetUpdateDate(directoryPath);
-                var thumb = this.CreateDBCache(
-                    directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate);
+                var thumb = await this.CreateDBCache(
+                    directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).WithConfig();
 
                 return thumb;
             }
@@ -262,7 +263,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        private ThumbnailCacheEntity CreateDBCache(
+        private async ValueTask<ThumbnailCacheEntity> CreateDBCache(
             string targetFilePath,
             string thumbFilePath,
             int thumbWidth,
@@ -271,7 +272,7 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
             {
-                using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));
@@ -327,7 +328,7 @@ namespace PicSum.Job.Common
             }
         }
 
-        private ThumbnailCacheEntity UpdateDBCache(
+        private async ValueTask<ThumbnailCacheEntity> UpdateDBCache(
             string targetFilePath,
             string thumbFilePath,
             int thumbWidth,
@@ -336,7 +337,7 @@ namespace PicSum.Job.Common
         {
             using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
             {
-                using (var srcImg = ImageUtil.ReadImageFile(thumbFilePath))
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));

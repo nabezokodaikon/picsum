@@ -6,6 +6,6 @@ namespace PicSum.Job.Common
         : IDisposable
     {
         public ThumbnailCacheEntity GetCache(string filePath);
-        public ThumbnailCacheEntity GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight);
+        public ValueTask<ThumbnailCacheEntity> GetOrCreateCache(string filePath, int thumbWidth, int thumbHeight);
     }
 }

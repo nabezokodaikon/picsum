@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 using SWF.Core.StringAccessor;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -25,7 +26,6 @@ namespace SWF.Core.ImageAccessor
         internal const string SVG_FILE_EXTENSION = ".svg";
         internal const string WEBP_FILE_EXTENSION = ".webp";
 
-        private const int FILE_READ_BUFFER_SIZE = 16 * 1024;
         internal static readonly string[] IMAGE_FILE_EXTENSION_LIST = GetImageFileExtensionList();
         private static readonly string[] RETAIN_EXIF_IMAGE_FORMAT = GetRetainExifImageFormat();
         public static readonly Size EMPTY_SIZE = Size.Empty;
@@ -148,7 +148,7 @@ namespace SWF.Core.ImageAccessor
             return OpenCVUtil.Resize(srcBmp, width, height);
         }
 
-        internal static Size GetImageSize(string filePath)
+        internal static async ValueTask<Size> GetImageSize(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.GetImageSize"))
             {
@@ -156,13 +156,13 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return GetImageSizeWithVarious(filePath);
+                    return await GetImageSizeWithVarious(filePath).WithConfig();
                 }
                 catch (ImageUtilException ex)
                 {
                     NLogManager.GetLogger().Error(ex);
 
-                    using (var bmp = ReadImageFile(filePath))
+                    using (var bmp = await ReadImageFile(filePath).WithConfig())
                     {
                         return bmp.Size;
                     }
@@ -170,7 +170,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Size GetImageSizeWithVarious(string filePath)
+        private static async ValueTask<Size> GetImageSizeWithVarious(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.GetImageSizeWithVarious"))
             {
@@ -183,27 +183,23 @@ namespace SWF.Core.ImageAccessor
                         return GetImageSizeWithShell(filePath);
                     }
 
-                    using var fs = new FileStream(filePath,
-                        FileMode.Open,
-                        FileAccess.Read,
-                        FileShare.Read,
-                        FILE_READ_BUFFER_SIZE,
-                        FileOptions.SequentialScan);
+                    var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                    using var ms = new MemoryStream(data);
 
                     if (IsSvgFile(filePath))
                     {
-                        return SvgUtil.GetImageSize(fs);
+                        return SvgUtil.GetImageSize(ms);
                     }
 
-                    var formatName = ImageSharpUtil.DetectFormat(fs);
+                    var formatName = await ImageSharpUtil.DetectFormat(ms).WithConfig();
 
                     if (IsAvifFile(formatName))
                     {
-                        return LibHeifSharpUtil.GetImageSize(fs);
+                        return LibHeifSharpUtil.GetImageSize(ms);
                     }
                     else if (IsBmpFile(formatName))
                     {
-                        var size = BitmapUtil.GetImageSize(fs);
+                        var size = BitmapUtil.GetImageSize(ms);
                         if (size == EMPTY_SIZE)
                         {
                             throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
@@ -213,23 +209,23 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsGifFile(formatName))
                     {
-                        return ImageSharpUtil.GetImageSize(fs);
+                        return await ImageSharpUtil.GetImageSize(ms).WithConfig();
                     }
                     else if (IsHeicFile(formatName))
                     {
-                        return LibHeifSharpUtil.GetImageSize(fs);
+                        return LibHeifSharpUtil.GetImageSize(ms);
                     }
                     else if (IsHeifFile(formatName))
                     {
-                        return LibHeifSharpUtil.GetImageSize(fs);
+                        return LibHeifSharpUtil.GetImageSize(ms);
                     }
                     else if (IsJpegFile(formatName))
                     {
-                        return JpegUtil.GetImageSize(fs);
+                        return JpegUtil.GetImageSize(ms);
                     }
                     else if (IsPngFile(formatName))
                     {
-                        var size = PngUtil.GetImageSize(fs);
+                        var size = PngUtil.GetImageSize(ms);
                         if (size == EMPTY_SIZE)
                         {
                             throw new ImageUtilException($"画像サイズを取得できませんでした。", filePath);
@@ -239,7 +235,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsWebpFile(formatName))
                     {
-                        return ImageSharpUtil.GetImageSize(fs);
+                        return await ImageSharpUtil.GetImageSize(ms).WithConfig();
                     }
                     else
                     {
@@ -334,7 +330,7 @@ namespace SWF.Core.ImageAccessor
             return RETAIN_EXIF_IMAGE_FORMAT.Any(_ => StringUtil.CompareFilePath(_, ex));
         }
 
-        public static Bitmap ReadImageFile(string filePath)
+        public static async ValueTask<Bitmap> ReadImageFile(string filePath)
         {
             using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFile"))
             {
@@ -342,7 +338,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return ReadImageFileWithVarious(filePath);
+                    return await ReadImageFileWithVarious(filePath).WithConfig();
                 }
                 catch (ImageUtilException ex)
                 {
@@ -353,90 +349,86 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private static Bitmap ReadImageFileWithVarious(string filePath)
+        private static async ValueTask<Bitmap> ReadImageFileWithVarious(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             try
             {
-                using var fs = new FileStream(filePath,
-                    FileMode.Open,
-                    FileAccess.Read,
-                    FileShare.Read,
-                    FILE_READ_BUFFER_SIZE,
-                    FileOptions.SequentialScan);
+                var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                using var ms = new MemoryStream(data);
 
                 if (IsIconFile(filePath))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Icon"))
-                    using (var icon = new Icon(fs))
+                    using (var icon = new Icon(ms))
                     {
-                        return ConvertIfGrayscale(icon.ToBitmap(), fs);
+                        return ConvertIfGrayscale(icon.ToBitmap(), ms);
                     }
                 }
                 else if (IsSvgFile(filePath))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Svg"))
                     {
-                        return SvgUtil.ReadImageFile(fs);
+                        return SvgUtil.ReadImageFile(ms);
                     }
                 }
 
-                var formatName = ImageSharpUtil.DetectFormat(fs);
+                var formatName = await ImageSharpUtil.DetectFormat(ms).WithConfig();
                 if (IsAvifFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
                     {
-                        return ImageSharpUtil.ReadImageFile(fs);
+                        return await ImageSharpUtil.ReadImageFile(ms).WithConfig();
                     }
                 }
                 else if (IsBmpFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Bmp"))
                     {
-                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
                 }
                 else if (IsGifFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Gif"))
                     {
-                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
                 }
                 else if (IsHeicFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heic"))
                     {
-                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heic), fs);
+                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heic), ms);
                     }
                 }
                 else if (IsHeifFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Heif"))
                     {
-                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(fs, ImageMagick.MagickFormat.Heif), fs);
+                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heif), ms);
                     }
                 }
                 else if (IsJpegFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Jpeg"))
                     {
-                        return ConvertIfGrayscale(JpegUtil.ReadImageFile(fs), fs);
+                        return ConvertIfGrayscale(JpegUtil.ReadImageFile(ms), ms);
                     }
                 }
                 else if (IsPngFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Png"))
                     {
-                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(fs, false, true), fs);
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
                 }
                 else if (IsWebpFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Webp"))
                     {
-                        return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(fs), fs);
+                        return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(ms), ms);
                     }
                 }
                 else

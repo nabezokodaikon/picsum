@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
 
         }
 
-        public FileDeepInfoEntity Get(
+        public async ValueTask<FileDeepInfoEntity> Get(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -33,8 +33,8 @@ namespace PicSum.Job.Logics
 
             if (FileUtil.IsExistsFile(filePath))
             {
-                return this.GetFileInfo(
-                    filePath, thumbSize, isReadThumbnail);
+                return await this.GetFileInfo(
+                    filePath, thumbSize, isReadThumbnail).WithConfig();
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -46,8 +46,8 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return this.GetDirectoryInfo(
-                    filePath, thumbSize, isReadThumbnail);
+                return await this.GetDirectoryInfo(
+                    filePath, thumbSize, isReadThumbnail).WithConfig();
             }
 
             return FileDeepInfoEntity.ERROR;
@@ -91,7 +91,7 @@ namespace PicSum.Job.Logics
             };
         }
 
-        private FileDeepInfoEntity GetDirectoryInfo(
+        private async ValueTask<FileDeepInfoEntity> GetDirectoryInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
@@ -121,12 +121,12 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var cache = Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile);
+            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).WithConfig();
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE);
+            var thumbnail = await this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
 
             this.ThrowIfJobCancellationRequested();
 
@@ -144,7 +144,7 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private FileDeepInfoEntity GetFileInfo(
+        private async ValueTask<FileDeepInfoEntity> GetFileInfo(
             string filePath, Size thumbSize, bool isReadThumbnail)
         {
             var (createDate, updateDate, fileSize) = FileUtil.GetFileInfo(filePath);
@@ -178,12 +178,12 @@ namespace PicSum.Job.Logics
             info.TakenDate = this.GetOrCreate(filePath);
             this.ThrowIfJobCancellationRequested();
 
-            var cache = Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath);
+            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).WithConfig();
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE);
+            var thumbnail = await this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
             info.IsImageFile = true;
 
             this.ThrowIfJobCancellationRequested();
@@ -202,7 +202,7 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private CvImage ReadImageFile(string filePath, float zoomValue)
+        private async ValueTask<CvImage> ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
@@ -217,7 +217,7 @@ namespace PicSum.Job.Logics
 
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
-                    using (var bmp = ImageUtil.ReadImageFile(filePath))
+                    using (var bmp = await ImageUtil.ReadImageFile(filePath).WithConfig())
                     {
                         return new CvImage(
                             filePath, OpenCVUtil.ToMat(bmp), zoomValue);

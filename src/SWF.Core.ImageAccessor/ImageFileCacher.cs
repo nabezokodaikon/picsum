@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using SWF.Core.Job;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -78,7 +79,7 @@ namespace SWF.Core.ImageAccessor
             });
         }
 
-        public void Create(string filePath)
+        public async ValueTask Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -108,7 +109,7 @@ namespace SWF.Core.ImageAccessor
                 this._cacheLock.Exit();
             }
 
-            var bitmap = ImageUtil.ReadImageFile(filePath);
+            var bitmap = await ImageUtil.ReadImageFile(filePath).WithConfig();
             var newCache = new ImageFileCacheEntity(filePath, bitmap, updateDate);
 
             this._cacheLock.Enter();
