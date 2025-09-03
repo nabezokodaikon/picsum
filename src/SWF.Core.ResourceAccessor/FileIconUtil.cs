@@ -37,7 +37,7 @@ namespace SWF.Core.ResourceAccessor
                     WinApiMembers.DestroyIcon(sh.hIcon);
                 }
 
-                Task.WaitAll(Task.Delay(500));
+                Task.Delay(500).Wait();
             }
         }
 
@@ -77,7 +77,7 @@ namespace SWF.Core.ResourceAccessor
                     WinApiMembers.DestroyIcon(sh.hIcon);
                 }
 
-                Task.WaitAll(Task.Delay(500));
+                Task.Delay(500).Wait();
             }
         }
 
@@ -145,7 +145,7 @@ namespace SWF.Core.ResourceAccessor
                     WinApiMembers.ImageList_Destroy(pimgList);
                 }
 
-                Task.WaitAll(Task.Delay(500));
+                Task.Delay(500).Wait();
             }
         }
     }
