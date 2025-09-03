@@ -20,26 +20,19 @@ namespace PicSum.Job.Common
         private const int CACHE_CAPACITY = 100 * 1024 * 1024;
 
         private bool _disposed = false;
-        private readonly CacheFileController _cacheFileController;
+        private CacheFileController? _cacheFileController = null;
 
-        public ThumbnailCacher()
+        public async Task Initialize()
         {
-#pragma warning disable CA2012
-            var con = Instance<IThumbnailDao>.Value.Connect().GetAwaiter().GetResult();
-            try
+            await using (var con = await Instance<IThumbnailDao>.Value.Connect())
             {
-                var position = (int)con.ReadValue<long>(new ThumbnailIDReadSql()).GetAwaiter().GetResult();
+                var position = (int)await con.ReadValue<long>(new ThumbnailIDReadSql());
 
                 this._cacheFileController = new(
                     AppFiles.THUMBNAIL_CACHE_FILE.Value,
                     CACHE_CAPACITY,
                     position);
             }
-            finally
-            {
-                con.DisposeAsync().GetAwaiter().GetResult();
-            }
-#pragma warning restore CA2012
         }
 
         public void Dispose()
@@ -239,6 +232,11 @@ namespace PicSum.Job.Common
 
         private async ValueTask<ThumbnailCacheEntity> GetDBCache(string filePath)
         {
+            if (this._cacheFileController is null)
+            {
+                throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
+            }
+
             using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
             {
                 await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
@@ -278,6 +276,11 @@ namespace PicSum.Job.Common
             int thumbHeight,
             DateTime updateDate)
         {
+            if (this._cacheFileController is null)
+            {
+                throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
+            }
+
             using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
@@ -343,6 +346,11 @@ namespace PicSum.Job.Common
             int thumbHeight,
             DateTime updateDate)
         {
+            if (this._cacheFileController is null)
+            {
+                throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
+            }
+
             using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
