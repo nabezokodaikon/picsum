@@ -50,10 +50,13 @@ namespace SWF.Core.Job
             try
             {
                 LOGGER.Trace($"{TASK_NAME} の終了を待機します。");
-                this._task.Wait();
+                this._task.GetAwaiter().GetResult();
                 LOGGER.Trace($"{TASK_NAME} が終了しました。");
             }
-            catch (AggregateException ex) when (ex.InnerExceptions[0] is TaskCanceledException)
+            catch (Exception ex) when (
+                ex is TaskCanceledException ||
+                ex is OperationCanceledException ||
+                ex is ChannelClosedException)
             {
                 LOGGER.Trace($"{TASK_NAME} はキャンセルにより終了しました。");
             }
@@ -81,9 +84,15 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-#pragma warning disable CA2012
-            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012
+            try
+            {
+                this._jobsChannel.Writer.WriteAsync(job).AsTask().GetAwaiter().GetResult();
+            }
+            catch (Exception ex) when (
+                ex is TaskCanceledException ||
+                ex is OperationCanceledException ||
+                ex is ChannelClosedException)
+            { }
         }
 
         public void Enqueue<TJob>(ISender sender)
@@ -101,9 +110,15 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-#pragma warning disable CA2012
-            this._jobsChannel.Writer.WriteAsync(job).GetAwaiter().GetResult();
-#pragma warning restore CA2012
+            try
+            {
+                this._jobsChannel.Writer.WriteAsync(job).AsTask().GetAwaiter().GetResult();
+            }
+            catch (Exception ex) when (
+                ex is TaskCanceledException ||
+                ex is OperationCanceledException ||
+                ex is ChannelClosedException)
+            { }
         }
 
 #pragma warning disable CA1031
