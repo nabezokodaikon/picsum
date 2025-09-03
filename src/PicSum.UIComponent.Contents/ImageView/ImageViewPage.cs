@@ -241,6 +241,25 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (disposing)
             {
+                if (this._displayMode == ImageDisplayMode.Single)
+                {
+                    this._parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                }
+                else if (this._displayMode == ImageDisplayMode.LeftFacing
+                    && this.leftImagePanel.Visible)
+                {
+                    this._parameter.SelectedFilePath = this.leftImagePanel.FilePath;
+                }
+                else if (this._displayMode == ImageDisplayMode.RightFacing
+                    && this.rightImagePanel.Visible)
+                {
+                    this._parameter.SelectedFilePath = this.rightImagePanel.FilePath;
+                }
+                else
+                {
+                    this._parameter.SelectedFilePath = this.SelectedFilePath;
+                }
+
                 this._parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
                 this.fileContextMenu.Close();
