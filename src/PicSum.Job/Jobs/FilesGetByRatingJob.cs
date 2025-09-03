@@ -27,7 +27,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = await this.GetFiles(param.RatingValue).WithConfig();
 
-            using (TimeMeasuring.Run(true, "FilesGetByRatingJob Parallel.ForEach"))
+            using (TimeMeasuring.Run(true, "FilesGetByRatingJob Parallel.ForEachAsync"))
             {
                 using (var cts = new CancellationTokenSource())
                 {
