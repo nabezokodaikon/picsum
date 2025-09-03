@@ -164,7 +164,7 @@ namespace SWF.Core.Job
         }
 
 #pragma warning disable CA1031
-        private async Task DoWork()
+        private async ValueTask DoWork()
         {
             LOGGER.Trace($"{TASK_NAME} が開始されました。");
 
