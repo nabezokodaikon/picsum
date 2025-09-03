@@ -14,8 +14,8 @@ namespace PicSum.Job.SyncJobs
             var logger = NLogManager.GetLogger();
             logger.Debug("バージョン'12.2.2.0'に更新します。");
 
-            this.UpdateTDirectoryViewHistoryTable().AsTask().Wait();
-            this.Vacuum().AsTask().Wait();
+            this.UpdateTDirectoryViewHistoryTable().AsTask().GetAwaiter().GetResult();
+            this.Vacuum().AsTask().GetAwaiter().GetResult();
 
             logger.Debug("バージョン'12.2.2.0'に更新しました。");
         }

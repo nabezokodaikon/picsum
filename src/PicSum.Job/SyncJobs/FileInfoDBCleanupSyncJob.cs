@@ -14,8 +14,8 @@ namespace PicSum.Job.SyncJobs
         {
             using (TimeMeasuring.Run(true, "FileInfoDBCleanupSyncJob.Execute"))
             {
-                this.Cleanup().AsTask().Wait();
-                this.Vacuum().AsTask().Wait();
+                this.Cleanup().AsTask().GetAwaiter().GetResult();
+                this.Vacuum().AsTask().GetAwaiter().GetResult();
             }
         }
 
