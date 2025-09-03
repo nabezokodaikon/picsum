@@ -14,13 +14,13 @@ namespace PicSum.Job.SyncJobs
             var logger = NLogManager.GetLogger();
             logger.Debug("バージョン'12.2.1.0'に更新します。");
 
-            this.UpdateTRatingTable().Wait();
-            this.Vacuum().Wait();
+            this.UpdateTRatingTable().AsTask().Wait();
+            this.Vacuum().AsTask().Wait();
 
             logger.Debug("バージョン'12.2.1.0'に更新しました。");
         }
 
-        private async Task UpdateTRatingTable()
+        private async ValueTask UpdateTRatingTable()
         {
             var updateSql = new VersionUpTo_12_2_1_0_Sql();
             await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
@@ -30,7 +30,7 @@ namespace PicSum.Job.SyncJobs
             }
         }
 
-        private async Task Vacuum()
+        private async ValueTask Vacuum()
         {
             await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {

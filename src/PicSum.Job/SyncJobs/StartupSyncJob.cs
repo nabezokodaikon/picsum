@@ -31,7 +31,7 @@ namespace PicSum.Job.SyncJobs
                     static () =>
                     {
                         var instance = new ThumbnailCacher();
-                        instance.Initialize().Wait();
+                        instance.Initialize().AsTask().Wait();
                         return instance;
                     },
                     LazyThreadSafetyMode.ExecutionAndPublication));

@@ -14,12 +14,12 @@ namespace PicSum.Job.SyncJobs
         {
             using (TimeMeasuring.Run(true, "FileInfoDBCleanupSyncJob.Execute"))
             {
-                this.Cleanup().Wait();
-                this.Vacuum().Wait();
+                this.Cleanup().AsTask().Wait();
+                this.Vacuum().AsTask().Wait();
             }
         }
 
-        private async Task Cleanup()
+        private async ValueTask Cleanup()
         {
             var readSql = new AllFilesReadSql();
             await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
@@ -38,7 +38,7 @@ namespace PicSum.Job.SyncJobs
             }
         }
 
-        private async Task Vacuum()
+        private async ValueTask Vacuum()
         {
             await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
             {

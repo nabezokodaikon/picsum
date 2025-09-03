@@ -22,7 +22,7 @@ namespace PicSum.Job.Common
         private bool _disposed = false;
         private CacheFileController? _cacheFileController = null;
 
-        public async Task Initialize()
+        public async ValueTask Initialize()
         {
             await using (var con = await Instance<IThumbnailDao>.Value.Connect())
             {
