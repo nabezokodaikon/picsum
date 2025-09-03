@@ -36,7 +36,7 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<StartupObject>PicSum.Main.Program</StartupObject>
 
-	<InvariantGlobalization>false</InvariantGlobalization>
+	<InvariantGlobalization>true</InvariantGlobalization>
 
   </PropertyGroup>
 
@@ -65,7 +65,7 @@
 	<StripSymbols>true</StripSymbols>
 	<EnableDynamicLoading>false</EnableDynamicLoading>
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
-	<InvariantGlobalization>false</InvariantGlobalization>
+	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
 
   </PropertyGroup>
@@ -95,7 +95,7 @@
 	<StripSymbols>true</StripSymbols>
 	<EnableDynamicLoading>false</EnableDynamicLoading>
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
-	<InvariantGlobalization>false</InvariantGlobalization>
+	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
 
   </PropertyGroup>
