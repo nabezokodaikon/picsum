@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
         public async ValueTask<string[]> Execute(IConnection con)
         {
             var sql = new AllTagsReadSql();
-            var dtoList = await con.ReadList<TagInfoDto>(sql).WithConfig();
+            var dtoList = await con.ReadList<TagInfoDto>(sql).False();
 
             return [.. dtoList
                 .AsValueEnumerable()

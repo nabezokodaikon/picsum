@@ -25,7 +25,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var updateTag = new FileTagUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
@@ -33,14 +33,14 @@ namespace PicSum.Job.Jobs
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    if (!await updateTag.Execute(con, filePath, param.Tag, addDate).WithConfig())
+                    if (!await updateTag.Execute(con, filePath, param.Tag, addDate).False())
                     {
-                        await addFileMaster.Execute(con, filePath).WithConfig();
-                        await updateTag.Execute(con, filePath, param.Tag, addDate).WithConfig();
+                        await addFileMaster.Execute(con, filePath).False();
+                        await updateTag.Execute(con, filePath, param.Tag, addDate).False();
                     }
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

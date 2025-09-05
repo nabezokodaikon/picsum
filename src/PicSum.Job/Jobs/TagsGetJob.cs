@@ -14,16 +14,16 @@ namespace PicSum.Job.Jobs
     {
         protected override async ValueTask Execute()
         {
-            var result = new ListResult<string>(await this.GetTags().WithConfig());
+            var result = new ListResult<string>(await this.GetTags().False());
             this.Callback(result);
         }
 
         private async ValueTask<string[]> GetTags()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var logic = new TagsGetLogic(this);
-                return await logic.Execute(con).WithConfig();
+                return await logic.Execute(con).False();
             }
         }
     }

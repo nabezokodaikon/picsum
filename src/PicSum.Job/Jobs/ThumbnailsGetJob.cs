@@ -51,12 +51,12 @@ namespace PicSum.Job.Jobs
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
+                                    await cts.CancelAsync().False();
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
-                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).WithConfig();
+                                    filePath, param.ThumbnailWidth, param.ThumbnailHeight).False();
                                 if (param.IsExecuteCallback
                                     && !bf.IsEmpry
                                     && bf.ThumbnailBuffer != null)
@@ -89,7 +89,7 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    ).WithConfig();
+                    ).False();
                 }
                 catch (OperationCanceledException) { }
             }

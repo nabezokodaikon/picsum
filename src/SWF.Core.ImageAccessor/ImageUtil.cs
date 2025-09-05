@@ -156,13 +156,13 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return await GetImageSizeWithVarious(filePath).WithConfig();
+                    return await GetImageSizeWithVarious(filePath).False();
                 }
                 catch (ImageUtilException ex)
                 {
                     NLogManager.GetLogger().Error(ex);
 
-                    using (var bmp = await ReadImageFile(filePath).WithConfig())
+                    using (var bmp = await ReadImageFile(filePath).False())
                     {
                         return bmp.Size;
                     }
@@ -183,7 +183,7 @@ namespace SWF.Core.ImageAccessor
                         return GetImageSizeWithShell(filePath);
                     }
 
-                    var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                    var data = await File.ReadAllBytesAsync(filePath).False();
                     using var ms = new MemoryStream(data);
 
                     if (IsSvgFile(filePath))
@@ -191,7 +191,7 @@ namespace SWF.Core.ImageAccessor
                         return SvgUtil.GetImageSize(ms);
                     }
 
-                    var formatName = await ImageSharpUtil.DetectFormat(ms).WithConfig();
+                    var formatName = await ImageSharpUtil.DetectFormat(ms).False();
 
                     if (IsAvifFile(formatName))
                     {
@@ -209,7 +209,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsGifFile(formatName))
                     {
-                        return await ImageSharpUtil.GetImageSize(ms).WithConfig();
+                        return await ImageSharpUtil.GetImageSize(ms).False();
                     }
                     else if (IsHeicFile(formatName))
                     {
@@ -235,7 +235,7 @@ namespace SWF.Core.ImageAccessor
                     }
                     else if (IsWebpFile(formatName))
                     {
-                        return await ImageSharpUtil.GetImageSize(ms).WithConfig();
+                        return await ImageSharpUtil.GetImageSize(ms).False();
                     }
                     else
                     {
@@ -338,7 +338,7 @@ namespace SWF.Core.ImageAccessor
 
                 try
                 {
-                    return await ReadImageFileWithVarious(filePath).WithConfig();
+                    return await ReadImageFileWithVarious(filePath).False();
                 }
                 catch (ImageUtilException ex)
                 {
@@ -355,7 +355,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                var data = await File.ReadAllBytesAsync(filePath).WithConfig();
+                var data = await File.ReadAllBytesAsync(filePath).False();
                 using var ms = new MemoryStream(data);
 
                 if (IsIconFile(filePath))
@@ -374,12 +374,12 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                var formatName = await ImageSharpUtil.DetectFormat(ms).WithConfig();
+                var formatName = await ImageSharpUtil.DetectFormat(ms).False();
                 if (IsAvifFile(formatName))
                 {
                     using (TimeMeasuring.Run(false, "ImageUtil.ReadImageFileWithVarious: Avif"))
                     {
-                        return await ImageSharpUtil.ReadImageFile(ms).WithConfig();
+                        return await ImageSharpUtil.ReadImageFile(ms).False();
                     }
                 }
                 else if (IsBmpFile(formatName))

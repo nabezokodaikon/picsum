@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
 
             var sql = new BookmarkDeletionSql(filePath);
 
-            return await con.Update(sql).WithConfig();
+            return await con.Update(sql).False();
         }
     }
 }

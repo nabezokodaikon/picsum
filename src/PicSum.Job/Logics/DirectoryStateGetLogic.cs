@@ -19,7 +19,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryStateReadSql(directoryPath);
-            var dto = await con.ReadLine<DirectoryStateDto>(sql).WithConfig();
+            var dto = await con.ReadLine<DirectoryStateDto>(sql).False();
             if (dto != null)
             {
                 var sortMode = (FileSortMode)dto.SortTypeId;

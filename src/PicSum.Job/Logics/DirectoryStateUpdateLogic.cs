@@ -38,7 +38,7 @@ namespace PicSum.Job.Logics
                     directoryState.DirectoryPath,
                     (int)directoryState.SortMode,
                     directoryState.IsAscending);
-                return await con.Update(sql).WithConfig();
+                return await con.Update(sql).False();
             }
             else
             {
@@ -47,7 +47,7 @@ namespace PicSum.Job.Logics
                     (int)directoryState.SortMode,
                     directoryState.IsAscending,
                     directoryState.SelectedFilePath);
-                return await con.Update(sql).WithConfig();
+                return await con.Update(sql).False();
             }
         }
     }

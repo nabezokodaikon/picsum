@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetLogic.Execute"))
             {
                 var sql = new FavoriteDirectoriesReadSql();
-                var dtoList = await con.ReadList<SingleValueDto<string>>(sql).WithConfig();
+                var dtoList = await con.ReadList<SingleValueDto<string>>(sql).False();
                 return dtoList;
             }
         }

@@ -15,7 +15,7 @@ namespace PicSum.Job.Jobs
             {
                 this.ThrowIfJobCancellationRequested();
 
-                await Task.Delay(INTERVAL, this.CancellationToken).WithConfig();
+                await Task.Delay(INTERVAL, this.CancellationToken).False();
 
                 using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))
                 {

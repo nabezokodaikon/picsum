@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "BookmarksGetLogic.Execute"))
             {
                 var sql = new BookmarksReadSql();
-                var dtoList = await con.ReadList<BookmarkDto>(sql).WithConfig();
+                var dtoList = await con.ReadList<BookmarkDto>(sql).False();
                 return dtoList;
             }
         }

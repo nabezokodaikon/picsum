@@ -26,12 +26,12 @@ namespace PicSum.Job.Jobs
                 parameter.IsNext == null ?
                 parameter.CurrentIndex
                 : parameter.IsNext == true ?
-                    await logic.GetNextIndex(parameter).WithConfig() :
-                    await logic.GetPreviewIndex(parameter).WithConfig();
+                    await logic.GetNextIndex(parameter).False() :
+                    await logic.GetPreviewIndex(parameter).False();
             this.ThrowIfJobCancellationRequested();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
-            var mainSize = await logic.GetImageSize(mainFilePath).WithConfig();
+            var mainSize = await logic.GetImageSize(mainFilePath).False();
             this.ThrowIfJobCancellationRequested();
 
             if (parameter.DisplayMode != ImageDisplayMode.Single
@@ -45,7 +45,7 @@ namespace PicSum.Job.Jobs
                 }
 
                 var subFilePath = parameter.FilePathList[subtIndex];
-                var subSize = await logic.GetImageSize(subFilePath).WithConfig();
+                var subSize = await logic.GetImageSize(subFilePath).False();
                 this.ThrowIfJobCancellationRequested();
 
                 if (subFilePath != mainFilePath
@@ -53,23 +53,23 @@ namespace PicSum.Job.Jobs
                     && subSize.Width <= subSize.Height)
                 {
                     this.Callback(await logic.CreateResult(
-                        mainIndex, mainFilePath, true, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).WithConfig());
+                        mainIndex, mainFilePath, true, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).False());
 
                     this.ThrowIfJobCancellationRequested();
 
                     this.Callback(await logic.CreateResult(
-                        subtIndex, subFilePath, false, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).WithConfig());
+                        subtIndex, subFilePath, false, true, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).False());
                 }
                 else
                 {
                     this.Callback(await logic.CreateResult(
-                        mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).WithConfig());
+                        mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).False());
                 }
             }
             else
             {
                 this.Callback(await logic.CreateResult(
-                    mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).WithConfig());
+                    mainIndex, mainFilePath, true, false, parameter.ZoomValue, parameter.ThumbnailSize, parameter.SizeMode).False());
             }
         }
     }

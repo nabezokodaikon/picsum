@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewHistoryUpdateSql(directoryPath, ticks);
-            return await con.Update(sql).WithConfig();
+            return await con.Update(sql).False();
         }
     }
 }

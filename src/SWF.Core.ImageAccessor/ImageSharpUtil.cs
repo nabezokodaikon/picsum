@@ -41,7 +41,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            var imageInfo = await SixLabors.ImageSharp.Image.IdentifyAsync(fs).WithConfig();
+            var imageInfo = await SixLabors.ImageSharp.Image.IdentifyAsync(fs).False();
             return new System.Drawing.Size(imageInfo.Width, imageInfo.Height);
         }
 
@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
         {
             using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
             {
-                var format = await SixLabors.ImageSharp.Image.DetectFormatAsync(DECODER_OPTIONS, fs).WithConfig();
+                var format = await SixLabors.ImageSharp.Image.DetectFormatAsync(DECODER_OPTIONS, fs).False();
                 return $".{format.Name}";
             }
         }
@@ -58,7 +58,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (var image = await SixLabors.ImageSharp.Image.LoadAsync(DECODER_OPTIONS, fs).WithConfig())
+            using (var image = await SixLabors.ImageSharp.Image.LoadAsync(DECODER_OPTIONS, fs).False())
             {
                 return ImageSharpToBitmap((Image<Rgba32>)image);
             }

@@ -22,28 +22,28 @@ namespace PicSum.Job.SyncJobs
         private async ValueTask Cleanup()
         {
             var readSql = new AllFilesReadSql();
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
-                var fileList = await con.ReadList(readSql).WithConfig();
+                var fileList = await con.ReadList(readSql).False();
                 foreach (var file in fileList)
                 {
                     if (!FileUtil.CanAccess(file.FilePath))
                     {
                         var cleanupSql = new FileInfoDBCleanupSql(file.FileID);
-                        await con.Update(cleanupSql).WithConfig();
+                        await con.Update(cleanupSql).False();
                     }
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
 
         private async ValueTask Vacuum()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
-                await con.ReadLine(cleanupSql).WithConfig();
+                await con.ReadLine(cleanupSql).False();
             }
         }
     }

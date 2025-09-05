@@ -20,7 +20,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
@@ -28,14 +28,14 @@ namespace PicSum.Job.Jobs
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    if (!await updateFileRating.Execute(con, filePath, param.RatingValue, addDate).WithConfig())
+                    if (!await updateFileRating.Execute(con, filePath, param.RatingValue, addDate).False())
                     {
-                        await addFileMaster.Execute(con, filePath).WithConfig();
-                        await updateFileRating.Execute(con, filePath, param.RatingValue, addDate).WithConfig();
+                        await addFileMaster.Execute(con, filePath).False();
+                        await updateFileRating.Execute(con, filePath, param.RatingValue, addDate).False();
                     }
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

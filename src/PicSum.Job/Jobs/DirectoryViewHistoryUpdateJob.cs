@@ -18,17 +18,17 @@ namespace PicSum.Job.Jobs
 
             var ticks = DateTime.Now.Ticks;
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var updateDirectoryViewHistory = new DirectoryViewHistoryUpdateLogic(this);
-                if (!await updateDirectoryViewHistory.Execute(con, param.Value, ticks).WithConfig())
+                if (!await updateDirectoryViewHistory.Execute(con, param.Value, ticks).False())
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
-                    await addFileMaster.Execute(con, param.Value).WithConfig();
-                    await updateDirectoryViewHistory.Execute(con, param.Value, ticks).WithConfig();
+                    await addFileMaster.Execute(con, param.Value).False();
+                    await updateDirectoryViewHistory.Execute(con, param.Value, ticks).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

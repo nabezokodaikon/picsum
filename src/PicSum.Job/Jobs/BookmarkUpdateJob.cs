@@ -18,19 +18,19 @@ namespace PicSum.Job.Jobs
 
             var addDate = DateTime.Now;
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var updateLogic = new BookmarkUpdateLogic(this);
 
-                if (!await updateLogic.Execute(con, param.Value, addDate).WithConfig())
+                if (!await updateLogic.Execute(con, param.Value, addDate).False())
                 {
                     var addFileMasterLogic = new FileMasterAddLogic(this);
-                    await addFileMasterLogic.Execute(con, param.Value).WithConfig();
+                    await addFileMasterLogic.Execute(con, param.Value).False();
 
-                    await updateLogic.Execute(con, param.Value, addDate).WithConfig();
+                    await updateLogic.Execute(con, param.Value, addDate).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

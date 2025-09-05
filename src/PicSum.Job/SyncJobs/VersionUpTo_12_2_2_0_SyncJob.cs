@@ -23,19 +23,19 @@ namespace PicSum.Job.SyncJobs
         private async ValueTask UpdateTDirectoryViewHistoryTable()
         {
             var updateSql = new VersionUpTo_12_2_2_0_Sql();
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
-                await con.Update(updateSql).WithConfig();
-                await con.Commit().WithConfig();
+                await con.Update(updateSql).False();
+                await con.Commit().False();
             }
         }
 
         private async ValueTask Vacuum()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var cleanupSql = new FileInfoDBVacuumSql();
-                await con.ReadLine(cleanupSql).WithConfig();
+                await con.ReadLine(cleanupSql).False();
             }
         }
     }

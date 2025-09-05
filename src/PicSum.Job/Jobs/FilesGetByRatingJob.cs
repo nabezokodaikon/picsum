@@ -25,7 +25,7 @@ namespace PicSum.Job.Jobs
 
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
-            var dtos = await this.GetFiles(param.RatingValue).WithConfig();
+            var dtos = await this.GetFiles(param.RatingValue).False();
 
             using (TimeMeasuring.Run(true, "FilesGetByRatingJob Parallel.ForEachAsync"))
             {
@@ -44,14 +44,14 @@ namespace PicSum.Job.Jobs
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
+                                    await cts.CancelAsync().False();
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
                                     var info = await getInfoLogic.Get(
-                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate).WithConfig();
+                                        dto.FilePath, param.IsGetThumbnail, dto.RegistrationDate).False();
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -61,7 +61,7 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            }).WithConfig();
+                            }).False();
                     }
                     catch (OperationCanceledException)
                     {
@@ -75,10 +75,10 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<FileByRatingDto[]> GetFiles(int ratingValue)
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var logic = new FilesGetByRatingLogic(this);
-                return await logic.Execute(con, ratingValue).WithConfig();
+                return await logic.Execute(con, ratingValue).False();
             }
         }
     }

@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "DirectoryViewHistoryGetLogic.Execute"))
             {
                 var sql = new DirectoryViewHistoryReadSql(100);
-                var dtoList = await con.ReadList<DirectoryViewHistoryDto>(sql).WithConfig();
+                var dtoList = await con.ReadList<DirectoryViewHistoryDto>(sql).False();
                 return [.. dtoList
                     .AsValueEnumerable()
                     .Select(static dto => dto.DirectoryPath)];

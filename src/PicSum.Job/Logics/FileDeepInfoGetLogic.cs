@@ -34,7 +34,7 @@ namespace PicSum.Job.Logics
             if (FileUtil.IsExistsFile(filePath))
             {
                 return await this.GetFileInfo(
-                    filePath, thumbSize, isReadThumbnail).WithConfig();
+                    filePath, thumbSize, isReadThumbnail).False();
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -47,7 +47,7 @@ namespace PicSum.Job.Logics
             else if (FileUtil.IsExistsDirectory(filePath))
             {
                 return await this.GetDirectoryInfo(
-                    filePath, thumbSize, isReadThumbnail).WithConfig();
+                    filePath, thumbSize, isReadThumbnail).False();
             }
 
             return FileDeepInfoEntity.ERROR;
@@ -121,12 +121,12 @@ namespace PicSum.Job.Logics
                 return info;
             }
 
-            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).WithConfig();
+            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(firstImageFile).False();
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = await this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
+            var thumbnail = await this.ReadImageFile(firstImageFile, AppConstants.DEFAULT_ZOOM_VALUE).False();
 
             this.ThrowIfJobCancellationRequested();
 
@@ -178,12 +178,12 @@ namespace PicSum.Job.Logics
             info.TakenDate = this.GetOrCreate(filePath);
             this.ThrowIfJobCancellationRequested();
 
-            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).WithConfig();
+            var cache = await Instance<IImageFileSizeCacher>.Value.GetOrCreate(filePath).False();
             info.ImageSize = new(cache.Size.Width, cache.Size.Height);
 
             this.ThrowIfJobCancellationRequested();
 
-            var thumbnail = await this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE).WithConfig();
+            var thumbnail = await this.ReadImageFile(filePath, AppConstants.DEFAULT_ZOOM_VALUE).False();
             info.IsImageFile = true;
 
             this.ThrowIfJobCancellationRequested();
@@ -217,7 +217,7 @@ namespace PicSum.Job.Logics
 
                 using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
-                    using (var bmp = await ImageUtil.ReadImageFile(filePath).WithConfig())
+                    using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
                         return new CvImage(
                             filePath, OpenCVUtil.ToMat(bmp), zoomValue);

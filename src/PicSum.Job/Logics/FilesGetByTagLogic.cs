@@ -21,7 +21,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "FilesGetByTagLogic.Execute"))
             {
                 var sql = new FileReadByTagSql(tag);
-                var dtoList = await con.ReadList<FileByTagDto>(sql).WithConfig();
+                var dtoList = await con.ReadList<FileByTagDto>(sql).False();
                 return dtoList;
             }
         }

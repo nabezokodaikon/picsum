@@ -25,11 +25,11 @@ namespace SWF.Core.DatabaseAccessor
 
             this._lockObject = lockObject;
             this._connection = new SQLiteConnection($"Data Source={filePath}");
-            await this._connection.OpenAsync().WithConfig();
+            await this._connection.OpenAsync().False();
 
             if (isTransaction)
             {
-                this._transaction = await this._connection.BeginTransactionAsync().WithConfig();
+                this._transaction = await this._connection.BeginTransactionAsync().False();
             }
 
             this._isDispose = true;
@@ -45,7 +45,7 @@ namespace SWF.Core.DatabaseAccessor
 
             if (isTransaction)
             {
-                this._transaction = await this._connection.BeginTransactionAsync().WithConfig();
+                this._transaction = await this._connection.BeginTransactionAsync().False();
             }
 
             this._isDispose = false;
@@ -62,17 +62,17 @@ namespace SWF.Core.DatabaseAccessor
             {
                 if (!this._isCommitted)
                 {
-                    await this._transaction.RollbackAsync().WithConfig();
+                    await this._transaction.RollbackAsync().False();
                 }
 
-                await this._transaction.DisposeAsync().WithConfig();
+                await this._transaction.DisposeAsync().False();
             }
 
             if (this._isDispose)
             {
                 if (this._connection is not null)
                 {
-                    await this._connection.DisposeAsync().WithConfig();
+                    await this._connection.DisposeAsync().False();
                 }
             }
 
@@ -90,7 +90,7 @@ namespace SWF.Core.DatabaseAccessor
                 throw new InvalidOperationException("トランザクションが開始されていません。");
             }
 
-            await this._transaction.CommitAsync().WithConfig();
+            await this._transaction.CommitAsync().False();
             this._isCommitted = true;
         }
 
@@ -114,7 +114,7 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteNonQueryAsync().WithConfig();
+                var result = await cmd.ExecuteNonQueryAsync().False();
                 if (result > 0)
                 {
                     // 更新されたレコードが存在するため、Trueを返します。
@@ -149,13 +149,13 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).WithConfig())
+                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).False())
                 {
                     if (reader.HasRows)
                     {
                         var list = new List<TDto>();
 
-                        while (await reader.ReadAsync().WithConfig())
+                        while (await reader.ReadAsync().False())
                         {
                             var dto = new TDto();
                             dto.Read(reader);
@@ -193,11 +193,11 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).WithConfig())
+                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).False())
                 {
                     if (reader.HasRows)
                     {
-                        await reader.ReadAsync().WithConfig();
+                        await reader.ReadAsync().False();
                         var dto = new TDto();
                         dto.Read(reader);
                         return dto;
@@ -230,7 +230,7 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteScalarAsync().WithConfig();
+                var result = await cmd.ExecuteScalarAsync().False();
                 if (result != null && result != DBNull.Value)
                 {
                     return (T)result;

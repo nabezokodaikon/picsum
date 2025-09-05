@@ -25,16 +25,16 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("タグがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var logic = new FileTagDeleteLogic(this);
 
                 foreach (var filePath in param.FilePathList)
                 {
-                    await logic.Execute(con, filePath, param.Tag).WithConfig();
+                    await logic.Execute(con, filePath, param.Tag).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
             using (TimeMeasuring.Run(true, "FilesGetByRatingLogic.Execute"))
             {
                 var sql = new FileReadByRatingSql(rating);
-                var dtoList = await con.ReadList<FileByRatingDto>(sql).WithConfig();
+                var dtoList = await con.ReadList<FileByRatingDto>(sql).False();
                 return dtoList;
             }
         }

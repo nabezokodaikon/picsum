@@ -62,7 +62,7 @@ namespace PicSum.Job.Common
 
             if (FileUtil.IsExistsFile(filePath) && ImageUtil.IsImageFile(filePath))
             {
-                return await this.GetFileCache(filePath).WithConfig();
+                return await this.GetFileCache(filePath).False();
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
@@ -74,7 +74,7 @@ namespace PicSum.Job.Common
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                return await this.GetDirectoryCache(filePath).WithConfig();
+                return await this.GetDirectoryCache(filePath).False();
             }
             else
             {
@@ -94,7 +94,7 @@ namespace PicSum.Job.Common
                     return ThumbnailCacheEntity.EMPTY;
                 }
 
-                var cache = await this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight).WithConfig();
+                var cache = await this.GetOrCreateFileCache(filePath, thumbWidth, thumbHeight).False();
                 if (!cache.IsEmpry)
                 {
                     return cache;
@@ -114,7 +114,7 @@ namespace PicSum.Job.Common
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
-                var cache = await this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight).WithConfig();
+                var cache = await this.GetOrCreateDirectoryCache(filePath, thumbWidth, thumbHeight).False();
                 if (!cache.IsEmpry)
                 {
                     return cache;
@@ -132,7 +132,7 @@ namespace PicSum.Job.Common
 
         private async ValueTask<ThumbnailCacheEntity> GetFileCache(string filePath)
         {
-            var cache = await this.GetDBCache(filePath).WithConfig();
+            var cache = await this.GetDBCache(filePath).False();
             if (!cache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
@@ -147,13 +147,13 @@ namespace PicSum.Job.Common
 
         private async ValueTask<ThumbnailCacheEntity> GetDirectoryCache(string directoryPath)
         {
-            return await this.GetFileCache(directoryPath).WithConfig();
+            return await this.GetFileCache(directoryPath).False();
         }
 
         private async ValueTask<ThumbnailCacheEntity> GetOrCreateFileCache(
             string filePath, int thumbWidth, int thumbHeight)
         {
-            var dbCache = await this.GetDBCache(filePath).WithConfig();
+            var dbCache = await this.GetDBCache(filePath).False();
             if (!dbCache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
@@ -169,7 +169,7 @@ namespace PicSum.Job.Common
                 {
                     // サムネイルを更新します。
                     var thumb = await this.UpdateDBCache(
-                        filePath, filePath, thumbWidth, thumbHeight, updateDate).WithConfig();
+                        filePath, filePath, thumbWidth, thumbHeight, updateDate).False();
                     return thumb;
                 }
             }
@@ -178,7 +178,7 @@ namespace PicSum.Job.Common
                 // サムネイルを作成します。
                 var updateDate = FileUtil.GetUpdateDate(filePath);
                 var thumb = await this.CreateDBCache(
-                    filePath, filePath, thumbWidth, thumbHeight, updateDate).WithConfig();
+                    filePath, filePath, thumbWidth, thumbHeight, updateDate).False();
                 return thumb;
             }
         }
@@ -186,7 +186,7 @@ namespace PicSum.Job.Common
         private async ValueTask<ThumbnailCacheEntity> GetOrCreateDirectoryCache(
             string directoryPath, int thumbWidth, int thumbHeight)
         {
-            var dbCache = await this.GetDBCache(directoryPath).WithConfig();
+            var dbCache = await this.GetDBCache(directoryPath).False();
             if (!dbCache.IsEmpry)
             {
                 var updateDate = FileUtil.GetUpdateDate(directoryPath);
@@ -208,7 +208,7 @@ namespace PicSum.Job.Common
                     }
 
                     var thumb = await this.UpdateDBCache(
-                        directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).WithConfig();
+                        directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).False();
 
                     return thumb;
                 }
@@ -224,7 +224,7 @@ namespace PicSum.Job.Common
 
                 var updateDate = FileUtil.GetUpdateDate(directoryPath);
                 var thumb = await this.CreateDBCache(
-                    directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).WithConfig();
+                    directoryPath, thumbFilePath, thumbWidth, thumbHeight, updateDate).False();
 
                 return thumb;
             }
@@ -239,10 +239,10 @@ namespace PicSum.Job.Common
 
             using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
             {
-                await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
+                await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
                 {
                     var sql = new ThumbnailReadByFileSql(filePath);
-                    var dto = await con.ReadLine(sql).WithConfig();
+                    var dto = await con.ReadLine(sql).False();
 
                     if (dto != null)
                     {
@@ -283,7 +283,7 @@ namespace PicSum.Job.Common
 
             using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
             {
-                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));
@@ -292,20 +292,20 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
+                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
                         {
                             var exists = await con.ReadValue<long>(
-                                new ThumbnailExistsByFileSql(targetFilePath)).WithConfig();
+                                new ThumbnailExistsByFileSql(targetFilePath)).False();
                             if (exists < 1)
                             {
                                 var position = this._cacheFileController.Write(thumbBin);
-                                await con.Update(new ThumbnailOffsetUpdateSql(position)).WithConfig();
+                                await con.Update(new ThumbnailOffsetUpdateSql(position)).False();
 
                                 var thumbStartPoint = position - thumbBin.Length;
                                 if (thumbStartPoint < 1)
                                 {
-                                    await con.Update(new ThumbnailDBCleanupSql()).WithConfig();
-                                    await con.ReadLine(new ThumbnailDBVacuumSql()).WithConfig();
+                                    await con.Update(new ThumbnailDBCleanupSql()).False();
+                                    await con.ReadLine(new ThumbnailDBVacuumSql()).False();
                                 }
 
                                 var sql = new ThumbnailCreationSql(
@@ -318,7 +318,7 @@ namespace PicSum.Job.Common
                                     srcImg.Width,
                                     srcImg.Height,
                                     updateDate);
-                                await con.Update(sql).WithConfig();
+                                await con.Update(sql).False();
                             }
                         }
 
@@ -353,7 +353,7 @@ namespace PicSum.Job.Common
 
             using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
             {
-                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).WithConfig())
+                using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {
                     Instance<IImageFileSizeCacher>.Value.Set(
                         thumbFilePath, new Size(srcImg.Width, srcImg.Height));
@@ -362,16 +362,16 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().WithConfig())
+                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
                         {
                             var position = this._cacheFileController.Write(thumbBin);
-                            await con.Update(new ThumbnailOffsetUpdateSql(position)).WithConfig();
+                            await con.Update(new ThumbnailOffsetUpdateSql(position)).False();
 
                             var thumbStartPoint = position - thumbBin.Length;
                             if (thumbStartPoint < 1)
                             {
-                                await con.Update(new ThumbnailDBCleanupSql()).WithConfig();
-                                await con.ReadLine(new ThumbnailDBVacuumSql()).WithConfig();
+                                await con.Update(new ThumbnailDBCleanupSql()).False();
+                                await con.ReadLine(new ThumbnailDBVacuumSql()).False();
                             }
 
                             var sql = new ThumbnailUpdateSql(
@@ -384,7 +384,7 @@ namespace PicSum.Job.Common
                                 srcImg.Width,
                                 srcImg.Height,
                                 updateDate);
-                            await con.Update(sql).WithConfig();
+                            await con.Update(sql).False();
                         }
 
                         var thumb = new ThumbnailCacheEntity

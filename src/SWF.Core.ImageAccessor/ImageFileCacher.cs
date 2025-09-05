@@ -109,7 +109,7 @@ namespace SWF.Core.ImageAccessor
                 this._cacheLock.Exit();
             }
 
-            var bitmap = await ImageUtil.ReadImageFile(filePath).WithConfig();
+            var bitmap = await ImageUtil.ReadImageFile(filePath).False();
             var newCache = new ImageFileCacheEntity(filePath, bitmap, updateDate);
 
             this._cacheLock.Enter();

@@ -21,9 +21,9 @@ namespace PicSum.Job.Jobs
                 throw new NotSupportedException("ファイルパスリストがNULLです。");
             }
 
-            await Task.Delay(10, this.CancellationToken).WithConfig();
+            await Task.Delay(10, this.CancellationToken).False();
 
-            var result = await this.CreateCallbackResult(param).WithConfig();
+            var result = await this.CreateCallbackResult(param).False();
             this.Callback(result);
         }
 
@@ -45,7 +45,7 @@ namespace PicSum.Job.Jobs
                 {
                     var filePath = param.FilePathList[0];
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
-                    result.FileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false).WithConfig();
+                    result.FileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, false).False();
                     return result;
                 }
                 catch (Exception ex) when (

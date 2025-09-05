@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
             var sql = new DirectoryViewCounterDeletionSql(directoryPath);
-            await con.Update(sql).WithConfig();
+            await con.Update(sql).False();
         }
     }
 }

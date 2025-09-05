@@ -66,11 +66,11 @@ namespace PicSum.Job.Jobs
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
+                                    await cts.CancelAsync().False();
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
-                                await Instance<IImageFileCacher>.Value.Create(file).WithConfig();
+                                await Instance<IImageFileCacher>.Value.Create(file).False();
                                 var size = Instance<IImageFileCacher>.Value.GetSize(file);
                                 if (size != ImageUtil.EMPTY_SIZE)
                                 {
@@ -78,7 +78,7 @@ namespace PicSum.Job.Jobs
                                 }
                                 else
                                 {
-                                    await Instance<IImageFileSizeCacher>.Value.Create(file).WithConfig();
+                                    await Instance<IImageFileSizeCacher>.Value.Create(file).False();
                                 }
                             }
                             catch (Exception ex) when (
@@ -88,7 +88,7 @@ namespace PicSum.Job.Jobs
                                 this.WriteErrorLog(ex);
                             }
                         }
-                    ).WithConfig();
+                    ).False();
                 }
                 catch (OperationCanceledException) { }
             }

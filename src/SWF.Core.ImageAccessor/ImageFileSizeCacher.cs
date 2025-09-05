@@ -66,7 +66,7 @@ namespace SWF.Core.ImageAccessor
             }
 
             var newCache = new ImageFileSizeCacheEntity(
-                filePath, await ImageUtil.GetImageSize(filePath).WithConfig(), updateDate);
+                filePath, await ImageUtil.GetImageSize(filePath).False(), updateDate);
 
             this._cacheLock.Enter();
             try
@@ -116,7 +116,7 @@ namespace SWF.Core.ImageAccessor
                     this._cacheLock.Exit();
                 }
 
-                var size = await ImageUtil.GetImageSize(filePath).WithConfig();
+                var size = await ImageUtil.GetImageSize(filePath).False();
                 this.Set(filePath, size, updateDate);
                 return new ImageFileSizeCacheEntity(
                     filePath, size, updateDate);

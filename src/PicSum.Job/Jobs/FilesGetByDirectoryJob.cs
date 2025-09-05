@@ -61,13 +61,13 @@ namespace PicSum.Job.Jobs
                             {
                                 if (this.IsJobCancel)
                                 {
-                                    await cts.CancelAsync().WithConfig();
+                                    await cts.CancelAsync().False();
                                     cts.Token.ThrowIfCancellationRequested();
                                 }
 
                                 try
                                 {
-                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).WithConfig();
+                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).False();
                                     if (!info.IsEmpty)
                                     {
                                         infoList.Add(info);
@@ -77,7 +77,7 @@ namespace PicSum.Job.Jobs
                                 {
                                     this.WriteErrorLog(ex);
                                 }
-                            }).WithConfig();
+                            }).False();
                     }
                     catch (OperationCanceledException)
                     {
@@ -86,10 +86,10 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
-                var directoryState = await getDirectoryStateLogic.Execute(con, param.DirectoryPath).WithConfig();
+                var directoryState = await getDirectoryStateLogic.Execute(con, param.DirectoryPath).False();
                 result.FileInfoList = [.. infoList];
                 result.DirectoryState = directoryState;
             }

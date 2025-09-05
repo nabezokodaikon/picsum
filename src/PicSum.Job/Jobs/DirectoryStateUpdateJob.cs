@@ -20,17 +20,17 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ディレクトリパスがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var updateDirectoryState = new DirectoryStateUpdateLogic(this);
-                if (!await updateDirectoryState.Execute(con, param).WithConfig())
+                if (!await updateDirectoryState.Execute(con, param).False())
                 {
                     var addFileMasterLogic = new FileMasterAddLogic(this);
-                    await addFileMasterLogic.Execute(con, param.DirectoryPath).WithConfig();
-                    await updateDirectoryState.Execute(con, param).WithConfig();
+                    await addFileMasterLogic.Execute(con, param.DirectoryPath).False();
+                    await updateDirectoryState.Execute(con, param).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

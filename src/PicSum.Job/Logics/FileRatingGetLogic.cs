@@ -14,7 +14,7 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
             var sql = new FileInfoReadSql(filePath);
-            var dto = await con.ReadLine<FileInfoDto>(sql).WithConfig();
+            var dto = await con.ReadLine<FileInfoDto>(sql).False();
             if (dto != null)
             {
                 return dto.Rating;

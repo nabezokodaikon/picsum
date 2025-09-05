@@ -26,7 +26,7 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            var result = await this.CreateCallbackResult(param).WithConfig();
+            var result = await this.CreateCallbackResult(param).False();
 
             this.ThrowIfJobCancellationRequested();
 
@@ -53,14 +53,14 @@ namespace PicSum.Job.Jobs
                 {
                     var deepInfoGetLogic = new FileDeepInfoGetLogic(this);
                     var filePath = param.FilePathList[0];
-                    fileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true).WithConfig();
+                    fileInfo = await deepInfoGetLogic.Get(filePath, param.ThumbnailSize, true).False();
 
                     this.ThrowIfJobCancellationRequested();
 
-                    await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+                    await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
                     {
                         var ratingGetLogic = new FileRatingGetLogic(this);
-                        fileInfo.Rating = await ratingGetLogic.Execute(con, filePath).WithConfig();
+                        fileInfo.Rating = await ratingGetLogic.Execute(con, filePath).False();
                     }
 
                     this.ThrowIfJobCancellationRequested();
@@ -82,10 +82,10 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var tagsGetLogic = new FilesTagsGetLogic(this);
-                result.TagInfoList = await tagsGetLogic.Execute(con, result.FilePathList).WithConfig();
+                result.TagInfoList = await tagsGetLogic.Execute(con, result.FilePathList).False();
             }
 
             return result;

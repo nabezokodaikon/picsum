@@ -37,7 +37,7 @@ namespace PicSum.Job.Logics
                         .ToArray();
 
                     var sql = new FileTagReadSql(targets);
-                    dtoList.AddRange(await con.ReadList<SingleValueDto<string>>(sql).WithConfig());
+                    dtoList.AddRange(await con.ReadList<SingleValueDto<string>>(sql).False());
 
                     startIndex += TAKE_COUNT;
                 }

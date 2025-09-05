@@ -16,17 +16,17 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentNullException(param.Value, nameof(param.Value));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
-                if (!await incrementDirectoryViewCounter.Execute(con, param.Value).WithConfig())
+                if (!await incrementDirectoryViewCounter.Execute(con, param.Value).False())
                 {
                     var addFileMaster = new FileMasterAddLogic(this);
-                    await addFileMaster.Execute(con, param.Value).WithConfig();
-                    await incrementDirectoryViewCounter.Execute(con, param.Value).WithConfig();
+                    await addFileMaster.Execute(con, param.Value).False();
+                    await incrementDirectoryViewCounter.Execute(con, param.Value).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

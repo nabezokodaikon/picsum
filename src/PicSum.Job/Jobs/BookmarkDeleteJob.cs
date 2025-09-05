@@ -13,16 +13,16 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var deleteLogic = new BookmarkDeleteLogic(this);
 
                 foreach (var filePath in param)
                 {
-                    await deleteLogic.Execute(con, filePath).WithConfig();
+                    await deleteLogic.Execute(con, filePath).False();
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
         }
     }

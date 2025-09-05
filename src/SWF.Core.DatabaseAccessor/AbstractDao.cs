@@ -59,38 +59,38 @@ namespace SWF.Core.DatabaseAccessor
 
         public async ValueTask<IConnection> Connect()
         {
-            await this._lockObject.WaitAsync().WithConfig();
+            await this._lockObject.WaitAsync().False();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 var con = new Connection();
-                await con.Initialize(this._lockObject, this._persistentConnection, false).WithConfig();
+                await con.Initialize(this._lockObject, this._persistentConnection, false).False();
                 return con;
             }
             else
             {
                 var con = new Connection();
-                await con.Initialize(this._lockObject, this._filePath, false).WithConfig();
+                await con.Initialize(this._lockObject, this._filePath, false).False();
                 return con;
             }
         }
 
         public async ValueTask<IConnection> ConnectWithTransaction()
         {
-            await this._lockObject.WaitAsync().WithConfig();
+            await this._lockObject.WaitAsync().False();
 
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
                 var con = new Connection();
-                await con.Initialize(this._lockObject, this._persistentConnection, true).WithConfig();
+                await con.Initialize(this._lockObject, this._persistentConnection, true).False();
                 return con;
             }
             else
             {
                 var con = new Connection();
-                await con.Initialize(this._lockObject, this._filePath, true).WithConfig();
+                await con.Initialize(this._lockObject, this._filePath, true).False();
                 return con;
             }
         }

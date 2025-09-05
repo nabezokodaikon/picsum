@@ -28,11 +28,11 @@ namespace PicSum.Job.Jobs
                 parameter.IsNext == null ?
                 parameter.CurrentIndex
                 : parameter.IsNext == true ?
-                    await logic.GetNextIndex(parameter).WithConfig() :
-                    await logic.GetPreviewIndex(parameter).WithConfig();
+                    await logic.GetNextIndex(parameter).False() :
+                    await logic.GetPreviewIndex(parameter).False();
 
             var mainFilePath = parameter.FilePathList[mainIndex];
-            var mainSize = await logic.GetImageSize(mainFilePath).WithConfig();
+            var mainSize = await logic.GetImageSize(mainFilePath).False();
             if (parameter.DisplayMode != ImageDisplayMode.Single
                 && mainSize != ImageUtil.EMPTY_SIZE
                 && mainSize.Width <= mainSize.Height)
@@ -44,35 +44,35 @@ namespace PicSum.Job.Jobs
                 }
 
                 var subFilePath = parameter.FilePathList[subtIndex];
-                var subSize = await logic.GetImageSize(subFilePath).WithConfig();
+                var subSize = await logic.GetImageSize(subFilePath).False();
                 if (subFilePath != mainFilePath
                     && subSize != ImageUtil.EMPTY_SIZE
                     && subSize.Width <= subSize.Height)
                 {
-                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).False();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue).WithConfig());
+                        mainIndex, mainFilePath, true, true, mainSize, parameter.ZoomValue).False());
 
-                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).False();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue).WithConfig());
+                        subtIndex, subFilePath, false, true, subSize, parameter.ZoomValue).False());
                 }
                 else
                 {
-                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
+                    await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).False();
 
                     this.Callback(await logic.CreateLoadingResult(
-                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
+                        mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).False());
                 }
             }
             else
             {
-                await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).WithConfig();
+                await Task.Delay(MILLISECONDS_DELAY, this.CancellationToken).False();
 
                 this.Callback(await logic.CreateLoadingResult(
-                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).WithConfig());
+                    mainIndex, mainFilePath, true, false, mainSize, parameter.ZoomValue).False());
             }
         }
     }

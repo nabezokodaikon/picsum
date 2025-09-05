@@ -118,11 +118,11 @@ namespace SWF.Core.Job
                 {
                     if (this.Parameter != null)
                     {
-                        await this.Execute(this.Parameter).WithConfig();
+                        await this.Execute(this.Parameter).False();
                     }
                     else
                     {
-                        await this.Execute().WithConfig();
+                        await this.Execute().False();
                     }
                 }
                 catch (JobCancelException)

@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var sql = new FileCreationSql(filePath);
-            await con.Update(sql).WithConfig();
+            await con.Update(sql).False();
         }
     }
 }

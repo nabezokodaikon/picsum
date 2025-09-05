@@ -156,13 +156,13 @@ namespace SWF.Core.Job
 
             try
             {
-                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token).WithConfig())
+                await foreach (var job in this._jobsChannel.Reader.ReadAllAsync(token).False())
                 {
                     token.ThrowIfCancellationRequested();
 
                     if (!job.IsJobCancel)
                     {
-                        await job.ExecuteWrapper(token).WithConfig();
+                        await job.ExecuteWrapper(token).False();
                     }
                 }
             }

@@ -22,7 +22,7 @@ namespace PicSum.Job.Logics
             }
 
             var sql = new RatingUpdateSql(filePath, ratingValue, addDate);
-            return await con.Update(sql).WithConfig();
+            return await con.Update(sql).False();
         }
     }
 }

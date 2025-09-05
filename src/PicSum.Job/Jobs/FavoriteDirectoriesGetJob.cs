@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            var dtos = await this.GetOrCreateFileList().WithConfig();
+            var dtos = await this.GetOrCreateFileList().False();
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
@@ -41,7 +41,7 @@ namespace PicSum.Job.Jobs
 
                     try
                     {
-                        var info = await getInfoLogic.Get(dto.Value, true).WithConfig();
+                        var info = await getInfoLogic.Get(dto.Value, true).False();
                         if (!info.IsEmpty)
                         {
                             infoList.Add(info);
@@ -59,17 +59,17 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
-                var dtos = await logic.Execute(con).WithConfig();
+                var dtos = await logic.Execute(con).False();
                 if (dtos.Length > 0)
                 {
                     return dtos;
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().WithConfig())
+            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -81,17 +81,17 @@ namespace PicSum.Job.Jobs
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    if (!await incrementDirectoryViewCounter.Execute(con, dirPath).WithConfig())
+                    if (!await incrementDirectoryViewCounter.Execute(con, dirPath).False())
                     {
-                        await addFileMaster.Execute(con, dirPath).WithConfig();
-                        await incrementDirectoryViewCounter.Execute(con, dirPath).WithConfig();
+                        await addFileMaster.Execute(con, dirPath).False();
+                        await incrementDirectoryViewCounter.Execute(con, dirPath).False();
                     }
                 }
 
-                await con.Commit().WithConfig();
+                await con.Commit().False();
             }
 
-            return await this.GetOrCreateFileList().WithConfig();
+            return await this.GetOrCreateFileList().False();
         }
     }
 }

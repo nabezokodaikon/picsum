@@ -17,7 +17,7 @@ namespace PicSum.Job.Logics
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
             var sql = new TagDeletionSql(filePath, tag);
-            await con.Update(sql).WithConfig();
+            await con.Update(sql).False();
         }
     }
 }
