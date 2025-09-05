@@ -9,7 +9,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(fs, nameof(fs));
 
-            using (TimeMeasuring.Run(false, "BitmapUtil.GetImageSize"))
+            using (Measuring.Time(false, "BitmapUtil.GetImageSize"))
             {
                 using (var reader = new BinaryReader(fs, System.Text.Encoding.UTF8, true))
                 {

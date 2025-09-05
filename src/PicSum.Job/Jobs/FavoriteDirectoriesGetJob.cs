@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new List<FileShallowInfoEntity>();
 
-            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetJob ForEach"))
+            using (Measuring.Time(true, "FavoriteDirectoriesGetJob ForEach"))
             {
                 foreach (var dto in dtos)
                 {

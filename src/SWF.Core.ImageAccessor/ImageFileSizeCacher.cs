@@ -49,7 +49,7 @@ namespace SWF.Core.ImageAccessor
             this._cacheLock.Enter();
             try
             {
-                using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 1"))
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Create 1"))
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
@@ -71,7 +71,7 @@ namespace SWF.Core.ImageAccessor
             this._cacheLock.Enter();
             try
             {
-                using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Create 2"))
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Create 2"))
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
@@ -96,7 +96,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "ImageFileSizeCacher.GetOrCreate"))
+            using (Measuring.Time(false, "ImageFileSizeCacher.GetOrCreate"))
             {
                 var updateDate = FileUtil.GetUpdateDate(filePath);
 
@@ -130,7 +130,7 @@ namespace SWF.Core.ImageAccessor
             this._cacheLock.Enter();
             try
             {
-                using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 1"))
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 1"))
                 {
                     if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
@@ -152,7 +152,7 @@ namespace SWF.Core.ImageAccessor
             this._cacheLock.Enter();
             try
             {
-                using (TimeMeasuring.Run(false, $"ImageFileSizeCacher.Set 2"))
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 2"))
                 {
                     if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
                     {

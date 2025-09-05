@@ -20,7 +20,7 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentNullException.ThrowIfNull(filePathList, nameof(filePathList));
 
-            using (TimeMeasuring.Run(false, "FilesTagsGetLogic.Execute"))
+            using (Measuring.Time(false, "FilesTagsGetLogic.Execute"))
             {
                 const int TAKE_COUNT = 100;
 

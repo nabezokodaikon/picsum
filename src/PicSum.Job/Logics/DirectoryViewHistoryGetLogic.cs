@@ -17,7 +17,7 @@ namespace PicSum.Job.Logics
     {
         public async ValueTask<string[]> Execute(IConnection con)
         {
-            using (TimeMeasuring.Run(true, "DirectoryViewHistoryGetLogic.Execute"))
+            using (Measuring.Time(true, "DirectoryViewHistoryGetLogic.Execute"))
             {
                 var sql = new DirectoryViewHistoryReadSql(100);
                 var dtoList = await con.ReadList<DirectoryViewHistoryDto>(sql).False();

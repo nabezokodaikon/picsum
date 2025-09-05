@@ -25,7 +25,7 @@ namespace SWF.UIComponent.Base
 
         private void CheckPatternPanel_Paint(object? sender, PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "CheckPatternPanel.CheckPatternPanel_Paint"))
+            using (Measuring.Time(false, "CheckPatternPanel.CheckPatternPanel_Paint"))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;

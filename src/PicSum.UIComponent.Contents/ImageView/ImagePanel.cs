@@ -242,7 +242,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_Paint(object sender, PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "ImagePanel.ImagePanel_Paint"))
+            using (Measuring.Time(false, "ImagePanel.ImagePanel_Paint"))
             {
                 e.Graphics.SmoothingMode = SmoothingMode.None;
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -615,7 +615,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DrawImage(Graphics g)
         {
-            using (TimeMeasuring.Run(false, "ImagePanel.DrawImage"))
+            using (Measuring.Time(false, "ImagePanel.DrawImage"))
             {
                 try
                 {
@@ -674,7 +674,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DrawThumbnailPanel(Graphics g)
         {
-            using (TimeMeasuring.Run(false, "ImagePanel.DrawThumbnailPanel"))
+            using (Measuring.Time(false, "ImagePanel.DrawThumbnailPanel"))
             {
                 var panelRect = this.GetThumbnailPanelRectangle();
                 g.DrawImage(this._thumbnailPanelImage, panelRect);

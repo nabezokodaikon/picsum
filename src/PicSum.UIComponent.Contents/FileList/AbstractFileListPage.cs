@@ -161,7 +161,7 @@ namespace PicSum.UIComponent.Contents.FileList
         protected AbstractFileListPage(AbstractPageParameter param)
             : base(param)
         {
-            using (TimeMeasuring.Run(true, "AbstractFileListPage.New"))
+            using (Measuring.Time(true, "AbstractFileListPage.New"))
             {
                 this.InitializeComponent();
 

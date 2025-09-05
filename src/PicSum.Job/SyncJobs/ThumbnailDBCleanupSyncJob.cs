@@ -15,7 +15,7 @@ namespace PicSum.Job.SyncJobs
 
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "ThumbnailDBCleanupSyncJob.Execute"))
+            using (Measuring.Time(true, "ThumbnailDBCleanupSyncJob.Execute"))
             {
                 try
                 {

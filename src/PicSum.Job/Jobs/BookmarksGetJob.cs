@@ -21,7 +21,7 @@ namespace PicSum.Job.Jobs
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = await this.GetBookmarks().False();
 
-            using (TimeMeasuring.Run(true, "BookmarksGetJob Parallel.ForEachAsync"))
+            using (Measuring.Time(true, "BookmarksGetJob Parallel.ForEachAsync"))
             {
                 using (var cts = new CancellationTokenSource())
                 {

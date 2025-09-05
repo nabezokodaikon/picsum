@@ -162,7 +162,7 @@ namespace PicSum.Main.UIComponent
 
         public void SetControlsBounds(float scale)
         {
-            using (TimeMeasuring.Run(true, "BrowsePanel.SetControlsBounds"))
+            using (Measuring.Time(true, "BrowsePanel.SetControlsBounds"))
             {
                 this.toolPanel.SuspendLayout();
                 this.toolPanel2.SuspendLayout();
@@ -367,7 +367,7 @@ namespace PicSum.Main.UIComponent
 
         public void AddFavoriteDirectoryListTab()
         {
-            using (TimeMeasuring.Run(true, "BrowsePanel.AddFavoriteDirectoryListTab"))
+            using (Measuring.Time(true, "BrowsePanel.AddFavoriteDirectoryListTab"))
             {
                 this.OpenPage(new FavoriteDirectoryListPageParameter(), PageOpenMode.AddTab);
             }
@@ -434,7 +434,7 @@ namespace PicSum.Main.UIComponent
         {
             if (this.tabSwitch.ActiveTab != null)
             {
-                using (TimeMeasuring.Run(true, "BrowsePanel.RedrawPage"))
+                using (Measuring.Time(true, "BrowsePanel.RedrawPage"))
                 {
                     var page = this.tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
                     page.RedrawPage(scale);
@@ -487,7 +487,7 @@ namespace PicSum.Main.UIComponent
 
         private void OpenPage(IPageParameter param, PageOpenMode openMode)
         {
-            using (TimeMeasuring.Run(true, "BrowsePanel.OpenPage"))
+            using (Measuring.Time(true, "BrowsePanel.OpenPage"))
             {
                 if (openMode == PageOpenMode.OverlapTab)
                 {

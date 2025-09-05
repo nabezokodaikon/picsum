@@ -47,7 +47,7 @@ namespace SWF.Core.ImageAccessor
 
         public static async ValueTask<string> DetectFormat(Stream fs)
         {
-            using (TimeMeasuring.Run(false, "SixLaborsUtil.DetectFormat"))
+            using (Measuring.Time(false, "SixLaborsUtil.DetectFormat"))
             {
                 var format = await SixLabors.ImageSharp.Image.DetectFormatAsync(DECODER_OPTIONS, fs).False();
                 return $".{format.Name}";

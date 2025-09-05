@@ -13,7 +13,7 @@ namespace PicSum.Job.SyncJobs
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "StartupSyncJob.Execute"))
+            using (Measuring.Time(true, "StartupSyncJob.Execute"))
             {
                 Instance<IFileInfoDao>.Initialize(new Lazy<IFileInfoDao>(
                     static () => new FileInfoDao(AppFiles.FILE_INFO_DATABASE_FILE.Value),

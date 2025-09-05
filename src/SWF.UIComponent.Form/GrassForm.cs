@@ -316,7 +316,7 @@ namespace SWF.UIComponent.Form
 
         private void SetWindowColor(Color color)
         {
-            using (TimeMeasuring.Run(true, "GrassForm.SetWindowColor"))
+            using (Measuring.Time(true, "GrassForm.SetWindowColor"))
             {
                 if (OS_VERSION.Major >= 10 && OS_VERSION.Build >= 22000)
                 {

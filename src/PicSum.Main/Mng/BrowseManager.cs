@@ -53,7 +53,7 @@ namespace PicSum.Main.Mng
 
         private BrowseForm CreateBrowse()
         {
-            using (TimeMeasuring.Run(true, "BrowseManager.CreateBrowse"))
+            using (Measuring.Time(true, "BrowseManager.CreateBrowse"))
             {
                 var browse = new BrowseForm();
                 this.InitializeBrowseDelegate(browse);
@@ -64,7 +64,7 @@ namespace PicSum.Main.Mng
 
         private BrowseForm CreateBrowse(Point windowLocation, Size windowSize, FormWindowState windowState)
         {
-            using (TimeMeasuring.Run(true, "BrowseManager.CreateBrowse"))
+            using (Measuring.Time(true, "BrowseManager.CreateBrowse"))
             {
                 var browse = new BrowseForm()
                 {

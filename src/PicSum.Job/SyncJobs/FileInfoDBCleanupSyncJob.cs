@@ -12,7 +12,7 @@ namespace PicSum.Job.SyncJobs
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "FileInfoDBCleanupSyncJob.Execute"))
+            using (Measuring.Time(true, "FileInfoDBCleanupSyncJob.Execute"))
             {
                 this.Cleanup().AsTask().GetAwaiter().GetResult();
                 this.Vacuum().AsTask().GetAwaiter().GetResult();

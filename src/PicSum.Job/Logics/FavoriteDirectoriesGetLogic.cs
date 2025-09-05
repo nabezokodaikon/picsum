@@ -11,7 +11,7 @@ namespace PicSum.Job.Logics
     {
         public async ValueTask<SingleValueDto<string>[]> Execute(IConnection con)
         {
-            using (TimeMeasuring.Run(true, "FavoriteDirectoriesGetLogic.Execute"))
+            using (Measuring.Time(true, "FavoriteDirectoriesGetLogic.Execute"))
             {
                 var sql = new FavoriteDirectoriesReadSql();
                 var dtoList = await con.ReadList<SingleValueDto<string>>(sql).False();

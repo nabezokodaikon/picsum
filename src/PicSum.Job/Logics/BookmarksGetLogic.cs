@@ -12,7 +12,7 @@ namespace PicSum.Job.Logics
     {
         public async ValueTask<BookmarkDto[]> Execute(IConnection con)
         {
-            using (TimeMeasuring.Run(true, "BookmarksGetLogic.Execute"))
+            using (Measuring.Time(true, "BookmarksGetLogic.Execute"))
             {
                 var sql = new BookmarksReadSql();
                 var dtoList = await con.ReadList<BookmarkDto>(sql).False();

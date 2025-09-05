@@ -30,7 +30,7 @@ namespace SWF.Core.ImageAccessor
 
         public static MagickFormat DetectFormat(string filePath)
         {
-            using (TimeMeasuring.Run(false, "MagickUtil.DetectFormatFromFilePath"))
+            using (Measuring.Time(false, "MagickUtil.DetectFormatFromFilePath"))
             {
                 var info = new MagickImageInfo(filePath);
                 return info.Format;
@@ -39,7 +39,7 @@ namespace SWF.Core.ImageAccessor
 
         public static byte[] ToCompressionBinary(Mat mat)
         {
-            using (TimeMeasuring.Run(false, "MagickUtil.ToCompressionBinary"))
+            using (Measuring.Time(false, "MagickUtil.ToCompressionBinary"))
             {
                 var bytes = mat.ToBytes();
 
@@ -64,7 +64,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            using (TimeMeasuring.Run(false, "MagickUtil.ReadImageFileToMat"))
+            using (Measuring.Time(false, "MagickUtil.ReadImageFileToMat"))
             {
                 using (var magickImage = new MagickImage(bf))
                 using (var bmp = magickImage.ToBitmap())

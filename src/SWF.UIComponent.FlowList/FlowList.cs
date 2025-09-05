@@ -259,7 +259,7 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_Paint(object sender, PaintEventArgs e)
         {
-            using (TimeMeasuring.Run(false, "FlowList.FlowList_Paint"))
+            using (Measuring.Time(false, "FlowList.FlowList_Paint"))
             {
                 if (!this._isDraw)
                 {

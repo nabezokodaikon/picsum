@@ -33,7 +33,7 @@ namespace SWF.Core.Base
 
             if (_uiContext == null)
             {
-                using (TimeMeasuring.Run(true, "AppConstants.GetUIThreadContext new WindowsFormsSynchronizationContext()"))
+                using (Measuring.Time(true, "AppConstants.GetUIThreadContext new WindowsFormsSynchronizationContext()"))
                 {
                     _uiContext = new WindowsFormsSynchronizationContext();
                 }

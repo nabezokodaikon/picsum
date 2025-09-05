@@ -116,7 +116,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public override void RedrawPage(float scale)
         {
-            using (TimeMeasuring.Run(false, "ImageViewPage.RedrawPage"))
+            using (Measuring.Time(false, "ImageViewPage.RedrawPage"))
             {
                 if (this._scale != scale)
                 {
@@ -299,7 +299,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            using (TimeMeasuring.Run(false, "ImageViewPage.ProcessDialogKey"))
+            using (Measuring.Time(false, "ImageViewPage.ProcessDialogKey"))
             {
                 if (!this.CanOperation)
                 {
@@ -617,7 +617,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this._isMainLoading = true;
             this._isSubLoading = true;
 
-            using (TimeMeasuring.Run(false, "ImageViewPage.ReadImage"))
+            using (Measuring.Time(false, "ImageViewPage.ReadImage"))
             {
                 var mainFilePath = filePathList[currentIndex];
                 this.SelectedFilePath = mainFilePath;
@@ -684,7 +684,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                             this._isSubLoading = false;
                         }
 
-                        using (TimeMeasuring.Run(false, "ImageViewPage.ImageFileReadJob_Callback"))
+                        using (Measuring.Time(false, "ImageViewPage.ImageFileReadJob_Callback"))
                         {
                             this.ImageFileReadJob_Callback(result);
                         }

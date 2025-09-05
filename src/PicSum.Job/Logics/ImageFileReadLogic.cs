@@ -27,7 +27,7 @@ namespace PicSum.Job.Logics
 
             try
             {
-                using (TimeMeasuring.Run(false, $"ImageFileReadLogic.CreateResult"))
+                using (Measuring.Time(false, $"ImageFileReadLogic.CreateResult"))
                 {
                     image = await this.ReadImageFile(filePath, zoomValue).False();
 
@@ -241,7 +241,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
+                using (Measuring.Time(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
                     var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
                     if (!image.IsEmpry)
@@ -250,7 +250,7 @@ namespace PicSum.Job.Logics
                     }
                 }
 
-                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
+                using (Measuring.Time(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
@@ -270,7 +270,7 @@ namespace PicSum.Job.Logics
 
         private async ValueTask<CvImage> GetThumbnail(string filePath, Size imageSize, float zoomValue)
         {
-            using (TimeMeasuring.Run(false, "ImageFileReadLogic.GetThumbnail"))
+            using (Measuring.Time(false, "ImageFileReadLogic.GetThumbnail"))
             {
                 var cache = await Instance<IThumbnailCacher>.Value.GetCache(filePath).False();
                 if (!cache.IsEmpry

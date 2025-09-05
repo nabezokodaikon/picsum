@@ -3,12 +3,12 @@ using System.Diagnostics;
 namespace SWF.Core.Base
 {
 #pragma warning disable CS0414
-    public readonly struct TimeMeasuring
+    public readonly struct Measuring
         : IDisposable
     {
         private static long _threshold = long.MaxValue;
 
-        public static void SetThreshold(long threshold)
+        public static void SetMeasuringThresholdMilliseconds(long threshold)
         {
             AppConstants.ThrowIfNotUIThread();
 
@@ -20,11 +20,11 @@ namespace SWF.Core.Base
             _threshold = threshold;
         }
 
-        public static TimeMeasuring Run(bool enable, string message)
+        public static Measuring Time(bool enable, string message)
         {
 #if DEBUG
             ArgumentNullException.ThrowIfNull(message, nameof(message));
-            return new TimeMeasuring(enable, message);
+            return new Measuring(enable, message);
 #else
             return default;
 #endif
@@ -36,7 +36,7 @@ namespace SWF.Core.Base
         private readonly bool _enable = false;
 #pragma warning restore CA1823
 
-        private TimeMeasuring(bool enable, string message)
+        private Measuring(bool enable, string message)
         {
 #if DEBUG
             ArgumentNullException.ThrowIfNull(message, nameof(message));

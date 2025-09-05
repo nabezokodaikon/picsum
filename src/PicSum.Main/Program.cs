@@ -27,7 +27,7 @@ namespace PicSum.Main
                     AppConstants.SetUIThreadName();
                     ConsoleUtil.Write(true, $"Program.Main 3");
 
-                    TimeMeasuring.SetThreshold(CommandLineArgs.GetThreshold());
+                    Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
                     ConsoleUtil.Write(true, $"Program.Main 4");
 
                     WindowsFormsSynchronizationContext.AutoInstall = false;
@@ -44,7 +44,7 @@ namespace PicSum.Main
 
                     AppFiles.CreateApplicationDirectories();
 
-                    using (TimeMeasuring.Run(true, "Program.Main Load Configs"))
+                    using (Measuring.Time(true, "Program.Main Load Configs"))
                     {
                         Action[] actions = [
                             static () => NLogManager.Initialize(AppFiles.LOG_DIRECTORY.Value),

@@ -16,7 +16,7 @@ namespace SWF.Core.Base
                 throw new InvalidOperationException("ロガーは初期化されています。");
             }
 
-            using (TimeMeasuring.Run(true, "Log.Initialize"))
+            using (Measuring.Time(true, "Log.Initialize"))
             {
                 _logger = LogManager.Setup().LoadConfiguration(builder =>
                 {

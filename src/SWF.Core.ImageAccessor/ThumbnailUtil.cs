@@ -18,7 +18,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(img, nameof(img));
 
-            using (TimeMeasuring.Run(false, "ThumbnailUtil.ToCompressionBinary"))
+            using (Measuring.Time(false, "ThumbnailUtil.ToCompressionBinary"))
             {
                 return OpenCVUtil.ToCompressionBinary(img);
             }
@@ -28,7 +28,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            using (TimeMeasuring.Run(false, "ThumbnailUtil.ToImage"))
+            using (Measuring.Time(false, "ThumbnailUtil.ToImage"))
             {
                 try
                 {
@@ -52,7 +52,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcImg, nameof(srcImg));
 
-            using (TimeMeasuring.Run(false, "ThumbnailUtil.CreateThumbnail"))
+            using (Measuring.Time(false, "ThumbnailUtil.CreateThumbnail"))
             {
                 float w, h;
                 if (Math.Max(srcImg.Width, srcImg.Height) <= Math.Min(thumbWidth, thumbHeight))

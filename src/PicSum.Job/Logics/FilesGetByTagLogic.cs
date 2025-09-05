@@ -18,7 +18,7 @@ namespace PicSum.Job.Logics
             ArgumentNullException.ThrowIfNull(con, nameof(con));
             ArgumentException.ThrowIfNullOrEmpty(tag, nameof(tag));
 
-            using (TimeMeasuring.Run(true, "FilesGetByTagLogic.Execute"))
+            using (Measuring.Time(true, "FilesGetByTagLogic.Execute"))
             {
                 var sql = new FileReadByTagSql(tag);
                 var dtoList = await con.ReadList<FileByTagDto>(sql).False();

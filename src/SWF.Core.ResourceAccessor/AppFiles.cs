@@ -58,7 +58,7 @@ namespace SWF.Core.ResourceAccessor
 
         public static void CreateApplicationDirectories()
         {
-            using (TimeMeasuring.Run(true, "AppFiles.CreateApplicationDirectories"))
+            using (Measuring.Time(true, "AppFiles.CreateApplicationDirectories"))
             {
                 if (!FileUtil.IsExistsDirectory(APPLICATION_DIRECTORY.Value))
                 {

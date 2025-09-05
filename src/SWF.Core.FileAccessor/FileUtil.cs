@@ -37,7 +37,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "FileUtil.IsDrive"))
+            using (Measuring.Time(false, "FileUtil.IsDrive"))
             {
                 try
                 {
@@ -63,7 +63,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
 
-            using (TimeMeasuring.Run(false, "FileUtil.IsExistsDirectory"))
+            using (Measuring.Time(false, "FileUtil.IsExistsDirectory"))
             {
                 return Directory.Exists(path);
             }
@@ -78,7 +78,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(path, nameof(path));
 
-            using (TimeMeasuring.Run(false, "FileUtil.IsExistsFile"))
+            using (Measuring.Time(false, "FileUtil.IsExistsFile"))
             {
                 return File.Exists(path);
             }
@@ -93,7 +93,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            using (TimeMeasuring.Run(false, "FileUtil.CanAccess"))
+            using (Measuring.Time(false, "FileUtil.CanAccess"))
             {
                 if (FileUtil.IsSystemRoot(filePath))
                 {
@@ -522,7 +522,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
-            using (TimeMeasuring.Run(true, "FileUtil.GetFileSystemEntriesArray"))
+            using (Measuring.Time(true, "FileUtil.GetFileSystemEntriesArray"))
             {
                 if (FileUtil.IsSystemRoot(directoryPath))
                 {

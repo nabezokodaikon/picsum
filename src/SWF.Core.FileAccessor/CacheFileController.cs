@@ -45,7 +45,7 @@ namespace SWF.Core.FileAccessor
             {
                 var buffer = new byte[this._capacity];
 
-                using (TimeMeasuring.Run(true, "CacheFileController.New Create cache file"))
+                using (Measuring.Time(true, "CacheFileController.New Create cache file"))
                 {
                     using (var fs = new FileStream(
                         this._cacheFilePath, FileMode.CreateNew, FileAccess.Write))
@@ -88,7 +88,7 @@ namespace SWF.Core.FileAccessor
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
 
-            using (TimeMeasuring.Run(false, "CacheFileController.Write"))
+            using (Measuring.Time(false, "CacheFileController.Write"))
             {
                 var length = buffer.Length;
 
@@ -113,7 +113,7 @@ namespace SWF.Core.FileAccessor
 
         public byte[] Read(int position, int length)
         {
-            using (TimeMeasuring.Run(false, "CacheFileController.Read"))
+            using (Measuring.Time(false, "CacheFileController.Read"))
             {
                 var buffer = new byte[length];
                 this._accessor.ReadArray(position, buffer, 0, buffer.Length);

@@ -128,7 +128,7 @@ namespace PicSum.Main.UIComponent
 
         private void BrowseForm_Shown(object sender, EventArgs e)
         {
-            using (TimeMeasuring.Run(true, "BrowseForm.BrowseForm_Shown"))
+            using (Measuring.Time(true, "BrowseForm.BrowseForm_Shown"))
             {
                 if (BrowseForm.isStartUp)
                 {
@@ -237,7 +237,7 @@ namespace PicSum.Main.UIComponent
 
         private void CreateBrowsePanel()
         {
-            using (TimeMeasuring.Run(true, "BrowseForm.CreateBrowsePanel"))
+            using (Measuring.Time(true, "BrowseForm.CreateBrowsePanel"))
             {
                 if (this._browsePanel != null)
                 {

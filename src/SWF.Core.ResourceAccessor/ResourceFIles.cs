@@ -76,7 +76,7 @@ namespace SWF.Core.ResourceAccessor
 
         private static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
         {
-            using (TimeMeasuring.Run(false, "ResourceFiles.CreateBitmapFromByteArray"))
+            using (Measuring.Time(false, "ResourceFiles.CreateBitmapFromByteArray"))
             {
                 using (var memoryStream = new MemoryStream(byteArray))
                 {

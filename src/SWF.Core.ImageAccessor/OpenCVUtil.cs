@@ -20,7 +20,7 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap ToBitmap(Mat mat)
         {
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ToBitmap"))
+            using (Measuring.Time(false, "OpenCVUtil.ToBitmap"))
             {
                 return mat.ToBitmap();
             }
@@ -28,7 +28,7 @@ namespace SWF.Core.ImageAccessor
 
         public static Mat ToMat(Bitmap bmp)
         {
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ToMat"))
+            using (Measuring.Time(false, "OpenCVUtil.ToMat"))
             {
                 return bmp.ToMat();
             }
@@ -40,7 +40,7 @@ namespace SWF.Core.ImageAccessor
 
             if (srcMat.Width > newWidth || srcMat.Height > newHeight)
             {
-                using (TimeMeasuring.Run(false, "OpenCVUtil.Resize: Resize By Area"))
+                using (Measuring.Time(false, "OpenCVUtil.Resize: Resize By Area"))
                 {
                     var destMat = GetDestMat();
                     var size = new OpenCvSharp.Size(newWidth, newHeight);
@@ -50,7 +50,7 @@ namespace SWF.Core.ImageAccessor
             }
             else if (srcMat.Width < newWidth || srcMat.Height < newHeight)
             {
-                using (TimeMeasuring.Run(false, "OpenCVUtil.Resize: Resize By Cubic"))
+                using (Measuring.Time(false, "OpenCVUtil.Resize: Resize By Cubic"))
                 {
                     var destMat = GetDestMat();
                     var size = new OpenCvSharp.Size(newWidth, newHeight);
@@ -60,7 +60,7 @@ namespace SWF.Core.ImageAccessor
             }
             else
             {
-                using (TimeMeasuring.Run(false, "OpenCVUtil.Resize: No resize"))
+                using (Measuring.Time(false, "OpenCVUtil.Resize: No resize"))
                 {
                     return ToBitmap(srcMat);
                 }
@@ -78,21 +78,21 @@ namespace SWF.Core.ImageAccessor
 
                 if (srcMat.Width > width || srcMat.Height > height)
                 {
-                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Area"))
+                    using (Measuring.Time(false, "OpenCVUtil.Resize By Bitmap: Area"))
                     {
                         Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Area);
                     }
                 }
                 else if (srcMat.Width < width || srcMat.Height < height)
                 {
-                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Cubic"))
+                    using (Measuring.Time(false, "OpenCVUtil.Resize By Bitmap: Cubic"))
                     {
                         Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Cubic);
                     }
                 }
                 else
                 {
-                    using (TimeMeasuring.Run(false, "OpenCVUtil.Resize By Bitmap: Nearest"))
+                    using (Measuring.Time(false, "OpenCVUtil.Resize By Bitmap: Nearest"))
                     {
                         Cv2.Resize(srcMat, destMat, size, 0, 0, InterpolationFlags.Nearest);
                     }
@@ -106,7 +106,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFile"))
+            using (Measuring.Time(false, "OpenCVUtil.ReadImageFile"))
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 using (var mat = Mat.FromStream(stream, ImreadModes.Unchanged))
@@ -120,7 +120,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            using (TimeMeasuring.Run(false, "OpenCVUtil.ReadImageFileToMat"))
+            using (Measuring.Time(false, "OpenCVUtil.ReadImageFileToMat"))
             {
                 return Cv2.ImDecode(bf, ImreadModes.Unchanged);
             }

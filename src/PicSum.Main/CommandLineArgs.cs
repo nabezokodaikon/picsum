@@ -31,7 +31,7 @@ namespace PicSum.Main
             return true;
         }
 
-        public static int GetThreshold()
+        public static int GetMeasuringThresholdMilliseconds()
         {
             var arg = ARGS.FirstOrDefault(string.Empty).Trim();
             if (string.IsNullOrEmpty(arg))

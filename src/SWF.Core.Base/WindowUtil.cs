@@ -10,7 +10,7 @@ namespace SWF.Core.Base
 
         public static float GetCursorWindowScale()
         {
-            using (TimeMeasuring.Run(false, "WindowUtil.GetCursorWindowScale"))
+            using (Measuring.Time(false, "WindowUtil.GetCursorWindowScale"))
             {
                 var hwnd = WinApiMembers.WindowFromPoint(
                     new WinApiMembers.POINT(Cursor.Position.X, Cursor.Position.Y));
@@ -24,7 +24,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNull(control, nameof(control));
 
-            using (TimeMeasuring.Run(false, "WindowUtil.GetCurrentWindowScale"))
+            using (Measuring.Time(false, "WindowUtil.GetCurrentWindowScale"))
             {
                 var dpi = WinApiMembers.GetDpiForWindow(control.Handle);
                 var scale = dpi / BASE_DPI;

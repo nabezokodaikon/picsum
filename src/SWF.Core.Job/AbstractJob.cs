@@ -110,7 +110,7 @@ namespace SWF.Core.Job
         {
             this.CancellationToken = token;
 
-            using (TimeMeasuring.Run(false, this.ToString()))
+            using (Measuring.Time(false, this.ToString()))
             {
                 LOGGER.Trace($"{this} を実行します。");
                 var sw = Stopwatch.StartNew();

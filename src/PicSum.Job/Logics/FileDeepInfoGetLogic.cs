@@ -206,7 +206,7 @@ namespace PicSum.Job.Logics
         {
             try
             {
-                using (TimeMeasuring.Run(false, "FileDeepInfoGetLogic.ReadImageFile Get Cache"))
+                using (Measuring.Time(false, "FileDeepInfoGetLogic.ReadImageFile Get Cache"))
                 {
                     var image = Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue);
                     if (!image.IsEmpry)
@@ -215,7 +215,7 @@ namespace PicSum.Job.Logics
                     }
                 }
 
-                using (TimeMeasuring.Run(false, "ImageFileReadLogic.ReadImageFile Read File"))
+                using (Measuring.Time(false, "ImageFileReadLogic.ReadImageFile Read File"))
                 {
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {

@@ -13,7 +13,7 @@ namespace PicSum.Job.SyncJobs
     {
         public void Execute()
         {
-            using (TimeMeasuring.Run(true, "ClosingSyncJob.Execute"))
+            using (Measuring.Time(true, "ClosingSyncJob.Execute"))
             {
                 Instance<JobCaller>.Value.Dispose();
                 Instance<IFileIconCacher>.Value.Dispose();

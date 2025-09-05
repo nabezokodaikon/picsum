@@ -25,7 +25,7 @@ namespace SWF.Core.ImageAccessor
 
             using (var g = Graphics.FromImage(bitmap))
             {
-                using (TimeMeasuring.Run(false, "SVGUtil.ReadImageFile Draw"))
+                using (Measuring.Time(false, "SVGUtil.ReadImageFile Draw"))
                 {
                     doc.Draw(g, new SizeF(width, height));
                     return bitmap;

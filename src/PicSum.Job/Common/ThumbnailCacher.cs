@@ -237,7 +237,7 @@ namespace PicSum.Job.Common
                 throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
             }
 
-            using (TimeMeasuring.Run(false, "ThumbnailCacher.GetDBCache"))
+            using (Measuring.Time(false, "ThumbnailCacher.GetDBCache"))
             {
                 await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
                 {
@@ -281,7 +281,7 @@ namespace PicSum.Job.Common
                 throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
             }
 
-            using (TimeMeasuring.Run(false, "ThumbnailCacher.CreateDBCache"))
+            using (Measuring.Time(false, "ThumbnailCacher.CreateDBCache"))
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {
@@ -351,7 +351,7 @@ namespace PicSum.Job.Common
                 throw new InvalidOperationException("キャッシュファイルコントローラが初期化されていません。");
             }
 
-            using (TimeMeasuring.Run(false, "ThumbnailCacher.UpdateDBCache"))
+            using (Measuring.Time(false, "ThumbnailCacher.UpdateDBCache"))
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {

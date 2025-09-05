@@ -134,7 +134,7 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("MatがNullです。");
             }
 
-            using (TimeMeasuring.Run(false, "CvImage.DrawZoomThumbnailImage"))
+            using (Measuring.Time(false, "CvImage.DrawZoomThumbnailImage"))
             {
                 using (var bmp = OpenCVUtil.ToBitmap(this._mat))
                 {
@@ -154,7 +154,7 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("MatがNullです。");
             }
 
-            using (TimeMeasuring.Run(false, "CvImage.DrawResizeThumbnailImage"))
+            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
             {
                 using (var bmp = OpenCVUtil.ToBitmap(this._mat))
                 {
@@ -176,7 +176,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(false, "CvImage.CreateScaleImage"))
+                using (Measuring.Time(false, "CvImage.CreateScaleImage"))
                 {
                     return OpenCVUtil.Resize(this._mat, width, height);
                 }
@@ -207,7 +207,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (TimeMeasuring.Run(false, "CvImage.DrawZoomImage"))
+                using (Measuring.Time(false, "CvImage.DrawZoomImage"))
                 {
                     var zoomRect = this.GetZoomRectange(srcRect);
                     var point = new OpenCvSharp.Point(zoomRect.X, zoomRect.Y);
@@ -250,7 +250,7 @@ namespace SWF.Core.ImageAccessor
                 var width = destRect.Width;
                 var height = destRect.Height;
 
-                using (TimeMeasuring.Run(false, "CvImage.DrawResizeImage"))
+                using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
                     using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
                     {

@@ -23,7 +23,7 @@ namespace SWF.UIComponent.TabOperation
         /// <param name="page"></param>
         internal void SetPage(PagePanel page)
         {
-            using (TimeMeasuring.Run(true, "PageContainer.SetPage"))
+            using (Measuring.Time(true, "PageContainer.SetPage"))
             {
                 ArgumentNullException.ThrowIfNull(page, nameof(page));
 

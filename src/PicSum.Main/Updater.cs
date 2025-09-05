@@ -21,7 +21,7 @@ namespace PicSum.Main
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "VersionUpTo_12_0_0_0"))
+            using (Measuring.Time(true, "VersionUpTo_12_0_0_0"))
             {
                 LOGGER.Info($"バージョンが'{this._12_0_0_0}'未満のため、サムネイルを初期化します。");
 
@@ -37,7 +37,7 @@ namespace PicSum.Main
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "VersionUpTo_12_2_1_0"))
+            using (Measuring.Time(true, "VersionUpTo_12_2_1_0"))
             {
                 LOGGER.Info($"バージョンが'{this._12_2_1_0}'未満のため、評価値Tを更新します。");
 
@@ -53,7 +53,7 @@ namespace PicSum.Main
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "VersionUpTo_12_2_2_0"))
+            using (Measuring.Time(true, "VersionUpTo_12_2_2_0"))
             {
                 LOGGER.Info($"バージョンが'{this._12_2_2_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 
@@ -69,7 +69,7 @@ namespace PicSum.Main
                 return;
             }
 
-            using (TimeMeasuring.Run(true, "VersionUpTo_12_3_0_0"))
+            using (Measuring.Time(true, "VersionUpTo_12_3_0_0"))
             {
                 LOGGER.Info($"バージョンが'{this._12_3_0_0}'未満のため、ディレクトリ表示履歴Tを更新します。");
 

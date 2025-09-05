@@ -15,7 +15,7 @@ namespace PicSum.Job.Logics
     {
         public async ValueTask<FileByRatingDto[]> Execute(IConnection con, int rating)
         {
-            using (TimeMeasuring.Run(true, "FilesGetByRatingLogic.Execute"))
+            using (Measuring.Time(true, "FilesGetByRatingLogic.Execute"))
             {
                 var sql = new FileReadByRatingSql(rating);
                 var dtoList = await con.ReadList<FileByRatingDto>(sql).False();

@@ -17,7 +17,7 @@ namespace PicSum.Job.Jobs
 
                 await Task.Delay(INTERVAL, this.CancellationToken).False();
 
-                using (TimeMeasuring.Run(false, "GCCollectRunJob.Execute GC.Collect"))
+                using (Measuring.Time(false, "GCCollectRunJob.Execute GC.Collect"))
                 {
                     GC.Collect();
                     GC.WaitForPendingFinalizers();

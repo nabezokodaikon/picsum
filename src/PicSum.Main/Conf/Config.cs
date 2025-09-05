@@ -44,7 +44,7 @@ namespace PicSum.Main.Conf
 
         public void Load()
         {
-            using (TimeMeasuring.Run(true, "Config.Load"))
+            using (Measuring.Time(true, "Config.Load"))
             {
                 try
                 {
