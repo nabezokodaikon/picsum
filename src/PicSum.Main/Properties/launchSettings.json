@@ -1,8 +1,7 @@
 {
   "profiles": {
     "PicSum.Main": {
-      "commandName": "Project",
-      "commandLineArgs": "--threshold=100"
+      "commandName": "Project"
     }
   }
 }
