@@ -17,6 +17,7 @@ namespace SWF.Core.DatabaseAccessor
         private DbTransaction? _transaction = null;
         private bool _isDispose;
         private bool _isCommitted = false;
+        private bool _isOccursedException = false;
 
         public async ValueTask Initialize(SemaphoreSlim lockObject, string filePath, bool isTransaction)
         {
@@ -60,7 +61,7 @@ namespace SWF.Core.DatabaseAccessor
 
             if (this._transaction != null)
             {
-                if (!this._isCommitted)
+                if (!this._isCommitted || this._isOccursedException)
                 {
                     await this._transaction.RollbackAsync().False();
                 }
@@ -114,16 +115,24 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteNonQueryAsync().False();
-                if (result > 0)
+                try
                 {
-                    // 更新されたレコードが存在するため、Trueを返します。
-                    return true;
+                    var result = await cmd.ExecuteNonQueryAsync().False();
+                    if (result > 0)
+                    {
+                        // 更新されたレコードが存在するため、Trueを返します。
+                        return true;
+                    }
+                    else
+                    {
+                        // 更新されたレコードが存在しないため、Falseを返します。
+                        return false;
+                    }
                 }
-                else
+                catch (DbException)
                 {
-                    // 更新されたレコードが存在しないため、Falseを返します。
-                    return false;
+                    this._isOccursedException = true;
+                    throw;
                 }
             }
         }
@@ -149,25 +158,33 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).False())
+                try
                 {
-                    if (reader.HasRows)
+                    using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.Default).False())
                     {
-                        var list = new List<TDto>();
-
-                        while (await reader.ReadAsync().False())
+                        if (reader.HasRows)
                         {
-                            var dto = new TDto();
-                            dto.Read(reader);
-                            list.Add(dto);
-                        }
+                            var list = new List<TDto>();
 
-                        return [.. list];
+                            while (await reader.ReadAsync().False())
+                            {
+                                var dto = new TDto();
+                                dto.Read(reader);
+                                list.Add(dto);
+                            }
+
+                            return [.. list];
+                        }
+                        else
+                        {
+                            return [];
+                        }
                     }
-                    else
-                    {
-                        return [];
-                    }
+                }
+                catch (DbException)
+                {
+                    this._isOccursedException = true;
+                    throw;
                 }
             }
         }
@@ -193,19 +210,27 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).False())
+                try
                 {
-                    if (reader.HasRows)
+                    using (var reader = await cmd.ExecuteReaderAsync(CommandBehavior.SingleRow).False())
                     {
-                        await reader.ReadAsync().False();
-                        var dto = new TDto();
-                        dto.Read(reader);
-                        return dto;
+                        if (reader.HasRows)
+                        {
+                            await reader.ReadAsync().False();
+                            var dto = new TDto();
+                            dto.Read(reader);
+                            return dto;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
-                    else
-                    {
-                        return null;
-                    }
+                }
+                catch (DbException)
+                {
+                    this._isOccursedException = true;
+                    throw;
                 }
             }
         }
@@ -230,14 +255,22 @@ namespace SWF.Core.DatabaseAccessor
                     cmd.Parameters.AddRange(sql.Parameters);
                 }
 
-                var result = await cmd.ExecuteScalarAsync().False();
-                if (result != null && result != DBNull.Value)
+                try
                 {
-                    return (T)result;
+                    var result = await cmd.ExecuteScalarAsync().False();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return (T)result;
+                    }
+                    else
+                    {
+                        return default;
+                    }
                 }
-                else
+                catch (DbException)
                 {
-                    return default;
+                    this._isOccursedException = true;
+                    throw;
                 }
             }
         }
