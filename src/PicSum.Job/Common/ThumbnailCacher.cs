@@ -24,9 +24,9 @@ namespace PicSum.Job.Common
 
         public async ValueTask Initialize()
         {
-            await using (var con = await Instance<IThumbnailDao>.Value.Connect())
+            await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
             {
-                var position = (int)await con.ReadValue<long>(new ThumbnailIDReadSql());
+                var position = (int)await con.ReadValue<long>(new ThumbnailIDReadSql()).False();
 
                 this._cacheFileController = new(
                     AppFiles.THUMBNAIL_CACHE_FILE.Value,
