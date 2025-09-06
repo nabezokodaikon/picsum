@@ -59,7 +59,8 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
+            var con = await Instance<IFileInfoDao>.Value.Connect().False();
+            try
             {
                 var logic = new FavoriteDirectoriesGetLogic(this);
                 var dtos = await logic.Execute(con).False();
@@ -68,8 +69,13 @@ namespace PicSum.Job.Jobs
                     return dtos;
                 }
             }
+            finally
+            {
+                await con.DisposeAsync().False();
+            }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
+            var transactionConnection = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
+            try
             {
                 var parentDir = FileUtil.GetParentDirectoryPath(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
@@ -81,14 +87,18 @@ namespace PicSum.Job.Jobs
                 {
                     this.ThrowIfJobCancellationRequested();
 
-                    if (!await incrementDirectoryViewCounter.Execute(con, dirPath).False())
+                    if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
                     {
-                        await addFileMaster.Execute(con, dirPath).False();
-                        await incrementDirectoryViewCounter.Execute(con, dirPath).False();
+                        await addFileMaster.Execute(transactionConnection, dirPath).False();
+                        await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
                     }
                 }
 
-                await con.Commit().False();
+                await transactionConnection.Commit().False();
+            }
+            finally
+            {
+                await transactionConnection.DisposeAsync().False();
             }
 
             return await this.GetOrCreateFileList().False();

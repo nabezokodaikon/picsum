@@ -18,7 +18,8 @@ namespace PicSum.Job.Jobs
 
             var addDate = DateTime.Now;
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
+            var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
+            try
             {
                 var updateLogic = new BookmarkUpdateLogic(this);
 
@@ -31,6 +32,10 @@ namespace PicSum.Job.Jobs
                 }
 
                 await con.Commit().False();
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
         }
     }

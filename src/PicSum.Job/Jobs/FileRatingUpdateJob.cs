@@ -20,7 +20,8 @@ namespace PicSum.Job.Jobs
                 throw new ArgumentException("ファイルパスリストがNULLです。", nameof(param));
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
+            var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
+            try
             {
                 var updateFileRating = new FileRatingUpdateLogic(this);
                 var addFileMaster = new FileMasterAddLogic(this);
@@ -36,6 +37,10 @@ namespace PicSum.Job.Jobs
                 }
 
                 await con.Commit().False();
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
         }
     }

@@ -18,7 +18,8 @@ namespace PicSum.Job.Jobs
 
             var ticks = DateTime.Now.Ticks;
 
-            await using (var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False())
+            var con = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
+            try
             {
                 var updateDirectoryViewHistory = new DirectoryViewHistoryUpdateLogic(this);
                 if (!await updateDirectoryViewHistory.Execute(con, param.Value, ticks).False())
@@ -29,6 +30,10 @@ namespace PicSum.Job.Jobs
                 }
 
                 await con.Commit().False();
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
         }
     }

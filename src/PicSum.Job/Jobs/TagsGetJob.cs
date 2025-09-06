@@ -20,10 +20,15 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<string[]> GetTags()
         {
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
+            var con = await Instance<IFileInfoDao>.Value.Connect().False();
+            try
             {
                 var logic = new TagsGetLogic(this);
                 return await logic.Execute(con).False();
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
         }
     }

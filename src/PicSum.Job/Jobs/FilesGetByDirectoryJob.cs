@@ -86,12 +86,17 @@ namespace PicSum.Job.Jobs
                 }
             }
 
-            await using (var con = await Instance<IFileInfoDao>.Value.Connect().False())
+            var con = await Instance<IFileInfoDao>.Value.Connect().False();
+            try
             {
                 var getDirectoryStateLogic = new DirectoryStateGetLogic(this);
                 var directoryState = await getDirectoryStateLogic.Execute(con, param.DirectoryPath).False();
                 result.FileInfoList = [.. infoList];
                 result.DirectoryState = directoryState;
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
 
             this.Callback(result);

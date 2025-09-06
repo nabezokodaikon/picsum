@@ -24,7 +24,8 @@ namespace PicSum.Job.Common
 
         public async ValueTask Initialize()
         {
-            await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
+            var con = await Instance<IThumbnailDao>.Value.Connect().False();
+            try
             {
                 var position = (int)await con.ReadValue<long>(new ThumbnailIDReadSql()).False();
 
@@ -32,6 +33,10 @@ namespace PicSum.Job.Common
                     AppFiles.THUMBNAIL_CACHE_FILE.Value,
                     CACHE_CAPACITY,
                     position);
+            }
+            finally
+            {
+                await con.DisposeAsync().False();
             }
         }
 
@@ -239,7 +244,8 @@ namespace PicSum.Job.Common
 
             using (Measuring.Time(false, "ThumbnailCacher.GetDBCache"))
             {
-                await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
+                var con = await Instance<IThumbnailDao>.Value.Connect().False();
+                try
                 {
                     var sql = new ThumbnailReadByFileSql(filePath);
                     var dto = await con.ReadLine(sql).False();
@@ -265,6 +271,10 @@ namespace PicSum.Job.Common
                     {
                         return ThumbnailCacheEntity.EMPTY;
                     }
+                }
+                finally
+                {
+                    await con.DisposeAsync().False();
                 }
             }
         }
@@ -292,7 +302,9 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
+
+                        var con = await Instance<IThumbnailDao>.Value.Connect().False();
+                        try
                         {
                             var exists = await con.ReadValue<long>(
                                 new ThumbnailExistsByFileSql(targetFilePath)).False();
@@ -320,6 +332,10 @@ namespace PicSum.Job.Common
                                     updateDate);
                                 await con.Update(sql).False();
                             }
+                        }
+                        finally
+                        {
+                            await con.DisposeAsync().False();
                         }
 
                         var thumb = new ThumbnailCacheEntity
@@ -362,7 +378,9 @@ namespace PicSum.Job.Common
                         srcImg, thumbWidth, thumbHeight))
                     {
                         var thumbBin = ThumbnailUtil.ToCompressionBinary(thumbImg);
-                        await using (var con = await Instance<IThumbnailDao>.Value.Connect().False())
+
+                        var con = await Instance<IThumbnailDao>.Value.Connect().False();
+                        try
                         {
                             var position = this._cacheFileController.Write(thumbBin);
                             await con.Update(new ThumbnailOffsetUpdateSql(position)).False();
@@ -385,6 +403,10 @@ namespace PicSum.Job.Common
                                 srcImg.Height,
                                 updateDate);
                             await con.Update(sql).False();
+                        }
+                        finally
+                        {
+                            await con.DisposeAsync().False();
                         }
 
                         var thumb = new ThumbnailCacheEntity
