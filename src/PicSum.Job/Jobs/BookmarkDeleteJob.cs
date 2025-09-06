@@ -22,8 +22,6 @@ namespace PicSum.Job.Jobs
                 {
                     await deleteLogic.Execute(con, filePath).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {
