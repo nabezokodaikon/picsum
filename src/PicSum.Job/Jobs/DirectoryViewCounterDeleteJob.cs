@@ -22,8 +22,6 @@ namespace PicSum.Job.Jobs
                 {
                     await logic.Execute(con, dir).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {

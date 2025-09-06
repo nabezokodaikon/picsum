@@ -34,8 +34,6 @@ namespace PicSum.Job.Jobs
                 {
                     await logic.Execute(con, filePath, param.Tag).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {

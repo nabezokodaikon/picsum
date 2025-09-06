@@ -26,8 +26,6 @@ namespace PicSum.Job.Jobs
                     await addFileMaster.Execute(con, param.Value).False();
                     await incrementDirectoryViewCounter.Execute(con, param.Value).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {

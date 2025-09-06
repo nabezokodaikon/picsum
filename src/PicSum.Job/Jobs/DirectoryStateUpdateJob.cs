@@ -30,8 +30,6 @@ namespace PicSum.Job.Jobs
                     await addFileMasterLogic.Execute(con, param.DirectoryPath).False();
                     await updateDirectoryState.Execute(con, param).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {

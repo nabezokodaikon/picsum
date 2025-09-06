@@ -93,8 +93,6 @@ namespace PicSum.Job.Jobs
                         await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
                     }
                 }
-
-                await transactionConnection.Commit().False();
             }
             finally
             {

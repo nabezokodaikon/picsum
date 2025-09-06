@@ -5,106 +5,21 @@ using System.Data.SQLite;
 
 namespace SWF.Core.DatabaseAccessor
 {
-
-    internal sealed class Connection
-        : IConnection
+    public abstract class AbstractConnection
     {
-        private bool _disposed = false;
-#pragma warning disable CA2213
-        private SemaphoreSlim? _lockObject = null;
-#pragma warning restore CA2213
-        private SQLiteConnection? _connection = null;
-        private DbTransaction? _transaction = null;
-        private bool _isDispose;
-        private bool _isCommitted = false;
-        private bool _isOccursedException = false;
-
-        public async ValueTask Initialize(SemaphoreSlim lockObject, string filePath, bool isTransaction)
-        {
-            ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
-            ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            this._lockObject = lockObject;
-            this._connection = new SQLiteConnection($"Data Source={filePath}");
-            await this._connection.OpenAsync().False();
-
-            if (isTransaction)
-            {
-                this._transaction = await this._connection.BeginTransactionAsync().False();
-            }
-
-            this._isDispose = true;
-        }
-
-        public async ValueTask Initialize(SemaphoreSlim lockObject, SQLiteConnection connection, bool isTransaction)
-        {
-            ArgumentNullException.ThrowIfNull(lockObject, nameof(lockObject));
-            ArgumentNullException.ThrowIfNull(connection, nameof(connection));
-
-            this._lockObject = lockObject;
-            this._connection = connection;
-
-            if (isTransaction)
-            {
-                this._transaction = await this._connection.BeginTransactionAsync().False();
-            }
-
-            this._isDispose = false;
-        }
-
-        public async ValueTask DisposeAsync()
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (this._transaction != null)
-            {
-                if (!this._isCommitted || this._isOccursedException)
-                {
-                    await this._transaction.RollbackAsync().False();
-                }
-
-                await this._transaction.DisposeAsync().False();
-            }
-
-            if (this._isDispose)
-            {
-                if (this._connection is not null)
-                {
-                    await this._connection.DisposeAsync().False();
-                }
-            }
-
-            this._lockObject?.Release();
-
-            this._disposed = true;
-
-            GC.SuppressFinalize(this);
-        }
-
-        public async ValueTask Commit()
-        {
-            if (this._transaction == null)
-            {
-                throw new InvalidOperationException("トランザクションが開始されていません。");
-            }
-
-            await this._transaction.CommitAsync().False();
-            this._isCommitted = true;
-        }
+        internal protected bool IsOccursedException { get; set; } = false;
+        internal protected SQLiteConnection? Connection { get; set; } = null;
 
         public async ValueTask<bool> Update(SqlBase sql)
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (this._connection is null)
+            if (this.Connection is null)
             {
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            using (var cmd = this.Connection.CreateCommand())
             {
 #pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
@@ -131,7 +46,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
                 catch (DbException)
                 {
-                    this._isOccursedException = true;
+                    this.IsOccursedException = true;
                     throw;
                 }
             }
@@ -142,12 +57,12 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (this._connection is null)
+            if (this.Connection is null)
             {
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            using (var cmd = this.Connection.CreateCommand())
             {
 #pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
@@ -183,7 +98,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
                 catch (DbException)
                 {
-                    this._isOccursedException = true;
+                    this.IsOccursedException = true;
                     throw;
                 }
             }
@@ -194,12 +109,12 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (this._connection is null)
+            if (this.Connection is null)
             {
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            using (var cmd = this.Connection.CreateCommand())
             {
 #pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
@@ -229,7 +144,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
                 catch (DbException)
                 {
-                    this._isOccursedException = true;
+                    this.IsOccursedException = true;
                     throw;
                 }
             }
@@ -239,12 +154,12 @@ namespace SWF.Core.DatabaseAccessor
         {
             ArgumentNullException.ThrowIfNull(sql, nameof(sql));
 
-            if (this._connection is null)
+            if (this.Connection is null)
             {
                 throw new InvalidOperationException("コネクションが設定されていません。");
             }
 
-            using (var cmd = this._connection.CreateCommand())
+            using (var cmd = this.Connection.CreateCommand())
             {
 #pragma warning disable CA2100
                 cmd.CommandText = sql.GetExecuteSql();
@@ -269,7 +184,7 @@ namespace SWF.Core.DatabaseAccessor
                 }
                 catch (DbException)
                 {
-                    this._isOccursedException = true;
+                    this.IsOccursedException = true;
                     throw;
                 }
             }

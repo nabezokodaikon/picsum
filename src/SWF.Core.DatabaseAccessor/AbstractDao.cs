@@ -64,14 +64,14 @@ namespace SWF.Core.DatabaseAccessor
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new Connection();
-                await con.Initialize(this._lockObject, this._persistentConnection, false).False();
+                var con = new NormalConnection();
+                con.Initialize(this._lockObject, this._persistentConnection);
                 return con;
             }
             else
             {
-                var con = new Connection();
-                await con.Initialize(this._lockObject, this._filePath, false).False();
+                var con = new NormalConnection();
+                await con.Initialize(this._lockObject, this._filePath).False();
                 return con;
             }
         }
@@ -83,14 +83,14 @@ namespace SWF.Core.DatabaseAccessor
             if (this._isPersistent)
             {
                 this._persistentConnection ??= CreateInMemoryConnection(this._filePath);
-                var con = new Connection();
-                await con.Initialize(this._lockObject, this._persistentConnection, true).False();
+                var con = new TransactConnection();
+                await con.Initialize(this._lockObject, this._persistentConnection).False();
                 return con;
             }
             else
             {
-                var con = new Connection();
-                await con.Initialize(this._lockObject, this._filePath, true).False();
+                var con = new TransactConnection();
+                await con.Initialize(this._lockObject, this._filePath).False();
                 return con;
             }
         }
@@ -102,7 +102,7 @@ namespace SWF.Core.DatabaseAccessor
                 return;
             }
 
-            if (this._persistentConnection != null)
+            if (this._persistentConnection is not null)
             {
                 using (var fileConnection = new SQLiteConnection($"Data Source={this._filePath}"))
                 {
@@ -110,12 +110,11 @@ namespace SWF.Core.DatabaseAccessor
                     this._persistentConnection.BackupDatabase(fileConnection, "main", "main", -1, null, 0);
                 }
 
-                this._persistentConnection?.Dispose();
+                this._persistentConnection.Dispose();
+                this._lockObject.Dispose();
 
-                this._lockObject?.Dispose();
+                this._persistentConnection = null;
             }
-
-            this._persistentConnection = null;
 
             this._disposed = true;
 

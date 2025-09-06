@@ -40,8 +40,6 @@ namespace PicSum.Job.Jobs
                         await updateTag.Execute(con, filePath, param.Tag, addDate).False();
                     }
                 }
-
-                await con.Commit().False();
             }
             finally
             {

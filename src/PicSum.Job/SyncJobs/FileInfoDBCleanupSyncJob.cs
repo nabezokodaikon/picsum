@@ -35,8 +35,6 @@ namespace PicSum.Job.SyncJobs
                         await con.Update(cleanupSql).False();
                     }
                 }
-
-                await con.Commit().False();
             }
             finally
             {

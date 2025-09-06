@@ -35,8 +35,6 @@ namespace PicSum.Job.Jobs
                         await updateFileRating.Execute(con, filePath, param.RatingValue, addDate).False();
                     }
                 }
-
-                await con.Commit().False();
             }
             finally
             {

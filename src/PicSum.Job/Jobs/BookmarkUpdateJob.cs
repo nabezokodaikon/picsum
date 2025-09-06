@@ -30,8 +30,6 @@ namespace PicSum.Job.Jobs
 
                     await updateLogic.Execute(con, param.Value, addDate).False();
                 }
-
-                await con.Commit().False();
             }
             finally
             {
