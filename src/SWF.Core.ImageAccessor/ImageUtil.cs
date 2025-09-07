@@ -21,6 +21,7 @@ namespace SWF.Core.ImageAccessor
         internal const string HEIF_FILE_EXTENSION = ".heif";
         internal const string ICON_FILE_EXTENSION = ".ico";
         internal const string JPEG_FILE_EXTENSION = ".jpeg";
+        internal const string JFIF_FILE_EXTENSION = ".jfif";
         internal const string JPG_FILE_EXTENSION = ".jpg";
         internal const string PNG_FILE_EXTENSION = ".png";
         internal const string SVG_FILE_EXTENSION = ".svg";
@@ -667,7 +668,8 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
             var ex = FileUtil.GetExtensionFastStack(filePath);
-            return StringUtil.CompareFilePath(ex, JPG_FILE_EXTENSION)
+            return StringUtil.CompareFilePath(ex, JFIF_FILE_EXTENSION)
+                || StringUtil.CompareFilePath(ex, JPG_FILE_EXTENSION)
                 || StringUtil.CompareFilePath(ex, JPEG_FILE_EXTENSION);
         }
 
@@ -703,6 +705,7 @@ namespace SWF.Core.ImageAccessor
                 BMP_FILE_EXTENSION,
                 GIF_FILE_EXTENSION,
                 ICON_FILE_EXTENSION,
+                JFIF_FILE_EXTENSION,
                 JPEG_FILE_EXTENSION,
                 JPG_FILE_EXTENSION,
                 HEIC_FILE_EXTENSION,
@@ -718,6 +721,7 @@ namespace SWF.Core.ImageAccessor
             return
             [
                 AVIF_FILE_EXTENSION,
+                JFIF_FILE_EXTENSION,
                 JPEG_FILE_EXTENSION,
                 JPG_FILE_EXTENSION,
                 HEIC_FILE_EXTENSION,

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
@@ -60,6 +60,7 @@
               <uap:FileType>.png</uap:FileType>
               <uap:FileType>.svg</uap:FileType>
               <uap:FileType>.webp</uap:FileType>
+              <uap:FileType>.jfif</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:EditFlags OpenIsSafe="true"/>
           </uap:FileTypeAssociation>

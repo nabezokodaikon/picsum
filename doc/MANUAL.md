@@ -38,6 +38,7 @@ https://dotnet.microsoft.com/ja-jp/download/dotnet/9.0
 * Heic
 * Heif
 * Ico
+* Jfif
 * Jpeg
 * Jpg
 * Png
