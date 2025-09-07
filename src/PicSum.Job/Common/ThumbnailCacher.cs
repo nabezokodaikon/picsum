@@ -295,8 +295,8 @@ namespace PicSum.Job.Common
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {
-                    Instance<IImageFileSizeCacher>.Value.Set(
-                        thumbFilePath, new Size(srcImg.Width, srcImg.Height));
+                    await Instance<IImageFileSizeCacher>.Value.Set(
+                        thumbFilePath, new Size(srcImg.Width, srcImg.Height)).False();
 
                     using (var thumbImg = ThumbnailUtil.CreateThumbnail(
                         srcImg, thumbWidth, thumbHeight))
@@ -371,8 +371,8 @@ namespace PicSum.Job.Common
             {
                 using (var srcImg = await ImageUtil.ReadImageFile(thumbFilePath).False())
                 {
-                    Instance<IImageFileSizeCacher>.Value.Set(
-                        thumbFilePath, new Size(srcImg.Width, srcImg.Height));
+                    await Instance<IImageFileSizeCacher>.Value.Set(
+                        thumbFilePath, new Size(srcImg.Width, srcImg.Height)).False();
 
                     using (var thumbImg = ThumbnailUtil.CreateThumbnail(
                         srcImg, thumbWidth, thumbHeight))
