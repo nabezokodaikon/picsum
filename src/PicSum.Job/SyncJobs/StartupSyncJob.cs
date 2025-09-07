@@ -1,6 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
@@ -46,6 +47,10 @@ namespace PicSum.Job.SyncJobs
 
                 Instance<IImageFileTakenDateCacher>.Initialize(new Lazy<IImageFileTakenDateCacher>(
                     static () => new ImageFileTakenDateCacher(),
+                    LazyThreadSafetyMode.ExecutionAndPublication));
+
+                Instance<IFilesAndDirectoriesCountCacher>.Initialize(new Lazy<IFilesAndDirectoriesCountCacher>(
+                    static () => new FilesAndDirectoriesCountCacher(),
                     LazyThreadSafetyMode.ExecutionAndPublication));
 
                 Instance<JobCaller>.Initialize(new Lazy<JobCaller>(

@@ -1,5 +1,6 @@
 using PicSum.Job.Results;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using System.Drawing;
 
@@ -22,6 +23,7 @@ namespace PicSum.Job.Entities
             IsImageFile = false,
             FileType = string.Empty,
             FileSize = 0,
+            FilesAndDirectoriesCount = FilesAndDirectoriesCountEntity.EMPTY,
             ImageSize = ImageUtil.EMPTY_SIZE,
             FileIcon = null,
             Rating = 0,
@@ -39,6 +41,7 @@ namespace PicSum.Job.Entities
             IsImageFile = false,
             FileType = string.Empty,
             FileSize = 0,
+            FilesAndDirectoriesCount = FilesAndDirectoriesCountEntity.EMPTY,
             ImageSize = ImageUtil.EMPTY_SIZE,
             FileIcon = null,
             Rating = 0,
@@ -70,6 +73,7 @@ namespace PicSum.Job.Entities
         public bool IsImageFile { get; internal set; } = false;
         public string FileType { get; internal set; } = string.Empty;
         public long FileSize { get; internal set; } = 0;
+        public FilesAndDirectoriesCountEntity FilesAndDirectoriesCount { get; internal set; } = FilesAndDirectoriesCountEntity.EMPTY;
         public Size ImageSize { get; internal set; } = ImageUtil.EMPTY_SIZE;
         public Image? FileIcon { get; internal set; } = null;
         public int Rating { get; internal set; } = 0;

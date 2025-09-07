@@ -1,6 +1,7 @@
 using PicSum.DatabaseAccessor.Connection;
 using PicSum.Job.Common;
 using SWF.Core.Base;
+using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
@@ -21,6 +22,7 @@ namespace PicSum.Job.SyncJobs
                 Instance<IImageFileCacher>.Value.Dispose();
                 Instance<IImageFileSizeCacher>.Value.Dispose();
                 Instance<IImageFileTakenDateCacher>.Value.Dispose();
+                Instance<IFilesAndDirectoriesCountCacher>.Value.Dispose();
                 Instance<IFileInfoDao>.Value.Dispose();
                 Instance<IThumbnailDao>.Value.Dispose();
             }

@@ -692,6 +692,55 @@ namespace SWF.Core.FileAccessor
             }
         }
 
+        public static (int, int) GetFilesAndDirectoriesCount(string direcotryPath)
+        {
+            using (Measuring.Time(true, "FileUtil.GetFilesAndDirectoriesCount"))
+            {
+                try
+                {
+                    if (IsSystemRoot(direcotryPath))
+                    {
+                        var drivesCount = DriveInfo.GetDrives().Length;
+                        return (0, drivesCount);
+                    }
+                    else if (IsExistsDrive(direcotryPath))
+                    {
+                        var filesCount = Directory.EnumerateFiles(
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+
+                        var directoriesCount = Directory.EnumerateDirectories(
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+
+                        return (filesCount, directoriesCount);
+                    }
+                    else if (IsExistsDirectory(direcotryPath))
+                    {
+                        var filesCount = Directory.EnumerateFiles(
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+
+                        var directoriesCount = Directory.EnumerateDirectories(
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+
+                        return (filesCount, directoriesCount);
+                    }
+                    else
+                    {
+                        return (0, 0);
+                    }
+                }
+                catch (Exception ex) when (
+                    ex is UnauthorizedAccessException ||
+                    ex is DirectoryNotFoundException ||
+                    ex is IOException ||
+                    ex is PathTooLongException ||
+                    ex is SecurityException ||
+                    ex is UnauthorizedAccessException)
+                {
+                    return (0, 0);
+                }
+            }
+        }
+
         // ファイルパスの末尾が"\"の場合取り除きます。
         private static string ToRemoveLastPathSeparate(string filePath)
         {

@@ -38,11 +38,11 @@ namespace PicSum.Job.Logics
             }
             else if (FileUtil.IsSystemRoot(filePath))
             {
-                return this.GetSystemRootInfo();
+                return await this.GetSystemRootInfo().False();
             }
             else if (FileUtil.IsExistsDrive(filePath))
             {
-                return this.GetDriveInfo(filePath);
+                return await this.GetDriveInfo(filePath).False();
             }
             else if (FileUtil.IsExistsDirectory(filePath))
             {
@@ -53,7 +53,7 @@ namespace PicSum.Job.Logics
             return FileDeepInfoEntity.ERROR;
         }
 
-        private FileDeepInfoEntity GetSystemRootInfo()
+        private async ValueTask<FileDeepInfoEntity> GetSystemRootInfo()
         {
             return new FileDeepInfoEntity
             {
@@ -66,12 +66,13 @@ namespace PicSum.Job.Logics
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
+                FilesAndDirectoriesCount = await Instance<IFilesAndDirectoriesCountCacher>.Value.GetOrCreate(FileUtil.ROOT_DIRECTORY_PATH).False(),
                 FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
                 ImageSize = ImageUtil.EMPTY_SIZE,
             };
         }
 
-        private FileDeepInfoEntity GetDriveInfo(string filePath)
+        private async ValueTask<FileDeepInfoEntity> GetDriveInfo(string filePath)
         {
             var (createDate, updateDate) = FileUtil.GetDirectoryInfo(filePath);
 
@@ -86,6 +87,7 @@ namespace PicSum.Job.Logics
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
+                FilesAndDirectoriesCount = await Instance<IFilesAndDirectoriesCountCacher>.Value.GetOrCreate(filePath).False(),
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath),
                 ImageSize = ImageUtil.EMPTY_SIZE,
             };
@@ -107,6 +109,7 @@ namespace PicSum.Job.Logics
                 IsFile = false,
                 IsImageFile = false,
                 FileSize = 0,
+                FilesAndDirectoriesCount = await Instance<IFilesAndDirectoriesCountCacher>.Value.GetOrCreate(filePath).False(),
                 FileIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon,
             };
 
@@ -159,6 +162,7 @@ namespace PicSum.Job.Logics
                 TakenDate = this.GetTakenDate(filePath),
                 IsFile = true,
                 FileSize = fileSize,
+                FilesAndDirectoriesCount = FilesAndDirectoriesCountEntity.EMPTY,
                 FileIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath),
             };
 

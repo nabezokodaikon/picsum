@@ -30,6 +30,7 @@ namespace PicSum.UIComponent.InfoPanel
         private string _takenDate = string.Empty;
         private string _fileType = string.Empty;
         private string _fileSize = string.Empty;
+        private string _filesAndDirectoriesCount = string.Empty;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string FileName
@@ -109,6 +110,19 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string FilesAndDirectoriesCount
+        {
+            get
+            {
+                return this._filesAndDirectoriesCount;
+            }
+            set
+            {
+                this._filesAndDirectoriesCount = value;
+            }
+        }
+
         private SolidBrush TextBrush
         {
             get
@@ -163,7 +177,12 @@ namespace PicSum.UIComponent.InfoPanel
                 e.Graphics.DrawString(
                     this._fileSize, font, this.TextBrush, 0,
                     fileNameRect.Bottom + margin + textSize.Height + margin);
-
+            }
+            else if (!string.IsNullOrEmpty(this.FilesAndDirectoriesCount))
+            {
+                e.Graphics.DrawString(
+                    this._filesAndDirectoriesCount, font, this.TextBrush, 0,
+                    fileNameRect.Bottom + margin + textSize.Height + margin);
             }
 
             var dateHeaderSize = e.Graphics.MeasureString("Updated", font);

@@ -336,6 +336,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.fileInfoLabel.FileName = string.Empty;
             this.fileInfoLabel.FileType = string.Empty;
             this.fileInfoLabel.FileSize = string.Empty;
+            this.fileInfoLabel.FilesAndDirectoriesCount = string.Empty;
             this.fileInfoLabel.CreateDate = string.Empty;
             this.fileInfoLabel.UpdateDate = string.Empty;
             this.fileInfoLabel.TakenDate = string.Empty;
@@ -501,6 +502,11 @@ namespace PicSum.UIComponent.InfoPanel
                         this.fileInfoLabel.FileSize
                             += $"  ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
+                }
+                else if (!this.FileInfo.FilesAndDirectoriesCount.IsEmpty)
+                {
+                    this.fileInfoLabel.FilesAndDirectoriesCount
+                        += $"Files {this.FileInfo.FilesAndDirectoriesCount.FilesCount}, Folders {this.FileInfo.FilesAndDirectoriesCount.DirectoriesCount}";
                 }
 
                 if (!this.FileInfo.CreateDate.IsEmpty())

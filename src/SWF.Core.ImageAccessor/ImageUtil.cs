@@ -134,7 +134,8 @@ namespace SWF.Core.ImageAccessor
                     ex is ArgumentNullException ||
                     ex is SecurityException ||
                     ex is ArgumentException ||
-                    ex is PathTooLongException)
+                    ex is PathTooLongException ||
+                    ex is UnauthorizedAccessException)
                 {
                     return string.Empty;
                 }
