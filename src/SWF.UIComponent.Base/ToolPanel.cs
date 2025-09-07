@@ -9,7 +9,7 @@ namespace SWF.UIComponent.Base
         private const float BORDER_LINE_WIDTH = 1f;
 
         private static readonly SolidBrush BORDER_LINE_BRUSH =
-            new SolidBrush(Color.FromArgb(200, 200, 200));
+            new(Color.FromArgb(200, 200, 200));
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsDrawLeftBorderLine { get; set; } = false;

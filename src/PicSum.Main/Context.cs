@@ -17,7 +17,7 @@ namespace PicSum.Main
         : ApplicationContext, ISender
     {
         private readonly ResourceManager _resourceManager;
-        private readonly BrowseManager _browseManager = new();
+        private readonly BrowseManager _browseManager;
 
         public bool IsLoaded { get; private set; } = true;
         public bool IsDisposed { get; private set; } = false;
@@ -25,6 +25,7 @@ namespace PicSum.Main
         public Context()
         {
             this._resourceManager = new();
+            this._browseManager = new();
 
             this._browseManager.BrowseNothing += this.BrowseManager_BrowseNothing;
 
