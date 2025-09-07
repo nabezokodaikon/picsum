@@ -73,7 +73,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = ImageUtil.IsImageFile(filePath),
                 CreateDate = createDate,
                 UpdateDate = updateDate,
-                TakenDate = Instance<IImageFileTakenDateCacher>.Value.Get(filePath),
+                TakenDate = await Instance<IImageFileTakenDateCacher>.Value.Get(filePath).False(),
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
                 JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
