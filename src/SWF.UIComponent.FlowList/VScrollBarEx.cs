@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -61,13 +62,18 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        private new int Minimum
+        {
+            get
+            {
+                return base.Minimum;
+            }
+        }
+
         /// <summary>
         /// 最大値
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        /// <summary>
-        /// 最大値
-        /// </summary>
         public new int Maximum
         {
             get
@@ -77,6 +83,19 @@ namespace SWF.UIComponent.FlowList
             set
             {
                 base.Maximum = value + this.GetMargin();
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int Value
+        {
+            get
+            {
+                return base.Value;
+            }
+            set
+            {
+                base.Value = Math.Min(value, base.Maximum);
             }
         }
 
@@ -94,9 +113,10 @@ namespace SWF.UIComponent.FlowList
             this.UpdateStyles();
 
             this.DoubleBuffered = true;
+            base.Minimum = 0;
         }
 
-        public int GetMargin()
+        private int GetMargin()
         {
             return this.LargeChange - 1;
         }
