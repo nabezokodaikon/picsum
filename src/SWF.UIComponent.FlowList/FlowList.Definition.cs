@@ -488,11 +488,13 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Clear();
             this._selectedItemIndexs.Add(itemIndex);
 
+            var scrollBarMargin = this._scrollBar.GetMargin();
+
             if (scrollInfo.FlowListSize == this.Size
                 && scrollInfo.ItemSize.Width == this.ItemWidth
                 && scrollInfo.ItemSize.Height == this.ItemHeight
                 && scrollInfo.ScrollValue >= this._scrollBar.Minimum
-                && scrollInfo.ScrollValue <= this._scrollBar.Maximum)
+                && scrollInfo.ScrollValue <= this._scrollBar.Maximum + scrollBarMargin)
             {
                 this._scrollBar.Value = scrollInfo.ScrollValue;
             }

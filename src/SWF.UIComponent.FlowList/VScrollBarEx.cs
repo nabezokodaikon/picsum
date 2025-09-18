@@ -96,7 +96,7 @@ namespace SWF.UIComponent.FlowList
             this.DoubleBuffered = true;
         }
 
-        private int GetMargin()
+        public int GetMargin()
         {
             return this.LargeChange - 1;
         }
