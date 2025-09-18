@@ -490,7 +490,9 @@ namespace SWF.UIComponent.FlowList
 
             if (scrollInfo.FlowListSize == this.Size
                 && scrollInfo.ItemSize.Width == this.ItemWidth
-                && scrollInfo.ItemSize.Height == this.ItemHeight)
+                && scrollInfo.ItemSize.Height == this.ItemHeight
+                && scrollInfo.ScrollValue >= this._scrollBar.Minimum
+                && scrollInfo.ScrollValue <= this._scrollBar.Maximum)
             {
                 this._scrollBar.Value = scrollInfo.ScrollValue;
             }
