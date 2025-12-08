@@ -238,11 +238,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (e.DirectoryState == DirectoryStateParameter.EMPTY)
                     {
                         base.SetFiles(
-                            e.FileInfoList,
-                            this._parameter.SelectedFilePath,
-                            this._parameter.ScrollInfo,
-                            FileSortMode.FilePath,
-                            true);
+                             e.FileInfoList,
+                             this._parameter.SelectedFilePath,
+                             this._parameter.ScrollInfo,
+                             FileSortMode.FilePath,
+                             true);
                     }
                     else
                     {
@@ -275,10 +275,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.DirectoryState.IsAscending);
                     }
 
-                    if (e.FileInfoList.Length < 1)
-                    {
-                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
-                    }
+                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                 }
             }
             else
@@ -327,10 +324,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             isAscending);
                     }
 
-                    if (e.FileInfoList.Length < 1)
-                    {
-                        base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
-                    }
+                    base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                 }
             }
         }
