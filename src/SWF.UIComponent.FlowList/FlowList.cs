@@ -198,6 +198,9 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public float MouseWheelRate { get; set; } = 1f;
+
         public FlowList()
         {
             this._scrollBar.Dock = DockStyle.Right;
@@ -659,7 +662,7 @@ namespace SWF.UIComponent.FlowList
             }
             else if (e.Delta != 0)
             {
-                var value = this._scrollBar.Value - (int)(this._itemHeight * 0.8 * (e.Delta / Math.Abs(e.Delta)));
+                var value = this._scrollBar.Value - (int)(this._itemHeight * this.MouseWheelRate * (e.Delta / Math.Abs(e.Delta)));
                 if (value < this._scrollBar.Minimum)
                 {
                     this._scrollBar.Value = this._scrollBar.Minimum;

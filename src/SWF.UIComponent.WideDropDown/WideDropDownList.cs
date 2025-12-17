@@ -274,6 +274,7 @@ namespace SWF.UIComponent.WideDropDown
             this._flowList.IsMultiSelect = false;
             this._flowList.SetItemSize(ITEM_DEFAULT_SIZE.Width, ITEM_DEFAULT_SIZE.Height);
             this._flowList.CanKeyDown = false;
+            this._flowList.MouseWheelRate = 2.5f;
 
             this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
             this._flowList.DrawItem += new(this.FlowList_DrawItem);

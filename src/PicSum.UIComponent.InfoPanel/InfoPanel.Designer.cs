@@ -60,6 +60,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
+            this.tagFlowList.MouseWheelRate = 2.5f;
             this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;

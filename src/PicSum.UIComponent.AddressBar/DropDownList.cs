@@ -353,6 +353,7 @@ namespace PicSum.UIComponent.AddressBar
             this._flowList.ItemSpace = 0;
             this._flowList.IsMultiSelect = false;
             this._flowList.BackColor = this.BackColor;
+            this._flowList.MouseWheelRate = 2.5f;
 
             this._flowList.DrawItem += new(this.FlowList_Drawitem);
             this._flowList.ItemExecute += new(this.FlowList_ItemExecute);
