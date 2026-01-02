@@ -17,7 +17,7 @@ namespace PicSum.Job.Common
     internal sealed partial class ThumbnailCacher
         : IThumbnailCacher
     {
-        private const int CACHE_CAPACITY = 100 * 1024 * 1024;
+        private const int CACHE_CAPACITY = 1024 * 1024 * 300;
 
         private bool _disposed = false;
         private CacheFileController? _cacheFileController = null;
