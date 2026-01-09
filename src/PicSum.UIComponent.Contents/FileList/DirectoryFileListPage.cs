@@ -275,7 +275,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             e.DirectoryState.IsAscending);
                     }
 
-                    if (e.FileInfoList.Length < 1)
+                    if (base.IsFilterFilePathListEmpty)
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                     }
@@ -327,7 +327,7 @@ namespace PicSum.UIComponent.Contents.FileList
                             isAscending);
                     }
 
-                    if (e.FileInfoList.Length < 1)
+                    if (base.IsFilterFilePathListEmpty)
                     {
                         base.OnSelectedFileChanged(new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
                     }

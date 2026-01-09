@@ -43,6 +43,15 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected SortParameter SortInfo { get; private set; } = new();
 
+        protected bool IsFilterFilePathListEmpty
+        {
+            get
+            {
+                return this._filterFilePathList == null
+                    || this._filterFilePathList.Length == 0;
+            }
+        }
+
         protected bool IsAscending
         {
             get
