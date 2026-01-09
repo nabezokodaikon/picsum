@@ -36,11 +36,11 @@ namespace PicSum.UIComponent.Contents.FileList
         private bool _disposed = false;
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
-        private string[] _filterFilePathList = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
+        protected string[] FilterFilePathList { get; private set; } = null;
         protected SortParameter SortInfo { get; private set; } = new();
 
         protected bool IsAscending
@@ -186,7 +186,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 foreach (var index in selectedIndexs)
                 {
-                    filePathList.Add(this._filterFilePathList[index]);
+                    filePathList.Add(this.FilterFilePathList[index]);
                 }
             }
 
@@ -405,22 +405,22 @@ namespace PicSum.UIComponent.Contents.FileList
             foreach (var filePath in filePathList)
             {
                 this._masterFileDictionary.Remove(filePath);
-                indexList.Add(Array.IndexOf(this._filterFilePathList, filePath));
+                indexList.Add(Array.IndexOf(this.FilterFilePathList, filePath));
             }
 
             if (indexList.Count > 0)
             {
                 var maximumIndex = indexList.Max();
-                if (maximumIndex + 1 < this._filterFilePathList.Length)
+                if (maximumIndex + 1 < this.FilterFilePathList.Length)
                 {
-                    this.SelectedFilePath = this._filterFilePathList[maximumIndex + 1];
+                    this.SelectedFilePath = this.FilterFilePathList[maximumIndex + 1];
                 }
                 else
                 {
                     var minimumIndex = indexList.Min();
                     if (minimumIndex - 1 > -1)
                     {
-                        this.SelectedFilePath = this._filterFilePathList[minimumIndex - 1];
+                        this.SelectedFilePath = this.FilterFilePathList[minimumIndex - 1];
                     }
                     else
                     {
@@ -664,7 +664,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             try
             {
-                this._filterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
+                this.FilterFilePathList = [.. filterList.ConvertAll(f => f.FilePath)];
                 this.flowList.ItemCount = filterList.Count;
                 var selectedFile = filterList
                     .FirstOrDefault(f => StringUtil.CompareFilePath(f.FilePath, this.SelectedFilePath));
@@ -748,7 +748,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.Graphics.FillRectangle(this.flowList.MousePointItemBrush, e.ItemRectangle);
             }
 
-            var filePath = this._filterFilePathList[e.ItemIndex];
+            var filePath = this.FilterFilePathList[e.ItemIndex];
             var item = this._masterFileDictionary[filePath];
 
             var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
@@ -849,9 +849,9 @@ namespace PicSum.UIComponent.Contents.FileList
                 file.UpdateDate = e.FileUpdateDate;
             }
 
-            if (this._filterFilePathList != null)
+            if (this.FilterFilePathList != null)
             {
-                var index = Array.IndexOf(this._filterFilePathList, file.FilePath);
+                var index = Array.IndexOf(this.FilterFilePathList, file.FilePath);
                 if (index > -1)
                 {
                     this.flowList.InvalidateFromItemIndex(index);
@@ -983,7 +983,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
         {
-            if (this._filterFilePathList == null)
+            if (this.FilterFilePathList == null)
             {
                 return;
             }
@@ -993,21 +993,21 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
         {
-            if (this._filterFilePathList == null)
+            if (this.FilterFilePathList == null)
             {
                 return;
             }
 
-            if (this._filterFilePathList.Length > 0 &&
+            if (this.FilterFilePathList.Length > 0 &&
                 e.DrawFirstItemIndex > -1 &&
                 e.DrawLastItemIndex > -1 &&
-                e.DrawLastItemIndex < this._filterFilePathList.Length)
+                e.DrawLastItemIndex < this.FilterFilePathList.Length)
             {
                 var thumbSize = Math.Min(
                     this.flowList.ItemWidth,
                     this.flowList.ItemHeight);
 
-                var fileList = this._filterFilePathList.Where((file, index) =>
+                var fileList = this.FilterFilePathList.Where((file, index) =>
                 {
                     if (index < e.DrawFirstItemIndex || index > e.DrawLastItemIndex)
                     {
@@ -1068,7 +1068,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this._filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var filePath = this.FilterFilePathList[this.flowList.GetSelectedIndexs()[0]];
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
@@ -1097,7 +1097,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this._filterFilePathList[this.flowList.GetSelectedIndexs()[0]];
+            var filePath = this.FilterFilePathList[this.flowList.GetSelectedIndexs()[0]];
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
@@ -1131,7 +1131,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var filePath = this._filterFilePathList[selectedIndexs[0]];
+            var filePath = this.FilterFilePathList[selectedIndexs[0]];
             var file = this._masterFileDictionary[filePath];
             if (file.IsImageFile)
             {
@@ -1162,7 +1162,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = new List<string>();
             foreach (var index in this.flowList.GetSelectedIndexs())
             {
-                filePathList.Add(this._filterFilePathList[index]);
+                filePathList.Add(this.FilterFilePathList[index]);
             }
 
             this.OnRemoveFile([.. filePathList]);
@@ -1176,7 +1176,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            var currentFilePath = this._filterFilePathList[selectedIndexList.First()];
+            var currentFilePath = this.FilterFilePathList[selectedIndexList.First()];
             var currentFileInfo = this._masterFileDictionary[currentFilePath];
             if (currentFileInfo.IsFile && currentFileInfo.IsImageFile)
             {
