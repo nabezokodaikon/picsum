@@ -214,7 +214,7 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
             this._animationTimer = new Timer();
-            this._animationTimer.Interval = 16;
+            this._animationTimer.Interval = 12;
             this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Controls.Add(this._scrollBar);
