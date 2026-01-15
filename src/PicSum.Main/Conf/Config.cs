@@ -56,7 +56,7 @@ namespace PicSum.Main.Conf
                     this.WindowLocaionY = config.WindowLocaionY;
                     this.WindowSizeWidth = config.WindowSizeWidth;
                     this.WindowSizeHeight = config.WindowSizeHeight;
-                    this.ThumbnailSize = Math.Min(config.ThumbnailSize, ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE);
+                    this.ThumbnailSize = Math.Max(Math.Min(config.ThumbnailSize, ThumbnailUtil.THUMBNAIL_MAXIMUM_SIZE), ThumbnailUtil.THUMBNAIL_MINIMUM_SIZE);
                     this.IsShowFileName = config.IsShowFileName;
                     this.IsShowImageFile = config.IsShowImageFile;
                     this.IsShowDirectory = config.IsShowDirectory;

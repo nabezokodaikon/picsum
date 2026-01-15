@@ -167,6 +167,12 @@ namespace SWF.UIComponent.FlowList
         // ドラッグフラグ
         private bool _isDrag = false;
 
+        // スクロール関連
+        private Timer _animationTimer;
+        private int _targetVerticalScroll;
+        private const int STEP_SIZE = 20; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
+        private const float SMOOTHNESS = 0.2f; // 追従の滑らかさ(0.1-0.3推奨)
+
         private SolidBrush RectangleSelectionBrush
         {
             get
@@ -206,6 +212,10 @@ namespace SWF.UIComponent.FlowList
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
+
+            this._animationTimer = new Timer();
+            this._animationTimer.Interval = 16;
+            this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Controls.Add(this._scrollBar);
 
@@ -660,22 +670,60 @@ namespace SWF.UIComponent.FlowList
             {
                 return;
             }
-            else if (e.Delta != 0)
+
+            if (e is HandledMouseEventArgs hme)
             {
-                var value = this._scrollBar.Value - (int)(this._itemHeight * this.MouseWheelRate * (e.Delta / Math.Abs(e.Delta)));
-                if (value < this._scrollBar.Minimum)
-                {
-                    this._scrollBar.Value = this._scrollBar.Minimum;
-                }
-                else if (value > this._scrollBar.Maximum)
-                {
-                    this._scrollBar.Value = this._scrollBar.Maximum;
-                }
-                else
-                {
-                    this._scrollBar.Value = value;
-                }
+                hme.Handled = true;
             }
+
+            var scrollDelta = (int)(this._itemHeight * this.MouseWheelRate * (e.Delta / Math.Abs(e.Delta)));
+            if (!this._animationTimer.Enabled)
+            {
+                this._targetVerticalScroll = this._scrollBar.Value;
+            }
+
+            this._targetVerticalScroll -= scrollDelta;
+            if (this._targetVerticalScroll < this._scrollBar.Minimum)
+            {
+                this._targetVerticalScroll = this._scrollBar.Minimum;
+            }
+            else if (this._targetVerticalScroll > this._scrollBar.Maximum)
+            {
+                this._targetVerticalScroll = this._scrollBar.Maximum;
+            }
+
+            this._animationTimer.Start();
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            var currentScroll = this._scrollBar.Value;
+            var distance = this._targetVerticalScroll - currentScroll;
+
+            if (Math.Abs(distance) <= STEP_SIZE)
+            {
+                this._scrollBar.Value = this._targetVerticalScroll;
+                this._animationTimer.Stop();
+                return;
+            }
+
+            var move = (int)(distance * SMOOTHNESS);
+            if (Math.Abs(move) < STEP_SIZE)
+            {
+                move = (distance > 0) ? STEP_SIZE : -STEP_SIZE;
+            }
+
+            var moveScroll = currentScroll + move;
+            if (moveScroll < this._scrollBar.Minimum)
+            {
+                moveScroll = this._scrollBar.Minimum;
+            }
+            else if (moveScroll > this._scrollBar.Maximum)
+            {
+                moveScroll = this._scrollBar.Maximum;
+            }
+
+            this._scrollBar.Value = (int)moveScroll;
         }
 
         /// <summary>

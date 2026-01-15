@@ -7,7 +7,7 @@ namespace SWF.Core.ImageAccessor
     {
         public const string THUMBNAIL_BUFFER_FILE_EXTENSION = ".thumbnail";
         public const int THUMBNAIL_MAXIMUM_SIZE = 400;
-        public const int THUMBNAIL_MINIMUM_SIZE = 96;
+        public const int THUMBNAIL_MINIMUM_SIZE = 171;
 
         /// <summary>
         /// イメージオブジェクトを圧縮したバイナリに変換します。
