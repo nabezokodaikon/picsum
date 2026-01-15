@@ -1,3 +1,4 @@
+using NLog.Config;
 using SWF.Core.Base;
 
 namespace SWF.Core.ImageAccessor
@@ -11,6 +12,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
+        private Bitmap? _bitmapCache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -105,6 +107,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this._mat?.Dispose();
                 this._mat = null;
+                this._bitmapCache?.Dispose();
+                this._bitmapCache = null;
             }
 
             this._disposed = true;
@@ -252,11 +256,16 @@ namespace SWF.Core.ImageAccessor
 
                 using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
-                    using (var bmp = OpenCVUtil.Resize(this._mat, width, height))
+                    if (this._bitmapCache == null
+                        || this._bitmapCache.Width != (int)width
+                        || this._bitmapCache.Height != (int)height)
                     {
-                        g.DrawImage(bmp, destRect,
-                            new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
+                        this._bitmapCache?.Dispose();
+                        this._bitmapCache = OpenCVUtil.Resize(this._mat, width, height);
                     }
+
+                    g.DrawImage(this._bitmapCache, destRect,
+                        new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
                 }
             }
             catch (Exception ex) when (
