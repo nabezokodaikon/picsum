@@ -140,13 +140,29 @@ namespace SWF.Core.ImageAccessor
                 GraphicsUnit.Pixel);
         }
 
+        public static void DrawDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, IconImage icon)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
+
+            DrawFileThumbnail(control, g, thumb, destRect, srcSize);
+
+            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
+            var destIconRect = new RectangleF(
+                destRect.X + 2, destRect.Bottom - destIconSize.Height,
+                destIconSize.Width, destIconSize.Height);
+
+            icon.Draw(g, destIconRect);
+        }
+
         /// <summary>
         /// アイコンを描画します。
         /// </summary>
         /// <param name="g">グラフィックオブジェクト</param>
         /// <param name="icon">アイコン</param>
         /// <param name="rect">描画領域</param>
-        public static void DrawIcon(Control control, Graphics g, Image icon, RectangleF rect)
+        public static void DrawIcon(Control control, Graphics g, IconImage icon, RectangleF rect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
@@ -160,7 +176,7 @@ namespace SWF.Core.ImageAccessor
                 var h = displayScaleHeight;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
-                g.DrawImage(icon, new RectangleF(x, y, w, h));
+                icon.Draw(g, new RectangleF(x, y, w, h));
             }
             else
             {
@@ -169,11 +185,7 @@ namespace SWF.Core.ImageAccessor
                 var h = icon.Width * scale;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
-                g.DrawImage(
-                    icon,
-                    new RectangleF(x, y, w, h),
-                    new RectangleF(0, 0, icon.Width, icon.Height),
-                    GraphicsUnit.Pixel);
+                icon.Draw(g, new RectangleF(x, y, w, h));
             }
         }
     }

@@ -266,6 +266,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     foreach (var item in this._masterFileDictionary)
                     {
                         item.Value.ThumbnailImage?.Dispose();
+                        item.Value.JumboIcon?.Dispose();
                     }
                 }
 
