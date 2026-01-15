@@ -5,6 +5,7 @@ using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
+using System.Drawing;
 
 namespace PicSum.Job.Logics
 {
@@ -76,7 +77,7 @@ namespace PicSum.Job.Logics
                 TakenDate = await Instance<IImageFileTakenDateCacher>.Value.Get(filePath).False(),
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallFileIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeFileIcon(filePath),
-                JumboIcon = Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)
+                JumboIcon = new IconImage(Instance<IFileIconCacher>.Value.GetJumboFileIcon(filePath)),
             };
 
             if (!isGetThumbnail)
@@ -121,7 +122,7 @@ namespace PicSum.Job.Logics
                 TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargeDirectoryIcon,
-                JumboIcon = Instance<IFileIconCacher>.Value.JumboDirectoryIcon
+                JumboIcon = new IconImage((Bitmap)Instance<IFileIconCacher>.Value.JumboDirectoryIcon),
             };
 
             if (!isGetThumbnail)
@@ -165,7 +166,7 @@ namespace PicSum.Job.Logics
                 TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.GetSmallDriveIcon(filePath),
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.GetExtraLargeDriveIcon(filePath),
-                JumboIcon = Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)
+                JumboIcon = new IconImage((Bitmap)Instance<IFileIconCacher>.Value.GetJumboDriveIcon(filePath)),
             };
         }
 
@@ -184,7 +185,7 @@ namespace PicSum.Job.Logics
                 TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = Instance<IFileIconCacher>.Value.SmallPCIcon,
                 ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
-                JumboIcon = Instance<IFileIconCacher>.Value.LargePCIcon
+                JumboIcon = new IconImage((Bitmap)Instance<IFileIconCacher>.Value.LargePCIcon),
             };
         }
     }
