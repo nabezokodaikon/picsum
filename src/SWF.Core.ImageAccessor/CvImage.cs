@@ -140,11 +140,16 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "CvImage.DrawZoomThumbnailImage"))
             {
-                using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                if (this._bitmapCache == null
+                    || this._bitmapCache.Width != (int)destRect.Width
+                    || this._bitmapCache.Height != (int)destRect.Height)
                 {
-                    var zoomRect = this.GetZoomRectange(srcRect);
-                    g.DrawImage(bmp, destRect, zoomRect, GraphicsUnit.Pixel);
+                    this._bitmapCache?.Dispose();
+                    this._bitmapCache = OpenCVUtil.ToBitmap(this._mat);
                 }
+
+                var zoomRect = this.GetZoomRectange(srcRect);
+                g.DrawImage(this._bitmapCache, destRect, zoomRect, GraphicsUnit.Pixel);
             }
         }
 
@@ -160,11 +165,16 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
             {
-                using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                if (this._bitmapCache == null
+                    || this._bitmapCache.Width != (int)destRect.Width
+                    || this._bitmapCache.Height != (int)destRect.Height)
                 {
-                    var srcRect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                    g.DrawImage(bmp, destRect, srcRect, GraphicsUnit.Pixel);
+                    this._bitmapCache?.Dispose();
+                    this._bitmapCache = OpenCVUtil.ToBitmap(this._mat);
                 }
+
+                var srcRect = new Rectangle(0, 0, this._bitmapCache.Width, this._bitmapCache.Height);
+                g.DrawImage(this._bitmapCache, destRect, srcRect, GraphicsUnit.Pixel);
             }
         }
 
