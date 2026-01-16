@@ -54,29 +54,28 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public void Draw(Graphics g, RectangleF destRect)
+        public void Draw(Graphics g, Rectangle destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             using (Measuring.Time(false, "IconImage.Draw"))
             {
                 if (this._cache == null
-                    || this._cache.Width != (int)destRect.Width
-                    || this._cache.Height != (int)destRect.Height)
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
                 {
                     this._cache?.Dispose();
-                    this._cache = new Bitmap((int)destRect.Width, (int)destRect.Height);
-                    using (var gr = Graphics.FromImage(this._cache))
+                    using (var mat = OpenCVUtil.Resize(this._icon, destRect.Width, destRect.Height))
                     {
-                        gr.DrawImage(
-                            this._icon,
-                            new RectangleF(0, 0, destRect.Width, destRect.Height),
-                            new RectangleF(0, 0, this.Width, this.Height),
-                            GraphicsUnit.Pixel);
+                        this._cache = OpenCVUtil.ToBitmap(mat);
                     }
                 }
 
-                g.DrawImage(this._cache, destRect);
+                g.DrawImage(
+                    this._cache,
+                    destRect,
+                    new Rectangle(0, 0, this._cache.Width, this._cache.Height),
+                    GraphicsUnit.Pixel);
             }
         }
     }

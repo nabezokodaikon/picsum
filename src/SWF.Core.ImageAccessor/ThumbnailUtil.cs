@@ -149,9 +149,9 @@ namespace SWF.Core.ImageAccessor
             DrawFileThumbnail(control, g, thumb, destRect, srcSize);
 
             var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
-            var destIconRect = new RectangleF(
-                destRect.X + 2, destRect.Bottom - destIconSize.Height,
-                destIconSize.Width, destIconSize.Height);
+            var destIconRect = new Rectangle(
+                (int)(destRect.X + 2), (int)(destRect.Bottom - destIconSize.Height),
+                (int)destIconSize.Width, (int)destIconSize.Height);
 
             icon.Draw(g, destIconRect);
         }
@@ -176,7 +176,7 @@ namespace SWF.Core.ImageAccessor
                 var h = displayScaleHeight;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
-                icon.Draw(g, new RectangleF(x, y, w, h));
+                icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
             }
             else
             {
@@ -185,7 +185,7 @@ namespace SWF.Core.ImageAccessor
                 var h = icon.Width * scale;
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
-                icon.Draw(g, new RectangleF(x, y, w, h));
+                icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
             }
         }
     }
