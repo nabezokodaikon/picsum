@@ -47,6 +47,12 @@ namespace SWF.UIComponent.Base
 
         public BaseForm()
         {
+            this.DoubleBuffered = false;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.AutoSize = false;
+
+            this.Load += this.BaseForm_Load;
+
             this.SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
@@ -57,12 +63,6 @@ namespace SWF.UIComponent.Base
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
-
-            this.DoubleBuffered = true;
-            this.AutoScaleMode = AutoScaleMode.Dpi;
-            this.AutoSize = false;
-
-            this.Load += this.BaseForm_Load;
         }
 
         private void BaseForm_Load(object? sender, EventArgs e)

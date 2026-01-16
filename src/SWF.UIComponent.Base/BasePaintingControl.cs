@@ -78,24 +78,24 @@ namespace SWF.UIComponent.Base
 
         public BasePaintingControl()
         {
+            this.AutoSize = false;
+            this.DoubleBuffered = false;
+
+            this.HandleCreated += this.BasePaintingControl_HandleCreated;
+            this.ParentChanged += this.BasePaintingControl_ParentChanged;
+
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
                 ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
                 true);
             this.SetStyle(
                 ControlStyles.ContainerControl,
-                false);
+                true);
             this.UpdateStyles();
-
-            this.AutoSize = false;
-            this.DoubleBuffered = true;
-
-            this.HandleCreated += this.BasePaintingControl_HandleCreated;
-            this.ParentChanged += this.BasePaintingControl_ParentChanged;
         }
 
         protected virtual void OnLoaded(EventArgs e)

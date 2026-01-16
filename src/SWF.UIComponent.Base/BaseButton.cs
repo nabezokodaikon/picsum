@@ -126,20 +126,7 @@ namespace SWF.UIComponent.Base
 
         public BaseButton()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
-                true);
-            this.SetStyle(
-                ControlStyles.ContainerControl,
-                false);
-            this.UpdateStyles();
-
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = false;
 
             this.AutoSize = false;
             this.TabIndex = 0;
@@ -149,6 +136,19 @@ namespace SWF.UIComponent.Base
             this.MouseEnter += this.BaseIconButton_MouseEnter;
             this.MouseLeave += this.BaseIconButton_MouseLeave;
             this.Paint += this.BaseButton_Paint;
+
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.StandardClick |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.SetStyle(
+                ControlStyles.ContainerControl,
+                false);
+            this.UpdateStyles();
         }
 
         protected override void OnMouseClick(MouseEventArgs e)

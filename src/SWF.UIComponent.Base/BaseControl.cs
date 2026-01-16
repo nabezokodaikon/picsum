@@ -78,6 +78,12 @@ namespace SWF.UIComponent.Base
 
         public BaseControl()
         {
+            this.AutoSize = false;
+            this.DoubleBuffered = false;
+
+            this.HandleCreated += this.BaseControl_HandleCreated;
+            this.ParentChanged += this.BaseControl_ParentChanged;
+
             this.SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
@@ -87,12 +93,6 @@ namespace SWF.UIComponent.Base
                 ControlStyles.ContainerControl,
                 false);
             this.UpdateStyles();
-
-            this.AutoSize = false;
-            this.DoubleBuffered = true;
-
-            this.HandleCreated += this.BaseControl_HandleCreated;
-            this.ParentChanged += this.BaseControl_ParentChanged;
         }
 
         protected virtual void OnLoaded(EventArgs e)

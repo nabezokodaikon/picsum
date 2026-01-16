@@ -1,4 +1,3 @@
-using NLog.Config;
 using SWF.Core.Base;
 
 namespace SWF.Core.ImageAccessor

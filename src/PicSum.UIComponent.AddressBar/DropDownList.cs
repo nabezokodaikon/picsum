@@ -326,20 +326,7 @@ namespace PicSum.UIComponent.AddressBar
 
         public DropDownList()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint,
-                true);
-            this.SetStyle(
-                ControlStyles.ContainerControl |
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = false;
 
             this._flowList = new();
             this.Items.Add(new ToolStripControlHost(this._flowList));
@@ -358,6 +345,20 @@ namespace PicSum.UIComponent.AddressBar
             this._flowList.DrawItem += new(this.FlowList_Drawitem);
             this._flowList.ItemExecute += new(this.FlowList_ItemExecute);
             this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
+
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.StandardClick |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.SetStyle(
+                ControlStyles.ContainerControl |
+                ControlStyles.Selectable,
+                false);
+            this.UpdateStyles();
         }
 
         protected override void Dispose(bool disposing)

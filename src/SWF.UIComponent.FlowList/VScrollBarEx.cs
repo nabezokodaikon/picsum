@@ -101,6 +101,9 @@ namespace SWF.UIComponent.FlowList
 
         public VScrollBarEx()
         {
+            this.DoubleBuffered = false;
+            base.Minimum = 0;
+
             this.SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
                 ControlStyles.ResizeRedraw |
@@ -111,9 +114,6 @@ namespace SWF.UIComponent.FlowList
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
-
-            this.DoubleBuffered = true;
-            base.Minimum = 0;
         }
 
         private int GetMargin()

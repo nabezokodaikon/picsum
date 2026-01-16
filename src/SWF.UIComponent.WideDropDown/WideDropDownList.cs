@@ -239,21 +239,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this._owner = owner;
 
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.OptimizedDoubleBuffer |
-                ControlStyles.ResizeRedraw |
-                ControlStyles.StandardClick |
-                ControlStyles.UserPaint |
-                ControlStyles.SupportsTransparentBackColor,
-                true);
-            this.SetStyle(
-                ControlStyles.ContainerControl |
-                ControlStyles.Selectable,
-                false);
-            this.UpdateStyles();
-
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = false;
 
             this._flowList = new FlowList.FlowList();
             this.Items.Add(new ToolStripControlHost(this._flowList));
@@ -281,6 +267,20 @@ namespace SWF.UIComponent.WideDropDown
 
             this.Opening += this.WideDropDownList_Opening;
             this.Invalidated += this.WideDropDownList_Invalidated;
+
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.StandardClick |
+                ControlStyles.SupportsTransparentBackColor |
+                ControlStyles.UserPaint,
+                true);
+            this.SetStyle(
+                ControlStyles.ContainerControl |
+                ControlStyles.Selectable,
+                false);
+            this.UpdateStyles();
         }
 
         protected override void Dispose(bool disposing)
