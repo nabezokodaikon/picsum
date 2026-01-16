@@ -273,8 +273,7 @@ namespace SWF.Core.ImageAccessor
                         this._bitmapCache = OpenCVUtil.Resize(this._mat, width, height);
                     }
 
-                    g.DrawImage(this._bitmapCache, destRect,
-                        new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
+                    g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
                 }
             }
             catch (Exception ex) when (

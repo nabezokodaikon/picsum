@@ -71,11 +71,7 @@ namespace SWF.Core.ImageAccessor
                     }
                 }
 
-                g.DrawImage(
-                    this._cache,
-                    destRect,
-                    new Rectangle(0, 0, this._cache.Width, this._cache.Height),
-                    GraphicsUnit.Pixel);
+                g.DrawImageUnscaled(this._cache, destRect);
             }
         }
     }
