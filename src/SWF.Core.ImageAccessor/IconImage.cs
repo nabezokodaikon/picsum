@@ -1,4 +1,5 @@
 ﻿using SWF.Core.Base;
+using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -65,9 +66,14 @@ namespace SWF.Core.ImageAccessor
                     || this._cache.Height != destRect.Height)
                 {
                     this._cache?.Dispose();
-                    using (var mat = OpenCVUtil.Resize(this._icon, destRect.Width, destRect.Height))
+                    this._cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                    using (var gr = Graphics.FromImage(this._cache))
                     {
-                        this._cache = OpenCVUtil.ToBitmap(mat);
+                        gr.DrawImage(
+                            this._icon,
+                            new Rectangle(0, 0, this._cache.Width, this._cache.Height),
+                            new Rectangle(0, 0, this._icon.Width, this._icon.Height),
+                            GraphicsUnit.Pixel);
                     }
                 }
 
