@@ -37,6 +37,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
+        private int _itemTextHeight = -1;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -720,7 +721,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight(Graphics g)
         {
-            return (int)(g.MeasureString("A", Fonts.GetRegularFont(Fonts.Size.Small, this._scale)).Height * 2);
+            if (this._itemTextHeight < 0)
+            {
+                this._itemTextHeight = (int)(g.MeasureString("A", Fonts.GetRegularFont(Fonts.Size.Small, this._scale)).Height * 2);
+            }
+
+            return this._itemTextHeight;
         }
 
         private void SetFlowListItemSize()
