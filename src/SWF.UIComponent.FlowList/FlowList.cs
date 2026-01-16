@@ -171,7 +171,7 @@ namespace SWF.UIComponent.FlowList
         private Timer _animationTimer;
         private int _targetVerticalScroll;
         private const int STEP_SIZE = 8; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
-        private const float SMOOTHNESS = 0.3f; // 追従の滑らかさ(0.1-0.3推奨)
+        private const float SMOOTHNESS = 0.2f; // 追従の滑らかさ(0.1-0.3推奨)
 
         private SolidBrush RectangleSelectionBrush
         {
