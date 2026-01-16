@@ -260,21 +260,21 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                var width = destRect.Width;
-                var height = destRect.Height;
+                var width = (int)destRect.Width;
+                var height = (int)destRect.Height;
 
                 using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
                     if (this._bitmapCache == null
-                        || this._bitmapCache.Width != (int)width
-                        || this._bitmapCache.Height != (int)height)
+                        || this._bitmapCache.Width != width
+                        || this._bitmapCache.Height != height)
                     {
                         this._bitmapCache?.Dispose();
                         this._bitmapCache = OpenCVUtil.Resize(this._mat, width, height);
                     }
 
                     g.DrawImage(this._bitmapCache, destRect,
-                        new RectangleF(0, 0, width, height), GraphicsUnit.Pixel);
+                        new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
                 }
             }
             catch (Exception ex) when (
