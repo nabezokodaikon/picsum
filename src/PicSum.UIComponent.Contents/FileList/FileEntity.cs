@@ -22,5 +22,6 @@ namespace PicSum.UIComponent.Contents.FileList
         public int ThumbnailHeight { get; set; }
         public int SourceImageWidth { get; set; }
         public int SourceImageHeight { get; set; }
+        public Bitmap FileNameImage { get; set; } = null;
     }
 }

@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -268,6 +270,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         item.Value.ThumbnailImage?.Dispose();
                         item.Value.JumboIcon?.Dispose();
+                        item.Value.FileNameImage?.Dispose();
                     }
                 }
 
@@ -767,33 +770,61 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePath = this._filterFilePathList[e.ItemIndex];
             var item = this._masterFileDictionary[filePath];
 
-            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
-            var itemTextHeight = this.GetItemTextHeight(e.Graphics);
-
             if (item.ThumbnailImage == null)
             {
+                var itemTextHeight = this.GetItemTextHeight(e.Graphics);
                 ThumbnailUtil.DrawIcon(this, e.Graphics, item.JumboIcon, this.GetIconRectangle(e, itemTextHeight));
-                e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e, itemTextHeight), this.flowList.ItemTextFormat);
+                this.DrawFileNameImage(e, item);
             }
             else
             {
-                var thumbRect = this.GetThumbnailRectangle(e, itemTextHeight);
                 if (item.IsFile)
                 {
+                    var itemTextHeight = this.GetItemTextHeight(e.Graphics);
+                    var thumbRect = this.GetThumbnailRectangle(e, itemTextHeight);
                     ThumbnailUtil.DrawFileThumbnail(
                         this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight));
                 }
                 else
                 {
+                    var itemTextHeight = this.GetItemTextHeight(e.Graphics);
+                    var thumbRect = this.GetThumbnailRectangle(e, itemTextHeight);
                     ThumbnailUtil.DrawDirectoryThumbnail(
                         this, e.Graphics, item.ThumbnailImage, thumbRect, new SizeF(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon);
                 }
 
                 if (this.IsShowFileName)
                 {
-                    e.Graphics.DrawString(item.FileName, font, this.flowList.ItemTextBrush, this.GetTextRectangle(e, itemTextHeight), this.flowList.ItemTextFormat);
+                    this.DrawFileNameImage(e, item);
                 }
             }
+        }
+
+        private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item)
+        {
+            var itemTextHeight = this.GetItemTextHeight(e.Graphics);
+            var textRect = this.GetTextRectangle(e, itemTextHeight);
+            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
+
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                item.FileNameImage?.Dispose();
+                item.FileNameImage = new Bitmap((int)textRect.Width, (int)textRect.Height, PixelFormat.Format32bppPArgb);
+                using (var g = Graphics.FromImage(item.FileNameImage))
+                {
+                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                    g.DrawString(
+                        item.FileName,
+                        font,
+                        this.flowList.ItemTextBrush,
+                        new Rectangle(0, 0, (int)textRect.Width, (int)textRect.Height),
+                        this.flowList.ItemTextFormat);
+                }
+            }
+
+            e.Graphics.DrawImageUnscaled(item.FileNameImage, (int)textRect.X, (int)textRect.Y);
         }
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
