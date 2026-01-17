@@ -40,13 +40,14 @@ namespace PicSum.Job.Jobs
                                 CancellationToken = cts.Token,
                                 MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                             },
-                            async (dto, _) =>
+                            async (dto, token) =>
                             {
-                                if (this.IsJobCancel)
+                                if (this.IsJobCancel && !cts.IsCancellationRequested)
                                 {
                                     await cts.CancelAsync().False();
-                                    cts.Token.ThrowIfCancellationRequested();
                                 }
+
+                                token.ThrowIfCancellationRequested();
 
                                 try
                                 {
