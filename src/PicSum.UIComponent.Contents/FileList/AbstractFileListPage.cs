@@ -754,9 +754,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void DoFileNameImageCache(
             SWF.UIComponent.FlowList.DrawItemEventArgs e,
             FileEntity item,
-            int itemTextHeight,
-            StringFormat textFormat,
-            SolidBrush brush)
+            int itemTextHeight)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
 
@@ -768,6 +766,18 @@ namespace PicSum.UIComponent.Contents.FileList
                 item.FileNameImage = new Bitmap((int)textRect.Width, (int)textRect.Height, PixelFormat.Format32bppPArgb);
 
                 using (var g = Graphics.FromImage(item.FileNameImage))
+                using (var textFormat = new StringFormat()
+                {
+                    Trimming = StringTrimming.EllipsisCharacter,
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center,
+                    FormatFlags = 0,
+                })
+                using (var brush = new SolidBrush(Color.FromArgb(
+                    SystemColors.ControlText.A,
+                    SystemColors.ControlText.R,
+                    SystemColors.ControlText.G,
+                    SystemColors.ControlText.B)))
                 {
                     var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -1016,43 +1026,28 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var filePath = this._filterFilePathList[arg.ItemIndex];
                         var item = this._masterFileDictionary[filePath];
-
-                        using (var textFormat = new StringFormat()
+                        if (item.ThumbnailImage == null)
                         {
-                            Trimming = StringTrimming.EllipsisCharacter,
-                            Alignment = StringAlignment.Center,
-                            LineAlignment = StringAlignment.Center,
-                            FormatFlags = 0,
-                        })
-                        using (var brush = new SolidBrush(Color.FromArgb(
-                            SystemColors.ControlText.A,
-                            SystemColors.ControlText.R,
-                            SystemColors.ControlText.G,
-                            SystemColors.ControlText.B)))
+                            this.DoFileNameImageCache(arg, item, itemTextHeight);
+                        }
+                        else
                         {
-                            if (item.ThumbnailImage == null)
-                            {
-                                this.DoFileNameImageCache(arg, item, itemTextHeight, textFormat, brush);
-                            }
-                            else
-                            {
-                                var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
-                                ThumbnailUtil.DoFileThumbnailCache(
-                                    item.ThumbnailImage,
-                                    thumbRect,
-                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                    displayScale);
+                            var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                            ThumbnailUtil.DoFileThumbnailCache(
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                displayScale);
 
-                                if (this.IsShowFileName)
-                                {
-                                    this.DoFileNameImageCache(arg, item, itemTextHeight, textFormat, brush);
-                                }
+                            if (this.IsShowFileName)
+                            {
+                                this.DoFileNameImageCache(arg, item, itemTextHeight);
                             }
                         }
                     });
             }
 
-            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems foreach"))
+            using (Measuring.Time(false, "AbstractFileListPage.FlowList_Drawitems foreach"))
             {
                 foreach (var arg in e.DrawItemEventArgs.AsSpan())
                 {
