@@ -326,7 +326,7 @@ namespace SWF.Core.ImageAccessor
                         }
                     }
 
-                    g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
+                    g.DrawImageUnscaled(this._bitmapCache, destRect);
                 }
             }
             catch (Exception ex) when (
