@@ -21,6 +21,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -750,10 +751,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight)
+        private void DoFileNameImageCache(
+            SWF.UIComponent.FlowList.DrawItemEventArgs e,
+            FileEntity item,
+            int itemTextHeight,
+            StringFormat textFormat,
+            SolidBrush brush)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
-            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -761,27 +766,41 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 item.FileNameImage?.Dispose();
                 item.FileNameImage = new Bitmap((int)textRect.Width, (int)textRect.Height, PixelFormat.Format32bppPArgb);
+
                 using (var g = Graphics.FromImage(item.FileNameImage))
                 {
+                    var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                     g.DrawString(
                         item.FileName,
                         font,
-                        this.flowList.ItemTextBrush,
+                        brush,
                         new Rectangle(0, 0, (int)textRect.Width, (int)textRect.Height),
-                        this.flowList.ItemTextFormat);
+                        textFormat);
                 }
             }
-
-            e.Graphics.DrawImageUnscaled(item.FileNameImage, (int)textRect.X, (int)textRect.Y);
         }
 
-        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private void DrawCacheFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight)
         {
-            return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Y,
-                                  e.ItemRectangle.Width,
-                                  e.ItemRectangle.Height - itemTextHeight);
+            var textRect = this.GetTextRectangle(e, itemTextHeight);
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                return;
+            }
+
+            e.Graphics.DrawImageUnscaled(item.FileNameImage, textRect.X, textRect.Y);
+        }
+
+        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        {
+            return new Rectangle(
+                e.ItemRectangle.X,
+                e.ItemRectangle.Y,
+                e.ItemRectangle.Width,
+                e.ItemRectangle.Height - itemTextHeight);
         }
 
         private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
@@ -799,12 +818,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
-            return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Bottom - itemTextHeight,
-                                  e.ItemRectangle.Width,
-                                  itemTextHeight);
+            return new Rectangle(e.ItemRectangle.X,
+                                 e.ItemRectangle.Bottom - itemTextHeight,
+                                 e.ItemRectangle.Width,
+                                 itemTextHeight);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
@@ -988,50 +1007,102 @@ namespace PicSum.UIComponent.Contents.FileList
             var selectedItemPen = FlowList.GetSelectedItemPen(this);
             var displayScale = WindowUtil.GetCurrentWindowScale(this);
 
-            foreach (var arg in e.DrawItemEventArgs.AsSpan())
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems Parallel.ForEach"))
             {
-                if (arg.IsSelected)
-                {
-                    arg.Graphics.FillRectangle(this.flowList.SelectedItemBrush, arg.ItemRectangle);
-                    arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
-                }
-
-                if (arg.IsFocus)
-                {
-                    arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
-                }
-
-                if (arg.IsMousePoint)
-                {
-                    arg.Graphics.FillRectangle(this.flowList.MousePointItemBrush, arg.ItemRectangle);
-                }
-
-                var filePath = this._filterFilePathList[arg.ItemIndex];
-                var item = this._masterFileDictionary[filePath];
-
-                if (item.ThumbnailImage == null)
-                {
-                    ThumbnailUtil.DrawIcon(this, arg.Graphics, item.JumboIcon, this.GetIconRectangle(arg, itemTextHeight));
-                    this.DrawFileNameImage(arg, item, itemTextHeight);
-                }
-                else
-                {
-                    if (item.IsFile)
+                Parallel.ForEach(
+                    e.DrawItemEventArgs,
+                    new ParallelOptions { MaxDegreeOfParallelism = 16 },
+                    arg =>
                     {
-                        var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
-                        ThumbnailUtil.DrawFileThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), displayScale);
+                        var filePath = this._filterFilePathList[arg.ItemIndex];
+                        var item = this._masterFileDictionary[filePath];
+
+                        using (var textFormat = new StringFormat()
+                        {
+                            Trimming = StringTrimming.EllipsisCharacter,
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Center,
+                            FormatFlags = 0,
+                        })
+                        using (var brush = new SolidBrush(Color.FromArgb(
+                            SystemColors.ControlText.A,
+                            SystemColors.ControlText.R,
+                            SystemColors.ControlText.G,
+                            SystemColors.ControlText.B)))
+                        {
+                            if (item.ThumbnailImage == null)
+                            {
+                                this.DoFileNameImageCache(arg, item, itemTextHeight, textFormat, brush);
+                            }
+                            else
+                            {
+                                var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                                ThumbnailUtil.DoFileThumbnailCache(
+                                    item.ThumbnailImage,
+                                    thumbRect,
+                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                    displayScale);
+
+                                if (this.IsShowFileName)
+                                {
+                                    this.DoFileNameImageCache(arg, item, itemTextHeight, textFormat, brush);
+                                }
+                            }
+                        }
+                    });
+            }
+
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems foreach"))
+            {
+                foreach (var arg in e.DrawItemEventArgs.AsSpan())
+                {
+                    if (arg.IsSelected)
+                    {
+                        arg.Graphics.FillRectangle(this.flowList.SelectedItemBrush, arg.ItemRectangle);
+                        arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
+                    }
+
+                    if (arg.IsFocus)
+                    {
+                        arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
+                    }
+
+                    if (arg.IsMousePoint)
+                    {
+                        arg.Graphics.FillRectangle(this.flowList.MousePointItemBrush, arg.ItemRectangle);
+                    }
+
+                    var filePath = this._filterFilePathList[arg.ItemIndex];
+                    var item = this._masterFileDictionary[filePath];
+
+                    if (item.ThumbnailImage == null)
+                    {
+                        ThumbnailUtil.DrawIcon(
+                            arg.Graphics,
+                            item.JumboIcon,
+                            this.GetIconRectangle(arg, itemTextHeight),
+                            displayScale);
+                        this.DrawCacheFileNameImage(arg, item, itemTextHeight);
                     }
                     else
                     {
-                        var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
-                        ThumbnailUtil.DrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon, displayScale);
-                    }
+                        if (item.IsFile)
+                        {
+                            var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                            ThumbnailUtil.DrawCacheFileThumbnail(
+                                e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), displayScale);
+                        }
+                        else
+                        {
+                            var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                            ThumbnailUtil.DrawCacheDirectoryThumbnail(
+                                e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon, displayScale);
+                        }
 
-                    if (this.IsShowFileName)
-                    {
-                        this.DrawFileNameImage(arg, item, itemTextHeight);
+                        if (this.IsShowFileName)
+                        {
+                            this.DrawCacheFileNameImage(arg, item, itemTextHeight);
+                        }
                     }
                 }
             }

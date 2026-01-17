@@ -1,5 +1,4 @@
-﻿using SWF.Core.Base;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
@@ -60,32 +59,29 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            using (Measuring.Time(false, "IconImage.Draw"))
+            if (this._cache == null
+                || this._cache.Width != destRect.Width
+                || this._cache.Height != destRect.Height)
             {
-                if (this._cache == null
-                    || this._cache.Width != destRect.Width
-                    || this._cache.Height != destRect.Height)
+                this._cache?.Dispose();
+                this._cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                using (var gr = Graphics.FromImage(this._cache))
                 {
-                    this._cache?.Dispose();
-                    this._cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                    using (var gr = Graphics.FromImage(this._cache))
-                    {
-                        gr.SmoothingMode = SmoothingMode.None;
-                        gr.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        gr.CompositingQuality = CompositingQuality.HighSpeed;
-                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                        gr.CompositingMode = CompositingMode.SourceOver;
+                    gr.SmoothingMode = SmoothingMode.None;
+                    gr.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    gr.CompositingQuality = CompositingQuality.HighSpeed;
+                    gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    gr.CompositingMode = CompositingMode.SourceOver;
 
-                        gr.DrawImage(
-                            this._icon,
-                            new Rectangle(0, 0, this._cache.Width, this._cache.Height),
-                            new Rectangle(0, 0, this._icon.Width, this._icon.Height),
-                            GraphicsUnit.Pixel);
-                    }
+                    gr.DrawImage(
+                        this._icon,
+                        new Rectangle(0, 0, this._cache.Width, this._cache.Height),
+                        new Rectangle(0, 0, this._icon.Width, this._icon.Height),
+                        GraphicsUnit.Pixel);
                 }
-
-                g.DrawImageUnscaled(this._cache, destRect);
             }
+
+            g.DrawImageUnscaled(this._cache, destRect);
         }
     }
 }

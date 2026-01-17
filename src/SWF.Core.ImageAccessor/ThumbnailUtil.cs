@@ -81,6 +81,76 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static void DoFileThumbnailCache(CvImage thumb, Rectangle destRect, Size srcSize, float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            float scale;
+            if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
+            {
+                scale = Math.Min(
+                    displayScale,
+                    Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height));
+            }
+            else
+            {
+                scale = Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height);
+            }
+
+            const int OFFSET = 16;
+            var w = srcSize.Width * scale;
+            var h = srcSize.Height * scale;
+            if (w > h && w > OFFSET)
+            {
+                w -= OFFSET;
+                h -= OFFSET * (srcSize.Height / (float)srcSize.Width);
+            }
+            else if (w <= h && h > OFFSET)
+            {
+                w -= OFFSET * (srcSize.Width / (float)srcSize.Height);
+                h -= OFFSET;
+            }
+
+            thumb.DoResizeThumbnailCache((int)w, (int)h);
+        }
+
+        public static void DrawCacheFileThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            float scale;
+            if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
+            {
+                scale = Math.Min(
+                    displayScale,
+                    Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height));
+            }
+            else
+            {
+                scale = Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height);
+            }
+
+            const int OFFSET = 16;
+            var w = srcSize.Width * scale;
+            var h = srcSize.Height * scale;
+            if (w > h && w > OFFSET)
+            {
+                w -= OFFSET;
+                h -= OFFSET * (srcSize.Height / (float)srcSize.Width);
+            }
+            else if (w <= h && h > OFFSET)
+            {
+                w -= OFFSET * (srcSize.Width / (float)srcSize.Height);
+                h -= OFFSET;
+            }
+
+            var x = destRect.X + (destRect.Width - w) / 2f;
+            var y = destRect.Y + (destRect.Height - h) / 2f;
+
+            thumb.DrawCacheResizeThumbnail(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
+        }
+
         public static void DrawFileThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -138,13 +208,13 @@ namespace SWF.Core.ImageAccessor
                 GraphicsUnit.Pixel);
         }
 
-        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, IconImage icon, float displayScale)
+        public static void DrawCacheDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, IconImage icon, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(g, thumb, destRect, srcSize, displayScale);
+            DrawCacheFileThumbnail(g, thumb, destRect, srcSize, displayScale);
 
             var destIconSize = new Size((int)(destRect.Width * 0.5f), (int)(destRect.Height * 0.5f));
             var destIconRect = new Rectangle(
@@ -160,12 +230,11 @@ namespace SWF.Core.ImageAccessor
         /// <param name="g">グラフィックオブジェクト</param>
         /// <param name="icon">アイコン</param>
         /// <param name="rect">描画領域</param>
-        public static void DrawIcon(Control control, Graphics g, IconImage icon, RectangleF rect)
+        public static void DrawIcon(Graphics g, IconImage icon, Rectangle rect, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            var displayScale = WindowUtil.GetCurrentWindowScale(control);
             var displayScaleWidth = icon.Width * displayScale;
             var displayScaleHeight = icon.Height * displayScale;
             if (Math.Max(displayScaleWidth, displayScaleHeight) <= Math.Min(rect.Width, rect.Height))
@@ -178,7 +247,7 @@ namespace SWF.Core.ImageAccessor
             }
             else
             {
-                var scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
+                var scale = Math.Min(rect.Width / (float)icon.Width, rect.Height / (float)icon.Height);
                 var w = icon.Width * scale;
                 var h = icon.Width * scale;
                 var x = rect.X + (rect.Width - w) / 2f;

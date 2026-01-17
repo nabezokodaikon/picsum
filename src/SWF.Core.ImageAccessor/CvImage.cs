@@ -290,6 +290,80 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public void DoResizeThumbnailCache(int destWidth, int destHeight)
+        {
+            if (this._mat == null)
+            {
+                throw new InvalidOperationException("MatがNullです。");
+            }
+
+            try
+            {
+                if (this._bitmapCache == null
+                    || this._bitmapCache.Width != destWidth
+                    || this._bitmapCache.Height != destHeight)
+                {
+                    this._bitmapCache?.Dispose();
+                    this._bitmapCache = new Bitmap(destWidth, destHeight, PixelFormat.Format32bppPArgb);
+                    using (var gr = Graphics.FromImage(this._bitmapCache))
+                    using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                    {
+                        gr.SmoothingMode = SmoothingMode.None;
+                        gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        gr.CompositingQuality = CompositingQuality.HighSpeed;
+                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        gr.CompositingMode = CompositingMode.SourceOver;
+
+                        gr.DrawImage(
+                            bmp,
+                            new Rectangle(0, 0, destWidth, destHeight),
+                            new Rectangle(0, 0, bmp.Width, bmp.Height),
+                            GraphicsUnit.Pixel);
+                    }
+                }
+            }
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException)
+            {
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+            }
+        }
+
+        public void DrawCacheResizeThumbnail(Graphics g, Rectangle destRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._mat == null)
+            {
+                throw new InvalidOperationException("MatがNullです。");
+            }
+
+            try
+            {
+                if (this._bitmapCache == null
+                    || this._bitmapCache.Width != destRect.Width
+                    || this._bitmapCache.Height != destRect.Height)
+                {
+                    return;
+                }
+
+                g.DrawImageUnscaled(this._bitmapCache, destRect);
+            }
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException)
+            {
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+            }
+        }
+
         public void DrawResizeThumbnail(Graphics g, Rectangle destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -301,33 +375,30 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (Measuring.Time(false, "CvImage.DrawResizeImage"))
+                if (this._bitmapCache == null
+                    || this._bitmapCache.Width != destRect.Width
+                    || this._bitmapCache.Height != destRect.Height)
                 {
-                    if (this._bitmapCache == null
-                        || this._bitmapCache.Width != destRect.Width
-                        || this._bitmapCache.Height != destRect.Height)
+                    this._bitmapCache?.Dispose();
+                    this._bitmapCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                    using (var gr = Graphics.FromImage(this._bitmapCache))
+                    using (var bmp = OpenCVUtil.ToBitmap(this._mat))
                     {
-                        this._bitmapCache?.Dispose();
-                        this._bitmapCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                        using (var gr = Graphics.FromImage(this._bitmapCache))
-                        using (var bmp = OpenCVUtil.ToBitmap(this._mat))
-                        {
-                            gr.SmoothingMode = SmoothingMode.None;
-                            gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                            gr.CompositingQuality = CompositingQuality.HighSpeed;
-                            gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                            gr.CompositingMode = CompositingMode.SourceOver;
+                        gr.SmoothingMode = SmoothingMode.None;
+                        gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        gr.CompositingQuality = CompositingQuality.HighSpeed;
+                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        gr.CompositingMode = CompositingMode.SourceOver;
 
-                            gr.DrawImage(
-                                bmp,
-                                new Rectangle(0, 0, destRect.Width, destRect.Height),
-                                new Rectangle(0, 0, bmp.Width, bmp.Height),
-                                GraphicsUnit.Pixel);
-                        }
+                        gr.DrawImage(
+                            bmp,
+                            new Rectangle(0, 0, destRect.Width, destRect.Height),
+                            new Rectangle(0, 0, bmp.Width, bmp.Height),
+                            GraphicsUnit.Pixel);
                     }
-
-                    g.DrawImageUnscaled(this._bitmapCache, destRect);
                 }
+
+                g.DrawImageUnscaled(this._bitmapCache, destRect);
             }
             catch (Exception ex) when (
                 ex is NotSupportedException ||
