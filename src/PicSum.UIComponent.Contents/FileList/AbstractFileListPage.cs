@@ -298,76 +298,79 @@ namespace PicSum.UIComponent.Contents.FileList
             ArgumentNullException.ThrowIfNull(srcFiles, nameof(srcFiles));
             ArgumentNullException.ThrowIfNull(selectedFilePath, nameof(selectedFilePath));
 
-            this._masterFileDictionary = [];
-            foreach (var srcFile in srcFiles)
+            using (Measuring.Time(true, "AbstractFileListPage.SetFiles"))
             {
-                var destFile = new FileEntity
+                this._masterFileDictionary = [];
+                foreach (var srcFile in srcFiles)
                 {
-                    FilePath = srcFile.FilePath,
-                    FileName = srcFile.FileName,
-                    CreateDate = srcFile.CreateDate,
-                    UpdateDate = srcFile.UpdateDate,
-                    TakenDate = srcFile.TakenDate,
-                    RgistrationDate = srcFile.RgistrationDate,
-                    SmallIcon = srcFile.SmallIcon,
-                    ExtraLargeIcon = srcFile.ExtraLargeIcon,
-                    JumboIcon = srcFile.JumboIcon,
-                    IsFile = srcFile.IsFile,
-                    IsImageFile = srcFile.IsImageFile,
-                };
+                    var destFile = new FileEntity
+                    {
+                        FilePath = srcFile.FilePath,
+                        FileName = srcFile.FileName,
+                        CreateDate = srcFile.CreateDate,
+                        UpdateDate = srcFile.UpdateDate,
+                        TakenDate = srcFile.TakenDate,
+                        RgistrationDate = srcFile.RgistrationDate,
+                        SmallIcon = srcFile.SmallIcon,
+                        ExtraLargeIcon = srcFile.ExtraLargeIcon,
+                        JumboIcon = srcFile.JumboIcon,
+                        IsFile = srcFile.IsFile,
+                        IsImageFile = srcFile.IsImageFile,
+                    };
 
-                if (srcFile.ThumbnailImage != null)
-                {
-                    destFile.ThumbnailImage = srcFile.ThumbnailImage;
-                    destFile.ThumbnailWidth = srcFile.ThumbnailWidth;
-                    destFile.ThumbnailHeight = srcFile.ThumbnailHeight;
-                    destFile.SourceImageWidth = srcFile.SourceWidth;
-                    destFile.SourceImageHeight = srcFile.SourceHeight;
+                    if (srcFile.ThumbnailImage != null)
+                    {
+                        destFile.ThumbnailImage = srcFile.ThumbnailImage;
+                        destFile.ThumbnailWidth = srcFile.ThumbnailWidth;
+                        destFile.ThumbnailHeight = srcFile.ThumbnailHeight;
+                        destFile.SourceImageWidth = srcFile.SourceWidth;
+                        destFile.SourceImageHeight = srcFile.SourceHeight;
+                    }
+
+                    this._masterFileDictionary.Add(destFile.FilePath, destFile);
                 }
 
-                this._masterFileDictionary.Add(destFile.FilePath, destFile);
-            }
+                var scale = WindowUtil.GetCurrentWindowScale(this);
+                this.RedrawPage(scale);
 
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            this.RedrawPage(scale);
+                this.SelectedFilePath = selectedFilePath;
+                this.SortInfo.SetSortMode(sortMode, isAscending);
 
-            this.SelectedFilePath = selectedFilePath;
-            this.SortInfo.SetSortMode(sortMode, isAscending);
+                this.SetSort();
+                this.SetFilter(scrollInfo);
 
-            this.SetSort();
-            this.SetFilter(scrollInfo);
+                this.flowList.Focus();
 
-            this.flowList.Focus();
+                var imageFiles = this._masterFileDictionary
+                    .AsEnumerable()
+                    .Where(static item => ImageUtil.IsImageFile(item.Value.FilePath))
+                    .Select(static item => item.Value.FilePath)
+                    .ToArray();
 
-            var imageFiles = this._masterFileDictionary
-                .AsEnumerable()
-                .Where(static item => ImageUtil.IsImageFile(item.Value.FilePath))
-                .Select(static item => item.Value.FilePath)
-                .ToArray();
-
-            if (imageFiles.Length > 0)
-            {
-                var param = new TakenDatesGetParameter()
+                if (imageFiles.Length > 0)
                 {
-                    FilePathList = imageFiles,
-                };
+                    var param = new TakenDatesGetParameter()
+                    {
+                        FilePathList = imageFiles,
+                    };
 
-                Instance<JobCaller>.Value.TakenDatesGetJob.Value.StartJob(this, param, result =>
-                {
-                    if (this._disposed)
+                    Instance<JobCaller>.Value.TakenDatesGetJob.Value.StartJob(this, param, result =>
                     {
-                        return;
-                    }
+                        if (this._disposed)
+                        {
+                            return;
+                        }
 
-                    if (result == TakenDateResult.COMPLETED)
-                    {
-                        this.toolBar.TakenDateSortButtonEnabled = true;
-                    }
-                    else if (this._masterFileDictionary.TryGetValue(result.FilePath, out var item))
-                    {
-                        item.TakenDate = result.TakenDate;
-                    }
-                });
+                        if (result == TakenDateResult.COMPLETED)
+                        {
+                            this.toolBar.TakenDateSortButtonEnabled = true;
+                        }
+                        else if (this._masterFileDictionary.TryGetValue(result.FilePath, out var item))
+                        {
+                            item.TakenDate = result.TakenDate;
+                        }
+                    });
+                }
             }
         }
 
