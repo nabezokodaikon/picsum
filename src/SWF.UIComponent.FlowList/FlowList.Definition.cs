@@ -13,6 +13,7 @@ namespace SWF.UIComponent.FlowList
         public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
 
         public event EventHandler<DrawItemEventArgs> DrawItem;
+        public event EventHandler<DrawItemsEventArgs> DrawItems;
         public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
         public event EventHandler SelectedItemChanged;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
@@ -548,6 +549,11 @@ namespace SWF.UIComponent.FlowList
         private void OnDrawItem(DrawItemEventArgs e)
         {
             this.DrawItem?.Invoke(this, e);
+        }
+
+        private void OnDrawItems(DrawItemsEventArgs e)
+        {
+            this.DrawItems?.Invoke(this, e);
         }
 
         private void OnDrawItemChanged(DrawItemChangedEventArgs e)

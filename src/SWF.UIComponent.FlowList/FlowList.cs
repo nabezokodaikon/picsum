@@ -272,7 +272,7 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_Paint(object sender, PaintEventArgs e)
         {
-            using (Measuring.Time(false, "FlowList.FlowList_Paint"))
+            using (Measuring.Time(true, "FlowList.FlowList_Paint"))
             {
                 if (!this._isDraw)
                 {
@@ -290,11 +290,38 @@ namespace SWF.UIComponent.FlowList
                     this.DrawRectangleSelection(e.Graphics);
                 }
 
-                if (this._itemCount > 0)
+                if (this._itemCount < 1)
                 {
-
-                    this.DrawItems(e.Graphics);
+                    return;
                 }
+
+                var argList = new List<DrawItemEventArgs>();
+                for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
+                     itemIndex <= this._drawParameter.DrawLastItemIndex;
+                     itemIndex++)
+                {
+                    var drawRect = this.GetItemDrawRectangle(itemIndex);
+
+                    bool isSelected;
+                    if (this._rectangleSelection.IsBegun)
+                    {
+                        isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
+                            this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
+                    }
+                    else
+                    {
+                        isSelected = this._selectedItemIndexs.Contains(itemIndex);
+                    }
+
+                    var isMousePoint = this._mousePointItemIndex == itemIndex;
+                    var isFocus = this._foucusItemIndex == itemIndex;
+
+                    var arg = new DrawItemEventArgs(e.Graphics, itemIndex, drawRect, isSelected, isMousePoint, isFocus);
+                    argList.Add(arg);
+                    this.OnDrawItem(arg);
+                }
+
+                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, argList.ToArray()));
             }
         }
 
@@ -1026,32 +1053,6 @@ namespace SWF.UIComponent.FlowList
             };
             var row = Utility.ToRoundDown(itemIndex / (float)this._drawParameter.ColCount);
             return this.GetItemDrawRectangle(row, col);
-        }
-
-        private void DrawItems(Graphics g)
-        {
-            for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
-                 itemIndex <= this._drawParameter.DrawLastItemIndex;
-                 itemIndex++)
-            {
-                var drawRect = this.GetItemDrawRectangle(itemIndex);
-
-                bool isSelected;
-                if (this._rectangleSelection.IsBegun)
-                {
-                    isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
-                        this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
-                }
-                else
-                {
-                    isSelected = this._selectedItemIndexs.Contains(itemIndex);
-                }
-
-                var isMousePoint = this._mousePointItemIndex == itemIndex;
-                var isFocus = this._foucusItemIndex == itemIndex;
-
-                this.OnDrawItem(new DrawItemEventArgs(g, itemIndex, drawRect, isSelected, isMousePoint, isFocus));
-            }
         }
 
         private void DrawRectangleSelection(Graphics g)
