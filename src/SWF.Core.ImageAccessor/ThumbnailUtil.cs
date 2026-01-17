@@ -81,77 +81,75 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static void DrawFileThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize)
+        public static void DrawFileThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
 
-            const int offset = 16;
-
             float scale;
             if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
             {
-                var displayScale = WindowUtil.GetCurrentWindowScale(control);
                 scale = Math.Min(
                     displayScale,
-                    Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height));
+                    Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height));
             }
             else
             {
-                scale = Math.Min(destRect.Width / srcSize.Width, destRect.Height / srcSize.Height);
+                scale = Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height);
             }
 
+            const int OFFSET = 16;
             var w = srcSize.Width * scale;
             var h = srcSize.Height * scale;
-            if (w > h && w > offset)
+            if (w > h && w > OFFSET)
             {
-                w -= offset;
-                h -= offset * (srcSize.Height / (float)srcSize.Width);
+                w -= OFFSET;
+                h -= OFFSET * (srcSize.Height / (float)srcSize.Width);
             }
-            else if (w <= h && h > offset)
+            else if (w <= h && h > OFFSET)
             {
-                w -= offset * (srcSize.Width / (float)srcSize.Height);
-                h -= offset;
+                w -= OFFSET * (srcSize.Width / (float)srcSize.Height);
+                h -= OFFSET;
             }
 
             var x = destRect.X + (destRect.Width - w) / 2f;
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
-            thumb.DrawResizeThumbnail(g, new RectangleF(x, y, w, h));
+            thumb.DrawResizeThumbnail(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
         }
 
-        public static void DrawDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
+        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, Image icon, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(control, g, thumb, destRect, srcSize);
+            DrawFileThumbnail(g, thumb, destRect, srcSize, displayScale);
 
-            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
-            var destIconRect = new RectangleF(
+            var destIconSize = new Size((int)(destRect.Width * 0.5f), (int)(destRect.Height * 0.5f));
+            var destIconRect = new Rectangle(
                 destRect.X + 2, destRect.Bottom - destIconSize.Height,
                 destIconSize.Width, destIconSize.Height);
 
             g.DrawImage(
                 icon,
                 destIconRect,
-                new RectangleF(0, 0, icon.Width, icon.Height),
+                new Rectangle(0, 0, icon.Width, icon.Height),
                 GraphicsUnit.Pixel);
         }
 
-        public static void DrawDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, IconImage icon)
+        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, IconImage icon, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(control, g, thumb, destRect, srcSize);
+            DrawFileThumbnail(g, thumb, destRect, srcSize, displayScale);
 
-            var destIconSize = new SizeF(destRect.Width * 0.5f, destRect.Height * 0.5f);
+            var destIconSize = new Size((int)(destRect.Width * 0.5f), (int)(destRect.Height * 0.5f));
             var destIconRect = new Rectangle(
-                (int)(destRect.X + 2), (int)(destRect.Bottom - destIconSize.Height),
-                (int)destIconSize.Width, (int)destIconSize.Height);
+                destRect.X + 2, destRect.Bottom - destIconSize.Height,
+                destIconSize.Width, destIconSize.Height);
 
             icon.Draw(g, destIconRect);
         }

@@ -272,7 +272,7 @@ namespace SWF.UIComponent.FlowList
 
         private void FlowList_Paint(object sender, PaintEventArgs e)
         {
-            using (Measuring.Time(true, "FlowList.FlowList_Paint"))
+            using (Measuring.Time(false, "FlowList.FlowList_Paint"))
             {
                 if (!this._isDraw)
                 {
@@ -295,7 +295,10 @@ namespace SWF.UIComponent.FlowList
                     return;
                 }
 
-                var argList = new List<DrawItemEventArgs>();
+                var argArray = new DrawItemEventArgs[
+                    this._drawParameter.DrawLastItemIndex -
+                    this._drawParameter.DrawFirstItemIndex + 1];
+                var arrayIndex = 0;
                 for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
                      itemIndex <= this._drawParameter.DrawLastItemIndex;
                      itemIndex++)
@@ -317,11 +320,13 @@ namespace SWF.UIComponent.FlowList
                     var isFocus = this._foucusItemIndex == itemIndex;
 
                     var arg = new DrawItemEventArgs(e.Graphics, itemIndex, drawRect, isSelected, isMousePoint, isFocus);
-                    argList.Add(arg);
+                    argArray[arrayIndex] = arg;
                     this.OnDrawItem(arg);
+
+                    arrayIndex++;
                 }
 
-                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, argList.ToArray()));
+                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, argArray));
             }
         }
 
@@ -703,7 +708,16 @@ namespace SWF.UIComponent.FlowList
                 hme.Handled = true;
             }
 
-            var scrollDelta = (int)(this._itemHeight * this.MouseWheelRate * (e.Delta / Math.Abs(e.Delta)));
+            int scrollDelta;
+            if (e.Delta == 0)
+            {
+                scrollDelta = (int)(this._itemHeight * this.MouseWheelRate);
+            }
+            else
+            {
+                scrollDelta = (int)(this._itemHeight * this.MouseWheelRate * (e.Delta / Math.Abs(e.Delta)));
+            }
+
             if (!this._animationTimer.Enabled)
             {
                 this._targetVerticalScroll = this._scrollBar.Value;

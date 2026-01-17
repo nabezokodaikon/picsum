@@ -563,27 +563,27 @@ namespace PicSum.UIComponent.InfoPanel
                 e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
                 var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                var x = 0 + (this.thumbnailPictureBox.Width - size) / 2f;
-                var y = 0 + (this.thumbnailPictureBox.Height - size) / 2f;
-                var rect = new RectangleF(x, y, size, size);
+                var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
+                var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
+                var rect = new Rectangle(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
                     ThumbnailUtil.DrawFileThumbnail(
-                        this,
-                        e.Graphics,
-                        this.Thumbnail.ThumbnailImage,
-                        rect,
-                        new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight));
-                }
-                else
-                {
-                    ThumbnailUtil.DrawDirectoryThumbnail(
-                        this,
                         e.Graphics,
                         this.Thumbnail.ThumbnailImage,
                         rect,
                         new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
-                        Instance<IFileIconCacher>.Value.JumboDirectoryIcon);
+                        WindowUtil.GetCurrentWindowScale(this));
+                }
+                else
+                {
+                    ThumbnailUtil.DrawDirectoryThumbnail(
+                        e.Graphics,
+                        this.Thumbnail.ThumbnailImage,
+                        rect,
+                        new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
+                        Instance<IFileIconCacher>.Value.JumboDirectoryIcon,
+                        WindowUtil.GetCurrentWindowScale(this));
                 }
             }
             else if (this.FileInfo.FileIcon != null)

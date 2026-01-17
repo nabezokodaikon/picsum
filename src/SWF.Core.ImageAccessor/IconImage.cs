@@ -56,43 +56,36 @@ namespace SWF.Core.ImageAccessor
             this._disposed = true;
         }
 
-        public void DoCache(int width, int height)
-        {
-            if (this._cache == null
-                || this._cache.Width != width
-                || this._cache.Height != height)
-            {
-                this._cache?.Dispose();
-                this._cache = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
-                using (var g = Graphics.FromImage(this._cache))
-                {
-                    g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.CompositingQuality = CompositingQuality.HighSpeed;
-                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    g.CompositingMode = CompositingMode.SourceOver;
-
-                    g.DrawImage(
-                        this._icon,
-                        new Rectangle(0, 0, this._cache.Width, this._cache.Height),
-                        new Rectangle(0, 0, this._icon.Width, this._icon.Height),
-                        GraphicsUnit.Pixel);
-                }
-            }
-        }
-
         public void Draw(Graphics g, Rectangle destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
-            if (this._cache == null
-                || this._cache.Width != destRect.Width
-                || this._cache.Height != destRect.Height)
+            using (Measuring.Time(false, "IconImage.Draw"))
             {
-                return;
-            }
+                if (this._cache == null
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
+                {
+                    this._cache?.Dispose();
+                    this._cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                    using (var gr = Graphics.FromImage(this._cache))
+                    {
+                        gr.SmoothingMode = SmoothingMode.None;
+                        gr.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        gr.CompositingQuality = CompositingQuality.HighSpeed;
+                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        gr.CompositingMode = CompositingMode.SourceOver;
 
-            g.DrawImageUnscaled(this._cache, destRect);
+                        gr.DrawImage(
+                            this._icon,
+                            new Rectangle(0, 0, this._cache.Width, this._cache.Height),
+                            new Rectangle(0, 0, this._icon.Width, this._icon.Height),
+                            GraphicsUnit.Pixel);
+                    }
+                }
+
+                g.DrawImageUnscaled(this._cache, destRect);
+            }
         }
     }
 }

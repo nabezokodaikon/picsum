@@ -290,7 +290,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeThumbnail(Graphics g, RectangleF destRect)
+        public void DrawResizeThumbnail(Graphics g, Rectangle destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
@@ -301,17 +301,14 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                var width = (int)destRect.Width;
-                var height = (int)destRect.Height;
-
                 using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
                     if (this._bitmapCache == null
-                        || this._bitmapCache.Width != width
-                        || this._bitmapCache.Height != height)
+                        || this._bitmapCache.Width != destRect.Width
+                        || this._bitmapCache.Height != destRect.Height)
                     {
                         this._bitmapCache?.Dispose();
-                        this._bitmapCache = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+                        this._bitmapCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
                         using (var gr = Graphics.FromImage(this._bitmapCache))
                         using (var bmp = OpenCVUtil.ToBitmap(this._mat))
                         {
@@ -323,7 +320,7 @@ namespace SWF.Core.ImageAccessor
 
                             gr.DrawImage(
                                 bmp,
-                                new Rectangle(0, 0, width, height),
+                                new Rectangle(0, 0, destRect.Width, destRect.Height),
                                 new Rectangle(0, 0, bmp.Width, bmp.Height),
                                 GraphicsUnit.Pixel);
                         }
@@ -337,8 +334,7 @@ namespace SWF.Core.ImageAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException ||
                 ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
+                ex is NotImplementedException)
             {
                 throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
             }
