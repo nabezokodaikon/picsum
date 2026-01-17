@@ -1,4 +1,6 @@
 using SWF.Core.Base;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -271,6 +273,60 @@ namespace SWF.Core.ImageAccessor
                     {
                         this._bitmapCache?.Dispose();
                         this._bitmapCache = OpenCVUtil.Resize(this._mat, width, height);
+                    }
+
+                    g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
+                }
+            }
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException ||
+                ex is OpenCvSharp.OpenCVException)
+            {
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+            }
+        }
+
+        public void DrawResizeThumbnail(Graphics g, RectangleF destRect)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            if (this._mat == null)
+            {
+                throw new InvalidOperationException("MatがNullです。");
+            }
+
+            try
+            {
+                var width = (int)destRect.Width;
+                var height = (int)destRect.Height;
+
+                using (Measuring.Time(false, "CvImage.DrawResizeImage"))
+                {
+                    if (this._bitmapCache == null
+                        || this._bitmapCache.Width != width
+                        || this._bitmapCache.Height != height)
+                    {
+                        this._bitmapCache?.Dispose();
+                        this._bitmapCache = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+                        using (var gr = Graphics.FromImage(this._bitmapCache))
+                        using (var bmp = OpenCVUtil.ToBitmap(this._mat))
+                        {
+                            gr.SmoothingMode = SmoothingMode.None;
+                            gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                            gr.CompositingQuality = CompositingQuality.HighSpeed;
+                            gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                            gr.CompositingMode = CompositingMode.SourceOver;
+
+                            gr.DrawImage(
+                                bmp,
+                                new Rectangle(0, 0, width, height),
+                                new Rectangle(0, 0, bmp.Width, bmp.Height),
+                                GraphicsUnit.Pixel);
+                        }
                     }
 
                     g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);

@@ -117,7 +117,7 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.X + (destRect.Width - w) / 2f;
             var y = destRect.Y + (destRect.Height - h) / 2f;
 
-            thumb.DrawResizeImage(g, new RectangleF(x, y, w, h));
+            thumb.DrawResizeThumbnail(g, new RectangleF(x, y, w, h));
         }
 
         public static void DrawDirectoryThumbnail(Control control, Graphics g, CvImage thumb, RectangleF destRect, SizeF srcSize, Image icon)
