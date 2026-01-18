@@ -127,6 +127,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            // TODO: System.ObjectDisposedException: 'Cannot access a disposed object. Object name: 'System.Threading.SemaphoreSlim'.'
             await this._cacheLock.WaitAsync().False();
             try
             {
