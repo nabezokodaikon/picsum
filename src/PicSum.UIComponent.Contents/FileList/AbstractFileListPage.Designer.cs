@@ -32,7 +32,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            this.flowList.MouseWheelRate = 0.5f;
+            this.flowList.MouseWheelRate = 0.33f;
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
             this.flowList.DrawItems += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemsEventArgs>(this.FlowList_Drawitems);
             this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
