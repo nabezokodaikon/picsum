@@ -170,8 +170,8 @@ namespace SWF.UIComponent.FlowList
         // スクロール関連
         private Timer _animationTimer;
         private int _targetVerticalScroll;
-        private const int STEP_SIZE = 8; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
-        private const float SMOOTHNESS = 0.2f; // 追従の滑らかさ(0.1-0.3推奨)
+        private const int STEP_SIZE = 4; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
+        private const float SMOOTHNESS = 0.12f; // 追従の滑らかさ(0.1-0.3推奨)
 
         private SolidBrush RectangleSelectionBrush
         {
@@ -773,7 +773,7 @@ namespace SWF.UIComponent.FlowList
                 moveScroll = this._scrollBar.Maximum;
             }
 
-            this._scrollBar.Value = (int)moveScroll;
+            this._scrollBar.Value = moveScroll;
         }
 
         /// <summary>
