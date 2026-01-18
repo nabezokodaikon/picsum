@@ -760,7 +760,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 || item.FileNameImage.Height != textRect.Height)
             {
                 item.FileNameImage?.Dispose();
-                item.FileNameImage = new Bitmap((int)textRect.Width, (int)textRect.Height, PixelFormat.Format32bppPArgb);
+                item.FileNameImage = new Bitmap(textRect.Width, textRect.Height, PixelFormat.Format32bppPArgb);
                 using (var g = Graphics.FromImage(item.FileNameImage))
                 {
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -768,12 +768,12 @@ namespace PicSum.UIComponent.Contents.FileList
                         item.FileName,
                         font,
                         this.flowList.ItemTextBrush,
-                        new Rectangle(0, 0, (int)textRect.Width, (int)textRect.Height),
+                        new Rectangle(0, 0, textRect.Width, textRect.Height),
                         this.flowList.ItemTextFormat);
                 }
             }
 
-            e.Graphics.DrawImageUnscaled(item.FileNameImage, (int)textRect.X, (int)textRect.Y);
+            e.Graphics.DrawImageUnscaled(item.FileNameImage, textRect.X, textRect.Y);
         }
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
@@ -799,12 +799,12 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private RectangleF GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
-            return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Bottom - itemTextHeight,
-                                  e.ItemRectangle.Width,
-                                  itemTextHeight);
+            return new Rectangle(e.ItemRectangle.X,
+                                 e.ItemRectangle.Bottom - itemTextHeight,
+                                 e.ItemRectangle.Width,
+                                 itemTextHeight);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
