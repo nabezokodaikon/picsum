@@ -45,16 +45,18 @@ namespace PicSum.Job.Jobs
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (filePath, _) =>
+                        async (filePath, token) =>
                         {
+                            token.ThrowIfCancellationRequested();
+
+                            if (this.IsJobCancel)
+                            {
+                                await cts.CancelAsync().False();
+                                return;
+                            }
+
                             try
                             {
-                                if (this.IsJobCancel)
-                                {
-                                    await cts.CancelAsync().False();
-                                    cts.Token.ThrowIfCancellationRequested();
-                                }
-
                                 var bf = await Instance<IThumbnailCacher>.Value.GetOrCreateCache(
                                     filePath, param.ThumbnailWidth, param.ThumbnailHeight).False();
                                 if (param.IsExecuteCallback
@@ -84,15 +86,22 @@ namespace PicSum.Job.Jobs
                             }
                             catch (Exception ex) when (
                                 ex is FileUtilException ||
-                                ex is ImageUtilException ||
-                                ex is ObjectDisposedException)
+                                ex is ImageUtilException)
                             {
                                 this.WriteErrorLog(ex);
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                await cts.CancelAsync().False();
+                                return;
                             }
                         }
                     ).False();
                 }
-                catch (OperationCanceledException) { }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
             }
         }
     }

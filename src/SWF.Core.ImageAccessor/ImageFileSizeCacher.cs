@@ -127,56 +127,49 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
+            await this._cacheLock.WaitAsync().False();
             try
             {
-                await this._cacheLock.WaitAsync().False();
-                try
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 1"))
                 {
-                    using (Measuring.Time(false, $"ImageFileSizeCacher.Set 1"))
+                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                     {
-                        if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                        if (updateDate == cache.UpdateDate)
                         {
-                            if (updateDate == cache.UpdateDate)
-                            {
-                                return;
-                            }
+                            return;
                         }
                     }
-                }
-                finally
-                {
-                    this._cacheLock.Release();
-                }
-
-                var newCache = new ImageFileSizeCacheEntity(
-                    filePath, size, updateDate);
-
-                await this._cacheLock.WaitAsync().False();
-                try
-                {
-                    using (Measuring.Time(false, $"ImageFileSizeCacher.Set 2"))
-                    {
-                        if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
-                        {
-                            if (newCache.UpdateDate == cache.UpdateDate)
-                            {
-                                return;
-                            }
-
-                            this._cacheDictionary.Remove(cache.FilePath);
-                        }
-
-                        this._cacheDictionary.Add(newCache.FilePath, newCache);
-                    }
-                }
-                finally
-                {
-                    this._cacheLock.Release();
                 }
             }
-            catch (ObjectDisposedException)
+            finally
             {
-                return;
+                this._cacheLock.Release();
+            }
+
+            var newCache = new ImageFileSizeCacheEntity(
+                filePath, size, updateDate);
+
+            await this._cacheLock.WaitAsync().False();
+            try
+            {
+                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 2"))
+                {
+                    if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
+                    {
+                        if (newCache.UpdateDate == cache.UpdateDate)
+                        {
+                            return;
+                        }
+
+                        this._cacheDictionary.Remove(cache.FilePath);
+                    }
+
+                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                }
+            }
+            finally
+            {
+                this._cacheLock.Release();
             }
         }
 

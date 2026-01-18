@@ -60,14 +60,16 @@ namespace PicSum.Job.Jobs
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (file, _) =>
+                        async (file, token) =>
                         {
                             try
                             {
+                                token.ThrowIfCancellationRequested();
+
                                 if (this.IsJobCancel)
                                 {
                                     await cts.CancelAsync().False();
-                                    cts.Token.ThrowIfCancellationRequested();
+                                    return;
                                 }
 
                                 await Instance<IImageFileCacher>.Value.Create(file).False();
@@ -87,10 +89,18 @@ namespace PicSum.Job.Jobs
                             {
                                 this.WriteErrorLog(ex);
                             }
+                            catch (ObjectDisposedException)
+                            {
+                                await cts.CancelAsync().False();
+                                return;
+                            }
                         }
                     ).False();
                 }
-                catch (OperationCanceledException) { }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
             }
         }
 
