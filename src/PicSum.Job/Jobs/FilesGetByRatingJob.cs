@@ -42,12 +42,13 @@ namespace PicSum.Job.Jobs
                             },
                             async (dto, token) =>
                             {
-                                if (this.IsJobCancel && !cts.IsCancellationRequested)
+                                token.ThrowIfCancellationRequested();
+
+                                if (this.IsJobCancel)
                                 {
                                     await cts.CancelAsync().False();
+                                    return;
                                 }
-
-                                token.ThrowIfCancellationRequested();
 
                                 try
                                 {
@@ -61,6 +62,11 @@ namespace PicSum.Job.Jobs
                                 catch (FileUtilException ex)
                                 {
                                     this.WriteErrorLog(ex);
+                                }
+                                catch (ObjectDisposedException)
+                                {
+                                    await cts.CancelAsync().False();
+                                    return;
                                 }
                             }).False();
                     }

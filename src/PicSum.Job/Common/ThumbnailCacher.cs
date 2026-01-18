@@ -333,10 +333,6 @@ namespace PicSum.Job.Common
                                 await con.Update(sql).False();
                             }
                         }
-                        catch (ObjectDisposedException)
-                        {
-                            return ThumbnailCacheEntity.EMPTY;
-                        }
                         finally
                         {
                             await con.DisposeAsync().False();
@@ -407,10 +403,6 @@ namespace PicSum.Job.Common
                                 srcImg.Height,
                                 updateDate);
                             await con.Update(sql).False();
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            return ThumbnailCacheEntity.EMPTY;
                         }
                         finally
                         {

@@ -51,12 +51,14 @@ namespace PicSum.Job.Jobs
                             CancellationToken = cts.Token,
                             MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                         },
-                        async (index, _) =>
+                        async (index, token) =>
                         {
+                            token.ThrowIfCancellationRequested();
+
                             if (this.IsJobCancel)
                             {
                                 await cts.CancelAsync().False();
-                                cts.Token.ThrowIfCancellationRequested();
+                                return;
                             }
 
                             try
@@ -71,9 +73,15 @@ namespace PicSum.Job.Jobs
                                 this.HasTakenDates = true;
                                 this.Callback(new TakenDateResult(filePath, takenDate));
                             }
-                            catch (ImageUtilException ex)
+                            catch (Exception ex) when (
+                                ex is ImageUtilException)
                             {
                                 this.WriteErrorLog(ex);
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                await cts.CancelAsync().False();
+                                return;
                             }
                         }).False();
                 }
