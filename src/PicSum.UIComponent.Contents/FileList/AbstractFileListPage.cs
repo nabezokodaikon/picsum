@@ -1039,6 +1039,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
         {
+            if (this.flowList.IsRunningScrollAnimation)
+            {
+                return;
+            }
+
             if (this._filterFilePathList == null)
             {
                 return;
@@ -1093,6 +1098,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     .StartJob(this, param, _ =>
                     {
                         if (this._disposed)
+                        {
+                            return;
+                        }
+
+                        if (this.flowList.IsRunningScrollAnimation)
                         {
                             return;
                         }

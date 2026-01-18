@@ -181,6 +181,14 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
+        public bool IsRunningScrollAnimation
+        {
+            get
+            {
+                return this._animationTimer.Enabled;
+            }
+        }
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new ContextMenuStrip ContextMenuStrip
         {
@@ -745,6 +753,7 @@ namespace SWF.UIComponent.FlowList
             {
                 this._scrollBar.Value = this._targetVerticalScroll;
                 this._animationTimer.Stop();
+                this.SetDrawParameter(true);
                 return;
             }
 
