@@ -105,7 +105,6 @@ namespace SWF.Core.FileAccessor
                         this._memoryMappedFile, this._position, this._capacity);
                 }
 
-                // TODO: System.ObjectDisposedException: 'Cannot access a closed accessor. Object name: 'UnmanagedMemoryAccessor'.'
                 this._accessor.WriteArray(this._position, buffer, 0, length);
                 this._position += length;
                 return this._position;

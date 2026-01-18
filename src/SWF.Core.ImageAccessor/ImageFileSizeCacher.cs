@@ -127,50 +127,56 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
-            // TODO: System.ObjectDisposedException: 'Cannot access a disposed object. Object name: 'System.Threading.SemaphoreSlim'.'
-            await this._cacheLock.WaitAsync().False();
             try
             {
-                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 1"))
+                await this._cacheLock.WaitAsync().False();
+                try
                 {
-                    if (this._cacheDictionary.TryGetValue(filePath, out var cache))
+                    using (Measuring.Time(false, $"ImageFileSizeCacher.Set 1"))
                     {
-                        if (updateDate == cache.UpdateDate)
+                        if (this._cacheDictionary.TryGetValue(filePath, out var cache))
                         {
-                            return;
+                            if (updateDate == cache.UpdateDate)
+                            {
+                                return;
+                            }
                         }
                     }
                 }
-            }
-            finally
-            {
-                this._cacheLock.Release();
-            }
-
-            var newCache = new ImageFileSizeCacheEntity(
-                filePath, size, updateDate);
-
-            await this._cacheLock.WaitAsync().False();
-            try
-            {
-                using (Measuring.Time(false, $"ImageFileSizeCacher.Set 2"))
+                finally
                 {
-                    if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
+                    this._cacheLock.Release();
+                }
+
+                var newCache = new ImageFileSizeCacheEntity(
+                    filePath, size, updateDate);
+
+                await this._cacheLock.WaitAsync().False();
+                try
+                {
+                    using (Measuring.Time(false, $"ImageFileSizeCacher.Set 2"))
                     {
-                        if (newCache.UpdateDate == cache.UpdateDate)
+                        if (this._cacheDictionary.TryGetValue(newCache.FilePath, out var cache))
                         {
-                            return;
+                            if (newCache.UpdateDate == cache.UpdateDate)
+                            {
+                                return;
+                            }
+
+                            this._cacheDictionary.Remove(cache.FilePath);
                         }
 
-                        this._cacheDictionary.Remove(cache.FilePath);
+                        this._cacheDictionary.Add(newCache.FilePath, newCache);
                     }
-
-                    this._cacheDictionary.Add(newCache.FilePath, newCache);
+                }
+                finally
+                {
+                    this._cacheLock.Release();
                 }
             }
-            finally
+            catch (ObjectDisposedException)
             {
-                this._cacheLock.Release();
+                return;
             }
         }
 
