@@ -84,7 +84,8 @@ namespace PicSum.Job.Jobs
                             }
                             catch (Exception ex) when (
                                 ex is FileUtilException ||
-                                ex is ImageUtilException)
+                                ex is ImageUtilException ||
+                                ex is ObjectDisposedException)
                             {
                                 this.WriteErrorLog(ex);
                             }
