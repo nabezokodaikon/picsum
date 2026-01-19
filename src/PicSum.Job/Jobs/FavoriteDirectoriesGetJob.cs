@@ -6,6 +6,7 @@ using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
+using ZLinq;
 
 namespace PicSum.Job.Jobs
 {
@@ -63,47 +64,64 @@ namespace PicSum.Job.Jobs
 
         private async ValueTask<SingleValueDto<string>[]> GetOrCreateFileList()
         {
-            var con = await Instance<IFileInfoDao>.Value.Connect().False();
-            try
+            using (Measuring.Time(true, "FavoriteDirectoriesGetJob.GetOrCreateFileList"))
             {
-                var logic = new FavoriteDirectoriesGetLogic(this);
-                var dtos = await logic.Execute(con).False();
-                if (dtos.Length > 0)
+                var con = await Instance<IFileInfoDao>.Value.Connect().False();
+                try
                 {
-                    return dtos;
-                }
-            }
-            finally
-            {
-                await con.DisposeAsync().False();
-            }
-
-            var transactionConnection = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
-            try
-            {
-                var parentDir = FileUtil.GetParentDirectoryPath(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
-
-                var addFileMaster = new FileMasterAddLogic(this);
-                var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
-
-                foreach (var dirPath in FileUtil.GetSubDirectoriesArray(parentDir, true))
-                {
-                    this.ThrowIfJobCancellationRequested();
-
-                    if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
+                    var logic = new FavoriteDirectoriesGetLogic(this);
+                    var dtos = await logic.Execute(con).False();
+                    var hasDirs = dtos.AsValueEnumerable().Any(dto =>
                     {
-                        await addFileMaster.Execute(transactionConnection, dirPath).False();
-                        await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
+                        if (string.IsNullOrEmpty(dto.Value))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return !FileUtil.IsSystemRoot(dto.Value)
+                            && !FileUtil.IsExistsDrive(dto.Value)
+                            && FileUtil.IsExistsDirectory(dto.Value);
+                        }
+                    });
+
+                    if (hasDirs)
+                    {
+                        return dtos;
                     }
                 }
-            }
-            finally
-            {
-                await transactionConnection.DisposeAsync().False();
-            }
+                finally
+                {
+                    await con.DisposeAsync().False();
+                }
 
-            return await this.GetOrCreateFileList().False();
+                var transactionConnection = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
+                try
+                {
+                    var parentDir = FileUtil.GetParentDirectoryPath(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
+
+                    var addFileMaster = new FileMasterAddLogic(this);
+                    var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
+
+                    foreach (var dirPath in FileUtil.GetSubDirectoriesArray(parentDir, true))
+                    {
+                        this.ThrowIfJobCancellationRequested();
+
+                        if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
+                        {
+                            await addFileMaster.Execute(transactionConnection, dirPath).False();
+                            await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
+                        }
+                    }
+                }
+                finally
+                {
+                    await transactionConnection.DisposeAsync().False();
+                }
+
+                return await this.GetOrCreateFileList().False();
+            }
         }
     }
 }
