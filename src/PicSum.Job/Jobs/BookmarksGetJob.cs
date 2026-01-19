@@ -28,7 +28,7 @@ namespace PicSum.Job.Jobs
                     {
                         MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
                     },
-                    (dto, state) =>
+                    async (dto, state) =>
                     {
                         if (this.IsJobCancel)
                         {
@@ -38,9 +38,8 @@ namespace PicSum.Job.Jobs
 
                         try
                         {
-                            var info = getInfoLogic.Get(
-                                dto.FilePath, true, dto.RegistrationDate)
-                                .GetAwaiter().GetResult();
+                            var info = await getInfoLogic.Get(
+                                dto.FilePath, true, dto.RegistrationDate).False();
                             if (!info.IsEmpty)
                             {
                                 infoList.Add(info);
