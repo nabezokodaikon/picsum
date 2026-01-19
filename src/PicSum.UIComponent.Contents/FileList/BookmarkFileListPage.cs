@@ -70,8 +70,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         protected override void OnRemoveFile(string[] filePathList)
         {
-            var parameter = new ListParameter<string>();
-            parameter.AddRange(filePathList);
+            var parameter = new ListParameter<string>(filePathList);
             Instance<JobCaller>.Value.EnqueueBookmarkDeleteJob(this, parameter);
 
             base.RemoveFile(filePathList);

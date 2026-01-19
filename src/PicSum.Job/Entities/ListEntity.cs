@@ -12,7 +12,7 @@ namespace PicSum.Job.Entities
             base.Capacity = capacity;
         }
 
-        public ListEntity(IEnumerable<T> collection)
+        public ListEntity(T[] collection)
             : base(collection)
         {
 

@@ -384,7 +384,7 @@ namespace SWF.Core.FileAccessor
         /// </summary>
         /// <param name="directoryPath">フォルダパス</param>
         /// <returns></returns>
-        public static IEnumerable<string> GetFiles(string directoryPath)
+        public static string[] GetFiles(string directoryPath)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(directoryPath, nameof(directoryPath));
 
@@ -395,10 +395,10 @@ namespace SWF.Core.FileAccessor
 
             try
             {
-                return Directory
+                return [.. Directory
                     .EnumerateFiles(directoryPath)
                     .AsEnumerable()
-                    .Where(static _ => CanAccess(_));
+                    .Where(static _ => CanAccess(_))];
             }
             catch (Exception ex) when (
                 ex is ArgumentNullException ||
@@ -759,12 +759,13 @@ namespace SWF.Core.FileAccessor
         }
 
         // ドライブリストを取得します。
-        private static IEnumerable<string> GetDrives()
+        private static string[] GetDrives()
         {
             try
             {
                 var drives = DriveInfo.GetDrives()
-                    .Select(static drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"));
+                    .Select(static drive => ToRemoveLastPathSeparate(@$"{drive.Name}\"))
+                    .ToArray();
                 return drives;
             }
             catch (Exception ex) when (

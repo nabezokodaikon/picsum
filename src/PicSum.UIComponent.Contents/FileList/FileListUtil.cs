@@ -9,7 +9,6 @@ using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using ZLinq;
@@ -20,7 +19,7 @@ namespace PicSum.UIComponent.Contents.FileList
     internal static class FileListUtil
     {
         private static string[] GetSortFiles(
-            IEnumerable<FileShallowInfoEntity> files, SortParameter sortInfo)
+            FileShallowInfoEntity[] files, SortParameter sortInfo)
         {
             ArgumentNullException.ThrowIfNull(files, nameof(files));
             ArgumentNullException.ThrowIfNull(sortInfo, nameof(sortInfo));
@@ -235,7 +234,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByRatingJob(sender, jobParameter, e =>
                     {
-                        var sortImageFiles = GetSortFiles(e, param.SortInfo);
+                        var sortImageFiles = GetSortFiles([.. e], param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles, param.SelectedFilePath, param.PageTitle, param.PageIcon);
                         param.OnGetImageFiles(eventArgs);
@@ -257,7 +256,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 Instance<JobCaller>.Value.EnqueueFilesGetByTagJob(sender, jobParameter, e =>
                     {
-                        var sortImageFiles = GetSortFiles(e, param.SortInfo);
+                        var sortImageFiles = GetSortFiles([.. e], param.SortInfo);
                         var eventArgs = new GetImageFilesEventArgs(
                             sortImageFiles,
                             param.SelectedFilePath,

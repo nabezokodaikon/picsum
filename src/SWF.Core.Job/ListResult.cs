@@ -14,7 +14,7 @@ namespace SWF.Core.Job
 
         }
 
-        public ListResult(IEnumerable<T> collection)
+        public ListResult(T[] collection)
             : base(collection)
         {
 

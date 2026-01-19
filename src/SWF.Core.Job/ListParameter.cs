@@ -1,23 +1,28 @@
+using System.Collections;
+
 namespace SWF.Core.Job
 {
     public sealed class ListParameter<T>
-        : List<T>, IJobParameter
+        : IEnumerable<T>, IJobParameter
     {
-        public ListParameter()
-        {
+        private readonly T[] _items;
 
+        public ListParameter(T[] items)
+        {
+            this._items = items;
         }
 
-        public ListParameter(int capacity)
-            : base(capacity)
+        public IEnumerator<T> GetEnumerator()
         {
-
+            foreach (var item in this._items)
+            {
+                yield return item;
+            }
         }
 
-        public ListParameter(IEnumerable<T> collection)
-            : base(collection)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-
+            return this.GetEnumerator();
         }
     }
 }
