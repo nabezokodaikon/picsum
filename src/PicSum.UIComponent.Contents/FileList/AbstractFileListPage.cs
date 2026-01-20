@@ -28,7 +28,6 @@ namespace PicSum.UIComponent.Contents.FileList
     /// <summary>
     /// ファイルリストコンテンツ基底クラス
     /// </summary>
-
     public abstract partial class AbstractFileListPage
         : AbstractBrowsePage, ISender
     {
@@ -331,8 +330,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     this._masterFileDictionary.Add(destFile.FilePath, destFile);
                 }
 
-                var scale = WindowUtil.GetCurrentWindowScale(this);
-                this.RedrawPage(scale);
+                this.RedrawPage(this._scale);
 
                 this.SelectedFilePath = selectedFilePath;
                 this.SortInfo.SetSortMode(sortMode, isAscending);
@@ -719,11 +717,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight()
         {
-            using (var bmp = new Bitmap(1, 1))
-            using (var g = Graphics.FromImage(bmp))
+            if (this._itemTextHeight < 0)
             {
-                return this.GetItemTextHeight(g);
+                using (var bmp = new Bitmap(1, 1))
+                using (var g = Graphics.FromImage(bmp))
+                {
+                    return this.GetItemTextHeight(g);
+                }
             }
+
+            return this._itemTextHeight;
         }
 
         private int GetItemTextHeight(Graphics g)
@@ -738,8 +741,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void SetFlowListItemSize()
         {
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var thumbnailSize = (int)(this.ThumbnailSize * scale);
+            var thumbnailSize = (int)(this.ThumbnailSize * this._scale);
 
             if (this.IsShowFileName)
             {
@@ -858,8 +860,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void AbstractFileListPage_Loaded(object sender, EventArgs e)
         {
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            this.RedrawPage(scale);
+            this.RedrawPage(this._scale);
         }
 
         private void ToolBar_DirectoryMenuItemClick(object sender, EventArgs e)
@@ -988,7 +989,6 @@ namespace PicSum.UIComponent.Contents.FileList
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
             var selectedItemPen = this.flowList.GetSelectedItemPen(this);
             var foucusItemPen = this.flowList.GetFoucusItemPen(this);
-            var displayScale = WindowUtil.GetCurrentWindowScale(this);
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
@@ -1022,13 +1022,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
                         ThumbnailUtil.DrawFileThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), displayScale);
+                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), this._scale);
                     }
                     else
                     {
                         var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
                         ThumbnailUtil.DrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon, displayScale);
+                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon, this._scale);
                     }
 
                     if (this.IsShowFileName)
