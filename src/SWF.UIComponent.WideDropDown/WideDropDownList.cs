@@ -225,7 +225,7 @@ namespace SWF.UIComponent.WideDropDown
             this.ToolStripItem.BackColor = this.BackColor;
             this.ToolStripItem.Size = new Size(BACKGROUND_DEFAULT_SIZE.Width, BACKGROUND_DEFAULT_SIZE.Height);
 
-            this._flowList.BackColor = this.BackColor;
+            this._flowList.BackColor = Color.White;
             this._flowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
             this._flowList.ItemTextLineAlignment = StringAlignment.Center;
             this._flowList.ItemTextAlignment = StringAlignment.Near;
