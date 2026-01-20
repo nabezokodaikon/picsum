@@ -753,7 +753,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
-            var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
+            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
