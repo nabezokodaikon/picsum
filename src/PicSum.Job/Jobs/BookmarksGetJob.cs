@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 
 namespace PicSum.Job.Jobs
 {
+
     public sealed class BookmarksGetJob
         : AbstractTwoWayJob<ListResult<FileShallowInfoEntity>>
     {
@@ -20,41 +21,54 @@ namespace PicSum.Job.Jobs
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
             var dtos = await this.GetBookmarks().False();
 
-            using (Measuring.Time(true, "BookmarksGetJob Parallel.ForEach"))
+            using (Measuring.Time(true, "BookmarksGetJob Parallel.ForEachAsync"))
             {
-                Parallel.ForEach(
-                    dtos,
-                    new ParallelOptions
+                using (var cts = new CancellationTokenSource())
+                {
+                    try
                     {
-                        MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
-                    },
-                    async (dto, state) =>
-                    {
-                        if (this.IsJobCancel)
-                        {
-                            state.Stop();
-                            return;
-                        }
-
-                        try
-                        {
-                            var info = await getInfoLogic.Get(
-                                dto.FilePath, true, dto.RegistrationDate).False();
-                            if (!info.IsEmpty)
+                        await Parallel.ForEachAsync(
+                            dtos,
+                            new ParallelOptions
                             {
-                                infoList.Add(info);
-                            }
-                        }
-                        catch (FileUtilException ex)
-                        {
-                            this.WriteErrorLog(ex);
-                            return;
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            return;
-                        }
-                    });
+                                CancellationToken = cts.Token,
+                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                            },
+                            async (dto, token) =>
+                            {
+                                token.ThrowIfCancellationRequested();
+
+                                if (this.IsJobCancel)
+                                {
+                                    await cts.CancelAsync().False();
+                                    return;
+                                }
+
+                                try
+                                {
+                                    var info = await getInfoLogic.Get(
+                                        dto.FilePath, true, dto.RegistrationDate).False();
+                                    if (!info.IsEmpty)
+                                    {
+                                        infoList.Add(info);
+                                    }
+                                }
+                                catch (FileUtilException ex)
+                                {
+                                    this.WriteErrorLog(ex);
+                                }
+                                catch (ObjectDisposedException)
+                                {
+                                    await cts.CancelAsync().False();
+                                    return;
+                                }
+                            }).False();
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        return;
+                    }
+                }
             }
 
             this.Callback([.. infoList]);
