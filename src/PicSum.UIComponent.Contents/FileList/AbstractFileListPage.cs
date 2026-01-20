@@ -209,6 +209,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this._scale != scale)
             {
+                this._itemTextHeight = -1;
                 this._scale = scale;
                 var baseHeigth = this.Height - 8;
 
