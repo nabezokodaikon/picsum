@@ -10,7 +10,6 @@ using ZLinq;
 
 namespace PicSum.Job.Jobs
 {
-
     public sealed class FavoriteDirectoriesGetJob
         : AbstractTwoWayJob<FavoriteDirectoriesGetParameter, ListResult<FileShallowInfoEntity>>
     {
@@ -51,6 +50,11 @@ namespace PicSum.Job.Jobs
                     catch (FileUtilException ex)
                     {
                         this.WriteErrorLog(ex);
+                        continue;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        continue;
                     }
                 }
             }

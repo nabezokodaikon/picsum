@@ -13,7 +13,6 @@ namespace PicSum.Job.Jobs
     /// <summary>
     /// ファイルをフォルダで検索します。
     /// </summary>
-
     public sealed class FilesGetByDirectoryJob
         : AbstractTwoWayJob<FilesGetByDirectoryParameter, DirectoryGetResult>
     {
@@ -44,53 +43,40 @@ namespace PicSum.Job.Jobs
             var getInfoLogic = new FileShallowInfoGetLogic(this);
             var infoList = new ConcurrentBag<FileShallowInfoEntity>();
 
-            using (Measuring.Time(true, "FilesGetByDirectoryJob Parallel.ForEachAsync"))
+            using (Measuring.Time(true, "FilesGetByDirectoryJob Parallel.ForEach"))
             {
-                using (var cts = new CancellationTokenSource())
-                {
-                    try
+                Parallel.ForEach(
+                    files,
+                    new ParallelOptions
                     {
-                        await Parallel.ForEachAsync(
-                            files,
-                            new ParallelOptions
-                            {
-                                CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
-                            },
-                            async (file, token) =>
-                            {
-                                token.ThrowIfCancellationRequested();
-
-                                if (this.IsJobCancel)
-                                {
-                                    await cts.CancelAsync().False();
-                                    return;
-                                }
-
-                                try
-                                {
-                                    var info = await getInfoLogic.Get(file, param.IsGetThumbnail).False();
-                                    if (!info.IsEmpty)
-                                    {
-                                        infoList.Add(info);
-                                    }
-                                }
-                                catch (FileUtilException ex)
-                                {
-                                    this.WriteErrorLog(ex);
-                                }
-                                catch (ObjectDisposedException)
-                                {
-                                    await cts.CancelAsync().False();
-                                    return;
-                                }
-                            }).False();
-                    }
-                    catch (OperationCanceledException)
+                        MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                    },
+                    async (file, state) =>
                     {
-                        return;
-                    }
-                }
+                        if (this.IsJobCancel)
+                        {
+                            state.Stop();
+                            return;
+                        }
+
+                        try
+                        {
+                            var info = await getInfoLogic.Get(file, param.IsGetThumbnail).False();
+                            if (!info.IsEmpty)
+                            {
+                                infoList.Add(info);
+                            }
+                        }
+                        catch (FileUtilException ex)
+                        {
+                            this.WriteErrorLog(ex);
+                            return;
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            return;
+                        }
+                    });
             }
 
             var con = await Instance<IFileInfoDao>.Value.Connect().False();
