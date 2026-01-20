@@ -105,7 +105,6 @@ namespace PicSum.Main.UIComponent
             // 
             // BrowsePanel
             // 
-            this.BackColor = Color.FromArgb(64, 68, 71);
             this.Loaded += this.BrowsePanel_Loaded;
         }
 

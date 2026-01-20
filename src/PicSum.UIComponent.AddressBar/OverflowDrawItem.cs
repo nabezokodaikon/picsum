@@ -112,9 +112,9 @@ namespace PicSum.UIComponent.AddressBar
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
 
-            if (e.IsFocus || e.IsMousePoint || e.IsSelected)
+            if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(this.DropDownList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(this.DropDownList.MousePointItemBrush, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -145,7 +145,7 @@ namespace PicSum.UIComponent.AddressBar
                 text,
                 font,
                 new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                Palette.TEXT_BRUSH.Color,
+                Palette.TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 

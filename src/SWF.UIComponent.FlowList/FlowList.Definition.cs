@@ -1,4 +1,6 @@
+using SWF.Core.Base;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,7 +12,76 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     public sealed partial class FlowList
     {
+        private static readonly Color DEFAULT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);
+
+        private static readonly Color DEFAULT_SELECTED_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 4,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color DEFAULT_FOCUS_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color DEFAULT_MOUSE_POINT_ITEM_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 8,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly Color DEFAULT_RECTANGLE_SELECTION_COLOR = Color.FromArgb(
+            SystemColors.Highlight.A / 4,
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B);
+
+        private static readonly SolidBrush DEFAULT_ITEM_TEXT_BRUSH = new(DEFAULT_ITEM_TEXT_COLOR);
+        private static readonly SolidBrush DEFAULT_SELECTED_ITEM_BRUSH = new(DEFAULT_SELECTED_ITEM_COLOR);
+        private static readonly SolidBrush DEFAULT_FOUCUS_ITEM_BRUSH = new(DEFAULT_FOCUS_ITEM_COLOR);
+        private static readonly SolidBrush DEFAULT_MOUSE_POINT_ITEM_BRUSH = new(DEFAULT_MOUSE_POINT_ITEM_COLOR);
+        private static readonly SolidBrush DEFAULT_RECTANGLE_SELECTION_BRUSH = new(DEFAULT_RECTANGLE_SELECTION_COLOR);
+
+        private static readonly Pen DEFAULT_SELECTED_ITEM_PEN = new(Color.FromArgb(
+            255,
+            DEFAULT_SELECTED_ITEM_COLOR.R,
+            DEFAULT_SELECTED_ITEM_COLOR.G,
+            DEFAULT_SELECTED_ITEM_COLOR.B),
+            1f);
+
+        private static readonly Pen DEFAULT_FOUCUS_ITEM_PEN = new(Color.FromArgb(
+            255,
+            DEFAULT_FOCUS_ITEM_COLOR.R,
+            DEFAULT_FOCUS_ITEM_COLOR.G,
+            DEFAULT_FOCUS_ITEM_COLOR.B),
+            1f);
+
+        private static readonly Pen DEFAULT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
+            DEFAULT_RECTANGLE_SELECTION_COLOR.A * 2,
+            DEFAULT_RECTANGLE_SELECTION_COLOR.R,
+            DEFAULT_RECTANGLE_SELECTION_COLOR.G,
+            DEFAULT_RECTANGLE_SELECTION_COLOR.B),
+            1f);
+
+        private static readonly Dictionary<float, Pen> SELECTED_ITEM_PEN_CACHE = [];
+        private static readonly Dictionary<float, Pen> FOUCUS_ITEM_PEN_CACHE = [];
+
+        private static readonly Dictionary<float, Pen> RECTANGLE_SELECTION_PEN_CACHE = [];
+
+        private static readonly Size DRAG_SIZE = GetDragSize();
+
+        private static Size GetDragSize()
+        {
+            var size = SystemInformation.DragSize.Width * 16;
+            return new Size(size, size);
+        }
+
         public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
+
+        // 項目最小サイズ
+        public const int MINIMUM_ITEM_SIZE = 16;
 
         public event EventHandler<DrawItemEventArgs> DrawItem;
         public event EventHandler<DrawItemsEventArgs> DrawItems;
@@ -27,6 +98,127 @@ namespace SWF.UIComponent.FlowList
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
+
+        /// <summary>
+        /// 項目テキストフォーマット
+        /// </summary>
+        [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringTrimming ItemTextTrimming
+        {
+            get
+            {
+                return this._itemTextTrimming;
+            }
+            set
+            {
+                this._itemTextTrimming = value;
+            }
+        }
+
+        /// <summary>
+        /// 項目テキストフォーマット
+        /// </summary>
+        [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringAlignment ItemTextAlignment
+        {
+            get
+            {
+                return this._itemTextAlignment;
+            }
+            set
+            {
+                this._itemTextAlignment = value;
+            }
+        }
+
+        /// <summary>
+        /// 項目テキストフォーマット
+        /// </summary>
+        [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringAlignment ItemTextLineAlignment
+        {
+            get
+            {
+                return this._itemTextLineAlignment;
+            }
+            set
+            {
+                this._itemTextLineAlignment = value;
+            }
+        }
+
+        /// <summary>
+        /// 項目テキストフォーマット
+        /// </summary>
+        [Category("項目描画")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringFormatFlags ItemTextFormatFlags
+        {
+            get
+            {
+                return this._itemTextFormatFlags;
+            }
+            set
+            {
+                this._itemTextFormatFlags = value;
+            }
+        }
+
+        /// <summary>
+        /// 項目テキスト色
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Color ItemTextColor { get; set; } = DEFAULT_ITEM_TEXT_COLOR;
+
+        /// <summary>
+        /// 項目選択色
+        /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Pen SelectedItemPen { get; set; } = DEFAULT_SELECTED_ITEM_PEN;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Pen FoucusItemPen { get; set; } = DEFAULT_FOUCUS_ITEM_PEN;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Pen RectangleSelectionPen { get; set; } = DEFAULT_RECTANGLE_SELECTION_PEN;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush RectangleSelectionBrush { get; set; } = DEFAULT_RECTANGLE_SELECTION_BRUSH;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush ItemTextBrush { get; set; } = DEFAULT_ITEM_TEXT_BRUSH;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush SelectedItemBrush { get; set; } = DEFAULT_SELECTED_ITEM_BRUSH;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush FocusItemBrush { get; set; } = DEFAULT_FOUCUS_ITEM_BRUSH;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush MousePointItemBrush { get; set; } = DEFAULT_MOUSE_POINT_ITEM_BRUSH;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringFormat ItemTextFormat
+        {
+            get
+            {
+                this._itemTextFormat ??= new()
+                {
+                    Trimming = this._itemTextTrimming,
+                    Alignment = this._itemTextAlignment,
+                    LineAlignment = this._itemTextLineAlignment,
+                    FormatFlags = this._itemTextFormatFlags
+                };
+                return this._itemTextFormat;
+            }
+            set
+            {
+                this._itemTextFormat = value;
+            }
+        }
 
         /// <summary>
         /// スクロールバー表示フラグ
@@ -201,349 +393,89 @@ namespace SWF.UIComponent.FlowList
             }
         }
 
-        /// <summary>
-        /// 項目テキスト色
-        /// </summary>
-        [Category("項目描画")]
-        public Color ItemTextColor
+        public bool IsRunningScrollAnimation
         {
             get
             {
-                return ITEM_TEXT_COLOR;
+                return this._animationTimer.Enabled;
             }
         }
 
-        /// <summary>
-        /// 項目選択色
-        /// </summary>
-        [Category("項目描画")]
-        public Color SelectedItemColor
-        {
-            get
-            {
-                return SELECTED_ITEM_COLOR;
-            }
-        }
-
-        /// <summary>
-        /// 項目フォーカス色
-        /// </summary>
-        [Category("項目描画")]
-        public Color FocusItemColor
-        {
-            get
-            {
-                return FOCUS_ITEM_COLOR;
-            }
-        }
-
-        /// <summary>
-        /// 項目マウスポイント色
-        /// </summary>
-        [Category("項目描画")]
-        public Color MousePointItemColor
-        {
-            get
-            {
-                return MOUSE_POINT_ITEM_COLOR;
-            }
-        }
-
-        /// <summary>
-        /// 短形選択色
-        /// </summary>
-        [Category("項目描画")]
-        public Color RectangleSelectionColor
-        {
-            get
-            {
-                return RECTANGLE_SELECTION_COLOR;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringTrimming ItemTextTrimming
+        public new ContextMenuStrip ContextMenuStrip
         {
             get
             {
-                return this._itemTextTrimming;
+                return base.ContextMenuStrip;
             }
             set
             {
-                this._itemTextTrimming = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextAlignment
-        {
-            get
-            {
-                return this._itemTextAlignment;
-            }
-            set
-            {
-                this._itemTextAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextLineAlignment
-        {
-            get
-            {
-                return this._itemTextLineAlignment;
-            }
-            set
-            {
-                this._itemTextLineAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormatFlags ItemTextFormatFlags
-        {
-            get
-            {
-                return this._itemTextFormatFlags;
-            }
-            set
-            {
-                this._itemTextFormatFlags = value;
-            }
-        }
-
-        [Browsable(false)]
-        public SolidBrush ItemTextBrush
-        {
-            get
-            {
-                return ITEM_TEXT_BRUSH;
-            }
-        }
-
-        [Browsable(false)]
-        public SolidBrush SelectedItemBrush
-        {
-            get
-            {
-                return SELECTED_ITEM_BRUSH;
-            }
-        }
-
-        [Browsable(false)]
-        public SolidBrush FocusItemBrush
-        {
-            get
-            {
-                return FOUCUS_ITEM_BRUSH;
-            }
-        }
-
-        [Browsable(false)]
-        public SolidBrush MousePointItemBrush
-        {
-            get
-            {
-                return MOUSE_POINT_ITEM_BRUSH;
-            }
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormat ItemTextFormat
-        {
-            get
-            {
-                this._itemTextFormat ??= new()
+                if (base.ContextMenuStrip != null)
                 {
-                    Trimming = this._itemTextTrimming,
-                    Alignment = this._itemTextAlignment,
-                    LineAlignment = this._itemTextLineAlignment,
-                    FormatFlags = this._itemTextFormatFlags
-                };
-                return this._itemTextFormat;
-            }
-            set
-            {
-                this._itemTextFormat = value;
+                    base.ContextMenuStrip.Opening -= this.ContextMenuStrip_Opening;
+                }
+
+                base.ContextMenuStrip = value;
+
+                if (base.ContextMenuStrip != null)
+                {
+                    base.ContextMenuStrip.Opening += this.ContextMenuStrip_Opening;
+                }
             }
         }
 
-        /// <summary>
-        /// 描画領域をリフレッシュします。
-        /// </summary>
-        public new void Refresh()
-        {
-            this._drawParameter = new DrawParameter();
-            this.Invalidate();
-        }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public float MouseWheelRate { get; set; } = 1f;
 
-        /// <summary>
-        /// 描画を停止します。
-        /// </summary>
-        public void BeginUpdate()
+        public Pen GetSelectedItemPen(Control control)
         {
-            this._isDraw = false;
-        }
-
-        /// <summary>
-        /// 描画を開始します。
-        /// </summary>
-        public void EndUpdate()
-        {
-            this._isDraw = true;
-            this.Invalidate();
-        }
-
-        /// <summary>
-        /// 項目のサイズを設定します。
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void SetItemSize(int width, int height)
-        {
-            if (this._rectangleSelection.IsBegun)
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
             {
-                throw new InvalidOperationException("短形選択中は設定できません。");
-            }
-
-            ArgumentOutOfRangeException.ThrowIfLessThan(width, MINIMUM_ITEM_SIZE);
-            ArgumentOutOfRangeException.ThrowIfLessThan(height, MINIMUM_ITEM_SIZE);
-
-            this._itemWidth = width;
-            this._itemHeight = height;
-
-            this.Invalidate();
-        }
-
-        /// <summary>
-        /// 選択項目をクリアします。
-        /// </summary>
-        public void ClearSelectedItems()
-        {
-            this._selectedItemIndexs.Clear();
-            this._foucusItemIndex = -1;
-            this._mousePointItemIndex = -1;
-            this.Invalidate();
-        }
-
-        /// <summary>
-        /// 指定した項目を選択します。
-        /// </summary>
-        /// <param name="itemIndex"></param>
-        public void SelectItem(int itemIndex)
-        {
-            if (this._rectangleSelection.IsBegun)
-            {
-                throw new InvalidOperationException("短形選択中は設定できません。");
-            }
-
-            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
-            {
-                throw new ArgumentOutOfRangeException(nameof(itemIndex));
-            }
-
-            this._foucusItemIndex = itemIndex;
-
-            this._selectedItemIndexs.Clear();
-            this._selectedItemIndexs.Add(itemIndex);
-
-            this.EnsureVisible(itemIndex);
-
-            this.Invalidate();
-
-            this.OnSelectedItemChanged(EventArgs.Empty);
-        }
-
-        public void SelectItem(int itemIndex, ScrollParameter scrollInfo)
-        {
-            if (this._rectangleSelection.IsBegun)
-            {
-                throw new InvalidOperationException("短形選択中は設定できません。");
-            }
-
-            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
-            {
-                throw new ArgumentOutOfRangeException(nameof(itemIndex));
-            }
-
-            this._foucusItemIndex = itemIndex;
-
-            this._selectedItemIndexs.Clear();
-            this._selectedItemIndexs.Add(itemIndex);
-
-            if (scrollInfo.FlowListSize == this.Size
-                && scrollInfo.ItemSize.Width == this.ItemWidth
-                && scrollInfo.ItemSize.Height == this.ItemHeight)
-            {
-                this._scrollBar.Value = scrollInfo.ScrollValue;
+                return pen;
             }
             else
             {
-                this.EnsureVisible(itemIndex);
+                var newPen = new Pen(
+                    this.SelectedItemPen.Color,
+                    this.SelectedItemPen.Width * scale);
+                SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
             }
-
-            this.Invalidate();
-
-            this.OnSelectedItemChanged(EventArgs.Empty);
         }
 
-        /// <summary>
-        /// 選択している項目のインデックスを取得します。
-        /// </summary>
-        /// <returns></returns>
-        public int[] GetSelectedIndexs()
+        public Pen GetFoucusItemPen(Control control)
         {
-            if (this._rectangleSelection.IsBegun)
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (FOUCUS_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
             {
-                return [];
+                return pen;
             }
-
-            return this._selectedItemIndexs.GetList();
-        }
-
-        /// <summary>
-        /// クライアント座標から、項目のインデックスを取得します。
-        /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        /// <returns>座標上に項目が存在する場合は、項目のインデックス。存在しない場合は-1を返します。</returns>
-        public int IndexFromPoint(int x, int y)
-        {
-            var ht = this.GetHitTestFromDrawPoint(x, y);
-            return ht.ItemIndex;
-        }
-
-        /// <summary>
-        /// 項目を再描画します。
-        /// </summary>
-        /// <param name="itemIndex">項目インデックス</param>
-        public void InvalidateFromItemIndex(int itemIndex)
-        {
-            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
+            else
             {
-                throw new ArgumentOutOfRangeException(nameof(itemIndex));
+                var newPen = new Pen(
+                    this.FoucusItemPen.Color,
+                    this.FoucusItemPen.Width * scale);
+                FOUCUS_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
             }
+        }
 
-            var rect = this.GetItemDrawRectangle(itemIndex);
-            this.Invalidate(rect);
+        private Pen GetRectangleSelectionPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                        this.RectangleSelectionPen.Color,
+                        this.RectangleSelectionPen.Width * scale);
+                RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
         }
 
         private void OnDrawItem(DrawItemEventArgs e)
@@ -605,6 +537,5 @@ namespace SWF.UIComponent.FlowList
         {
             this.DragStart?.Invoke(this, e);
         }
-
     }
 }

@@ -25,7 +25,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // flowList
             // 
-            this.flowList.BackColor = System.Drawing.Color.White;
+            this.flowList.BackColor = System.Drawing.Color.FromArgb(64, 68, 71);
             this.flowList.ContextMenuStrip = this.fileContextMenu;
             this.flowList.IsMultiSelect = true;
             this.flowList.ItemSpace = 4;
@@ -33,6 +33,14 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.flowList.MouseWheelRate = 0.33f;
+            this.flowList.ItemTextBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(255, 255, 255));
+            this.flowList.MousePointItemBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(32, 255, 255, 255));
+            this.flowList.SelectedItemBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(32, 255, 255, 255));
+            this.flowList.FocusItemBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(32, 255, 255, 255));
+            this.flowList.SelectedItemPen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(64, 255, 255, 255), 1F);
+            this.flowList.FoucusItemPen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(128, 255, 255, 255), 1F);
+            this.flowList.RectangleSelectionPen = new System.Drawing.Pen(System.Drawing.Color.FromArgb(128, 255, 255, 255), 1F);
+            this.flowList.RectangleSelectionBrush = new System.Drawing.SolidBrush(System.Drawing.Color.FromArgb(32, 255, 255, 255));
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
             this.flowList.DrawItems += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemsEventArgs>(this.FlowList_Drawitems);
             this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);

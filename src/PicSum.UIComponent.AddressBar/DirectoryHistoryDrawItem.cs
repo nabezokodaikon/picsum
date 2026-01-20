@@ -100,9 +100,9 @@ namespace PicSum.UIComponent.AddressBar
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
 
-            if (e.IsFocus || e.IsMousePoint || e.IsSelected)
+            if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(base.DropDownList.MousePointItemBrush, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];

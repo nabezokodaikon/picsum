@@ -116,42 +116,6 @@ namespace PicSum.UIComponent.AddressBar
         }
 
         /// <summary>
-        /// 項目選択色
-        /// </summary>
-        [Category("項目描画")]
-        public Color SelectedItemColor
-        {
-            get
-            {
-                return this._flowList.SelectedItemColor;
-            }
-        }
-
-        /// <summary>
-        /// 項目フォーカス色
-        /// </summary>
-        [Category("項目描画")]
-        public Color FocusItemColor
-        {
-            get
-            {
-                return this._flowList.FocusItemColor;
-            }
-        }
-
-        /// <summary>
-        /// 項目マウスポイント色
-        /// </summary>
-        [Category("項目描画")]
-        public Color MousePointItemColor
-        {
-            get
-            {
-                return this._flowList.MousePointItemColor;
-            }
-        }
-
-        /// <summary>
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
@@ -219,48 +183,55 @@ namespace PicSum.UIComponent.AddressBar
             }
         }
 
-        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush ItemTextBrush
         {
             get
             {
                 return this._flowList.ItemTextBrush;
             }
-        }
-
-        [Browsable(false)]
-        public SolidBrush SelectedItemBrush
-        {
-            get
+            set
             {
-                return this._flowList.SelectedItemBrush;
+                this._flowList.ItemTextBrush = value;
             }
         }
 
-        [Browsable(false)]
-        public SolidBrush FocusItemBrush
-        {
-            get
-            {
-                return this._flowList.FocusItemBrush;
-            }
-        }
-
-        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public SolidBrush MousePointItemBrush
         {
             get
             {
                 return this._flowList.MousePointItemBrush;
             }
+            set
+            {
+                this._flowList.MousePointItemBrush = value;
+            }
         }
 
-        [Browsable(false)]
-        public StringFormat ItemTextFormat
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush SelectedItemBrush
         {
             get
             {
-                return this._flowList.ItemTextFormat;
+                return this._flowList.SelectedItemBrush;
+            }
+            set
+            {
+                this._flowList.SelectedItemBrush = value;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public SolidBrush FocusItemBrush
+        {
+            get
+            {
+                return this._flowList.FocusItemBrush;
+            }
+            set
+            {
+                this._flowList.FocusItemBrush = value;
             }
         }
 

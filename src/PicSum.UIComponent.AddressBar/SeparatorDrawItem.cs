@@ -54,14 +54,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
-                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
+                g.FillRectangle(base.DropDownList.MousePointItemBrush, rect);
                 g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
-                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
+                g.FillRectangle(base.DropDownList.MousePointItemBrush, rect);
                 g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
@@ -110,7 +108,15 @@ namespace PicSum.UIComponent.AddressBar
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
 
-            if (e.IsFocus || e.IsMousePoint)
+            if (e.IsMousePoint && e.IsSelected)
+            {
+                e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
+            }
+            else if (e.IsMousePoint)
+            {
+                e.Graphics.FillRectangle(base.DropDownList.MousePointItemBrush, e.ItemRectangle);
+            }
+            else if (e.IsSelected)
             {
                 e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
             }

@@ -614,14 +614,10 @@ namespace PicSum.UIComponent.InfoPanel
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.Invalid;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-            if (e.IsSelected)
-            {
-                e.Graphics.FillRectangle(this.tagFlowList.SelectedItemBrush, e.ItemRectangle);
-            }
-            else if (e.IsMousePoint)
+            if (e.IsMousePoint)
             {
                 e.Graphics.FillRectangle(this.tagFlowList.MousePointItemBrush, e.ItemRectangle);
             }

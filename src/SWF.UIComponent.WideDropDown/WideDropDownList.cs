@@ -87,30 +87,6 @@ namespace SWF.UIComponent.WideDropDown
         }
 
         /// <summary>
-        /// 項目選択色
-        /// </summary>
-        [Category("項目描画")]
-        public Color SelectedItemColor
-        {
-            get
-            {
-                return this._flowList.SelectedItemColor;
-            }
-        }
-
-        /// <summary>
-        /// 項目マウスポイント色
-        /// </summary>
-        [Category("項目描画")]
-        public Color MousePointItemColor
-        {
-            get
-            {
-                return this._flowList.MousePointItemColor;
-            }
-        }
-
-        /// <summary>
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
@@ -249,7 +225,7 @@ namespace SWF.UIComponent.WideDropDown
             this.ToolStripItem.BackColor = this.BackColor;
             this.ToolStripItem.Size = new Size(BACKGROUND_DEFAULT_SIZE.Width, BACKGROUND_DEFAULT_SIZE.Height);
 
-            this._flowList.BackColor = Color.White;
+            this._flowList.BackColor = this.BackColor;
             this._flowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
             this._flowList.ItemTextLineAlignment = StringAlignment.Center;
             this._flowList.ItemTextAlignment = StringAlignment.Near;
@@ -379,23 +355,13 @@ namespace SWF.UIComponent.WideDropDown
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.Invalid;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             if (this.Icon != null)
             {
                 var rect = this.GetIconRectangle(e);
                 e.Graphics.DrawImage(this.Icon, rect);
-            }
-
-            if (e.IsSelected)
-            {
-                e.Graphics.FillRectangle(this._flowList.SelectedItemBrush, e.ItemRectangle);
-            }
-
-            if (e.IsFocus)
-            {
-                e.Graphics.FillRectangle(this._flowList.FocusItemBrush, e.ItemRectangle);
             }
 
             if (e.IsMousePoint)

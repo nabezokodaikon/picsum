@@ -1,7 +1,6 @@
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -16,105 +15,6 @@ namespace SWF.UIComponent.FlowList
     public sealed partial class FlowList
         : BasePaintingControl
     {
-        // 項目最小サイズ
-        public const int MINIMUM_ITEM_SIZE = 16;
-
-        private static readonly Color ITEM_TEXT_COLOR = Color.FromArgb(
-            SystemColors.ControlText.A,
-            SystemColors.ControlText.R,
-            SystemColors.ControlText.G,
-            SystemColors.ControlText.B);
-
-        private static readonly Color SELECTED_ITEM_COLOR = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private static readonly Color FOCUS_ITEM_COLOR = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private static readonly Color MOUSE_POINT_ITEM_COLOR = Color.FromArgb(
-            SystemColors.Highlight.A / 8,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private static readonly Color RECTANGLE_SELECTION_COLOR = Color.FromArgb(
-            SystemColors.Highlight.A / 4,
-            SystemColors.Highlight.R,
-            SystemColors.Highlight.G,
-            SystemColors.Highlight.B);
-
-        private static readonly SolidBrush ITEM_TEXT_BRUSH = new(ITEM_TEXT_COLOR);
-        private static readonly SolidBrush SELECTED_ITEM_BRUSH = new(SELECTED_ITEM_COLOR);
-        private static readonly SolidBrush FOUCUS_ITEM_BRUSH = new(FOCUS_ITEM_COLOR);
-        private static readonly SolidBrush MOUSE_POINT_ITEM_BRUSH = new(MOUSE_POINT_ITEM_COLOR);
-        private static readonly SolidBrush RECTANGLE_SELECTION_BRUSH = new(RECTANGLE_SELECTION_COLOR);
-
-        private static readonly Size DRAG_SIZE = GetDragSize();
-
-        private static Size GetDragSize()
-        {
-            var size = SystemInformation.DragSize.Width * 16;
-            return new Size(size, size);
-        }
-
-        private static readonly Pen DEFAULT_SELECTED_ITEM_PEN = new(Color.FromArgb(
-            255,
-            SELECTED_ITEM_COLOR.R,
-            SELECTED_ITEM_COLOR.G,
-            SELECTED_ITEM_COLOR.B),
-            2f);
-
-        private static readonly Dictionary<float, Pen> DEFAULT_SELECTED_ITEM_PEN_CACHE = [];
-
-        public static Pen GetSelectedItemPen(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (DEFAULT_SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
-            {
-                return pen;
-            }
-            else
-            {
-                var newPen = new Pen(
-                        DEFAULT_SELECTED_ITEM_PEN.Color,
-                        DEFAULT_SELECTED_ITEM_PEN.Width * scale);
-                DEFAULT_SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
-                return newPen;
-            }
-        }
-
-        private static readonly Pen DEFAULT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
-            RECTANGLE_SELECTION_COLOR.A * 2,
-            RECTANGLE_SELECTION_COLOR.R,
-            RECTANGLE_SELECTION_COLOR.G,
-            RECTANGLE_SELECTION_COLOR.B),
-            2f);
-
-        private static readonly Dictionary<float, Pen> RECTANGLE_SELECTION_PEN_CACHE = [];
-
-        private static Pen GetRectangleSelectionPen(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
-            {
-                return pen;
-            }
-            else
-            {
-                var newPen = new Pen(
-                        DEFAULT_RECTANGLE_SELECTION_PEN.Color,
-                        DEFAULT_RECTANGLE_SELECTION_PEN.Width * scale);
-                RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
-                return newPen;
-            }
-        }
-
         private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
         private StringAlignment _itemTextAlignment = StringAlignment.Center;
         private StringAlignment _itemTextLineAlignment = StringAlignment.Center;
@@ -173,48 +73,6 @@ namespace SWF.UIComponent.FlowList
         private const int STEP_SIZE = 4; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
         private const float SMOOTHNESS = 0.12f; // 追従の滑らかさ(0.1-0.3推奨)
 
-        private SolidBrush RectangleSelectionBrush
-        {
-            get
-            {
-                return RECTANGLE_SELECTION_BRUSH;
-            }
-        }
-
-        public bool IsRunningScrollAnimation
-        {
-            get
-            {
-                return this._animationTimer.Enabled;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new ContextMenuStrip ContextMenuStrip
-        {
-            get
-            {
-                return base.ContextMenuStrip;
-            }
-            set
-            {
-                if (base.ContextMenuStrip != null)
-                {
-                    base.ContextMenuStrip.Opening -= this.ContextMenuStrip_Opening;
-                }
-
-                base.ContextMenuStrip = value;
-
-                if (base.ContextMenuStrip != null)
-                {
-                    base.ContextMenuStrip.Opening += this.ContextMenuStrip_Opening;
-                }
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public float MouseWheelRate { get; set; } = 1f;
-
         public FlowList()
         {
             this._scrollBar.Dock = DockStyle.Right;
@@ -238,6 +96,166 @@ namespace SWF.UIComponent.FlowList
             this.Paint += this.FlowList_Paint;
             this.Resize += this.FlowList_Resize;
             this.LostFocus += this.FlowList_LostFocus;
+        }
+
+        /// <summary>
+        /// 描画領域をリフレッシュします。
+        /// </summary>
+        public new void Refresh()
+        {
+            this._drawParameter = new DrawParameter();
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// 描画を停止します。
+        /// </summary>
+        public void BeginUpdate()
+        {
+            this._isDraw = false;
+        }
+
+        /// <summary>
+        /// 描画を開始します。
+        /// </summary>
+        public void EndUpdate()
+        {
+            this._isDraw = true;
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// 項目のサイズを設定します。
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void SetItemSize(int width, int height)
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                throw new InvalidOperationException("短形選択中は設定できません。");
+            }
+
+            ArgumentOutOfRangeException.ThrowIfLessThan(width, MINIMUM_ITEM_SIZE);
+            ArgumentOutOfRangeException.ThrowIfLessThan(height, MINIMUM_ITEM_SIZE);
+
+            this._itemWidth = width;
+            this._itemHeight = height;
+
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// 選択項目をクリアします。
+        /// </summary>
+        public void ClearSelectedItems()
+        {
+            this._selectedItemIndexs.Clear();
+            this._foucusItemIndex = -1;
+            this._mousePointItemIndex = -1;
+            this.Invalidate();
+        }
+
+        /// <summary>
+        /// 指定した項目を選択します。
+        /// </summary>
+        /// <param name="itemIndex"></param>
+        public void SelectItem(int itemIndex)
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                throw new InvalidOperationException("短形選択中は設定できません。");
+            }
+
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
+            {
+                throw new ArgumentOutOfRangeException(nameof(itemIndex));
+            }
+
+            this._foucusItemIndex = itemIndex;
+
+            this._selectedItemIndexs.Clear();
+            this._selectedItemIndexs.Add(itemIndex);
+
+            this.EnsureVisible(itemIndex);
+
+            this.Invalidate();
+
+            this.OnSelectedItemChanged(EventArgs.Empty);
+        }
+
+        public void SelectItem(int itemIndex, ScrollParameter scrollInfo)
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                throw new InvalidOperationException("短形選択中は設定できません。");
+            }
+
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
+            {
+                throw new ArgumentOutOfRangeException(nameof(itemIndex));
+            }
+
+            this._foucusItemIndex = itemIndex;
+
+            this._selectedItemIndexs.Clear();
+            this._selectedItemIndexs.Add(itemIndex);
+
+            if (scrollInfo.FlowListSize == this.Size
+                && scrollInfo.ItemSize.Width == this.ItemWidth
+                && scrollInfo.ItemSize.Height == this.ItemHeight)
+            {
+                this._scrollBar.Value = scrollInfo.ScrollValue;
+            }
+            else
+            {
+                this.EnsureVisible(itemIndex);
+            }
+
+            this.Invalidate();
+
+            this.OnSelectedItemChanged(EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 選択している項目のインデックスを取得します。
+        /// </summary>
+        /// <returns></returns>
+        public int[] GetSelectedIndexs()
+        {
+            if (this._rectangleSelection.IsBegun)
+            {
+                return [];
+            }
+
+            return this._selectedItemIndexs.GetList();
+        }
+
+        /// <summary>
+        /// クライアント座標から、項目のインデックスを取得します。
+        /// </summary>
+        /// <param name="x">X座標</param>
+        /// <param name="y">Y座標</param>
+        /// <returns>座標上に項目が存在する場合は、項目のインデックス。存在しない場合は-1を返します。</returns>
+        public int IndexFromPoint(int x, int y)
+        {
+            var ht = this.GetHitTestFromDrawPoint(x, y);
+            return ht.ItemIndex;
+        }
+
+        /// <summary>
+        /// 項目を再描画します。
+        /// </summary>
+        /// <param name="itemIndex">項目インデックス</param>
+        public void InvalidateFromItemIndex(int itemIndex)
+        {
+            if (itemIndex < 0 || this._itemCount - 1 < itemIndex)
+            {
+                throw new ArgumentOutOfRangeException(nameof(itemIndex));
+            }
+
+            var rect = this.GetItemDrawRectangle(itemIndex);
+            this.Invalidate(rect);
         }
 
         protected override void Dispose(bool disposing)
@@ -1083,7 +1101,7 @@ namespace SWF.UIComponent.FlowList
             g.FillRectangle(this.RectangleSelectionBrush, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
 
             g.DrawRectangle(
-                GetRectangleSelectionPen(this),
+                this.GetRectangleSelectionPen(this),
                 this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
         }
 

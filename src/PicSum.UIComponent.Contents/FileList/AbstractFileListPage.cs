@@ -753,7 +753,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
-            var font = Fonts.GetRegularFont(Fonts.Size.Small, this._scale);
+            var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -985,7 +985,8 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
-            var selectedItemPen = FlowList.GetSelectedItemPen(this);
+            var selectedItemPen = this.flowList.GetSelectedItemPen(this);
+            var foucusItemPen = this.flowList.GetFoucusItemPen(this);
             var displayScale = WindowUtil.GetCurrentWindowScale(this);
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
@@ -998,7 +999,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (arg.IsFocus)
                 {
-                    arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
+                    arg.Graphics.DrawRectangle(foucusItemPen, arg.ItemRectangle);
                 }
 
                 if (arg.IsMousePoint)

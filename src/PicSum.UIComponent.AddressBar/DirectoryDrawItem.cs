@@ -59,7 +59,6 @@ namespace PicSum.UIComponent.AddressBar
             else if (base.IsMousePoint)
             {
                 g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
-                g.DrawRectangle(Palette.MOUSE_POINT_PEN, rect);
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
@@ -73,7 +72,7 @@ namespace PicSum.UIComponent.AddressBar
                 new Point(
                     (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
                     (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
-                Palette.TEXT_BRUSH.Color,
+                Palette.TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 
