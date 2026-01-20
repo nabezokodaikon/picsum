@@ -16,7 +16,7 @@ namespace PicSum.Job.Logics
     internal sealed class FileShallowInfoGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public async ValueTask<FileShallowInfoEntity> Get(
+        public async Task<FileShallowInfoEntity> Get(
             string filePath, bool isGetThumbnail, DateTime addDate)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -52,7 +52,7 @@ namespace PicSum.Job.Logics
             }
         }
 
-        public async ValueTask<FileShallowInfoEntity> Get(
+        public async Task<FileShallowInfoEntity> Get(
             string filePath, bool isGetThumbnail)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
