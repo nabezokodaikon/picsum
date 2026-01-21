@@ -57,42 +57,42 @@ namespace SWF.UIComponent.FlowList
         public static readonly SolidBrush DARK_RECTANGLE_SELECTION_BRUSH = new(DARK_RECTANGLE_SELECTION_COLOR);
 
         private static readonly Pen LIGHT_SELECTED_ITEM_PEN = new(Color.FromArgb(
-            255,
+            LIGHT_SELECTED_ITEM_COLOR.A,
             LIGHT_SELECTED_ITEM_COLOR.R,
             LIGHT_SELECTED_ITEM_COLOR.G,
             LIGHT_SELECTED_ITEM_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Pen LIGHT_FOUCUS_ITEM_PEN = new(Color.FromArgb(
-            255,
+            LIGHT_FOCUS_ITEM_COLOR.A,
             LIGHT_FOCUS_ITEM_COLOR.R,
             LIGHT_FOCUS_ITEM_COLOR.G,
             LIGHT_FOCUS_ITEM_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Pen LIGHT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
             LIGHT_RECTANGLE_SELECTION_COLOR.A,
             LIGHT_RECTANGLE_SELECTION_COLOR.R,
             LIGHT_RECTANGLE_SELECTION_COLOR.G,
             LIGHT_RECTANGLE_SELECTION_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Pen DARK_SELECTED_ITEM_PEN = new(Color.FromArgb(
-            128,
+            DARK_SELECTED_ITEM_COLOR.A,
             DARK_SELECTED_ITEM_COLOR.R,
             DARK_SELECTED_ITEM_COLOR.G,
             DARK_SELECTED_ITEM_COLOR.B),
             1f);
 
         private static readonly Pen DARK_FOUCUS_ITEM_PEN = new(Color.FromArgb(
-            128,
+            DARK_FOCUS_ITEM_COLOR.A,
             DARK_FOCUS_ITEM_COLOR.R,
             DARK_FOCUS_ITEM_COLOR.G,
             DARK_FOCUS_ITEM_COLOR.B),
             1f);
 
         private static readonly Pen DARK_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
-            128,
+            DARK_RECTANGLE_SELECTION_COLOR.A,
             DARK_RECTANGLE_SELECTION_COLOR.R,
             DARK_RECTANGLE_SELECTION_COLOR.G,
             DARK_RECTANGLE_SELECTION_COLOR.B),
