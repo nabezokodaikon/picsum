@@ -779,12 +779,12 @@ namespace PicSum.UIComponent.Contents.FileList
             e.Graphics.DrawImageUnscaled(item.FileNameImage, textRect.X, textRect.Y);
         }
 
-        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
         {
-            return new RectangleF(e.ItemRectangle.X,
-                                  e.ItemRectangle.Y,
-                                  e.ItemRectangle.Width,
-                                  e.ItemRectangle.Height - itemTextHeight);
+            return new Rectangle(e.ItemRectangle.X,
+                                 e.ItemRectangle.Y,
+                                 e.ItemRectangle.Width,
+                                 e.ItemRectangle.Height - itemTextHeight);
         }
 
         private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
@@ -989,6 +989,7 @@ namespace PicSum.UIComponent.Contents.FileList
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
             var selectedItemPen = FlowList.GetDarkSelectedItemPen(this);
             var foucusItemPen = FlowList.GetDarkFoucusItemPen(this);
+            var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
@@ -1013,22 +1014,41 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (item.ThumbnailImage == null)
                 {
-                    ThumbnailUtil.DrawIcon(this, arg.Graphics, item.JumboIcon, this.GetIconRectangle(arg, itemTextHeight));
-                    this.DrawFileNameImage(arg, item, itemTextHeight);
+                    var iconRect = this.GetIconRectangle(arg, itemTextHeight);
+                    var textRect = this.GetTextRectangle(arg, itemTextHeight);
+                    ThumbnailUtil.DrawIconWithText(
+                        this,
+                        arg.Graphics,
+                        item.JumboIcon,
+                        item.FileName,
+                        iconRect,
+                        textRect,
+                        font,
+                        FlowList.DARK_ITEM_TEXT_BRUSH,
+                        this.flowList.ItemTextFormat);
                 }
                 else
                 {
+                    var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+
                     if (item.IsFile)
                     {
-                        var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
                         ThumbnailUtil.DrawFileThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), this._scale);
+                            e.Graphics,
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            this._scale);
                     }
                     else
                     {
-                        var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
                         ThumbnailUtil.DrawDirectoryThumbnail(
-                            e.Graphics, item.ThumbnailImage, thumbRect, new Size(item.SourceImageWidth, item.SourceImageHeight), item.JumboIcon, this._scale);
+                            e.Graphics,
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            item.JumboIcon,
+                            this._scale);
                     }
 
                     if (this.IsShowFileName)

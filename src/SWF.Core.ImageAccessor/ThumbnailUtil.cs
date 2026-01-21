@@ -138,7 +138,13 @@ namespace SWF.Core.ImageAccessor
                 GraphicsUnit.Pixel);
         }
 
-        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, IconImage icon, float displayScale)
+        public static void DrawDirectoryThumbnail(
+            Graphics g,
+            CvImage thumb,
+            Rectangle destRect,
+            Size srcSize,
+            IconImage icon,
+            float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -184,6 +190,62 @@ namespace SWF.Core.ImageAccessor
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
                 icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
+            }
+        }
+
+        public static void DrawIconWithText(
+            Control control,
+            Graphics g,
+            IconImage icon,
+            string text,
+            Rectangle iconSrcRect,
+            Rectangle textRect,
+            Font font,
+            SolidBrush textBrush,
+            StringFormat textFormat)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
+            ArgumentNullException.ThrowIfNull(font, nameof(font));
+
+            var displayScale = WindowUtil.GetCurrentWindowScale(control);
+            var displayScaleIconWidth = icon.Width * displayScale;
+            var displayScaleIconHeight = icon.Height * displayScale;
+            if (Math.Max(displayScaleIconWidth, displayScaleIconHeight) <= Math.Min(iconSrcRect.Width, iconSrcRect.Height))
+            {
+                var iconDestWith = displayScaleIconWidth;
+                var iconDestHeight = displayScaleIconHeight;
+                var iconDestX = (iconSrcRect.Width - iconDestWith) / 2f;
+                var iconDestY = (iconSrcRect.Height - iconDestHeight) / 2f;
+
+                icon.DrawWithText(
+                    g,
+                    text,
+                    iconSrcRect,
+                    new Rectangle((int)iconDestX, (int)iconDestY, (int)iconDestWith, (int)iconDestHeight),
+                    textRect,
+                    font,
+                    textBrush,
+                    textFormat);
+            }
+            else
+            {
+                var scale = Math.Min(iconSrcRect.Width / (float)icon.Width, iconSrcRect.Height / (float)icon.Height);
+
+                var iconDestWith = icon.Width * scale;
+                var iconDestHeight = icon.Height * scale;
+                var iconDestX = (iconSrcRect.Width - iconDestWith) / 2f;
+                var iconDestY = (iconSrcRect.Height - iconDestHeight) / 2f;
+
+                icon.DrawWithText(
+                    g,
+                    text,
+                    iconSrcRect,
+                    new Rectangle((int)iconDestX, (int)iconDestY, (int)iconDestWith, (int)iconDestHeight),
+                    textRect,
+                    font,
+                    textBrush,
+                    textFormat);
             }
         }
     }

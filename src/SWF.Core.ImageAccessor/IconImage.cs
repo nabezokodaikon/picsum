@@ -1,6 +1,7 @@
 ﻿using SWF.Core.Base;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -85,6 +86,59 @@ namespace SWF.Core.ImageAccessor
                 }
 
                 g.DrawImageUnscaled(this._cache, destRect);
+            }
+        }
+
+        public void DrawWithText(
+            Graphics g,
+            string text,
+            Rectangle iconSrcRect,
+            Rectangle iconDestRect,
+            Rectangle textRect,
+            Font font,
+            SolidBrush textBrush,
+            StringFormat textFormat)
+        {
+            ArgumentNullException.ThrowIfNull(g, nameof(g));
+
+            using (Measuring.Time(false, "IconImage.Draw"))
+            {
+                var itemHeight = iconSrcRect.Height + textRect.Height;
+
+                if (this._cache == null
+                    || this._cache.Width != iconSrcRect.Width
+                    || this._cache.Height != itemHeight)
+                {
+                    this._cache?.Dispose();
+                    this._cache = new Bitmap(iconSrcRect.Width, itemHeight, PixelFormat.Format32bppPArgb);
+                    using (var gr = Graphics.FromImage(this._cache))
+                    {
+                        gr.SmoothingMode = SmoothingMode.None;
+                        gr.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        gr.CompositingQuality = CompositingQuality.HighSpeed;
+                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        gr.CompositingMode = CompositingMode.SourceOver;
+
+                        gr.DrawImage(
+                            this._icon,
+                            iconDestRect,
+                            new Rectangle(0, 0, this._icon.Width, this._icon.Height),
+                            GraphicsUnit.Pixel);
+
+                        gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                        gr.DrawString(
+                            text,
+                            font,
+                            textBrush,
+                            new Rectangle(0, iconSrcRect.Height, textRect.Width, textRect.Height),
+                            textFormat);
+                    }
+                }
+
+                g.DrawImageUnscaled(
+                    this._cache,
+                    new Rectangle(iconSrcRect.X, iconSrcRect.Y, this._cache.Width, this._cache.Height));
             }
         }
     }
