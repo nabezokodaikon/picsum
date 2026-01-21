@@ -1,6 +1,4 @@
 using SWF.Core.Base;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -308,22 +306,7 @@ namespace SWF.Core.ImageAccessor
                         || this._bitmapCache.Height != destRect.Height)
                     {
                         this._bitmapCache?.Dispose();
-                        this._bitmapCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                        using (var gr = Graphics.FromImage(this._bitmapCache))
-                        using (var bmp = OpenCVUtil.ToBitmap(this._mat))
-                        {
-                            gr.SmoothingMode = SmoothingMode.None;
-                            gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                            gr.CompositingQuality = CompositingQuality.HighSpeed;
-                            gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                            gr.CompositingMode = CompositingMode.SourceOver;
-
-                            gr.DrawImage(
-                                bmp,
-                                new Rectangle(0, 0, destRect.Width, destRect.Height),
-                                new Rectangle(0, 0, bmp.Width, bmp.Height),
-                                GraphicsUnit.Pixel);
-                        }
+                        this._bitmapCache = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height);
                     }
 
                     g.DrawImageUnscaled(this._bitmapCache, destRect);
