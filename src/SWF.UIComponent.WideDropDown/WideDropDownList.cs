@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.WideDropDown
 {
-
     public sealed partial class WideDropDownList
         : ToolStripDropDown
     {
@@ -71,18 +70,6 @@ namespace SWF.UIComponent.WideDropDown
             private set
             {
                 base.TabStop = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキスト色
-        /// </summary>
-        [Category("項目描画")]
-        public Color ItemTextColor
-        {
-            get
-            {
-                return this._flowList.ItemTextColor;
             }
         }
 
@@ -366,7 +353,9 @@ namespace SWF.UIComponent.WideDropDown
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(this._flowList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(
+                    SWF.UIComponent.FlowList.FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH,
+                    e.ItemRectangle);
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
@@ -394,7 +383,7 @@ namespace SWF.UIComponent.WideDropDown
                 destText,
                 font,
                 textRect.Location,
-                this._flowList.ItemTextBrush.Color,
+                FlowList.FlowList.LIGHT_ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 

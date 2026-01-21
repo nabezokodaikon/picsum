@@ -12,63 +12,201 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     public sealed partial class FlowList
     {
-        private static readonly Color DEFAULT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);
+        public static readonly Color LIGHT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);
+        public static readonly Color DARK_ITEM_TEXT_COLOR = Color.FromArgb(255, 255, 255);
 
-        private static readonly Color DEFAULT_SELECTED_ITEM_COLOR = Color.FromArgb(
+        public static readonly Color LIGHT_SELECTED_ITEM_COLOR = Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private static readonly Color DEFAULT_FOCUS_ITEM_COLOR = Color.FromArgb(
+        public static readonly Color LIGHT_FOCUS_ITEM_COLOR = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private static readonly Color DEFAULT_MOUSE_POINT_ITEM_COLOR = Color.FromArgb(
+        public static readonly Color LIGHT_MOUSE_POINT_ITEM_COLOR = Color.FromArgb(
             SystemColors.Highlight.A / 8,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private static readonly Color DEFAULT_RECTANGLE_SELECTION_COLOR = Color.FromArgb(
+        public static readonly Color LIGHT_RECTANGLE_SELECTION_COLOR = Color.FromArgb(
             SystemColors.Highlight.A / 4,
             SystemColors.Highlight.R,
             SystemColors.Highlight.G,
             SystemColors.Highlight.B);
 
-        private static readonly SolidBrush DEFAULT_ITEM_TEXT_BRUSH = new(DEFAULT_ITEM_TEXT_COLOR);
-        private static readonly SolidBrush DEFAULT_SELECTED_ITEM_BRUSH = new(DEFAULT_SELECTED_ITEM_COLOR);
-        private static readonly SolidBrush DEFAULT_FOUCUS_ITEM_BRUSH = new(DEFAULT_FOCUS_ITEM_COLOR);
-        private static readonly SolidBrush DEFAULT_MOUSE_POINT_ITEM_BRUSH = new(DEFAULT_MOUSE_POINT_ITEM_COLOR);
-        private static readonly SolidBrush DEFAULT_RECTANGLE_SELECTION_BRUSH = new(DEFAULT_RECTANGLE_SELECTION_COLOR);
+        public static readonly Color DARK_SELECTED_ITEM_COLOR = Color.FromArgb(64, 255, 255, 255);
+        public static readonly Color DARK_FOCUS_ITEM_COLOR = Color.FromArgb(32, 255, 255, 255);
+        public static readonly Color DARK_MOUSE_POINT_ITEM_COLOR = Color.FromArgb(32, 255, 255, 255);
+        public static readonly Color DARK_RECTANGLE_SELECTION_COLOR = Color.FromArgb(64, 255, 255, 255);
 
-        private static readonly Pen DEFAULT_SELECTED_ITEM_PEN = new(Color.FromArgb(
+        public static readonly SolidBrush LIGHT_ITEM_TEXT_BRUSH = new(LIGHT_ITEM_TEXT_COLOR);
+        public static readonly SolidBrush LIGHT_SELECTED_ITEM_BRUSH = new(LIGHT_SELECTED_ITEM_COLOR);
+        public static readonly SolidBrush LIGHT_FOUCUS_ITEM_BRUSH = new(LIGHT_FOCUS_ITEM_COLOR);
+        public static readonly SolidBrush LIGHT_MOUSE_POINT_ITEM_BRUSH = new(LIGHT_MOUSE_POINT_ITEM_COLOR);
+        public static readonly SolidBrush LIGHT_RECTANGLE_SELECTION_BRUSH = new(LIGHT_RECTANGLE_SELECTION_COLOR);
+
+        public static readonly SolidBrush DARK_ITEM_TEXT_BRUSH = new(DARK_ITEM_TEXT_COLOR);
+        public static readonly SolidBrush DARK_SELECTED_ITEM_BRUSH = new(DARK_SELECTED_ITEM_COLOR);
+        public static readonly SolidBrush DARK_FOUCUS_ITEM_BRUSH = new(DARK_FOCUS_ITEM_COLOR);
+        public static readonly SolidBrush DARK_MOUSE_POINT_ITEM_BRUSH = new(DARK_MOUSE_POINT_ITEM_COLOR);
+        public static readonly SolidBrush DARK_RECTANGLE_SELECTION_BRUSH = new(DARK_RECTANGLE_SELECTION_COLOR);
+
+        private static readonly Pen LIGHT_SELECTED_ITEM_PEN = new(Color.FromArgb(
             255,
-            DEFAULT_SELECTED_ITEM_COLOR.R,
-            DEFAULT_SELECTED_ITEM_COLOR.G,
-            DEFAULT_SELECTED_ITEM_COLOR.B),
+            LIGHT_SELECTED_ITEM_COLOR.R,
+            LIGHT_SELECTED_ITEM_COLOR.G,
+            LIGHT_SELECTED_ITEM_COLOR.B),
             1f);
 
-        private static readonly Pen DEFAULT_FOUCUS_ITEM_PEN = new(Color.FromArgb(
+        private static readonly Pen LIGHT_FOUCUS_ITEM_PEN = new(Color.FromArgb(
             255,
-            DEFAULT_FOCUS_ITEM_COLOR.R,
-            DEFAULT_FOCUS_ITEM_COLOR.G,
-            DEFAULT_FOCUS_ITEM_COLOR.B),
+            LIGHT_FOCUS_ITEM_COLOR.R,
+            LIGHT_FOCUS_ITEM_COLOR.G,
+            LIGHT_FOCUS_ITEM_COLOR.B),
             1f);
 
-        private static readonly Pen DEFAULT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
-            DEFAULT_RECTANGLE_SELECTION_COLOR.A * 2,
-            DEFAULT_RECTANGLE_SELECTION_COLOR.R,
-            DEFAULT_RECTANGLE_SELECTION_COLOR.G,
-            DEFAULT_RECTANGLE_SELECTION_COLOR.B),
+        private static readonly Pen LIGHT_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
+            LIGHT_RECTANGLE_SELECTION_COLOR.A,
+            LIGHT_RECTANGLE_SELECTION_COLOR.R,
+            LIGHT_RECTANGLE_SELECTION_COLOR.G,
+            LIGHT_RECTANGLE_SELECTION_COLOR.B),
             1f);
 
-        private static readonly Dictionary<float, Pen> SELECTED_ITEM_PEN_CACHE = [];
-        private static readonly Dictionary<float, Pen> FOUCUS_ITEM_PEN_CACHE = [];
+        private static readonly Pen DARK_SELECTED_ITEM_PEN = new(Color.FromArgb(
+            128,
+            DARK_SELECTED_ITEM_COLOR.R,
+            DARK_SELECTED_ITEM_COLOR.G,
+            DARK_SELECTED_ITEM_COLOR.B),
+            1f);
 
-        private static readonly Dictionary<float, Pen> RECTANGLE_SELECTION_PEN_CACHE = [];
+        private static readonly Pen DARK_FOUCUS_ITEM_PEN = new(Color.FromArgb(
+            128,
+            DARK_FOCUS_ITEM_COLOR.R,
+            DARK_FOCUS_ITEM_COLOR.G,
+            DARK_FOCUS_ITEM_COLOR.B),
+            1f);
+
+        private static readonly Pen DARK_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
+            128,
+            DARK_RECTANGLE_SELECTION_COLOR.R,
+            DARK_RECTANGLE_SELECTION_COLOR.G,
+            DARK_RECTANGLE_SELECTION_COLOR.B),
+            1f);
+
+        private static readonly Dictionary<float, Pen> LIGHT_SELECTED_ITEM_PEN_CACHE = [];
+        private static readonly Dictionary<float, Pen> LIGHT_FOUCUS_ITEM_PEN_CACHE = [];
+        private static readonly Dictionary<float, Pen> LIGHT_RECTANGLE_SELECTION_PEN_CACHE = [];
+
+        private static readonly Dictionary<float, Pen> DARK_SELECTED_ITEM_PEN_CACHE = [];
+        private static readonly Dictionary<float, Pen> DARK_FOUCUS_ITEM_PEN_CACHE = [];
+        private static readonly Dictionary<float, Pen> DARK_RECTANGLE_SELECTION_PEN_CACHE = [];
+
+        public static Pen GetLightSelectedItemPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (LIGHT_SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    LIGHT_SELECTED_ITEM_PEN.Color,
+                    LIGHT_SELECTED_ITEM_PEN.Width * scale);
+                LIGHT_SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        public static Pen GetLightFoucusItemPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (LIGHT_FOUCUS_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    LIGHT_FOUCUS_ITEM_PEN.Color,
+                    LIGHT_FOUCUS_ITEM_PEN.Width * scale);
+                LIGHT_FOUCUS_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        public Pen GetLightRectangleSelectionPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (LIGHT_RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    LIGHT_RECTANGLE_SELECTION_PEN.Color,
+                    LIGHT_RECTANGLE_SELECTION_PEN.Width * scale);
+                LIGHT_RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        public static Pen GetDarkSelectedItemPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (DARK_SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    DARK_SELECTED_ITEM_PEN.Color,
+                    DARK_SELECTED_ITEM_PEN.Width * scale);
+                DARK_SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        public static Pen GetDarkFoucusItemPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (DARK_FOUCUS_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    DARK_FOUCUS_ITEM_PEN.Color,
+                    DARK_FOUCUS_ITEM_PEN.Width * scale);
+                DARK_FOUCUS_ITEM_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
+
+        public Pen GetDarkRectangleSelectionPen(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (DARK_RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
+            {
+                return pen;
+            }
+            else
+            {
+                var newPen = new Pen(
+                    DARK_RECTANGLE_SELECTION_PEN.Color,
+                    DARK_RECTANGLE_SELECTION_PEN.Width * scale);
+                DARK_RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
+                return newPen;
+            }
+        }
 
         private static readonly Size DRAG_SIZE = GetDragSize();
 
@@ -166,39 +304,6 @@ namespace SWF.UIComponent.FlowList
                 this._itemTextFormatFlags = value;
             }
         }
-
-        /// <summary>
-        /// 項目テキスト色
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Color ItemTextColor { get; set; } = DEFAULT_ITEM_TEXT_COLOR;
-
-        /// <summary>
-        /// 項目選択色
-        /// </summary>
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Pen SelectedItemPen { get; set; } = DEFAULT_SELECTED_ITEM_PEN;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Pen FoucusItemPen { get; set; } = DEFAULT_FOUCUS_ITEM_PEN;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Pen RectangleSelectionPen { get; set; } = DEFAULT_RECTANGLE_SELECTION_PEN;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush RectangleSelectionBrush { get; set; } = DEFAULT_RECTANGLE_SELECTION_BRUSH;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush ItemTextBrush { get; set; } = DEFAULT_ITEM_TEXT_BRUSH;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush SelectedItemBrush { get; set; } = DEFAULT_SELECTED_ITEM_BRUSH;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush FocusItemBrush { get; set; } = DEFAULT_FOUCUS_ITEM_BRUSH;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush MousePointItemBrush { get; set; } = DEFAULT_MOUSE_POINT_ITEM_BRUSH;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public StringFormat ItemTextFormat
@@ -426,57 +531,6 @@ namespace SWF.UIComponent.FlowList
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float MouseWheelRate { get; set; } = 1f;
-
-        public Pen GetSelectedItemPen(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (SELECTED_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
-            {
-                return pen;
-            }
-            else
-            {
-                var newPen = new Pen(
-                    this.SelectedItemPen.Color,
-                    this.SelectedItemPen.Width * scale);
-                SELECTED_ITEM_PEN_CACHE.Add(scale, newPen);
-                return newPen;
-            }
-        }
-
-        public Pen GetFoucusItemPen(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (FOUCUS_ITEM_PEN_CACHE.TryGetValue(scale, out var pen))
-            {
-                return pen;
-            }
-            else
-            {
-                var newPen = new Pen(
-                    this.FoucusItemPen.Color,
-                    this.FoucusItemPen.Width * scale);
-                FOUCUS_ITEM_PEN_CACHE.Add(scale, newPen);
-                return newPen;
-            }
-        }
-
-        private Pen GetRectangleSelectionPen(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (RECTANGLE_SELECTION_PEN_CACHE.TryGetValue(scale, out var pen))
-            {
-                return pen;
-            }
-            else
-            {
-                var newPen = new Pen(
-                        this.RectangleSelectionPen.Color,
-                        this.RectangleSelectionPen.Width * scale);
-                RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
-                return newPen;
-            }
-        }
 
         private void OnDrawItem(DrawItemEventArgs e)
         {

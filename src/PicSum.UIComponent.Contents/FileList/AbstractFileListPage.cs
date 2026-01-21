@@ -770,7 +770,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     g.DrawString(
                         item.FileName,
                         font,
-                        this.flowList.ItemTextBrush,
+                        FlowList.DARK_ITEM_TEXT_BRUSH,
                         new Rectangle(0, 0, textRect.Width, textRect.Height),
                         this.flowList.ItemTextFormat);
                 }
@@ -987,14 +987,14 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var itemTextHeight = this.GetItemTextHeight(e.Graphics);
-            var selectedItemPen = this.flowList.GetSelectedItemPen(this);
-            var foucusItemPen = this.flowList.GetFoucusItemPen(this);
+            var selectedItemPen = FlowList.GetDarkSelectedItemPen(this);
+            var foucusItemPen = FlowList.GetDarkFoucusItemPen(this);
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
                 if (arg.IsSelected)
                 {
-                    arg.Graphics.FillRectangle(this.flowList.SelectedItemBrush, arg.ItemRectangle);
+                    arg.Graphics.FillRectangle(FlowList.DARK_SELECTED_ITEM_BRUSH, arg.ItemRectangle);
                     arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
                 }
 
@@ -1005,7 +1005,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 if (arg.IsMousePoint)
                 {
-                    arg.Graphics.FillRectangle(this.flowList.MousePointItemBrush, arg.ItemRectangle);
+                    arg.Graphics.FillRectangle(FlowList.DARK_MOUSE_POINT_ITEM_BRUSH, arg.ItemRectangle);
                 }
 
                 var filePath = this._filterFilePathList[arg.ItemIndex];

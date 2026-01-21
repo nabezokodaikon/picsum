@@ -9,6 +9,7 @@ using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.Base;
+using SWF.UIComponent.FlowList;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.Collections.Generic;
@@ -619,7 +620,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(this.tagFlowList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = this.TagList[e.ItemIndex];
@@ -661,7 +662,7 @@ namespace PicSum.UIComponent.InfoPanel
                 destText,
                 itemFont,
                 textRect.Location,
-                this.tagFlowList.ItemTextBrush.Color,
+                FlowList.LIGHT_ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 

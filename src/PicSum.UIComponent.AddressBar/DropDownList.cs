@@ -104,18 +104,6 @@ namespace PicSum.UIComponent.AddressBar
         }
 
         /// <summary>
-        /// 項目テキスト色
-        /// </summary>
-        [Category("項目描画")]
-        public Color ItemTextColor
-        {
-            get
-            {
-                return this._flowList.ItemTextColor;
-            }
-        }
-
-        /// <summary>
         /// 項目テキストフォーマット
         /// </summary>
         [Category("項目描画")]
@@ -180,58 +168,6 @@ namespace PicSum.UIComponent.AddressBar
             set
             {
                 this._flowList.ItemTextFormatFlags = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush ItemTextBrush
-        {
-            get
-            {
-                return this._flowList.ItemTextBrush;
-            }
-            set
-            {
-                this._flowList.ItemTextBrush = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush MousePointItemBrush
-        {
-            get
-            {
-                return this._flowList.MousePointItemBrush;
-            }
-            set
-            {
-                this._flowList.MousePointItemBrush = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush SelectedItemBrush
-        {
-            get
-            {
-                return this._flowList.SelectedItemBrush;
-            }
-            set
-            {
-                this._flowList.SelectedItemBrush = value;
-            }
-        }
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SolidBrush FocusItemBrush
-        {
-            get
-            {
-                return this._flowList.FocusItemBrush;
-            }
-            set
-            {
-                this._flowList.FocusItemBrush = value;
             }
         }
 

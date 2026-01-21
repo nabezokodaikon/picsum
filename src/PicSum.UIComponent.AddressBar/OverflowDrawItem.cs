@@ -1,5 +1,6 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -39,12 +40,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || this.IsDropDown)
             {
-                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
@@ -114,7 +115,7 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(this.DropDownList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -145,7 +146,7 @@ namespace PicSum.UIComponent.AddressBar
                 text,
                 font,
                 new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                Palette.TEXT_COLOR,
+                FlowList.LIGHT_ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 

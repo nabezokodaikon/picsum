@@ -4,6 +4,7 @@ using SWF.Core.Base;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -54,12 +55,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(base.DropDownList.MousePointItemBrush, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(base.DropDownList.MousePointItemBrush, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
@@ -110,15 +111,15 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.IsMousePoint && e.IsSelected)
             {
-                e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_SELECTED_ITEM_BRUSH, e.ItemRectangle);
             }
             else if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(base.DropDownList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
             else if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(base.DropDownList.SelectedItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_SELECTED_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -150,7 +151,7 @@ namespace PicSum.UIComponent.AddressBar
                 text,
                 textFont,
                 new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
-                base.DropDownList.ItemTextBrush.Color,
+                FlowList.LIGHT_ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 

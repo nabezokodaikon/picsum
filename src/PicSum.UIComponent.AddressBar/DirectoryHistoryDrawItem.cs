@@ -4,6 +4,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -49,11 +50,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(Palette.MOUSE_DOWN_BRUSH, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(Palette.MOUSE_POINT_BRUSH, rect);
+                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
             }
 
             g.DrawImage(
@@ -102,7 +103,7 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(base.DropDownList.MousePointItemBrush, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -151,7 +152,7 @@ namespace PicSum.UIComponent.AddressBar
                 destText,
                 font,
                 textRect.Location,
-                base.DropDownList.ItemTextBrush.Color,
+                FlowList.LIGHT_ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 
