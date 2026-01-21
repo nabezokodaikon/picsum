@@ -138,7 +138,13 @@ namespace SWF.Core.ImageAccessor
                 GraphicsUnit.Pixel);
         }
 
-        public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, IconImage icon, float displayScale)
+        public static void DrawDirectoryThumbnail(
+            Graphics g,
+            CvImage thumb,
+            Rectangle destRect,
+            Size srcSize,
+            IconImage icon,
+            float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
@@ -160,12 +166,11 @@ namespace SWF.Core.ImageAccessor
         /// <param name="g">グラフィックオブジェクト</param>
         /// <param name="icon">アイコン</param>
         /// <param name="rect">描画領域</param>
-        public static void DrawIcon(Control control, Graphics g, IconImage icon, RectangleF rect)
+        public static void DrawIcon(Graphics g, IconImage icon, RectangleF rect, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            var displayScale = WindowUtil.GetCurrentWindowScale(control);
             var displayScaleWidth = icon.Width * displayScale;
             var displayScaleHeight = icon.Height * displayScale;
             if (Math.Max(displayScaleWidth, displayScaleHeight) <= Math.Min(rect.Width, rect.Height))

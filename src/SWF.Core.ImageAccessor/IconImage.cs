@@ -5,11 +5,11 @@ using System.Drawing.Imaging;
 namespace SWF.Core.ImageAccessor
 {
     public sealed class IconImage
-        : IDisposable
     {
-        private bool _disposed = false;
+        private static Bitmap? _cache = null;
+        private static IconImage? _iconImage = null;
+
         private readonly Bitmap _icon;
-        private Bitmap? _cache = null!;
 
         public int Width
         {
@@ -34,57 +34,38 @@ namespace SWF.Core.ImageAccessor
             this._icon = icon;
         }
 
-        public void Dispose()
+        public void Draw(Graphics graphics, Rectangle destRect)
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                this._cache?.Dispose();
-                this._cache = null;
-            }
-
-            this._disposed = true;
-        }
-
-        public void Draw(Graphics g, Rectangle destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(graphics, nameof(graphics));
 
             using (Measuring.Time(false, "IconImage.Draw"))
             {
-                if (this._cache == null
-                    || this._cache.Width != destRect.Width
-                    || this._cache.Height != destRect.Height)
+                if (_cache == null
+                    || _iconImage == null
+                    || _iconImage._icon != this._icon
+                    || _cache.Width != destRect.Width
+                    || _cache.Height != destRect.Height)
                 {
-                    this._cache?.Dispose();
-                    this._cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                    using (var gr = Graphics.FromImage(this._cache))
+                    _iconImage = this;
+                    _cache?.Dispose();
+                    _cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                    using (var innerGraphics = Graphics.FromImage(_cache))
                     {
-                        gr.SmoothingMode = SmoothingMode.None;
-                        gr.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        gr.CompositingQuality = CompositingQuality.HighSpeed;
-                        gr.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                        gr.CompositingMode = CompositingMode.SourceOver;
+                        innerGraphics.SmoothingMode = SmoothingMode.None;
+                        innerGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        innerGraphics.CompositingQuality = CompositingQuality.HighSpeed;
+                        innerGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        innerGraphics.CompositingMode = CompositingMode.SourceOver;
 
-                        gr.DrawImage(
+                        innerGraphics.DrawImage(
                             this._icon,
-                            new Rectangle(0, 0, this._cache.Width, this._cache.Height),
+                            new Rectangle(0, 0, _cache.Width, _cache.Height),
                             new Rectangle(0, 0, this._icon.Width, this._icon.Height),
                             GraphicsUnit.Pixel);
                     }
                 }
 
-                g.DrawImageUnscaled(this._cache, destRect);
+                graphics.DrawImageUnscaled(_cache, destRect);
             }
         }
     }
