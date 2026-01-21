@@ -269,7 +269,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     foreach (var item in this._masterFileDictionary)
                     {
                         item.Value.ThumbnailImage?.Dispose();
-                        item.Value.JumboIcon?.Dispose();
                         item.Value.FileNameImage?.Dispose();
                     }
                 }
@@ -1015,17 +1014,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (item.ThumbnailImage == null)
                 {
                     var iconRect = this.GetIconRectangle(arg, itemTextHeight);
-                    var textRect = this.GetTextRectangle(arg, itemTextHeight);
-                    ThumbnailUtil.DrawIconWithText(
-                        this,
+
+                    ThumbnailUtil.DrawIcon(
                         arg.Graphics,
                         item.JumboIcon,
-                        item.FileName,
                         iconRect,
-                        textRect,
-                        font,
-                        FlowList.DARK_ITEM_TEXT_BRUSH,
-                        this.flowList.ItemTextFormat);
+                        this._scale);
+
+                    this.DrawFileNameImage(arg, item, itemTextHeight);
                 }
                 else
                 {
