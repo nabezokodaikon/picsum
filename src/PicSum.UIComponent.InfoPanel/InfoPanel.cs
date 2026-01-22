@@ -642,28 +642,25 @@ namespace PicSum.UIComponent.InfoPanel
             var itemFont = this.GetTagFont(item, scale);
             var itemText = item.Tag;
             var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);
-            var itemWidth = e.ItemRectangle.Width - iconWidth;
-            var destText = itemText;
-            var destTextSize = itemTextSize;
-            while (destTextSize.Width > itemWidth)
-            {
-                destText = destText[..^1];
-                destTextSize = TextRenderer.MeasureText($"{destText}...", itemFont);
-            }
-            destText = itemText == destText ? itemText : $"{destText}...";
 
-            var textRect = new Rectangle(e.ItemRectangle.X + iconWidth,
-                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
-                                         e.ItemRectangle.Width - iconWidth,
-                                         e.ItemRectangle.Height);
+            var textRect = new Rectangle(
+                e.ItemRectangle.X + iconWidth,
+                e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - itemTextSize.Height) / 2f),
+                e.ItemRectangle.Width - iconWidth,
+                e.ItemRectangle.Height);
+
+            var flags = TextFormatFlags.Top |           // 垂直中央揃え（必要なら）
+                        TextFormatFlags.WordBreak |     // 単語単位での折り返し
+                        TextFormatFlags.EndEllipsis |   // はみ出す場合は末尾を「...」に
+                        TextFormatFlags.TextBoxControl; // 改行コードなどを考慮
 
             TextRenderer.DrawText(
                 e.Graphics,
-                destText,
+                itemText,
                 itemFont,
                 textRect.Location,
                 FlowList.LIGHT_ITEM_TEXT_COLOR,
-                TextFormatFlags.Top);
+                flags);
         }
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
