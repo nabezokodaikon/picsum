@@ -82,21 +82,21 @@ namespace SWF.UIComponent.FlowList
             DARK_SELECTED_ITEM_COLOR.R,
             DARK_SELECTED_ITEM_COLOR.G,
             DARK_SELECTED_ITEM_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Pen DARK_FOUCUS_ITEM_PEN = new(Color.FromArgb(
             DARK_FOCUS_ITEM_COLOR.A,
             DARK_FOCUS_ITEM_COLOR.R,
             DARK_FOCUS_ITEM_COLOR.G,
             DARK_FOCUS_ITEM_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Pen DARK_RECTANGLE_SELECTION_PEN = new(Color.FromArgb(
             DARK_RECTANGLE_SELECTION_COLOR.A,
             DARK_RECTANGLE_SELECTION_COLOR.R,
             DARK_RECTANGLE_SELECTION_COLOR.G,
             DARK_RECTANGLE_SELECTION_COLOR.B),
-            1f);
+            2f);
 
         private static readonly Dictionary<float, Pen> LIGHT_SELECTED_ITEM_PEN_CACHE = [];
         private static readonly Dictionary<float, Pen> LIGHT_FOUCUS_ITEM_PEN_CACHE = [];
