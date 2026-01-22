@@ -16,7 +16,7 @@ namespace PicSum.UIComponent.AddressBar
         : DropDownDrawItemBase, IDisposable
     {
 #pragma warning disable CA2213 // リソースを保持する。
-        private readonly Image _drawImage = ResourceFiles.SmallArrowDownIcon.Value;
+        private readonly Bitmap _drawImage = ResourceFiles.SmallArrowDownIcon.Value;
 #pragma warning restore CA2213
 
         public DirectoryHistoryDrawItem()
@@ -110,14 +110,17 @@ namespace PicSum.UIComponent.AddressBar
 
             if (item.DirectoryIcon != null)
             {
-                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width * scale);
+                var iconSize = Math.Min(
+                    base.DropDownList.ItemHeight,
+                    item.DirectoryIcon.Width * scale);
 
                 var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
-                var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
-                                              e.ItemRectangle.Y + iconPoint,
-                                              iconSize,
-                                              iconSize);
+                var iconRect = new RectangleF(
+                    e.ItemRectangle.X + iconPoint,
+                    e.ItemRectangle.Y + iconPoint,
+                    iconSize,
+                    iconSize);
 
                 e.Graphics.DrawImage(
                     item.DirectoryIcon,
@@ -126,37 +129,32 @@ namespace PicSum.UIComponent.AddressBar
                     GraphicsUnit.Pixel);
             }
 
-            var srcText = FileUtil.IsSystemRoot(item.DirectoryPath) ?
+            var text = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
             var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
-            var srcTextSize = TextRenderer.MeasureText(srcText, font);
 
-            var destText = srcText;
-            var destTextSize = srcTextSize;
-            var itemWidth = e.ItemRectangle.Width - base.DropDownList.ItemHeight;
-            while (destTextSize.Width > itemWidth)
-            {
-                destText = destText[..^1];
-                destTextSize = TextRenderer.MeasureText($"{destText}...", font);
-            }
-            destText = srcText == destText ? srcText : $"{destText}...";
+            var textRect = new Rectangle(
+                e.ItemRectangle.X + base.DropDownList.ItemHeight,
+                e.ItemRectangle.Y,
+                e.ItemRectangle.Width - base.DropDownList.ItemHeight,
+                e.ItemRectangle.Height);
 
-            var textRect = new Rectangle(e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
-                                         e.ItemRectangle.Width - base.DropDownList.ItemHeight,
-                                         e.ItemRectangle.Height);
+            var flags = TextFormatFlags.Left |
+                        TextFormatFlags.VerticalCenter |
+                        TextFormatFlags.EndEllipsis;
 
             TextRenderer.DrawText(
                 e.Graphics,
-                destText,
+                text,
                 font,
-                textRect.Location,
+                textRect,
                 FlowList.LIGHT_ITEM_TEXT_COLOR,
-                TextFormatFlags.Top);
+                flags
+            );
         }
 
-        private RectangleF GetImageDrawRectangle(Image img)
+        private RectangleF GetImageDrawRectangle(Bitmap img)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
             var margin = 16 * scale;
@@ -175,43 +173,43 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.ItemCount = 0;
             base.DropDownList.ItemHeight = (int)this.GetDropDownItemHeight();
 
-            var width = 0f;
+            var scale = WindowUtil.GetCurrentWindowScale(base.AddressBar);
+            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            var width = this.GetMinimumDropDownWidth();
 
-            using (var g = base.DropDownList.CreateGraphics())
+            foreach (var info in e)
             {
-                foreach (var info in e)
+                var item = new DirectoryEntity
                 {
-                    var item = new DirectoryEntity
-                    {
-                        DirectoryPath = info.FilePath,
-                        DirectoryName = info.FileName,
-                        DirectoryIcon = info.SmallIcon
-                    };
-                    base.Items.Add(item);
+                    DirectoryPath = info.FilePath,
+                    DirectoryName = info.FileName,
+                    DirectoryIcon = info.SmallIcon
+                };
+                base.Items.Add(item);
 
-                    var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
-                    var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
-                    width = Math.Max(width, g.MeasureString(item.DirectoryPath + "________", font).Width);
-                }
+                width = Math.Max(
+                    width,
+                    TextRenderer.MeasureText(item.DirectoryPath + "______", font).Width + item.DirectoryIcon.Width);
             }
 
             if (base.Items.Count > MAXIMUM_SHOW_ITEM_COUNT)
             {
-                width += base.DropDownList.ScrollBarWidth;
+                width += base.DropDownList.ItemHeight * 1.5f;
             }
 
-            width = Math.Min(
-                Math.Max(width, base.AddressBar.Width),
-                Screen.FromControl(this.AddressBar).Bounds.Width);
+            var screen = Screen.FromControl(base.AddressBar);
+            width = Math.Max(
+                base.AddressBar.Width - 4 * scale,
+                Math.Min(width, screen.Bounds.Width));
 
-            var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
-                                  base.Items.Count * base.DropDownList.ItemHeight);
+            var height = Math.Min(
+                MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
+                base.Items.Count * base.DropDownList.ItemHeight);
 
             base.DropDownList.Size = new Size((int)width, height);
             base.DropDownList.ItemCount = base.Items.Count;
             base.DropDownList.Show(base.AddressBar, 0, base.AddressBar.Height);
             base.DropDownList.EndUpdate();
         }
-
     }
 }

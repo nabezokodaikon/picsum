@@ -70,27 +70,30 @@ namespace PicSum.UIComponent.AddressBar
                 base.DropDownList.BeginUpdate();
                 base.DropDownList.ItemHeight = (int)this.GetDropDownItemHeight();
 
+                var scale = WindowUtil.GetCurrentWindowScale(base.AddressBar);
+                var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
                 var width = this.GetMinimumDropDownWidth();
 
-                var scale = WindowUtil.GetCurrentWindowScale(base.DropDownList);
-                using (var g = this.DropDownList.CreateGraphics())
+                foreach (var directory in base.Items)
                 {
-                    var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
-                    foreach (var directory in base.Items)
-                    {
-                        width = Math.Max(width, g.MeasureString(directory.DirectoryName + "________", font).Width);
-                    }
+                    width = Math.Max(
+                        width,
+                        TextRenderer.MeasureText(directory.DirectoryName + "______", font).Width + directory.DirectoryIcon.Width);
                 }
 
                 if (base.Items.Count > MAXIMUM_SHOW_ITEM_COUNT)
                 {
-                    width += base.DropDownList.ScrollBarWidth;
+                    width += (int)(base.DropDownList.ItemHeight * 1.5f);
                 }
 
-                var height = Math.Min(MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
-                                      base.Items.Count * base.DropDownList.ItemHeight);
+                var screen = Screen.FromControl(base.AddressBar);
+                width = (int)(Math.Min(width, screen.Bounds.Width));
 
-                base.DropDownList.Size = new Size((int)width + base.DropDownList.ItemHeight, height);
+                var height = Math.Min(
+                    MAXIMUM_SHOW_ITEM_COUNT * base.DropDownList.ItemHeight,
+                    base.Items.Count * base.DropDownList.ItemHeight);
+
+                base.DropDownList.Size = new Size((int)width, height);
                 base.DropDownList.ClearSelectedItems();
                 base.DropDownList.ItemCount = 0;
                 base.DropDownList.ItemCount = base.Items.Count;
@@ -122,32 +125,40 @@ namespace PicSum.UIComponent.AddressBar
 
             if (item.DirectoryIcon != null)
             {
-                var iconSize = Math.Min(base.DropDownList.ItemHeight, item.DirectoryIcon.Width * scale);
+                var iconSize = Math.Min(
+                    base.DropDownList.ItemHeight,
+                    item.DirectoryIcon.Width * scale);
 
                 var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
-                var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
-                                              e.ItemRectangle.Y + iconPoint,
-                                              iconSize,
-                                              iconSize);
+                var iconRect = new RectangleF(
+                    e.ItemRectangle.X + iconPoint,
+                    e.ItemRectangle.Y + iconPoint,
+                    iconSize,
+                    iconSize);
 
                 e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
             }
 
             var text = item.DirectoryName;
-            var textSize = TextRenderer.MeasureText(text, font);
-            var textRect = new RectangleF(e.ItemRectangle.X + this.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Y,
-                                          e.ItemRectangle.Width - this.DropDownList.ItemHeight,
-                                          e.ItemRectangle.Height);
+
+            var textRect = new Rectangle(
+                e.ItemRectangle.X + this.DropDownList.ItemHeight,
+                e.ItemRectangle.Y,
+                e.ItemRectangle.Width - this.DropDownList.ItemHeight,
+                e.ItemRectangle.Height);
+
+            var flags = TextFormatFlags.Left |
+                        TextFormatFlags.VerticalCenter |
+                        TextFormatFlags.EndEllipsis;
 
             TextRenderer.DrawText(
                 e.Graphics,
                 text,
                 font,
-                new Point((int)textRect.Location.X, (int)(textRect.Location.Y + (textRect.Height - textSize.Height) / 2f)),
+                textRect,
                 FlowList.LIGHT_ITEM_TEXT_COLOR,
-                TextFormatFlags.Top);
+                flags);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
@@ -160,6 +171,5 @@ namespace PicSum.UIComponent.AddressBar
             var y = base.Y + (base.Height - h) / 2f;
             return new RectangleF(x, y, w, h);
         }
-
     }
 }
