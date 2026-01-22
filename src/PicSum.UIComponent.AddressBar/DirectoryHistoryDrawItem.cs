@@ -199,7 +199,7 @@ namespace PicSum.UIComponent.AddressBar
 
             var screen = Screen.FromControl(base.AddressBar);
             width = Math.Max(
-                base.AddressBar.Width,
+                base.AddressBar.Width - 4 * scale,
                 Math.Min(width, screen.Bounds.Width));
 
             var height = Math.Min(
