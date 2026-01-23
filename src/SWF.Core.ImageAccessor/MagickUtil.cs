@@ -20,6 +20,29 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static Bitmap ReadImageFileForHEIC(Stream stream)
+        {
+            using (var image = new MagickImage(stream))
+            {
+                // 1. カラープロファイルが存在する場合のみ sRGB へ変換
+                // (最新の Magick.NET では ColorProfile.sRGB を使用)
+                var profile = image.GetColorProfile();
+                if (profile != null && profile.Name != "sRGB")
+                {
+                    image.TransformColorSpace(ColorProfiles.SRGB);
+                }
+
+                // 2. 不要なEXIF情報などを破棄してBitmap変換を高速化
+                image.Strip();
+
+                // 3. iPhoneの回転情報を反映
+                image.AutoOrient();
+
+                // 4. Bitmapへ変換 (Magick.NET.SystemDrawingパッケージが必要)
+                return image.ToBitmap();
+            }
+        }
+
         public static Bitmap ReadImageFile(string filePath)
         {
             using (var image = new MagickImage(filePath))

@@ -402,14 +402,14 @@ namespace SWF.Core.ImageAccessor
                 {
                     using (Measuring.Time(false, "ImageUtil.ReadImageFileWithVarious: Heic"))
                     {
-                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heic), ms);
+                        return MagickUtil.ReadImageFileForHEIC(ms);
                     }
                 }
                 else if (IsHeifFile(formatName))
                 {
                     using (Measuring.Time(false, "ImageUtil.ReadImageFileWithVarious: Heif"))
                     {
-                        return ConvertIfGrayscale(MagickUtil.ReadImageFile(ms, ImageMagick.MagickFormat.Heif), ms);
+                        return MagickUtil.ReadImageFileForHEIC(ms);
                     }
                 }
                 else if (IsJpegFile(formatName))
