@@ -152,7 +152,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeThumbnailImage(
+        public void DrawResizeThumbnail(
             Graphics g, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));

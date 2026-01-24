@@ -644,7 +644,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeThumbnailImage(g, destRect);
+                            image.DrawResizeThumbnail(g, destRect);
                         }
                     }
                     else
