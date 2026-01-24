@@ -752,10 +752,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight)
+        private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight, Font font)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
-            var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -1014,42 +1013,46 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (item.ThumbnailImage == null)
                 {
                     var iconRect = this.GetIconRectangle(arg, itemTextHeight);
+                    if (e.ClipRectangle.IntersectsWith(iconRect))
+                    {
+                        ThumbnailUtil.DrawIcon(
+                            arg.Graphics,
+                            item.JumboIcon,
+                            iconRect,
+                            this._scale);
 
-                    ThumbnailUtil.DrawIcon(
-                        arg.Graphics,
-                        item.JumboIcon,
-                        iconRect,
-                        this._scale);
-
-                    this.DrawFileNameImage(arg, item, itemTextHeight);
+                        this.DrawFileNameImage(arg, item, itemTextHeight, font);
+                    }
                 }
                 else
                 {
                     var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                    if (e.ClipRectangle.IntersectsWith(thumbRect))
+                    {
+                        if (item.IsFile)
+                        {
+                            ThumbnailUtil.DrawFileThumbnail(
+                                e.Graphics,
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                this._scale);
+                        }
+                        else
+                        {
+                            ThumbnailUtil.DrawDirectoryThumbnail(
+                                e.Graphics,
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                item.JumboIcon,
+                                this._scale);
+                        }
 
-                    if (item.IsFile)
-                    {
-                        ThumbnailUtil.DrawFileThumbnail(
-                            e.Graphics,
-                            item.ThumbnailImage,
-                            thumbRect,
-                            new Size(item.SourceImageWidth, item.SourceImageHeight),
-                            this._scale);
-                    }
-                    else
-                    {
-                        ThumbnailUtil.DrawDirectoryThumbnail(
-                            e.Graphics,
-                            item.ThumbnailImage,
-                            thumbRect,
-                            new Size(item.SourceImageWidth, item.SourceImageHeight),
-                            item.JumboIcon,
-                            this._scale);
-                    }
-
-                    if (this.IsShowFileName)
-                    {
-                        this.DrawFileNameImage(arg, item, itemTextHeight);
+                        if (this.IsShowFileName)
+                        {
+                            this.DrawFileNameImage(arg, item, itemTextHeight, font);
+                        }
                     }
                 }
             }

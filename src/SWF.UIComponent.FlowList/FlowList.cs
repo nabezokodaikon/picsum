@@ -352,7 +352,7 @@ namespace SWF.UIComponent.FlowList
                     arrayIndex++;
                 }
 
-                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, argArray));
+                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, e.ClipRectangle, argArray));
             }
         }
 
