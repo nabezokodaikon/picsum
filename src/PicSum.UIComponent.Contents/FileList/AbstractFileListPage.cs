@@ -40,7 +40,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private float _scale = 0f;
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
-        private int _itemTextHeight = -1;
+        private int? _itemTextHeight = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -210,7 +210,7 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (this._scale != scale)
             {
-                this._itemTextHeight = -1;
+                this._itemTextHeight = null;
                 this._scale = scale;
                 var baseHeigth = this.Height - 8;
 
@@ -718,7 +718,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private int GetItemTextHeight()
         {
-            if (this._itemTextHeight < 0)
+            if (!this._itemTextHeight.HasValue)
             {
                 using (var bmp = new Bitmap(1, 1))
                 using (var g = Graphics.FromImage(bmp))
@@ -727,7 +727,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             }
 
-            return this._itemTextHeight;
+            return this._itemTextHeight.Value;
         }
 
         private void SetFlowListItemSize()
@@ -747,7 +747,8 @@ namespace PicSum.UIComponent.Contents.FileList
         private void CacheFileNameImage(
             SKDrawItemEventArgs e,
             FileEntity item,
-            int itemTextHeight)
+            int itemTextHeight,
+            SolidBrush textBrush)
         {
             var textRect = this.GetTextRectangle(e, itemTextHeight);
 
@@ -765,7 +766,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     textWidth,
                     textHeight,
                     PixelFormat.Format32bppPArgb);
-                using var textBrush = new SolidBrush(FlowList.DARK_ITEM_TEXT_COLOR);
                 using var g = Graphics.FromImage(bmp);
 
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -1027,13 +1027,16 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var filePath = this._filterFilePathList[arg.ItemIndex];
                 var item = this._masterFileDictionary[filePath];
+                using var textBrush =
+                    new SolidBrush(FlowList.DARK_ITEM_TEXT_COLOR);
 
                 if (item.ThumbnailImage == null)
                 {
                     this.CacheFileNameImage(
                         arg,
                         item,
-                        itemTextHeight);
+                        itemTextHeight,
+                        textBrush);
                 }
                 else
                 {
@@ -1060,7 +1063,8 @@ namespace PicSum.UIComponent.Contents.FileList
                         this.CacheFileNameImage(
                             arg,
                             item,
-                            itemTextHeight);
+                            itemTextHeight,
+                            textBrush);
                     }
                 }
             });
