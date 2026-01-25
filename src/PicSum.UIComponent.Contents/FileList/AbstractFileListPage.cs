@@ -997,8 +997,11 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
+            using var recorder = new SKPictureRecorder();
+            using var canvas = recorder.BeginRecording(
+                new SKRect(0, 0, this.flowList.Width, this.flowList.Height));
+
             var itemTextHeight = this.GetItemTextHeight();
-            var canvas = e.Args.Surface.Canvas;
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
@@ -1072,6 +1075,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                 }
             }
+
+            using var recordedMap = recorder.EndRecording();
+            e.Args.Surface.Canvas.DrawPicture(recordedMap);
         }
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
