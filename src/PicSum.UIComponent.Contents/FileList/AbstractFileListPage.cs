@@ -997,8 +997,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            using var _ = Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems");
-
             var itemTextHeight = this.GetItemTextHeight();
             var canvas = e.Args.Surface.Canvas;
 
