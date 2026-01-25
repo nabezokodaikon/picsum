@@ -1037,6 +1037,24 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
                 else
                 {
+                    var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                    if (item.IsFile)
+                    {
+                        ThumbnailUtil.CacheFileThumbnail(
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            this._scale);
+                    }
+                    else
+                    {
+                        ThumbnailUtil.CacheFileThumbnail(
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            this._scale);
+                    }
+
                     if (this.IsShowFileName)
                     {
                         this.CacheFileNameImage(

@@ -181,6 +181,28 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public void CacheResizeThumbnail(SKRect destRect)
+        {
+            if (this._mat == null)
+            {
+                throw new InvalidOperationException("MatがNullです。");
+            }
+
+            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
+            {
+                if (this._skCache == null
+                    || this._skCache.Width != (int)destRect.Width
+                    || this._skCache.Height != (int)destRect.Height)
+                {
+                    this._skCache?.Dispose();
+                    using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
+                    {
+                        this._skCache = SkiaUtil.ToSKImage(bmp);
+                    }
+                }
+            }
+        }
+
         public void DrawResizeThumbnail(
             SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
@@ -198,11 +220,7 @@ namespace SWF.Core.ImageAccessor
                     || this._skCache.Width != (int)destRect.Width
                     || this._skCache.Height != (int)destRect.Height)
                 {
-                    this._skCache?.Dispose();
-                    using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
-                    {
-                        this._skCache = SkiaUtil.ToSKImage(bmp);
-                    }
+                    return;
                 }
 
                 var x = destRect.Left + (destRect.Width - this._skCache.Width) / 2f;

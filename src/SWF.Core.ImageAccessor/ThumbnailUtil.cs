@@ -119,6 +119,46 @@ namespace SWF.Core.ImageAccessor
             thumb.DrawResizeThumbnail(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
         }
 
+        public static void CacheFileThumbnail(
+            CvImage thumb,
+            SKRect destRect,
+            Size srcSize,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            float scale;
+            if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
+            {
+                scale = Math.Min(
+                    displayScale,
+                    Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height));
+            }
+            else
+            {
+                scale = Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height);
+            }
+
+            const int OFFSET = 16;
+            var w = srcSize.Width * scale;
+            var h = srcSize.Height * scale;
+            if (w > h && w > OFFSET)
+            {
+                w -= OFFSET;
+                h -= OFFSET * (srcSize.Height / (float)srcSize.Width);
+            }
+            else if (w <= h && h > OFFSET)
+            {
+                w -= OFFSET * (srcSize.Width / (float)srcSize.Height);
+                h -= OFFSET;
+            }
+
+            var x = destRect.Left + (destRect.Width - w) / 2f;
+            var y = destRect.Top + (destRect.Height - h) / 2f;
+
+            thumb.CacheResizeThumbnail(new SKRect(x, y, x + w, y + h));
+        }
+
         public static void DrawFileThumbnail(
             SKCanvas canvas,
             SKPaint paint,
