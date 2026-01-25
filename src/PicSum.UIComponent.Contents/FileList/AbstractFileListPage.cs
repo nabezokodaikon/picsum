@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -268,6 +270,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     foreach (var item in this._masterFileDictionary)
                     {
                         item.Value.ThumbnailImage?.Dispose();
+                        item.Value.FileNameImage?.Dispose();
                     }
                 }
 
@@ -746,40 +749,42 @@ namespace PicSum.UIComponent.Contents.FileList
             FileEntity item,
             int itemTextHeight)
         {
-            var font = SKFonts.GetFont(SKFonts.Size.Medium, this._scale);
-            var bounds = this.GetTextRectangle(e, itemTextHeight);
-            var text = item.FileName;
+            var textRect = this.GetTextRectangle(e, itemTextHeight);
 
-            var maxWidth = bounds.Width;
-            var lineHeight = font.Size * 1.2f; // 行間を考慮
-
-            // --- 1行目の処理 ---
-            var firstLineCharCount = (long)font.BreakText(text, maxWidth, out float firstLineWidth);
-            var firstLine = text[..(int)firstLineCharCount];
-            var remainingText = text[(int)firstLineCharCount..];
-
-            // --- 2行目の処理（三点リーダー） ---
-            var secondLine = remainingText;
-            if (font.MeasureText(remainingText) > maxWidth)
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
             {
-                // "..." の幅を考慮して、2行目に収まる文字数を再計算
-                var ellipsisWidth = font.MeasureText("...");
-                var secondLineCharCount = (long)font.BreakText(remainingText, maxWidth - ellipsisWidth, out _);
-                secondLine = string.Concat(remainingText.AsSpan(0, (int)secondLineCharCount), "...");
+                item.FileNameImage?.Dispose();
+
+                var textWidth = (int)textRect.Width;
+                var textHeight = (int)textRect.Height;
+
+                using (var bmp = new Bitmap(
+                    textWidth,
+                    textHeight,
+                    PixelFormat.Format32bppPArgb))
+                {
+                    using (var g = Graphics.FromImage(bmp))
+                    {
+                        var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
+                        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                        g.DrawString(
+                            item.FileName,
+                            font,
+                            FlowList.DARK_ITEM_TEXT_BRUSH,
+                            new Rectangle(0, 0, textWidth, textHeight),
+                            this.flowList.ItemTextFormat);
+                    }
+
+                    item.FileNameImage = SkiaUtil.ToSKImage(bmp);
+                }
             }
 
-            // --- 中央揃えの描画計算 ---
-            // 全体の高さ = (1行目の高さ + 行間 + 2行目の高さ)
-            var totalHeight = lineHeight * 2;
-            var startY = bounds.MidY - (totalHeight / 2) + font.Size;
-
-            // 1行目の描画
-            var x1 = bounds.MidX - (font.MeasureText(firstLine) / 2);
-            canvas.DrawText(firstLine, x1, startY, font, this.flowList.TextPaint);
-
-            // 2行目の描画
-            float x2 = bounds.MidX - (font.MeasureText(secondLine) / 2);
-            canvas.DrawText(secondLine, x2, startY + lineHeight, font, this.flowList.TextPaint);
+            canvas.DrawImage(
+                item.FileNameImage,
+                textRect,
+                this.flowList.TextPaint);
         }
 
         private SKRect GetIconRectangle(SKDrawItemEventArgs e, int itemTextHeight)
@@ -991,6 +996,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 return;
             }
+
+            using var _ = Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems");
 
             var itemTextHeight = this.GetItemTextHeight();
             var canvas = e.Args.Surface.Canvas;

@@ -46,6 +46,9 @@ namespace SWF.UIComponent.FlowList
             IsAntialias = true,
         };
 
+        public readonly SKSamplingOptions Sampling
+            = new(SKCubicResampler.CatmullRom);
+
         public readonly SKPaint SelectedFillPaint = new()
         {
             Color = SELECTED_FILL_COLOR,

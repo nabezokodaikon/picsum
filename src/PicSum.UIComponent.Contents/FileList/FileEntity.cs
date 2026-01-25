@@ -1,3 +1,4 @@
+using SkiaSharp;
 using SWF.Core.ImageAccessor;
 using System;
 using System.Drawing;
@@ -22,5 +23,6 @@ namespace PicSum.UIComponent.Contents.FileList
         public int ThumbnailHeight { get; set; }
         public int SourceImageWidth { get; set; }
         public int SourceImageHeight { get; set; }
+        public SKImage FileNameImage { get; set; } = null;
     }
 }

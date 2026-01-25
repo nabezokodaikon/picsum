@@ -8,7 +8,7 @@ namespace SWF.Core.ImageAccessor
     public sealed class IconImage
     {
         private static Bitmap? _bmpCache = null;
-        private static SKBitmap? _skCache = null;
+        private static SKImage? _skCache = null;
         private static IconImage? _iconCache = null;
 
         private readonly Bitmap _icon;
@@ -106,7 +106,7 @@ namespace SWF.Core.ImageAccessor
                                 GraphicsUnit.Pixel);
                         }
 
-                        _skCache = SkiaUtil.ConvertToSKBitmap(bmp);
+                        _skCache = SkiaUtil.ToSKImage(bmp);
                     }
                 }
 
@@ -115,7 +115,7 @@ namespace SWF.Core.ImageAccessor
                 var r = x + _skCache.Width;
                 var b = y + _skCache.Height;
 
-                canvas.DrawBitmap(_skCache, new SKRect(x, y, r, b), paint);
+                canvas.DrawImage(_skCache, new SKRect(x, y, r, b), paint);
             }
         }
     }

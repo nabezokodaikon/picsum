@@ -1,38 +1,34 @@
 ﻿using SkiaSharp;
+using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
     public static class SkiaUtil
     {
-        // System.Drawing.BitmapからSKBitmapへ変換
-        public static SKBitmap ConvertToSKBitmap(Bitmap gdiBitmap)
+        public static SKImage ToSKImage(Bitmap bitmap)
         {
-            ArgumentNullException.ThrowIfNull(gdiBitmap, nameof(gdiBitmap));
+            ArgumentNullException.ThrowIfNull(bitmap, nameof(bitmap));
 
-            var info = new SKImageInfo(gdiBitmap.Width, gdiBitmap.Height,
-                                       SKColorType.Bgra8888, SKAlphaType.Premul);
-            var skBitmap = new SKBitmap(info);
+            var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            var data = bitmap.LockBits(
+                rect,
+                ImageLockMode.ReadOnly,
+                PixelFormat.Format32bppPArgb);
 
-            using (var pixmap = skBitmap.PeekPixels())
+            try
             {
-                var bmpData = gdiBitmap.LockBits(
-                    new Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height),
-                    System.Drawing.Imaging.ImageLockMode.ReadOnly,
-                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                var info = new SKImageInfo(
+                    bitmap.Width,
+                    bitmap.Height,
+                    SKColorType.Bgra8888,
+                    SKAlphaType.Premul);
 
-                unsafe
-                {
-                    Buffer.MemoryCopy(
-                        bmpData.Scan0.ToPointer(),
-                        pixmap.GetPixels().ToPointer(),
-                        pixmap.RowBytes * pixmap.Height,
-                        bmpData.Stride * bmpData.Height);
-                }
-
-                gdiBitmap.UnlockBits(bmpData);
+                return SKImage.FromPixelCopy(info, data.Scan0, data.Stride);
             }
-
-            return skBitmap;
+            finally
+            {
+                bitmap.UnlockBits(data);
+            }
         }
     }
 }
