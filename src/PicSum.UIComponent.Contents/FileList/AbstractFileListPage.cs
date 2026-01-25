@@ -6,6 +6,7 @@ using PicSum.UIComponent.Contents.Common;
 using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
+using SkiaSharp;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -17,8 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -269,7 +268,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     foreach (var item in this._masterFileDictionary)
                     {
                         item.Value.ThumbnailImage?.Dispose();
-                        item.Value.FileNameImage?.Dispose();
                     }
                 }
 
@@ -721,18 +719,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 using (var bmp = new Bitmap(1, 1))
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    return this.GetItemTextHeight(g);
+                    this._itemTextHeight = (int)(g.MeasureString("A", Fonts.GetBoldFont(Fonts.Size.Medium, this._scale)).Height * 2);
                 }
-            }
-
-            return this._itemTextHeight;
-        }
-
-        private int GetItemTextHeight(Graphics g)
-        {
-            if (this._itemTextHeight < 0)
-            {
-                this._itemTextHeight = (int)(g.MeasureString("A", Fonts.GetBoldFont(Fonts.Size.Medium, this._scale)).Height * 2);
             }
 
             return this._itemTextHeight;
@@ -752,47 +740,66 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void DrawFileNameImage(SWF.UIComponent.FlowList.DrawItemEventArgs e, FileEntity item, int itemTextHeight, Font font)
+        private void DrawFileNameImage(
+            SKDrawItemEventArgs e,
+            SKCanvas canvas,
+            FileEntity item,
+            int itemTextHeight)
         {
-            var textRect = this.GetTextRectangle(e, itemTextHeight);
+            var font = SKFonts.GetFont(SKFonts.Size.Medium, this._scale);
+            var bounds = this.GetTextRectangle(e, itemTextHeight);
+            var text = item.FileName;
 
-            if (item.FileNameImage == null
-                || item.FileNameImage.Width != textRect.Width
-                || item.FileNameImage.Height != textRect.Height)
+            var maxWidth = bounds.Width;
+            var lineHeight = font.Size * 1.2f; // 行間を考慮
+
+            // --- 1行目の処理 ---
+            var firstLineCharCount = (long)font.BreakText(text, maxWidth, out float firstLineWidth);
+            var firstLine = text[..(int)firstLineCharCount];
+            var remainingText = text[(int)firstLineCharCount..];
+
+            // --- 2行目の処理（三点リーダー） ---
+            var secondLine = remainingText;
+            if (font.MeasureText(remainingText) > maxWidth)
             {
-                item.FileNameImage?.Dispose();
-                item.FileNameImage = new Bitmap(textRect.Width, textRect.Height, PixelFormat.Format32bppPArgb);
-                using (var g = Graphics.FromImage(item.FileNameImage))
-                {
-                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                    g.DrawString(
-                        item.FileName,
-                        font,
-                        FlowList.DARK_ITEM_TEXT_BRUSH,
-                        new Rectangle(0, 0, textRect.Width, textRect.Height),
-                        this.flowList.ItemTextFormat);
-                }
+                // "..." の幅を考慮して、2行目に収まる文字数を再計算
+                var ellipsisWidth = font.MeasureText("...");
+                var secondLineCharCount = (long)font.BreakText(remainingText, maxWidth - ellipsisWidth, out _);
+                secondLine = string.Concat(remainingText.AsSpan(0, (int)secondLineCharCount), "...");
             }
 
-            e.Graphics.DrawImageUnscaled(item.FileNameImage, textRect.X, textRect.Y);
+            // --- 中央揃えの描画計算 ---
+            // 全体の高さ = (1行目の高さ + 行間 + 2行目の高さ)
+            var totalHeight = lineHeight * 2;
+            var startY = bounds.MidY - (totalHeight / 2) + font.Size;
+
+            // 1行目の描画
+            var x1 = bounds.MidX - (font.MeasureText(firstLine) / 2);
+            canvas.DrawText(firstLine, x1, startY, font, SKFlowList.TEXT_PAINT);
+
+            // 2行目の描画
+            float x2 = bounds.MidX - (font.MeasureText(secondLine) / 2);
+            canvas.DrawText(secondLine, x2, startY + lineHeight, font, SKFlowList.TEXT_PAINT);
         }
 
-        private Rectangle GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetIconRectangle(SKDrawItemEventArgs e, int itemTextHeight)
         {
-            return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Y,
-                                 e.ItemRectangle.Width,
-                                 e.ItemRectangle.Height - itemTextHeight);
+            return new SKRect(
+                e.ItemRectangle.Left,
+                e.ItemRectangle.Top,
+                e.ItemRectangle.Right,
+                e.ItemRectangle.Bottom - itemTextHeight);
         }
 
-        private Rectangle GetThumbnailRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetThumbnailRectangle(SKDrawItemEventArgs e, int itemTextHeight)
         {
             if (this.IsShowFileName)
             {
-                return new Rectangle(e.ItemRectangle.X,
-                                     e.ItemRectangle.Y,
-                                     e.ItemRectangle.Width,
-                                     e.ItemRectangle.Height - itemTextHeight);
+                return new SKRect(
+                    e.ItemRectangle.Left,
+                    e.ItemRectangle.Top,
+                    e.ItemRectangle.Left + e.ItemRectangle.Width,
+                    e.ItemRectangle.Top + e.ItemRectangle.Height - itemTextHeight);
             }
             else
             {
@@ -800,12 +807,13 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private Rectangle GetTextRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetTextRectangle(SKDrawItemEventArgs e, int itemTextHeight)
         {
-            return new Rectangle(e.ItemRectangle.X,
-                                 e.ItemRectangle.Bottom - itemTextHeight,
-                                 e.ItemRectangle.Width,
-                                 itemTextHeight);
+            return new SKRect(
+                e.ItemRectangle.Left,
+                e.ItemRectangle.Bottom - itemTextHeight,
+                e.ItemRectangle.Right,
+                e.ItemRectangle.Bottom);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
@@ -977,34 +985,37 @@ namespace PicSum.UIComponent.Contents.FileList
             base.OnMouseClick(e);
         }
 
-        private void FlowList_Drawitems(object sender, DrawItemsEventArgs e)
+        private void FlowList_Drawitems(object sender, SKDrawItemsEventArgs e)
         {
             if (this._filterFilePathList == null)
             {
                 return;
             }
 
-            var itemTextHeight = this.GetItemTextHeight(e.Graphics);
+            using var _ = Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems");
+
+            var itemTextHeight = this.GetItemTextHeight();
             var selectedItemPen = FlowList.GetDarkSelectedItemPen(this);
             var foucusItemPen = FlowList.GetDarkFoucusItemPen(this);
-            var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
+
+            var canvas = e.Args.Surface.Canvas;
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
                 if (arg.IsSelected)
                 {
-                    arg.Graphics.FillRectangle(FlowList.DARK_SELECTED_ITEM_BRUSH, arg.ItemRectangle);
-                    arg.Graphics.DrawRectangle(selectedItemPen, arg.ItemRectangle);
+                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.SELECTED_FILL_PAINT);
+                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.SELECTED_STROKE_PAINT);
                 }
 
                 if (arg.IsFocus)
                 {
-                    arg.Graphics.DrawRectangle(foucusItemPen, arg.ItemRectangle);
+                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.FOCUS_FILL_PAINT);
                 }
 
                 if (arg.IsMousePoint)
                 {
-                    arg.Graphics.FillRectangle(FlowList.DARK_MOUSE_POINT_ITEM_BRUSH, arg.ItemRectangle);
+                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.MOUSE_POINT_FILL_PAINT);
                 }
 
                 var filePath = this._filterFilePathList[arg.ItemIndex];
@@ -1013,46 +1024,51 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (item.ThumbnailImage == null)
                 {
                     var iconRect = this.GetIconRectangle(arg, itemTextHeight);
-                    if (e.ClipRectangle.IntersectsWith(iconRect))
-                    {
-                        ThumbnailUtil.DrawIcon(
-                            arg.Graphics,
-                            item.JumboIcon,
-                            iconRect,
-                            this._scale);
+                    ThumbnailUtil.DrawIcon(
+                        canvas,
+                        SKFlowList.IMAGE_PAINT,
+                        item.JumboIcon,
+                        iconRect,
+                        this._scale);
 
-                        this.DrawFileNameImage(arg, item, itemTextHeight, font);
-                    }
+                    this.DrawFileNameImage(
+                        arg,
+                        canvas,
+                        item,
+                        itemTextHeight);
                 }
                 else
                 {
                     var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
-                    if (e.ClipRectangle.IntersectsWith(thumbRect))
+                    if (item.IsFile)
                     {
-                        if (item.IsFile)
-                        {
-                            ThumbnailUtil.DrawFileThumbnail(
-                                e.Graphics,
-                                item.ThumbnailImage,
-                                thumbRect,
-                                new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                this._scale);
-                        }
-                        else
-                        {
-                            ThumbnailUtil.DrawDirectoryThumbnail(
-                                e.Graphics,
-                                item.ThumbnailImage,
-                                thumbRect,
-                                new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                item.JumboIcon,
-                                this._scale);
-                        }
+                        ThumbnailUtil.DrawFileThumbnail(
+                            canvas,
+                            SKFlowList.IMAGE_PAINT,
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            this._scale);
+                    }
+                    else
+                    {
+                        ThumbnailUtil.DrawDirectoryThumbnail(
+                            canvas,
+                            SKFlowList.IMAGE_PAINT,
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            item.JumboIcon,
+                            this._scale);
+                    }
 
-                        if (this.IsShowFileName)
-                        {
-                            this.DrawFileNameImage(arg, item, itemTextHeight, font);
-                        }
+                    if (this.IsShowFileName)
+                    {
+                        this.DrawFileNameImage(
+                            arg,
+                            canvas,
+                            item,
+                            itemTextHeight);
                     }
                 }
             }

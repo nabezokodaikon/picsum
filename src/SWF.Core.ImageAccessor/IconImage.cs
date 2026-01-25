@@ -1,4 +1,5 @@
-﻿using SWF.Core.Base;
+﻿using SkiaSharp;
+using SWF.Core.Base;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
@@ -6,8 +7,9 @@ namespace SWF.Core.ImageAccessor
 {
     public sealed class IconImage
     {
-        private static Bitmap? _cache = null;
-        private static IconImage? _iconImage = null;
+        private static Bitmap? _bmpCache = null;
+        private static SKBitmap? _skCache = null;
+        private static IconImage? _iconCache = null;
 
         private readonly Bitmap _icon;
 
@@ -40,16 +42,16 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "IconImage.Draw"))
             {
-                if (_cache == null
-                    || _iconImage == null
-                    || _iconImage._icon != this._icon
-                    || _cache.Width != destRect.Width
-                    || _cache.Height != destRect.Height)
+                if (_bmpCache == null
+                    || _iconCache == null
+                    || _iconCache._icon != this._icon
+                    || _bmpCache.Width != destRect.Width
+                    || _bmpCache.Height != destRect.Height)
                 {
-                    _iconImage = this;
-                    _cache?.Dispose();
-                    _cache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                    using (var innerGraphics = Graphics.FromImage(_cache))
+                    _iconCache = this;
+                    _bmpCache?.Dispose();
+                    _bmpCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
+                    using (var innerGraphics = Graphics.FromImage(_bmpCache))
                     {
                         innerGraphics.SmoothingMode = SmoothingMode.None;
                         innerGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -59,13 +61,61 @@ namespace SWF.Core.ImageAccessor
 
                         innerGraphics.DrawImage(
                             this._icon,
-                            new Rectangle(0, 0, _cache.Width, _cache.Height),
+                            new Rectangle(0, 0, _bmpCache.Width, _bmpCache.Height),
                             new Rectangle(0, 0, this._icon.Width, this._icon.Height),
                             GraphicsUnit.Pixel);
                     }
                 }
 
-                graphics.DrawImageUnscaled(_cache, destRect);
+                graphics.DrawImageUnscaled(_bmpCache, destRect);
+            }
+        }
+
+        public void Draw(
+            SKCanvas canvas,
+            SKPaint paint,
+            SKRect destRect)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+
+            using (Measuring.Time(false, "IconImage.Draw"))
+            {
+                if (_skCache == null
+                    || _iconCache == null
+                    || _iconCache._icon != this._icon
+                    || _skCache.Width != destRect.Width
+                    || _skCache.Height != destRect.Height)
+                {
+                    _iconCache = this;
+                    _skCache?.Dispose();
+                    using (var bmp = new Bitmap((int)destRect.Width, (int)destRect.Height, PixelFormat.Format32bppPArgb))
+                    {
+                        using (var g = Graphics.FromImage(bmp))
+                        {
+                            g.SmoothingMode = SmoothingMode.None;
+                            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                            g.CompositingQuality = CompositingQuality.HighSpeed;
+                            g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                            g.CompositingMode = CompositingMode.SourceOver;
+
+                            g.DrawImage(
+                                this._icon,
+                                new Rectangle(0, 0, bmp.Width, bmp.Height),
+                                new Rectangle(0, 0, this._icon.Width, this._icon.Height),
+                                GraphicsUnit.Pixel);
+                        }
+
+                        _skCache = SkiaUtil.ConvertToSKBitmap(bmp);
+                    }
+                }
+
+                var x = destRect.Left + (destRect.Width - _skCache.Width) / 2f;
+                var y = destRect.Top + (destRect.Height - _skCache.Height) / 2f;
+                var r = x + _skCache.Width;
+                var b = y + _skCache.Height;
+
+                canvas.DrawBitmap(_skCache, new SKRect(x, y, r, b), paint);
             }
         }
     }

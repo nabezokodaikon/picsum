@@ -1,3 +1,4 @@
+using SkiaSharp;
 using SWF.Core.Base;
 
 namespace SWF.Core.ImageAccessor
@@ -118,6 +119,50 @@ namespace SWF.Core.ImageAccessor
             thumb.DrawResizeThumbnail(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
         }
 
+        public static void DrawFileThumbnail(
+            SKCanvas canvas,
+            SKPaint paint,
+            CvImage thumb,
+            SKRect destRect,
+            Size srcSize,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            float scale;
+            if (destRect.Width > srcSize.Width || destRect.Height > srcSize.Height)
+            {
+                scale = Math.Min(
+                    displayScale,
+                    Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height));
+            }
+            else
+            {
+                scale = Math.Min(destRect.Width / (float)srcSize.Width, destRect.Height / (float)srcSize.Height);
+            }
+
+            const int OFFSET = 16;
+            var w = srcSize.Width * scale;
+            var h = srcSize.Height * scale;
+            if (w > h && w > OFFSET)
+            {
+                w -= OFFSET;
+                h -= OFFSET * (srcSize.Height / (float)srcSize.Width);
+            }
+            else if (w <= h && h > OFFSET)
+            {
+                w -= OFFSET * (srcSize.Width / (float)srcSize.Height);
+                h -= OFFSET;
+            }
+
+            var x = destRect.Left + (destRect.Width - w) / 2f;
+            var y = destRect.Top + (destRect.Height - h) / 2f;
+
+            thumb.DrawResizeThumbnail(canvas, paint, new SKRect(x, y, x + w, y + h));
+        }
+
         public static void DrawDirectoryThumbnail(Graphics g, CvImage thumb, Rectangle destRect, Size srcSize, Image icon, float displayScale)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -139,25 +184,29 @@ namespace SWF.Core.ImageAccessor
         }
 
         public static void DrawDirectoryThumbnail(
-            Graphics g,
+            SKCanvas canvas,
+            SKPaint paint,
             CvImage thumb,
-            Rectangle destRect,
+            SKRect destRect,
             Size srcSize,
             IconImage icon,
             float displayScale)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
             ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
-            DrawFileThumbnail(g, thumb, destRect, srcSize, displayScale);
+            DrawFileThumbnail(canvas, paint, thumb, destRect, srcSize, displayScale);
 
             var destIconSize = new Size((int)(destRect.Width * 0.5f), (int)(destRect.Height * 0.5f));
-            var destIconRect = new Rectangle(
-                destRect.X + 2, destRect.Bottom - destIconSize.Height,
-                destIconSize.Width, destIconSize.Height);
+            var x = destRect.Left + 2;
+            var y = destRect.Bottom - destIconSize.Height;
+            var destIconRect = new SKRect(
+                x, y,
+                x + destIconSize.Width, y + destIconSize.Height);
 
-            icon.Draw(g, destIconRect);
+            icon.Draw(canvas, paint, destIconRect);
         }
 
         /// <summary>
@@ -189,6 +238,38 @@ namespace SWF.Core.ImageAccessor
                 var x = rect.X + (rect.Width - w) / 2f;
                 var y = rect.Y + (rect.Height - h) / 2f;
                 icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
+            }
+        }
+
+        public static void DrawIcon(
+            SKCanvas canvas,
+            SKPaint paint,
+            IconImage icon,
+            SKRect rect,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
+
+            var displayScaleWidth = icon.Width * displayScale;
+            var displayScaleHeight = icon.Height * displayScale;
+            if (Math.Max(displayScaleWidth, displayScaleHeight) <= Math.Min(rect.Width, rect.Height))
+            {
+                var w = displayScaleWidth;
+                var h = displayScaleHeight;
+                var x = rect.Left + (rect.Width - w) / 2f;
+                var y = rect.Top + (rect.Height - h) / 2f;
+                icon.Draw(canvas, paint, new SKRect(x, y, x + w, y + h));
+            }
+            else
+            {
+                var scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
+                var w = icon.Width * scale;
+                var h = icon.Width * scale;
+                var x = rect.Left + (rect.Width - w) / 2f;
+                var y = rect.Top + (rect.Height - h) / 2f;
+                icon.Draw(canvas, paint, new SKRect(x, y, x + w, y + h));
             }
         }
     }

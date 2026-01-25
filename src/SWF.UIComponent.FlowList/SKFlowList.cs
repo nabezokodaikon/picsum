@@ -1,9 +1,9 @@
+using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
-using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
@@ -12,8 +12,8 @@ namespace SWF.UIComponent.FlowList
     /// フローリストコントロール
     /// </summary>
 
-    public sealed partial class FlowList
-        : BasePaintingControl
+    public sealed partial class SKFlowList
+        : SKControl
     {
         private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
         private StringAlignment _itemTextAlignment = StringAlignment.Center;
@@ -73,7 +73,7 @@ namespace SWF.UIComponent.FlowList
         private const int STEP_SIZE = 4; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
         private const float SMOOTHNESS = 0.12f; // 追従の滑らかさ(0.1-0.3推奨)
 
-        public FlowList()
+        public SKFlowList()
         {
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
@@ -93,7 +93,7 @@ namespace SWF.UIComponent.FlowList
             this.MouseMove += this.FlowList_MouseMove;
             this.MouseDoubleClick += this.FlowList_MouseDoubleClick;
             this.MouseWheel += this.FlowList_MouseWheel;
-            this.Paint += this.FlowList_Paint;
+            this.PaintSurface += this.FlowList_PaintSurface;
             this.Resize += this.FlowList_Resize;
             this.LostFocus += this.FlowList_LostFocus;
         }
@@ -296,24 +296,20 @@ namespace SWF.UIComponent.FlowList
             this.Invalidate();
         }
 
-        private void FlowList_Paint(object sender, PaintEventArgs e)
+        private void FlowList_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            using (Measuring.Time(false, "FlowList.FlowList_Paint"))
+            using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
+                e.Surface.Canvas.Clear(SKFlowList.BACK_COLOR);
+
                 if (!this._isDraw)
                 {
                     return;
                 }
 
-                e.Graphics.SmoothingMode = SmoothingMode.None;
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
                 if (this._rectangleSelection.IsBegun)
                 {
-                    this.DrawRectangleSelection(e.Graphics);
+                    this.DrawRectangleSelection(e.Surface.Canvas);
                 }
 
                 if (this._itemCount < 1)
@@ -321,7 +317,7 @@ namespace SWF.UIComponent.FlowList
                     return;
                 }
 
-                var argArray = new DrawItemEventArgs[
+                var argArray = new SKDrawItemEventArgs[
                     this._drawParameter.DrawLastItemIndex -
                     this._drawParameter.DrawFirstItemIndex + 1];
                 var arrayIndex = 0;
@@ -329,8 +325,6 @@ namespace SWF.UIComponent.FlowList
                      itemIndex <= this._drawParameter.DrawLastItemIndex;
                      itemIndex++)
                 {
-                    var drawRect = this.GetItemDrawRectangle(itemIndex);
-
                     bool isSelected;
                     if (this._rectangleSelection.IsBegun)
                     {
@@ -344,15 +338,18 @@ namespace SWF.UIComponent.FlowList
 
                     var isMousePoint = this._mousePointItemIndex == itemIndex;
                     var isFocus = this._foucusItemIndex == itemIndex;
-
-                    var arg = new DrawItemEventArgs(e.Graphics, itemIndex, drawRect, isSelected, isMousePoint, isFocus);
+                    var drawRect = this.GetItemDrawRectangle(itemIndex);
+                    var arg = new SKDrawItemEventArgs(
+                        itemIndex,
+                        new SKRect(drawRect.Left, drawRect.Top, drawRect.Right, drawRect.Bottom),
+                        isSelected,
+                        isMousePoint,
+                        isFocus);
                     argArray[arrayIndex] = arg;
-                    this.OnDrawItem(arg);
-
                     arrayIndex++;
                 }
 
-                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, e.ClipRectangle, argArray));
+                this.OnSKDrawItems(new SKDrawItemsEventArgs(e, argArray));
             }
         }
 
@@ -1101,13 +1098,12 @@ namespace SWF.UIComponent.FlowList
             return this.GetItemDrawRectangle(row, col);
         }
 
-        private void DrawRectangleSelection(Graphics g)
+        private void DrawRectangleSelection(SKCanvas canvas)
         {
-            g.FillRectangle(DARK_RECTANGLE_SELECTION_BRUSH, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
+            var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            g.DrawRectangle(
-                this.GetDarkRectangleSelectionPen(this),
-                this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), RECTANGLE_SELECTION_FILL_PAINT);
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), GetRectangleSelectionStrokePatint(this));
         }
 
         private int GetRowFromVirtualY(int y)

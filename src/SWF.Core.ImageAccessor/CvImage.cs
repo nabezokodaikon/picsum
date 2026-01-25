@@ -1,3 +1,4 @@
+using SkiaSharp;
 using SWF.Core.Base;
 
 namespace SWF.Core.ImageAccessor
@@ -12,6 +13,7 @@ namespace SWF.Core.ImageAccessor
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
         private Bitmap? _bitmapCache = null;
+        private SKBitmap? _skBitmapCache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -108,6 +110,8 @@ namespace SWF.Core.ImageAccessor
                 this._mat = null;
                 this._bitmapCache?.Dispose();
                 this._bitmapCache = null;
+                this._skBitmapCache?.Dispose();
+                this._skBitmapCache = null;
             }
 
             this._disposed = true;
@@ -174,6 +178,39 @@ namespace SWF.Core.ImageAccessor
 
                 var srcRect = new Rectangle(0, 0, this._bitmapCache.Width, this._bitmapCache.Height);
                 g.DrawImage(this._bitmapCache, destRect, srcRect, GraphicsUnit.Pixel);
+            }
+        }
+
+        public void DrawResizeThumbnail(
+            SKCanvas canvas, SKPaint paint, SKRect destRect)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+
+            if (this._mat == null)
+            {
+                throw new InvalidOperationException("MatがNullです。");
+            }
+
+            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
+            {
+                if (this._skBitmapCache == null
+                    || this._skBitmapCache.Width != (int)destRect.Width
+                    || this._skBitmapCache.Height != (int)destRect.Height)
+                {
+                    this._skBitmapCache?.Dispose();
+                    using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
+                    {
+                        this._skBitmapCache = SkiaUtil.ConvertToSKBitmap(bmp);
+                    }
+                }
+
+                var x = destRect.Left + (destRect.Width - this._skBitmapCache.Width) / 2f;
+                var y = destRect.Top + (destRect.Height - this._skBitmapCache.Height) / 2f;
+                var r = x + this._skBitmapCache.Width;
+                var b = y + this._skBitmapCache.Height;
+
+                canvas.DrawBitmap(this._skBitmapCache, new SKRect(x, y, r, b), paint);
             }
         }
 
