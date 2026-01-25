@@ -22,6 +22,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PicSum.UIComponent.Contents.FileList
@@ -743,9 +744,8 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void DrawFileNameImage(
+        private void CacheFileNameImage(
             SKDrawItemEventArgs e,
-            SKCanvas canvas,
             FileEntity item,
             int itemTextHeight)
         {
@@ -759,26 +759,40 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var textWidth = (int)textRect.Width;
                 var textHeight = (int)textRect.Height;
+                var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
 
-                using (var bmp = new Bitmap(
+                using var bmp = new Bitmap(
                     textWidth,
                     textHeight,
-                    PixelFormat.Format32bppPArgb))
-                {
-                    using (var g = Graphics.FromImage(bmp))
-                    {
-                        var font = Fonts.GetBoldFont(Fonts.Size.Medium, this._scale);
-                        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                        g.DrawString(
-                            item.FileName,
-                            font,
-                            FlowList.DARK_ITEM_TEXT_BRUSH,
-                            new Rectangle(0, 0, textWidth, textHeight),
-                            this.flowList.ItemTextFormat);
-                    }
+                    PixelFormat.Format32bppPArgb);
+                using var textBrush = new SolidBrush(FlowList.DARK_ITEM_TEXT_COLOR);
+                using var g = Graphics.FromImage(bmp);
 
-                    item.FileNameImage = SkiaUtil.ToSKImage(bmp);
-                }
+                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                g.DrawString(
+                    item.FileName,
+                    font,
+                    textBrush,
+                    new Rectangle(0, 0, textWidth, textHeight),
+                    this.flowList.ItemTextFormat);
+
+                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
+            }
+        }
+
+        private void DrawFileNameImage(
+            SKDrawItemEventArgs e,
+            SKCanvas canvas,
+            FileEntity item,
+            int itemTextHeight)
+        {
+            var textRect = this.GetTextRectangle(e, itemTextHeight);
+
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                return;
             }
 
             canvas.DrawImage(
@@ -1002,6 +1016,36 @@ namespace PicSum.UIComponent.Contents.FileList
                 new SKRect(0, 0, this.flowList.Width, this.flowList.Height));
 
             var itemTextHeight = this.GetItemTextHeight();
+
+            Parallel.ForEach(
+                e.DrawItemEventArgs,
+                new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = 8,
+                },
+                arg =>
+            {
+                var filePath = this._filterFilePathList[arg.ItemIndex];
+                var item = this._masterFileDictionary[filePath];
+
+                if (item.ThumbnailImage == null)
+                {
+                    this.CacheFileNameImage(
+                        arg,
+                        item,
+                        itemTextHeight);
+                }
+                else
+                {
+                    if (this.IsShowFileName)
+                    {
+                        this.CacheFileNameImage(
+                            arg,
+                            item,
+                            itemTextHeight);
+                    }
+                }
+            });
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
