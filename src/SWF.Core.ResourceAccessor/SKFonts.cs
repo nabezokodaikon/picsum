@@ -30,6 +30,11 @@ namespace SWF.Core.ResourceAccessor
             }
 
             var typeface = SKTypeface.FromFamilyName(FONT_FAMILY, SKFontStyle.Normal);
+            if (typeface == null)
+            {
+                typeface = SKTypeface.FromFamilyName("Yu Gothic UI", SKFontStyle.Normal);
+            }
+
             //var typeface = LoadFontFromResource(FONT_RESOURCE_NAME);
 
             var newFont = new SKFont
