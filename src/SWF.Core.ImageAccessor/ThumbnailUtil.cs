@@ -230,38 +230,6 @@ namespace SWF.Core.ImageAccessor
             icon.Draw(canvas, paint, destIconRect);
         }
 
-        /// <summary>
-        /// アイコンを描画します。
-        /// </summary>
-        /// <param name="g">グラフィックオブジェクト</param>
-        /// <param name="icon">アイコン</param>
-        /// <param name="rect">描画領域</param>
-        public static void DrawIcon(Graphics g, IconImage icon, RectangleF rect, float displayScale)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
-
-            var displayScaleWidth = icon.Width * displayScale;
-            var displayScaleHeight = icon.Height * displayScale;
-            if (Math.Max(displayScaleWidth, displayScaleHeight) <= Math.Min(rect.Width, rect.Height))
-            {
-                var w = displayScaleWidth;
-                var h = displayScaleHeight;
-                var x = rect.X + (rect.Width - w) / 2f;
-                var y = rect.Y + (rect.Height - h) / 2f;
-                icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
-            }
-            else
-            {
-                var scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
-                var w = icon.Width * scale;
-                var h = icon.Width * scale;
-                var x = rect.X + (rect.Width - w) / 2f;
-                var y = rect.Y + (rect.Height - h) / 2f;
-                icon.Draw(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
-            }
-        }
-
         public static void DrawIcon(
             SKCanvas canvas,
             SKPaint paint,
