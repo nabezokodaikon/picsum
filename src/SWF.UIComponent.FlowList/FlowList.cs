@@ -323,10 +323,6 @@ namespace SWF.UIComponent.FlowList
                     return;
                 }
 
-                var argArray = new DrawItemEventArgs[
-                    this._drawParameter.DrawLastItemIndex -
-                    this._drawParameter.DrawFirstItemIndex + 1];
-                var arrayIndex = 0;
                 for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
                      itemIndex <= this._drawParameter.DrawLastItemIndex;
                      itemIndex++)
@@ -347,14 +343,16 @@ namespace SWF.UIComponent.FlowList
                     var isMousePoint = this._mousePointItemIndex == itemIndex;
                     var isFocus = this._foucusItemIndex == itemIndex;
 
-                    var arg = new DrawItemEventArgs(e.Graphics, itemIndex, drawRect, isSelected, isMousePoint, isFocus);
-                    argArray[arrayIndex] = arg;
+                    var arg = new DrawItemEventArgs(
+                        e.Graphics,
+                        itemIndex,
+                        drawRect,
+                        isSelected,
+                        isMousePoint,
+                        isFocus);
+
                     this.OnDrawItem(arg);
-
-                    arrayIndex++;
                 }
-
-                this.OnDrawItems(new DrawItemsEventArgs(e.Graphics, e.ClipRectangle, argArray));
             }
         }
 
