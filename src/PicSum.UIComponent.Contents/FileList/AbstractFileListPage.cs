@@ -745,12 +745,12 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void CacheFileNameImage(
-            SKDrawItemEventArgs e,
+            SKDrawItemInfo info,
             FileEntity item,
             int itemTextHeight,
             SolidBrush textBrush)
         {
-            var textRect = this.GetTextRectangle(e, itemTextHeight);
+            var textRect = this.GetTextRectangle(info, itemTextHeight);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -781,12 +781,12 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void DrawFileNameImage(
-            SKDrawItemEventArgs e,
+            SKDrawItemInfo info,
             SKCanvas canvas,
             FileEntity item,
             int itemTextHeight)
         {
-            var textRect = this.GetTextRectangle(e, itemTextHeight);
+            var textRect = this.GetTextRectangle(info, itemTextHeight);
 
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -801,38 +801,38 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.flowList.TextPaint);
         }
 
-        private SKRect GetIconRectangle(SKDrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetIconRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
             return new SKRect(
-                e.ItemRectangle.Left,
-                e.ItemRectangle.Top,
-                e.ItemRectangle.Right,
-                e.ItemRectangle.Bottom - itemTextHeight);
+                info.ItemRectangle.Left,
+                info.ItemRectangle.Top,
+                info.ItemRectangle.Right,
+                info.ItemRectangle.Bottom - itemTextHeight);
         }
 
-        private SKRect GetThumbnailRectangle(SKDrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetThumbnailRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
             if (this.IsShowFileName)
             {
                 return new SKRect(
-                    e.ItemRectangle.Left,
-                    e.ItemRectangle.Top,
-                    e.ItemRectangle.Left + e.ItemRectangle.Width,
-                    e.ItemRectangle.Top + e.ItemRectangle.Height - itemTextHeight);
+                    info.ItemRectangle.Left,
+                    info.ItemRectangle.Top,
+                    info.ItemRectangle.Left + info.ItemRectangle.Width,
+                    info.ItemRectangle.Top + info.ItemRectangle.Height - itemTextHeight);
             }
             else
             {
-                return e.ItemRectangle;
+                return info.ItemRectangle;
             }
         }
 
-        private SKRect GetTextRectangle(SKDrawItemEventArgs e, int itemTextHeight)
+        private SKRect GetTextRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
             return new SKRect(
-                e.ItemRectangle.Left,
-                e.ItemRectangle.Bottom - itemTextHeight,
-                e.ItemRectangle.Right,
-                e.ItemRectangle.Bottom);
+                info.ItemRectangle.Left,
+                info.ItemRectangle.Bottom - itemTextHeight,
+                info.ItemRectangle.Right,
+                info.ItemRectangle.Bottom);
         }
 
         private void GetThumbnailsJob_Callback(ThumbnailImageResult e)
@@ -1018,14 +1018,14 @@ namespace PicSum.UIComponent.Contents.FileList
             var itemTextHeight = this.GetItemTextHeight();
 
             Parallel.ForEach(
-                e.DrawItemEventArgs,
+                e.DrawItemInfos,
                 new ParallelOptions
                 {
                     MaxDegreeOfParallelism = 8,
                 },
-                arg =>
+                info =>
             {
-                var filePath = this._filterFilePathList[arg.ItemIndex];
+                var filePath = this._filterFilePathList[info.ItemIndex];
                 var item = this._masterFileDictionary[filePath];
                 using var textBrush =
                     new SolidBrush(FlowList.DARK_ITEM_TEXT_COLOR);
@@ -1033,14 +1033,14 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (item.ThumbnailImage == null)
                 {
                     this.CacheFileNameImage(
-                        arg,
+                        info,
                         item,
                         itemTextHeight,
                         textBrush);
                 }
                 else
                 {
-                    var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                    var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
                     if (item.IsFile)
                     {
                         ThumbnailUtil.CacheFileThumbnail(
@@ -1061,7 +1061,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (this.IsShowFileName)
                     {
                         this.CacheFileNameImage(
-                            arg,
+                            info,
                             item,
                             itemTextHeight,
                             textBrush);
@@ -1069,30 +1069,30 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             });
 
-            foreach (var arg in e.DrawItemEventArgs.AsSpan())
+            foreach (var info in e.DrawItemInfos.AsSpan())
             {
-                if (arg.IsSelected)
+                if (info.IsSelected)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, this.flowList.SelectedFillPaint);
-                    canvas.DrawRect(arg.ItemRectangle, this.flowList.SelectedStrokePaint);
+                    canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedFillPaint);
+                    canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedStrokePaint);
                 }
 
-                if (arg.IsFocus)
+                if (info.IsFocus)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, this.flowList.FocusFillPaint);
+                    canvas.DrawRect(info.ItemRectangle, this.flowList.FocusFillPaint);
                 }
 
-                if (arg.IsMousePoint)
+                if (info.IsMousePoint)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, this.flowList.MousePointFillPaint);
+                    canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
                 }
 
-                var filePath = this._filterFilePathList[arg.ItemIndex];
+                var filePath = this._filterFilePathList[info.ItemIndex];
                 var item = this._masterFileDictionary[filePath];
 
                 if (item.ThumbnailImage == null)
                 {
-                    var iconRect = this.GetIconRectangle(arg, itemTextHeight);
+                    var iconRect = this.GetIconRectangle(info, itemTextHeight);
                     ThumbnailUtil.DrawIcon(
                         canvas,
                         this.flowList.ImagePaint,
@@ -1101,14 +1101,14 @@ namespace PicSum.UIComponent.Contents.FileList
                         this._scale);
 
                     this.DrawFileNameImage(
-                        arg,
+                        info,
                         canvas,
                         item,
                         itemTextHeight);
                 }
                 else
                 {
-                    var thumbRect = this.GetThumbnailRectangle(arg, itemTextHeight);
+                    var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
                     if (item.IsFile)
                     {
                         ThumbnailUtil.DrawFileThumbnail(
@@ -1134,7 +1134,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (this.IsShowFileName)
                     {
                         this.DrawFileNameImage(
-                            arg,
+                            info,
                             canvas,
                             item,
                             itemTextHeight);
@@ -1143,7 +1143,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             using var recordedMap = recorder.EndRecording();
-            e.Args.Surface.Canvas.DrawPicture(recordedMap);
+            e.Canvas.DrawPicture(recordedMap);
         }
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)

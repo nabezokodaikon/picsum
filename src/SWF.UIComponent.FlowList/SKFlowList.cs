@@ -338,7 +338,7 @@ namespace SWF.UIComponent.FlowList
                     return;
                 }
 
-                var argArray = new SKDrawItemEventArgs[
+                var infos = new SKDrawItemInfo[
                     this._drawParameter.DrawLastItemIndex -
                     this._drawParameter.DrawFirstItemIndex + 1];
                 var arrayIndex = 0;
@@ -360,17 +360,17 @@ namespace SWF.UIComponent.FlowList
                     var isMousePoint = this._mousePointItemIndex == itemIndex;
                     var isFocus = this._foucusItemIndex == itemIndex;
                     var drawRect = this.GetItemDrawRectangle(itemIndex);
-                    var arg = new SKDrawItemEventArgs(
+                    var info = new SKDrawItemInfo(
                         itemIndex,
                         new SKRect(drawRect.Left, drawRect.Top, drawRect.Right, drawRect.Bottom),
                         isSelected,
                         isMousePoint,
                         isFocus);
-                    argArray[arrayIndex] = arg;
+                    infos[arrayIndex] = info;
                     arrayIndex++;
                 }
 
-                this.OnSKDrawItems(new SKDrawItemsEventArgs(e, argArray));
+                this.OnSKDrawItems(new SKDrawItemsEventArgs(e.Surface.Canvas, infos));
             }
         }
 

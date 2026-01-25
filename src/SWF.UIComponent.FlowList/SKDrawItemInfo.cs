@@ -6,8 +6,7 @@ namespace SWF.UIComponent.FlowList
     /// <summary>
     /// 項目描画イベントクラス
     /// </summary>
-    public sealed class SKDrawItemEventArgs
-        : EventArgs
+    public sealed class SKDrawItemInfo
     {
         /// <summary>
         /// 項目のインデックス
@@ -34,7 +33,7 @@ namespace SWF.UIComponent.FlowList
         /// </summary>
         public bool IsFocus { get; private set; }
 
-        public SKDrawItemEventArgs(
+        public SKDrawItemInfo(
             int itemIndex,
             SKRect itemRectangle,
             bool isSelected,

@@ -1,4 +1,4 @@
-﻿using SkiaSharp.Views.Desktop;
+﻿using SkiaSharp;
 using System;
 using System.Drawing;
 
@@ -7,19 +7,19 @@ namespace SWF.UIComponent.FlowList
     public sealed class SKDrawItemsEventArgs
         : EventArgs
     {
-        public SKPaintSurfaceEventArgs Args { get; private set; }
+        public SKCanvas Canvas { get; private set; }
         public Rectangle ClipRectangle { get; private set; }
-        public SKDrawItemEventArgs[] DrawItemEventArgs { get; private set; }
+        public SKDrawItemInfo[] DrawItemInfos { get; private set; }
 
         public SKDrawItemsEventArgs(
-            SKPaintSurfaceEventArgs args,
-            SKDrawItemEventArgs[] drawItemEventArgs)
+            SKCanvas canvas,
+            SKDrawItemInfo[] drawItemInfos)
         {
-            ArgumentNullException.ThrowIfNull(args);
-            ArgumentNullException.ThrowIfNull(drawItemEventArgs);
+            ArgumentNullException.ThrowIfNull(canvas);
+            ArgumentNullException.ThrowIfNull(drawItemInfos);
 
-            this.Args = args;
-            this.DrawItemEventArgs = drawItemEventArgs;
+            this.Canvas = canvas;
+            this.DrawItemInfos = drawItemInfos;
         }
     }
 }
