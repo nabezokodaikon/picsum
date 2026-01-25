@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Drawing.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -20,8 +21,8 @@ namespace SWF.Core.ResourceAccessor
         private const string FONT_FAMILY = "Yu Gothic UI";
         private const GraphicsUnit UNIT = GraphicsUnit.Pixel;
         private static readonly PrivateFontCollection PRIVATE_FONT_COLLECTION = new();
-        private static readonly Dictionary<float, Font> REGULAR_FONT_CACHE = [];
-        private static readonly Dictionary<float, Font> BOLD_FONT_CACHE = [];
+        private static readonly ConcurrentDictionary<float, Font> REGULAR_FONT_CACHE = [];
+        private static readonly ConcurrentDictionary<float, Font> BOLD_FONT_CACHE = [];
 
         public static Font GetRegularFont(Size srcSize, float scale)
         {
@@ -32,18 +33,19 @@ namespace SWF.Core.ResourceAccessor
                 return font;
             }
 
-            var newFont = new Font(
-                FONT_FAMILY,
-                size,
-                FontStyle.Regular,
-                UNIT);
-            //var newFont = LoadFontFromResource(
-            //    FONT_RESOURCE_NAME, 
-            //    size, 
-            //    FontStyle.Regular, 
-            //    UNIT);
-            REGULAR_FONT_CACHE.Add(size, newFont);
-            return newFont;
+            return REGULAR_FONT_CACHE.GetOrAdd(size, key =>
+            {
+                //return LoadFontFromResource(
+                //    FONT_RESOURCE_NAME,
+                //    size,
+                //    FontStyle.Regular,
+                //    UNIT);
+                return new Font(
+                    FONT_FAMILY,
+                    size,
+                    FontStyle.Regular,
+                    UNIT);
+            });
         }
 
         public static Font GetRegularFont(Size srcSize)
@@ -60,18 +62,19 @@ namespace SWF.Core.ResourceAccessor
                 return font;
             }
 
-            var newFont = new Font(
-                FONT_FAMILY,
-                size,
-                FontStyle.Bold,
-                UNIT);
-            //var newFont = LoadFontFromResource(
-            //    FONT_RESOURCE_NAME,
-            //    size,
-            //    FontStyle.Bold,
-            //    UNIT);
-            BOLD_FONT_CACHE.Add(size, newFont);
-            return newFont;
+            return BOLD_FONT_CACHE.GetOrAdd(size, key =>
+            {
+                //return LoadFontFromResource(
+                //    FONT_RESOURCE_NAME,
+                //    size,
+                //    FontStyle.Bold,
+                //    UNIT);
+                return new Font(
+                    FONT_FAMILY,
+                    size,
+                    FontStyle.Bold,
+                    UNIT);
+            });
         }
 
         public static Font GetBoldFont(Size srcSize)
