@@ -43,7 +43,6 @@ namespace SWF.UIComponent.FlowList
         public readonly SKPaint TextPaint = new()
         {
             Color = ITEM_TEXT_COLOR,
-            IsAntialias = true,
         };
 
         public readonly SKSamplingOptions Sampling
@@ -74,26 +73,26 @@ namespace SWF.UIComponent.FlowList
             Style = SKPaintStyle.Fill,
         };
 
-        private readonly SKPaint RectangleSelectionFillPaint = new()
+        private readonly SKPaint _rectangleSelectionFillPaint = new()
         {
             Color = RECTANGLE_SELECTION_FILL_COLOR,
             Style = SKPaintStyle.Fill,
         };
 
-        private readonly SKPaint RectangleSelectionStrokePaint = new()
+        private readonly SKPaint _rectangleSelectionStrokePaint = new()
         {
             Color = RECTANGLE_SELECTION_STROKE_COLOR,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
-        private readonly Dictionary<float, SKPaint> SelectedStrokePaintCache = [];
-        private readonly Dictionary<float, SKPaint> RectangleSelectionStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _selectedStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _rectangleSelectionStrokePaintCache = [];
 
         public SKPaint GetSelectedStrokePaint(Control control)
         {
             var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (this.SelectedStrokePaintCache.TryGetValue(scale, out var paint))
+            if (this._selectedStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
             }
@@ -105,7 +104,7 @@ namespace SWF.UIComponent.FlowList
                     Style = SKPaintStyle.Stroke,
                     StrokeWidth = this.SelectedStrokePaint.StrokeWidth,
                 };
-                this.SelectedStrokePaintCache.Add(scale, newPaint);
+                this._selectedStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }
@@ -113,7 +112,7 @@ namespace SWF.UIComponent.FlowList
         public SKPaint GetRectangleSelectionStrokePatint(Control control)
         {
             var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (this.RectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
+            if (this._rectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
             }
@@ -121,11 +120,11 @@ namespace SWF.UIComponent.FlowList
             {
                 var newPaint = new SKPaint
                 {
-                    Color = this.RectangleSelectionStrokePaint.Color,
+                    Color = this._rectangleSelectionStrokePaint.Color,
                     Style = SKPaintStyle.Stroke,
-                    StrokeWidth = this.RectangleSelectionStrokePaint.StrokeWidth,
+                    StrokeWidth = this._rectangleSelectionStrokePaint.StrokeWidth,
                 };
-                this.RectangleSelectionStrokePaintCache.Add(scale, newPaint);
+                this._rectangleSelectionStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }

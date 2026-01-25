@@ -267,12 +267,12 @@ namespace SWF.UIComponent.FlowList
                 this._scrollBar.Dispose();
                 this._itemTextFormat?.Dispose();
 
-                foreach (var item in this.SelectedStrokePaintCache)
+                foreach (var item in this._selectedStrokePaintCache)
                 {
                     item.Value.Dispose();
                 }
 
-                foreach (var item in this.RectangleSelectionStrokePaintCache)
+                foreach (var item in this._rectangleSelectionStrokePaintCache)
                 {
                     item.Value.Dispose();
                 }
@@ -283,8 +283,8 @@ namespace SWF.UIComponent.FlowList
                 this.SelectedStrokePaint.Dispose();
                 this.FocusFillPaint.Dispose();
                 this.MousePointFillPaint.Dispose();
-                this.RectangleSelectionFillPaint.Dispose();
-                this.RectangleSelectionStrokePaint.Dispose();
+                this._rectangleSelectionFillPaint.Dispose();
+                this._rectangleSelectionStrokePaint.Dispose();
             }
 
             this._itemTextFormat = null;
@@ -1123,7 +1123,7 @@ namespace SWF.UIComponent.FlowList
         {
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), this.RectangleSelectionFillPaint);
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), this._rectangleSelectionFillPaint);
             canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), this.GetRectangleSelectionStrokePatint(this));
         }
 
