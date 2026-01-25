@@ -13,106 +13,10 @@ namespace SWF.UIComponent.FlowList
     /// </summary>
     public sealed partial class SKFlowList
     {
-        public static readonly SKPaint IMAGE_PAINT = new()
-        {
+        public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
 
-        };
-
-        public static readonly SKColor BACK_COLOR = new(64, 68, 71);
-        public static readonly SKColor ITEM_TEXT_COLOR = new(255, 255, 255, 255);
-        public static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
-        public static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
-        public static readonly SKColor FOCUS_FILL_COLOR = new(255, 255, 255, 32);
-        public static readonly SKColor MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
-        public static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
-        public static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
-
-        public static readonly SKPaint TEXT_PAINT = new()
-        {
-            Color = ITEM_TEXT_COLOR,
-            IsAntialias = true,
-        };
-
-        public static readonly SKPaint SELECTED_FILL_PAINT = new()
-        {
-            Color = SELECTED_FILL_COLOR,
-            Style = SKPaintStyle.Fill,
-        };
-
-        public static readonly SKPaint SELECTED_STROKE_PAINT = new()
-        {
-            Color = SELECTED_STROKE_COLOR,
-            Style = SKPaintStyle.Stroke,
-            StrokeWidth = 2,
-        };
-
-        public static readonly SKPaint FOCUS_FILL_PAINT = new()
-        {
-            Color = FOCUS_FILL_COLOR,
-            Style = SKPaintStyle.Fill,
-        };
-
-        public static readonly SKPaint MOUSE_POINT_FILL_PAINT = new()
-        {
-            Color = MOUSE_POINT_FILL_COLOR,
-            Style = SKPaintStyle.Fill,
-        };
-
-        public static readonly SKPaint RECTANGLE_SELECTION_FILL_PAINT = new()
-        {
-            Color = RECTANGLE_SELECTION_FILL_COLOR,
-            Style = SKPaintStyle.Fill,
-        };
-
-        public static readonly SKPaint RECTANGLE_SELECTION_STROKE_PAINT = new()
-        {
-            Color = RECTANGLE_SELECTION_STROKE_COLOR,
-            Style = SKPaintStyle.Stroke,
-            StrokeWidth = 2,
-        };
-
-        private static readonly Dictionary<float, SKPaint> SELECTED_STROKE_PAINT_CACHE = [];
-        private static readonly Dictionary<float, SKPaint> RECTANGLE_SELECTION_STROKE_PAINT_CACHE = [];
-
-        public static SKPaint GetSelectedStrokePaint(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (SELECTED_STROKE_PAINT_CACHE.TryGetValue(scale, out var paint))
-            {
-                return paint;
-            }
-            else
-            {
-                var newPaint = new SKPaint
-                {
-                    Color = SELECTED_STROKE_PAINT.Color,
-                    Style = SKPaintStyle.Stroke,
-                    StrokeWidth = SELECTED_STROKE_PAINT.StrokeWidth,
-                };
-                SELECTED_STROKE_PAINT_CACHE.Add(scale, newPaint);
-                return newPaint;
-            }
-        }
-
-        public static SKPaint GetRectangleSelectionStrokePatint(Control control)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
-            if (RECTANGLE_SELECTION_STROKE_PAINT_CACHE.TryGetValue(scale, out var paint))
-            {
-                return paint;
-            }
-            else
-            {
-                var newPaint = new SKPaint
-                {
-                    Color = RECTANGLE_SELECTION_STROKE_PAINT.Color,
-                    Style = SKPaintStyle.Stroke,
-                    StrokeWidth = RECTANGLE_SELECTION_STROKE_PAINT.StrokeWidth,
-                };
-                RECTANGLE_SELECTION_STROKE_PAINT_CACHE.Add(scale, newPaint);
-                return newPaint;
-            }
-        }
+        // 項目最小サイズ
+        public const int MINIMUM_ITEM_SIZE = 16;
 
         private static readonly Size DRAG_SIZE = GetDragSize();
 
@@ -122,23 +26,106 @@ namespace SWF.UIComponent.FlowList
             return new Size(size, size);
         }
 
-        public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
+        private static readonly SKColor BACK_COLOR = new(64, 68, 71);
+        private static readonly SKColor ITEM_TEXT_COLOR = new(255, 255, 255, 255);
+        private static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor FOCUS_FILL_COLOR = new(255, 255, 255, 32);
+        private static readonly SKColor MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
+        private static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
 
-        // 項目最小サイズ
-        public const int MINIMUM_ITEM_SIZE = 16;
+        public readonly SKPaint ImagePaint = new()
+        {
 
-        public event EventHandler<DrawItemEventArgs> DrawItem;
-        public event EventHandler<SKDrawItemsEventArgs> SKDrawItems;
-        public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
-        public event EventHandler SelectedItemChanged;
-        public event EventHandler<MouseEventArgs> ItemMouseClick;
-        public event EventHandler<MouseEventArgs> ItemMouseDoubleClick;
-        public event EventHandler<MouseEventArgs> BackgroundMouseClick;
-        public event EventHandler ItemExecute;
-        public event EventHandler ItemDelete;
-        public event EventHandler ItemCopy;
-        public event EventHandler ItemCut;
-        public event EventHandler DragStart;
+        };
+
+        public readonly SKPaint TextPaint = new()
+        {
+            Color = ITEM_TEXT_COLOR,
+            IsAntialias = true,
+        };
+
+        public readonly SKPaint SelectedFillPaint = new()
+        {
+            Color = SELECTED_FILL_COLOR,
+            Style = SKPaintStyle.Fill,
+        };
+
+        public readonly SKPaint SelectedStrokePaint = new()
+        {
+            Color = SELECTED_STROKE_COLOR,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        public readonly SKPaint FocusFillPaint = new()
+        {
+            Color = FOCUS_FILL_COLOR,
+            Style = SKPaintStyle.Fill,
+        };
+
+        public readonly SKPaint MousePointFillPaint = new()
+        {
+            Color = MOUSE_POINT_FILL_COLOR,
+            Style = SKPaintStyle.Fill,
+        };
+
+        private readonly SKPaint RectangleSelectionFillPaint = new()
+        {
+            Color = RECTANGLE_SELECTION_FILL_COLOR,
+            Style = SKPaintStyle.Fill,
+        };
+
+        private readonly SKPaint RectangleSelectionStrokePaint = new()
+        {
+            Color = RECTANGLE_SELECTION_STROKE_COLOR,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        private readonly Dictionary<float, SKPaint> SelectedStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> RectangleSelectionStrokePaintCache = [];
+
+        public SKPaint GetSelectedStrokePaint(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (this.SelectedStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    Color = this.SelectedStrokePaint.Color,
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = this.SelectedStrokePaint.StrokeWidth,
+                };
+                this.SelectedStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
+
+        public SKPaint GetRectangleSelectionStrokePatint(Control control)
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            if (this.RectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    Color = this.RectangleSelectionStrokePaint.Color,
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = this.RectangleSelectionStrokePaint.StrokeWidth,
+                };
+                this.RectangleSelectionStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
@@ -437,6 +424,19 @@ namespace SWF.UIComponent.FlowList
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float MouseWheelRate { get; set; } = 1f;
+
+        public event EventHandler<DrawItemEventArgs> DrawItem;
+        public event EventHandler<SKDrawItemsEventArgs> SKDrawItems;
+        public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
+        public event EventHandler SelectedItemChanged;
+        public event EventHandler<MouseEventArgs> ItemMouseClick;
+        public event EventHandler<MouseEventArgs> ItemMouseDoubleClick;
+        public event EventHandler<MouseEventArgs> BackgroundMouseClick;
+        public event EventHandler ItemExecute;
+        public event EventHandler ItemDelete;
+        public event EventHandler ItemCopy;
+        public event EventHandler ItemCut;
+        public event EventHandler DragStart;
 
         private void OnDrawItem(DrawItemEventArgs e)
         {

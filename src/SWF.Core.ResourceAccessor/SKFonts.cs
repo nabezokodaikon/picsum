@@ -13,10 +13,12 @@ namespace SWF.Core.ResourceAccessor
             ExtraLarge,
         }
 
+        //private const string FONT_FAMILY = "Yu Gothic UI";
+        private const string FONT_FAMILY = "Microsoft YaHei";
         private const string FONT_RESOURCE_NAME
             = "SWF.Core.ResourceAccessor.Fonts.NotoSansCJKjp-Regular.otf";
 
-        public static readonly Dictionary<float, SKFont> FONT_CACHE = [];
+        private static readonly Dictionary<float, SKFont> FONT_CACHE = [];
 
         public static SKFont GetFont(Size srcSize, float scale)
         {
@@ -27,12 +29,8 @@ namespace SWF.Core.ResourceAccessor
                 return font;
             }
 
+            var typeface = SKTypeface.FromFamilyName(FONT_FAMILY, SKFontStyle.Normal);
             //var typeface = LoadFontFromResource(FONT_RESOURCE_NAME);
-            var typeface = SKTypeface.FromFamilyName("Microsoft YaHei", SKFontStyle.Normal);
-            if (typeface.FamilyName != "Microsoft YaHei")
-            {
-                typeface = SKTypeface.FromFamilyName("Yu Gothic UI", SKFontStyle.Normal);
-            }
 
             var newFont = new SKFont
             {

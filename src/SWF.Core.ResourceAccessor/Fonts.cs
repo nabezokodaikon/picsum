@@ -1,6 +1,9 @@
+using System.Drawing.Text;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
 namespace SWF.Core.ResourceAccessor
 {
-
     public static class Fonts
     {
         public enum Size
@@ -11,11 +14,14 @@ namespace SWF.Core.ResourceAccessor
             ExtraLarge,
         }
 
+        private const string FONT_RESOURCE_NAME
+            = "SWF.Core.ResourceAccessor.Fonts.NotoSansCJKjp-Regular.otf";
+
         private const string FONT_FAMILY = "Yu Gothic UI";
         private const GraphicsUnit UNIT = GraphicsUnit.Pixel;
-
-        public static readonly Dictionary<float, Font> REGULAR_FONT_CACHE = [];
-        public static readonly Dictionary<float, Font> BOLD_FONT_CACHE = [];
+        private static readonly PrivateFontCollection PRIVATE_FONT_COLLECTION = new();
+        private static readonly Dictionary<float, Font> REGULAR_FONT_CACHE = [];
+        private static readonly Dictionary<float, Font> BOLD_FONT_CACHE = [];
 
         public static Font GetRegularFont(Size srcSize, float scale)
         {
@@ -31,6 +37,11 @@ namespace SWF.Core.ResourceAccessor
                 size,
                 FontStyle.Regular,
                 UNIT);
+            //var newFont = LoadFontFromResource(
+            //    FONT_RESOURCE_NAME, 
+            //    size, 
+            //    FontStyle.Regular, 
+            //    UNIT);
             REGULAR_FONT_CACHE.Add(size, newFont);
             return newFont;
         }
@@ -54,6 +65,11 @@ namespace SWF.Core.ResourceAccessor
                 size,
                 FontStyle.Bold,
                 UNIT);
+            //var newFont = LoadFontFromResource(
+            //    FONT_RESOURCE_NAME,
+            //    size,
+            //    FontStyle.Bold,
+            //    UNIT);
             BOLD_FONT_CACHE.Add(size, newFont);
             return newFont;
         }
@@ -61,6 +77,42 @@ namespace SWF.Core.ResourceAccessor
         public static Font GetBoldFont(Size srcSize)
         {
             return GetBoldFont(srcSize, 1f);
+        }
+
+        private static Font LoadFontFromResource(
+            string resourceName,
+            float size,
+            FontStyle style,
+            GraphicsUnit unit)
+        {
+            // 1. すでに読み込み済みか確認（同じフォントを二度読み込まない工夫）
+            // ※簡易化のため、初回のみ読み込むロジック
+            if (PRIVATE_FONT_COLLECTION.Families.Length == 0)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                using Stream? stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream == null)
+                {
+                    throw new InvalidOperationException("Resource not found");
+                }
+
+                // 2. ストリームをバイト配列に変換
+                var fontData = new byte[stream.Length];
+                _ = stream.Read(fontData, 0, (int)stream.Length);
+
+                // 3. メモリ（アンマネージド領域）を確保してコピー
+                var fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
+                Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+
+                // 4. コレクションに追加
+                PRIVATE_FONT_COLLECTION.AddMemoryFont(fontPtr, fontData.Length);
+
+                // 5. メモリの解放（AddMemoryFont後は解放してOK）
+                Marshal.FreeCoTaskMem(fontPtr);
+            }
+
+            // 6. Fontオブジェクトの生成
+            return new Font(PRIVATE_FONT_COLLECTION.Families[0], size, style, unit);
         }
 
         private static int ToSize(Size size)

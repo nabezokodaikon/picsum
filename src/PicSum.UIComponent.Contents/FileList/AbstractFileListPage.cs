@@ -775,11 +775,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
             // 1行目の描画
             var x1 = bounds.MidX - (font.MeasureText(firstLine) / 2);
-            canvas.DrawText(firstLine, x1, startY, font, SKFlowList.TEXT_PAINT);
+            canvas.DrawText(firstLine, x1, startY, font, this.flowList.TextPaint);
 
             // 2行目の描画
             float x2 = bounds.MidX - (font.MeasureText(secondLine) / 2);
-            canvas.DrawText(secondLine, x2, startY + lineHeight, font, SKFlowList.TEXT_PAINT);
+            canvas.DrawText(secondLine, x2, startY + lineHeight, font, this.flowList.TextPaint);
         }
 
         private SKRect GetIconRectangle(SKDrawItemEventArgs e, int itemTextHeight)
@@ -993,27 +993,24 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             var itemTextHeight = this.GetItemTextHeight();
-            var selectedItemPen = FlowList.GetDarkSelectedItemPen(this);
-            var foucusItemPen = FlowList.GetDarkFoucusItemPen(this);
-
             var canvas = e.Args.Surface.Canvas;
 
             foreach (var arg in e.DrawItemEventArgs.AsSpan())
             {
                 if (arg.IsSelected)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.SELECTED_FILL_PAINT);
-                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.SELECTED_STROKE_PAINT);
+                    canvas.DrawRect(arg.ItemRectangle, this.flowList.SelectedFillPaint);
+                    canvas.DrawRect(arg.ItemRectangle, this.flowList.SelectedStrokePaint);
                 }
 
                 if (arg.IsFocus)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.FOCUS_FILL_PAINT);
+                    canvas.DrawRect(arg.ItemRectangle, this.flowList.FocusFillPaint);
                 }
 
                 if (arg.IsMousePoint)
                 {
-                    canvas.DrawRect(arg.ItemRectangle, SKFlowList.MOUSE_POINT_FILL_PAINT);
+                    canvas.DrawRect(arg.ItemRectangle, this.flowList.MousePointFillPaint);
                 }
 
                 var filePath = this._filterFilePathList[arg.ItemIndex];
@@ -1024,7 +1021,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     var iconRect = this.GetIconRectangle(arg, itemTextHeight);
                     ThumbnailUtil.DrawIcon(
                         canvas,
-                        SKFlowList.IMAGE_PAINT,
+                        this.flowList.ImagePaint,
                         item.JumboIcon,
                         iconRect,
                         this._scale);
@@ -1042,7 +1039,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         ThumbnailUtil.DrawFileThumbnail(
                             canvas,
-                            SKFlowList.IMAGE_PAINT,
+                            this.flowList.ImagePaint,
                             item.ThumbnailImage,
                             thumbRect,
                             new Size(item.SourceImageWidth, item.SourceImageHeight),
@@ -1052,7 +1049,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         ThumbnailUtil.DrawDirectoryThumbnail(
                             canvas,
-                            SKFlowList.IMAGE_PAINT,
+                            this.flowList.ImagePaint,
                             item.ThumbnailImage,
                             thumbRect,
                             new Size(item.SourceImageWidth, item.SourceImageHeight),

@@ -266,6 +266,25 @@ namespace SWF.UIComponent.FlowList
                 this._animationTimer.Dispose();
                 this._scrollBar.Dispose();
                 this._itemTextFormat?.Dispose();
+
+                foreach (var item in this.SelectedStrokePaintCache)
+                {
+                    item.Value.Dispose();
+                }
+
+                foreach (var item in this.RectangleSelectionStrokePaintCache)
+                {
+                    item.Value.Dispose();
+                }
+
+                this.ImagePaint.Dispose();
+                this.TextPaint.Dispose();
+                this.SelectedFillPaint.Dispose();
+                this.SelectedStrokePaint.Dispose();
+                this.FocusFillPaint.Dispose();
+                this.MousePointFillPaint.Dispose();
+                this.RectangleSelectionFillPaint.Dispose();
+                this.RectangleSelectionStrokePaint.Dispose();
             }
 
             this._itemTextFormat = null;
@@ -1104,8 +1123,8 @@ namespace SWF.UIComponent.FlowList
         {
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), RECTANGLE_SELECTION_FILL_PAINT);
-            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), GetRectangleSelectionStrokePatint(this));
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), this.RectangleSelectionFillPaint);
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), this.GetRectangleSelectionStrokePatint(this));
         }
 
         private int GetRowFromVirtualY(int y)
