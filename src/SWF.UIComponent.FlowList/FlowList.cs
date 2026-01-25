@@ -262,6 +262,8 @@ namespace SWF.UIComponent.FlowList
         {
             if (disposing)
             {
+                this._animationTimer.Stop();
+                this._animationTimer.Dispose();
                 this._scrollBar.Dispose();
                 this._itemTextFormat?.Dispose();
             }
