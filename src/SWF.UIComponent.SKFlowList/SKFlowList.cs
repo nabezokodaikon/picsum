@@ -282,8 +282,8 @@ namespace SWF.UIComponent.SKFlowList
                 this.ImagePaint.Dispose();
                 this.TextPaint.Dispose();
                 this.SelectedFillPaint.Dispose();
-                this.SelectedStrokePaint.Dispose();
-                this.FocusFillPaint.Dispose();
+                this._selectedStrokePaint.Dispose();
+                this._focusStrokePaint.Dispose();
                 this.MousePointFillPaint.Dispose();
                 this._rectangleSelectionFillPaint.Dispose();
                 this._rectangleSelectionStrokePaint.Dispose();
@@ -1131,7 +1131,7 @@ namespace SWF.UIComponent.SKFlowList
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
             canvas.DrawRect(rect, this._rectangleSelectionFillPaint);
-            canvas.DrawRect(rect, this.GetRectangleSelectionStrokePatint(this));
+            canvas.DrawRect(rect, this.GetRectangleSelectionStrokePatint());
         }
 
         private int GetRowFromVirtualY(int y)

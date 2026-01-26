@@ -30,7 +30,7 @@ namespace SWF.UIComponent.SKFlowList
         private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
         private static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
-        private static readonly SKColor FOCUS_FILL_COLOR = new(255, 255, 255, 32);
+        private static readonly SKColor FOCUS_STROKE_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
         private static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
@@ -60,23 +60,17 @@ namespace SWF.UIComponent.SKFlowList
             Style = SKPaintStyle.Fill,
         };
 
-        public readonly SKPaint SelectedStrokePaint = new()
-        {
-            Color = SELECTED_STROKE_COLOR,
-            Style = SKPaintStyle.Stroke,
-            StrokeWidth = 2,
-        };
-
-        public readonly SKPaint FocusFillPaint = new()
-        {
-            Color = FOCUS_FILL_COLOR,
-            Style = SKPaintStyle.Fill,
-        };
-
         public readonly SKPaint MousePointFillPaint = new()
         {
             Color = MOUSE_POINT_FILL_COLOR,
             Style = SKPaintStyle.Fill,
+        };
+
+        private readonly SKPaint _selectedStrokePaint = new()
+        {
+            Color = SELECTED_STROKE_COLOR,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
         };
 
         private readonly SKPaint _rectangleSelectionFillPaint = new()
@@ -92,12 +86,20 @@ namespace SWF.UIComponent.SKFlowList
             StrokeWidth = 2,
         };
 
+        private readonly SKPaint _focusStrokePaint = new()
+        {
+            Color = FOCUS_STROKE_COLOR,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
         private readonly Dictionary<float, SKPaint> _selectedStrokePaintCache = [];
         private readonly Dictionary<float, SKPaint> _rectangleSelectionStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _focusStrokePaintCache = [];
 
-        public SKPaint GetSelectedStrokePaint(Control control)
+        public SKPaint GetSelectedStrokePaint()
         {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             if (this._selectedStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
@@ -106,18 +108,18 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
-                    Color = this.SelectedStrokePaint.Color,
+                    Color = this._selectedStrokePaint.Color,
                     Style = SKPaintStyle.Stroke,
-                    StrokeWidth = this.SelectedStrokePaint.StrokeWidth,
+                    StrokeWidth = this._selectedStrokePaint.StrokeWidth * scale,
                 };
                 this._selectedStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }
 
-        public SKPaint GetRectangleSelectionStrokePatint(Control control)
+        public SKPaint GetRectangleSelectionStrokePatint()
         {
-            var scale = WindowUtil.GetCurrentWindowScale(control);
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             if (this._rectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
@@ -128,9 +130,29 @@ namespace SWF.UIComponent.SKFlowList
                 {
                     Color = this._rectangleSelectionStrokePaint.Color,
                     Style = SKPaintStyle.Stroke,
-                    StrokeWidth = this._rectangleSelectionStrokePaint.StrokeWidth,
+                    StrokeWidth = this._rectangleSelectionStrokePaint.StrokeWidth * scale,
                 };
                 this._rectangleSelectionStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
+
+        public SKPaint GetFocusStrokePaint()
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            if (this._focusStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    Color = this._focusStrokePaint.Color,
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = this._focusStrokePaint.StrokeWidth * scale,
+                };
+                this._focusStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }

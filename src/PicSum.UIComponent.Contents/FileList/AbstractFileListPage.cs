@@ -1080,17 +1080,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 if (info.IsSelected)
                 {
                     canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedFillPaint);
-                    canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedStrokePaint);
+                    canvas.DrawRect(info.ItemRectangle, this.flowList.GetSelectedStrokePaint());
                 }
-
-                if (info.IsFocus)
+                else
                 {
-                    canvas.DrawRect(info.ItemRectangle, this.flowList.FocusFillPaint);
-                }
+                    if (info.IsFocus)
+                    {
+                        canvas.DrawRect(info.ItemRectangle, this.flowList.GetFocusStrokePaint());
+                    }
 
-                if (info.IsMousePoint)
-                {
-                    canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
+                    if (info.IsMousePoint)
+                    {
+                        canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
+                    }
                 }
 
                 var filePath = this._filterFilePathList[info.ItemIndex];
