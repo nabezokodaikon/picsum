@@ -265,6 +265,10 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
+                this.fileContextMenu.Dispose();
+                this.flowList.Dispose();
+                this.toolBar.Dispose();
+
                 if (this._masterFileDictionary != null)
                 {
                     foreach (var item in this._masterFileDictionary)
@@ -273,10 +277,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         item.Value.FileNameImage?.Dispose();
                     }
                 }
-
-                this.fileContextMenu.Dispose();
-                this.flowList.Dispose();
-                this.toolBar.Dispose();
             }
 
             this._disposed = true;
