@@ -418,14 +418,14 @@ namespace SWF.UIComponent.SKFlowList
                                 this.Invalidate();
                             }
                             break;
-                        case Keys.Space:
-                            this.SpaceKeyDown();
-                            this.Invalidate();
-                            break;
-                        case Keys.ProcessKey:
-                            this.SpaceKeyDown();
-                            this.Invalidate();
-                            break;
+                        //case Keys.Space:
+                        //    this.SpaceKeyDown();
+                        //    this.Invalidate();
+                        //    break;
+                        //case Keys.ProcessKey:
+                        //    this.SpaceKeyDown();
+                        //    this.Invalidate();
+                        //    break;
                         case Keys.PageUp:
                             this.PageUpKeyDown();
                             this.Invalidate();

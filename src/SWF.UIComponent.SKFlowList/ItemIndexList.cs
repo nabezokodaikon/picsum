@@ -11,6 +11,7 @@ namespace SWF.UIComponent.SKFlowList
     {
         public event EventHandler Change;
 
+        private int _startIndex = -1;
         private readonly List<int> _list = [];
         private int[] _beforeList = null;
 
@@ -42,38 +43,44 @@ namespace SWF.UIComponent.SKFlowList
             }
 
             this._list.Add(itemIndex);
+            this._startIndex = itemIndex;
         }
 
         public void AddRange(int itemIndex)
         {
             if (this._list.Count > 0)
             {
-                var min = this._list.Min();
-                var max = this._list.Max();
-                if (itemIndex < min)
+                if (itemIndex <= this._startIndex)
                 {
-                    for (var index = itemIndex; index <= max; index++)
+                    this._list.Clear();
+                    for (var index = itemIndex; index <= this._startIndex; index++)
                     {
-                        if (!this._list.Contains(index))
-                        {
-                            this._list.Add(index);
-                        }
+                        this._list.Add(index);
                     }
                 }
-                else if (itemIndex > max)
+                else if (itemIndex > this._startIndex)
                 {
-                    for (var index = min; index <= itemIndex; index++)
+                    this._list.Clear();
+                    for (var index = this._startIndex; index <= itemIndex; index++)
                     {
-                        if (!this._list.Contains(index))
-                        {
-                            this._list.Add(index);
-                        }
+                        this._list.Add(index);
+                    }
+                }
+                else
+                {
+                    if (!this._list.Contains(itemIndex))
+                    {
+                        this._list.Add(itemIndex);
                     }
                 }
             }
             else
             {
                 this._list.Add(itemIndex);
+                if (this._list.Count == 1)
+                {
+                    this._startIndex = itemIndex;
+                }
             }
         }
 
@@ -87,11 +94,17 @@ namespace SWF.UIComponent.SKFlowList
             this._list.Remove(itemIndex);
         }
 
-        public void Union(ItemIndexList other)
+        public void Union(ItemIndexList otherList)
         {
             var isChange = false;
 
-            foreach (var itemIndex in other.GetList())
+            var otherArray = otherList.GetList();
+            if (otherArray.Length > 0 && this._list.Count == 0)
+            {
+                this._startIndex = otherArray.First();
+            }
+
+            foreach (var itemIndex in otherArray)
             {
                 if (!this._list.Contains(itemIndex))
                 {
@@ -109,6 +122,7 @@ namespace SWF.UIComponent.SKFlowList
         public void Clear()
         {
             this._list.Clear();
+            this._startIndex = -1;
         }
 
         public void BeginUpdate()
