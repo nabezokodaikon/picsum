@@ -359,7 +359,7 @@ namespace SWF.UIComponent.WideDropDown
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
             var itemText = this._itemList[e.ItemIndex];
             var itemTextSize = TextRenderer.MeasureText(itemText, font);

@@ -607,7 +607,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             g.DrawString(
                 $"Failed to load file",
-                Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
+                FontCacher.GetRegularFont(FontCacher.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
                 Brushes.LightGray,
                 new RectangleF(0, 0, this.Width, this.Height),
                 this._stringFormat);
@@ -628,7 +628,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                         g.DrawString(
                             FileUtil.GetFileName(this.FilePath),
-                            Fonts.GetRegularFont(Fonts.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
+                            FontCacher.GetRegularFont(FontCacher.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
                             Brushes.DarkGray,
                             destRect,
                             this._stringFormat);

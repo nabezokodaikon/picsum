@@ -150,7 +150,7 @@ namespace PicSum.UIComponent.InfoPanel
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
             var margin = 8 * scale;
-            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
             var textSize = e.Graphics.MeasureString("あ", font);
 
             var fileNameRect = new RectangleF(

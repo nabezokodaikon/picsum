@@ -1303,7 +1303,7 @@ namespace SWF.UIComponent.TabOperation
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+            var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
             var args = new DrawTabEventArgs
             {
                 Graphics = g,

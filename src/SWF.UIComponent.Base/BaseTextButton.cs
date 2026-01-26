@@ -28,7 +28,7 @@ namespace SWF.UIComponent.Base
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = Fonts.GetRegularFont(Fonts.Size.Small, scale);
+            var font = FontCacher.GetRegularFont(FontCacher.Size.Small, scale);
             var textSize = TextRenderer.MeasureText(this.Text, font);
             var textRect = new Rectangle(
                 this.Width - textSize.Width - ((this.Width - textSize.Width) / 2),

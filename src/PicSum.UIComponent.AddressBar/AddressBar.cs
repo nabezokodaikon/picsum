@@ -277,7 +277,7 @@ namespace PicSum.UIComponent.AddressBar
                 using (var g = this.CreateGraphics())
                 {
                     var scale = WindowUtil.GetCurrentWindowScale(this);
-                    var font = Fonts.GetRegularFont(Fonts.Size.Medium, scale);
+                    var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
                     var right = addressRect.Right - this._directoryHistoryItem.Width;
                     for (var i = this._addressItems.Count - 1; i > -1; i--)
                     {
