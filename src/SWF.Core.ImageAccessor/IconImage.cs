@@ -74,7 +74,7 @@ namespace SWF.Core.ImageAccessor
         public void Draw(
             SKCanvas canvas,
             SKPaint paint,
-            SKRect destRect)
+            SKRectI destRect)
         {
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
@@ -89,7 +89,10 @@ namespace SWF.Core.ImageAccessor
                 {
                     _iconCache = this;
                     _skCache?.Dispose();
-                    using (var bmp = new Bitmap((int)destRect.Width, (int)destRect.Height, PixelFormat.Format32bppPArgb))
+                    using (var bmp = new Bitmap(
+                        destRect.Width,
+                        destRect.Height,
+                        PixelFormat.Format32bppPArgb))
                     {
                         using (var g = Graphics.FromImage(bmp))
                         {
@@ -115,7 +118,7 @@ namespace SWF.Core.ImageAccessor
                 var r = x + _skCache.Width;
                 var b = y + _skCache.Height;
 
-                canvas.DrawImage(_skCache, new SKRect(x, y, r, b), paint);
+                canvas.DrawImage(_skCache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
             }
         }
     }

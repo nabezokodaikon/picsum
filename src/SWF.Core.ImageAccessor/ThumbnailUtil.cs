@@ -119,8 +119,8 @@ namespace SWF.Core.ImageAccessor
             thumb.DrawResizeThumbnail(g, new Rectangle((int)x, (int)y, (int)w, (int)h));
         }
 
-        private static SKRect GetDrawFileThumbnailRect(
-            SKRect destRect,
+        private static SKRectI GetDrawFileThumbnailRect(
+            SKRectI destRect,
             Size srcSize,
             float displayScale)
         {
@@ -153,12 +153,12 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.Left + (destRect.Width - w) / 2f;
             var y = destRect.Top + (destRect.Height - h) / 2f;
 
-            return new SKRect(x, y, x + w, y + h);
+            return new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h));
         }
 
         public static void CacheFileThumbnail(
             CvImage thumb,
-            SKRect destRect,
+            SKRectI destRect,
             Size srcSize,
             float displayScale)
         {
@@ -172,7 +172,7 @@ namespace SWF.Core.ImageAccessor
             SKCanvas canvas,
             SKPaint paint,
             CvImage thumb,
-            SKRect destRect,
+            SKRectI destRect,
             Size srcSize,
             float displayScale)
         {
@@ -208,7 +208,7 @@ namespace SWF.Core.ImageAccessor
             SKCanvas canvas,
             SKPaint paint,
             CvImage thumb,
-            SKRect destRect,
+            SKRectI destRect,
             Size srcSize,
             IconImage icon,
             float displayScale)
@@ -220,10 +220,12 @@ namespace SWF.Core.ImageAccessor
 
             DrawFileThumbnail(canvas, paint, thumb, destRect, srcSize, displayScale);
 
-            var destIconSize = new Size((int)(destRect.Width * 0.5f), (int)(destRect.Height * 0.5f));
+            var destIconSize = new SKSizeI(
+                (int)(destRect.Width * 0.5f),
+                (int)(destRect.Height * 0.5f));
             var x = destRect.Left + 2;
             var y = destRect.Bottom - destIconSize.Height;
-            var destIconRect = new SKRect(
+            var destIconRect = new SKRectI(
                 x, y,
                 x + destIconSize.Width, y + destIconSize.Height);
 
@@ -234,7 +236,7 @@ namespace SWF.Core.ImageAccessor
             SKCanvas canvas,
             SKPaint paint,
             IconImage icon,
-            SKRect rect,
+            SKRectI rect,
             float displayScale)
         {
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
@@ -249,16 +251,16 @@ namespace SWF.Core.ImageAccessor
                 var h = displayScaleHeight;
                 var x = rect.Left + (rect.Width - w) / 2f;
                 var y = rect.Top + (rect.Height - h) / 2f;
-                icon.Draw(canvas, paint, new SKRect(x, y, x + w, y + h));
+                icon.Draw(canvas, paint, new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h)));
             }
             else
             {
-                var scale = Math.Min(rect.Width / icon.Width, rect.Height / icon.Height);
+                var scale = Math.Min(rect.Width / (float)icon.Width, rect.Height / (float)icon.Height);
                 var w = icon.Width * scale;
                 var h = icon.Width * scale;
                 var x = rect.Left + (rect.Width - w) / 2f;
                 var y = rect.Top + (rect.Height - h) / 2f;
-                icon.Draw(canvas, paint, new SKRect(x, y, x + w, y + h));
+                icon.Draw(canvas, paint, new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h)));
             }
         }
     }

@@ -12,7 +12,7 @@ namespace SWF.UIComponent.SKFlowList
         private bool _isUse = false;
         private bool _isBegun = false;
         private Point _drawFromPoint = Point.Empty;
-        private SKRect _virtualRectangle = SKRect.Empty;
+        private SKRectI _virtualRectangle = SKRectI.Empty;
 
         public bool IsUse
         {
@@ -34,7 +34,7 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        public SKRect VirtualRectangle
+        public SKRectI VirtualRectangle
         {
             get
             {
@@ -42,11 +42,11 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        public SKRect GetDrawRectangle(int scrollValue)
+        public SKRectI GetDrawRectangle(int scrollValue)
         {
             var x = this._virtualRectangle.Left;
             var y = this._virtualRectangle.Top - scrollValue;
-            return new SKRect(
+            return new SKRectI(
                 x,
                 y,
                 x + this._virtualRectangle.Width,
@@ -75,13 +75,13 @@ namespace SWF.UIComponent.SKFlowList
             var y = Math.Min(this._drawFromPoint.Y, drawY + scrollValue);
             var w = Math.Abs(this._drawFromPoint.X - drawX);
             var h = Math.Abs(this._drawFromPoint.Y - (drawY + scrollValue));
-            this._virtualRectangle = new SKRect(x, y, x + w, y + h);
+            this._virtualRectangle = new SKRectI(x, y, x + w, y + h);
         }
 
         public void EndSelection()
         {
             this._drawFromPoint = Point.Empty;
-            this._virtualRectangle = SKRect.Empty;
+            this._virtualRectangle = SKRectI.Empty;
             this._isBegun = false;
         }
     }

@@ -26,12 +26,12 @@ namespace SWF.UIComponent.SKFlowList
         /// <summary>
         /// 項目の仮想領域
         /// </summary>
-        public SKRect VirtualRectangle { get; private set; }
+        public SKRectI VirtualRectangle { get; private set; }
 
         /// <summary>
         /// 項目の描画領域
         /// </summary>
-        public SKRect DrawRectangle { get; private set; }
+        public SKRectI DrawRectangle { get; private set; }
 
         /// <summary>
         /// 項目であるか、そうでないかを表します。
@@ -70,7 +70,7 @@ namespace SWF.UIComponent.SKFlowList
         /// <param name="isMousePoint">項目がマウスポイントされているか、されていないかを表します。</param>
         /// <param name="isFocus">項目がフォーカスされているか、されていないかを表します。</param>
         public HitTestInfo(int itemIndex, int row, int col,
-                           SKRect virtualRectangle, SKRect drawRectangle,
+                           SKRectI virtualRectangle, SKRectI drawRectangle,
                            bool isItem, bool isSelected, bool isMousePoint, bool isFocus)
         {
             if (itemIndex < 0)

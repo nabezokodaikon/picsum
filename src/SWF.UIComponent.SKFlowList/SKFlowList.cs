@@ -63,7 +63,7 @@ namespace SWF.UIComponent.SKFlowList
 
         // マウスダウンした座標情報
         private HitTestInfo _mouseDownHitTestInfo = new();
-        private SKRect _dragJudgementRectangle = new();
+        private SKRectI _dragJudgementRectangle = new();
 
         // ドラッグフラグ
         private bool _isDrag = false;
@@ -256,7 +256,7 @@ namespace SWF.UIComponent.SKFlowList
             }
 
             var rect = this.GetItemDrawRectangle(itemIndex);
-            this.Invalidate(new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height));
+            this.Invalidate(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
         protected override void Dispose(bool disposing)
@@ -562,10 +562,10 @@ namespace SWF.UIComponent.SKFlowList
                 var x = e.X - dragSize.Width / 2f;
                 var y = e.Y - dragSize.Height / 2f;
                 this._dragJudgementRectangle = new(
-                    x,
-                    y,
-                    x + dragSize.Width,
-                    y + dragSize.Height);
+                    (int)x,
+                    (int)y,
+                    (int)(x + dragSize.Width),
+                    (int)(y + dragSize.Height));
             }
             else if (e.Button == MouseButtons.Right)
             {
@@ -687,11 +687,11 @@ namespace SWF.UIComponent.SKFlowList
                     {
                         this._mousePointItemIndex = ht.ItemIndex;
                         var newRect = this.GetItemDrawRectangle(ht.ItemIndex);
-                        this.Invalidate(new Rectangle((int)newRect.Left, (int)newRect.Top, (int)newRect.Width, (int)newRect.Height));
+                        this.Invalidate(new Rectangle(newRect.Left, newRect.Top, newRect.Width, newRect.Height));
                         if (oldIndex > -1)
                         {
                             var oldRect = this.GetItemDrawRectangle(oldIndex);
-                            this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height));
+                            this.Invalidate(new Rectangle(oldRect.Left, oldRect.Top, oldRect.Width, oldRect.Height));
                         }
                     }
                 }
@@ -702,7 +702,7 @@ namespace SWF.UIComponent.SKFlowList
                     if (oldIndex > -1)
                     {
                         var oldRect = this.GetItemDrawRectangle(oldIndex);
-                        this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height));
+                        this.Invalidate(new Rectangle(oldRect.Left, oldRect.Top, oldRect.Width, oldRect.Height));
                     }
                 }
 
@@ -976,7 +976,7 @@ namespace SWF.UIComponent.SKFlowList
             return new HitTestInfo(itemIndex, row, col, virtualRect, drawRect, isItem, isSelected, isMousePoint, isFocus);
         }
 
-        private ItemIndexList GetItemIndexsFromVirtualRectangle(SKRect rect)
+        private ItemIndexList GetItemIndexsFromVirtualRectangle(SKRectI rect)
         {
             var firstRow = Math.Max(0, this.GetRowFromVirtualY((int)rect.Top));
             var firstCol = Math.Max(0, this.GetColFromX((int)rect.Left));
@@ -1092,30 +1092,30 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        private SKRect GetItemVirtualRectangle(int row, int col)
+        private SKRectI GetItemVirtualRectangle(int row, int col)
         {
             var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
             var y = row * this._itemHeight + this._itemSpace;
             var margin = this._itemSpace * 2;
-            return new SKRect(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
+            return new SKRectI(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
         }
 
-        private SKRect GetItemVirtualRectangle(int itemIndex)
+        private SKRectI GetItemVirtualRectangle(int itemIndex)
         {
             var col = itemIndex % this._drawParameter.ColCount;
             var row = Utility.ToRoundDown(itemIndex / (float)this._drawParameter.ColCount);
             return this.GetItemVirtualRectangle(row, col);
         }
 
-        private SKRect GetItemDrawRectangle(int row, int col)
+        private SKRectI GetItemDrawRectangle(int row, int col)
         {
             var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
             var y = row * this._itemHeight + this._itemSpace - this._scrollBar.Value;
             var margin = this._itemSpace * 2;
-            return new SKRect(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
+            return new SKRectI(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
         }
 
-        private SKRect GetItemDrawRectangle(int itemIndex)
+        private SKRectI GetItemDrawRectangle(int itemIndex)
         {
             var col = this._drawParameter.ColCount switch
             {

@@ -16,7 +16,7 @@ namespace SWF.UIComponent.SKFlowList
         /// <summary>
         /// 項目の描画領域
         /// </summary>
-        public SKRect ItemRectangle { get; private set; }
+        public SKRectI ItemRectangle { get; private set; }
 
         /// <summary>
         /// 項目が選択されているか、されていないかを表します。
@@ -35,7 +35,7 @@ namespace SWF.UIComponent.SKFlowList
 
         public SKDrawItemInfo(
             int itemIndex,
-            SKRect itemRectangle,
+            SKRectI itemRectangle,
             bool isSelected,
             bool isMousePoint,
             bool isFocus)

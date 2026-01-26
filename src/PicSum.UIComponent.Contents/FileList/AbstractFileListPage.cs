@@ -746,7 +746,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private void CacheFileNameImage(
             SKDrawItemInfo info,
             FileEntity item,
-            SKRect textRect,
+            SKRectI textRect,
             SolidBrush textBrush)
         {
             if (item.FileNameImage == null
@@ -755,8 +755,8 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 item.FileNameImage?.Dispose();
 
-                var textWidth = (int)textRect.Width;
-                var textHeight = (int)textRect.Height;
+                var textWidth = textRect.Width;
+                var textHeight = textRect.Height;
                 var font = FontCacher.GetBoldFont(FontCacher.Size.Medium, this._scale);
 
                 using var bmp = new Bitmap(
@@ -781,7 +781,7 @@ namespace PicSum.UIComponent.Contents.FileList
             SKDrawItemInfo info,
             SKCanvas canvas,
             FileEntity item,
-            SKRect textRect)
+            SKRectI textRect)
         {
             if (item.FileNameImage == null
                 || item.FileNameImage.Width != textRect.Width
@@ -796,20 +796,20 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.flowList.TextPaint);
         }
 
-        private SKRect GetIconRectangle(SKDrawItemInfo info, int itemTextHeight)
+        private SKRectI GetIconRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
-            return new SKRect(
+            return new SKRectI(
                 info.ItemRectangle.Left,
                 info.ItemRectangle.Top,
                 info.ItemRectangle.Right,
                 info.ItemRectangle.Bottom - itemTextHeight);
         }
 
-        private SKRect GetThumbnailRectangle(SKDrawItemInfo info, int itemTextHeight)
+        private SKRectI GetThumbnailRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
             if (this.IsShowFileName)
             {
-                return new SKRect(
+                return new SKRectI(
                     info.ItemRectangle.Left,
                     info.ItemRectangle.Top,
                     info.ItemRectangle.Left + info.ItemRectangle.Width,
@@ -821,9 +821,9 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private SKRect GetTextRectangle(SKDrawItemInfo info, int itemTextHeight)
+        private SKRectI GetTextRectangle(SKDrawItemInfo info, int itemTextHeight)
         {
-            return new SKRect(
+            return new SKRectI(
                 info.ItemRectangle.Left,
                 info.ItemRectangle.Bottom - itemTextHeight,
                 info.ItemRectangle.Right,
@@ -1008,7 +1008,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             using var recorder = new SKPictureRecorder();
             using var canvas = recorder.BeginRecording(
-                new SKRect(0, 0, this.flowList.Width, this.flowList.Height));
+                new SKRectI(0, 0, this.flowList.Width, this.flowList.Height));
 
             var itemTextHeight = this.GetItemTextHeight();
 

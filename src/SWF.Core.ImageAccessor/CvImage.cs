@@ -181,7 +181,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void CacheResizeThumbnail(SKRect destRect)
+        public void CacheResizeThumbnail(SKRectI destRect)
         {
             if (this._mat == null)
             {
@@ -191,8 +191,8 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
             {
                 if (this._skCache == null
-                    || this._skCache.Width != (int)destRect.Width
-                    || this._skCache.Height != (int)destRect.Height)
+                    || this._skCache.Width != destRect.Width
+                    || this._skCache.Height != destRect.Height)
                 {
                     this._skCache?.Dispose();
                     using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
@@ -204,7 +204,7 @@ namespace SWF.Core.ImageAccessor
         }
 
         public void DrawResizeThumbnail(
-            SKCanvas canvas, SKPaint paint, SKRect destRect)
+            SKCanvas canvas, SKPaint paint, SKRectI destRect)
         {
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
@@ -217,8 +217,8 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
             {
                 if (this._skCache == null
-                    || this._skCache.Width != (int)destRect.Width
-                    || this._skCache.Height != (int)destRect.Height)
+                    || this._skCache.Width != destRect.Width
+                    || this._skCache.Height != destRect.Height)
                 {
                     return;
                 }
@@ -228,7 +228,7 @@ namespace SWF.Core.ImageAccessor
                 var r = x + this._skCache.Width;
                 var b = y + this._skCache.Height;
 
-                canvas.DrawImage(this._skCache, new SKRect(x, y, r, b), paint);
+                canvas.DrawImage(this._skCache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
             }
         }
 
