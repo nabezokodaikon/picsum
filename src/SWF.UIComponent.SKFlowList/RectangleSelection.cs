@@ -1,3 +1,4 @@
+using SkiaSharp;
 using System;
 using System.Drawing;
 
@@ -11,7 +12,7 @@ namespace SWF.UIComponent.SKFlowList
         private bool _isUse = false;
         private bool _isBegun = false;
         private Point _drawFromPoint = Point.Empty;
-        private Rectangle _virtualRectangle = Rectangle.Empty;
+        private SKRect _virtualRectangle = SKRect.Empty;
 
         public bool IsUse
         {
@@ -33,7 +34,7 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        public Rectangle VirtualRectangle
+        public SKRect VirtualRectangle
         {
             get
             {
@@ -41,12 +42,15 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        public Rectangle GetDrawRectangle(int scrollValue)
+        public SKRect GetDrawRectangle(int scrollValue)
         {
-            return new Rectangle(this._virtualRectangle.X,
-                                 this._virtualRectangle.Y - scrollValue,
-                                 this._virtualRectangle.Width,
-                                 this._virtualRectangle.Height);
+            var x = this._virtualRectangle.Left;
+            var y = this._virtualRectangle.Top - scrollValue;
+            return new SKRect(
+                x,
+                y,
+                x + this._virtualRectangle.Width,
+                y + this._virtualRectangle.Height);
         }
 
         public void BeginSelection(int drawX, int drawY, int scrollValue)
@@ -71,13 +75,13 @@ namespace SWF.UIComponent.SKFlowList
             var y = Math.Min(this._drawFromPoint.Y, drawY + scrollValue);
             var w = Math.Abs(this._drawFromPoint.X - drawX);
             var h = Math.Abs(this._drawFromPoint.Y - (drawY + scrollValue));
-            this._virtualRectangle = new Rectangle(x, y, w, h);
+            this._virtualRectangle = new SKRect(x, y, x + w, y + h);
         }
 
         public void EndSelection()
         {
             this._drawFromPoint = Point.Empty;
-            this._virtualRectangle = Rectangle.Empty;
+            this._virtualRectangle = SKRect.Empty;
             this._isBegun = false;
         }
     }

@@ -1,6 +1,5 @@
 ﻿using SkiaSharp;
 using System;
-using System.Drawing;
 
 namespace SWF.UIComponent.SKFlowList
 {
@@ -8,7 +7,6 @@ namespace SWF.UIComponent.SKFlowList
         : EventArgs
     {
         public SKCanvas Canvas { get; private set; }
-        public Rectangle ClipRectangle { get; private set; }
         public SKDrawItemInfo[] DrawItemInfos { get; private set; }
 
         public SKDrawItemsEventArgs(

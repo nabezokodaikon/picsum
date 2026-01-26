@@ -1,5 +1,5 @@
+using SkiaSharp;
 using System;
-using System.Drawing;
 
 namespace SWF.UIComponent.SKFlowList
 {
@@ -26,12 +26,12 @@ namespace SWF.UIComponent.SKFlowList
         /// <summary>
         /// 項目の仮想領域
         /// </summary>
-        public Rectangle VirtualRectangle { get; private set; }
+        public SKRect VirtualRectangle { get; private set; }
 
         /// <summary>
         /// 項目の描画領域
         /// </summary>
-        public Rectangle DrawRectangle { get; private set; }
+        public SKRect DrawRectangle { get; private set; }
 
         /// <summary>
         /// 項目であるか、そうでないかを表します。
@@ -70,7 +70,7 @@ namespace SWF.UIComponent.SKFlowList
         /// <param name="isMousePoint">項目がマウスポイントされているか、されていないかを表します。</param>
         /// <param name="isFocus">項目がフォーカスされているか、されていないかを表します。</param>
         public HitTestInfo(int itemIndex, int row, int col,
-                           Rectangle virtualRectangle, Rectangle drawRectangle,
+                           SKRect virtualRectangle, SKRect drawRectangle,
                            bool isItem, bool isSelected, bool isMousePoint, bool isFocus)
         {
             if (itemIndex < 0)
