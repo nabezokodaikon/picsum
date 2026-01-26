@@ -372,7 +372,10 @@ namespace SWF.UIComponent.SKFlowList
                     arrayIndex++;
                 }
 
-                this.OnSKDrawItems(new SKDrawItemsEventArgs(e.Surface.Canvas, infos));
+                this.OnSKDrawItems(new SKDrawItemsEventArgs(
+                    e.Surface.Canvas,
+                    e.Surface.Canvas.LocalClipBounds,
+                    infos));
             }
         }
 
@@ -688,7 +691,7 @@ namespace SWF.UIComponent.SKFlowList
                         if (oldIndex > -1)
                         {
                             var oldRect = this.GetItemDrawRectangle(oldIndex);
-                            this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height), true);
+                            this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height));
                         }
                     }
                 }
@@ -699,7 +702,7 @@ namespace SWF.UIComponent.SKFlowList
                     if (oldIndex > -1)
                     {
                         var oldRect = this.GetItemDrawRectangle(oldIndex);
-                        this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height), true);
+                        this.Invalidate(new Rectangle((int)oldRect.Left, (int)oldRect.Top, (int)oldRect.Width, (int)oldRect.Height));
                     }
                 }
 
