@@ -1,12 +1,13 @@
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
+using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.SKFlowList
 {
     /// <summary>
     /// フローリストコントロール

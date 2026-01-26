@@ -41,9 +41,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="SKFlowList.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="SKFlowList.Definition.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -51,8 +48,5 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="FlowList.Definition.cs" />
-    <Compile Update="VScrollBarEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
 </Project>

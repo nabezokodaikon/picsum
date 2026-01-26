@@ -1,7 +1,10 @@
 ﻿using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
-namespace SWF.Core.ResourceAccessor
+namespace SWF.UIComponent.SKFlowList
 {
     public static class SKFonts
     {
@@ -16,7 +19,7 @@ namespace SWF.Core.ResourceAccessor
         //private const string FONT_FAMILY = "Yu Gothic UI";
         private const string FONT_FAMILY = "Microsoft YaHei";
         private const string FONT_RESOURCE_NAME
-            = "SWF.Core.ResourceAccessor.Fonts.NotoSansCJKjp-Regular.otf";
+            = "SWF.UIComponent.SKFlowList.Fonts.NotoSansCJKjp-Regular.otf";
 
         private static readonly Dictionary<float, SKFont> FONT_CACHE = [];
 

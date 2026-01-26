@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.SKFlowList
 {
     /// <summary>
     /// フローリストコントロール
@@ -26,8 +26,8 @@ namespace SWF.UIComponent.FlowList
             return new Size(size, size);
         }
 
+        public static readonly Color ITEM_TEXT_COLOR = Color.FromArgb(255, 255, 255);
         private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
-        private static readonly SKColor ITEM_TEXT_COLOR = new(255, 255, 255, 255);
         private static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor FOCUS_FILL_COLOR = new(255, 255, 255, 32);
@@ -48,7 +48,7 @@ namespace SWF.UIComponent.FlowList
 
         public readonly SKPaint TextPaint = new()
         {
-            Color = ITEM_TEXT_COLOR,
+            Color = new(255, 255, 255, 255),
         };
 
         public readonly SKSamplingOptions Sampling

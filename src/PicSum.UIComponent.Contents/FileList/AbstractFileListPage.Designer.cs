@@ -2,7 +2,7 @@ using PicSum.UIComponent.Contents.ContextMenu;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
-using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Windows.Forms;
 
@@ -35,8 +35,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.flowList.MouseWheelRate = 0.33f;
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
-            this.flowList.SKDrawItems += new System.EventHandler<SWF.UIComponent.FlowList.SKDrawItemsEventArgs>(this.FlowList_Drawitems);
-            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.FlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
+            this.flowList.SKDrawItems += new System.EventHandler<SWF.UIComponent.SKFlowList.SKDrawItemsEventArgs>(this.FlowList_Drawitems);
+            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.SKFlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
             this.flowList.DragStart += new System.EventHandler(this.FlowList_DragStart);
             this.flowList.SelectedItemChanged += new System.EventHandler(this.FlowList_SelectedItemChange);
             this.flowList.ItemExecute += new System.EventHandler(this.FlowList_ItemExecute);
@@ -95,7 +95,7 @@ namespace PicSum.UIComponent.Contents.FileList
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.FlowList.SKFlowList flowList;
+        private SWF.UIComponent.SKFlowList.SKFlowList flowList;
         protected PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         protected PicSum.UIComponent.Contents.FileList.FileListToolBar toolBar;
 

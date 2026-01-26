@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.SKFlowList
 {
     public sealed class SKDrawItemsEventArgs
         : EventArgs

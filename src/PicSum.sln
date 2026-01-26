@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33516.290
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PicSum.Main", "PicSum.Main\PicSum.Main.csproj", "{0689D5BA-499C-45E8-87D3-04A4CD261CCC}"
 EndProject
@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWF.UIComponent.SKFlowList", "SWF.UIComponent.SKFlowList\SWF.UIComponent.SKFlowList.csproj", "{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,6 +170,12 @@ Global
 		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.Release|x64.Build.0 = Release|x64
 		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.UWP|x64.ActiveCfg = UWP|x64
 		{D2A43C01-82AE-3FA1-9DF5-6F552B721F40}.UWP|x64.Build.0 = UWP|x64
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.Release|x64.Build.0 = Release|Any CPU
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.UWP|x64.ActiveCfg = Debug|Any CPU
+		{54C9F1BA-7B80-4F6F-A49C-DDEFCA3653B5}.UWP|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

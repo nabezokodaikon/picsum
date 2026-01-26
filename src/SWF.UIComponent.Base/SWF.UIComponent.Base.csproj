@@ -44,6 +44,9 @@
     <Compile Update="Slider.cs" />
     <Compile Update="BaseButton.cs" />
     <Compile Update="ToolStripSlider.cs" />
+    <Compile Update="VScrollBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

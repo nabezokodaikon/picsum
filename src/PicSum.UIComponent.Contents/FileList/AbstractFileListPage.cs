@@ -13,7 +13,7 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1028,7 +1028,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 var filePath = this._filterFilePathList[info.ItemIndex];
                 var item = this._masterFileDictionary[filePath];
                 using var textBrush =
-                    new SolidBrush(FlowList.DARK_ITEM_TEXT_COLOR);
+                    new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
 
                 if (item.ThumbnailImage == null)
                 {

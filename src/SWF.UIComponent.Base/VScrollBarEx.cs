@@ -1,14 +1,12 @@
-using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.Base
 {
     /// <summary>
     /// 垂直スクロールバー拡張
     /// </summary>
 
-    internal sealed partial class VScrollBarEx
+    public sealed partial class VScrollBarEx
         : VScrollBar
     {
         public new string Name
