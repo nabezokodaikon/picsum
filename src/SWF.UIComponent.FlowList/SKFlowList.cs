@@ -277,6 +277,7 @@ namespace SWF.UIComponent.FlowList
                     item.Value.Dispose();
                 }
 
+                this.BackgroundPaint.Dispose();
                 this.ImagePaint.Dispose();
                 this.TextPaint.Dispose();
                 this.SelectedFillPaint.Dispose();
@@ -321,7 +322,7 @@ namespace SWF.UIComponent.FlowList
         {
             using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
-                e.Surface.Canvas.Clear(SKFlowList.BACK_COLOR);
+                e.Surface.Canvas.DrawRect(e.Info.Rect, this.BackgroundPaint);
 
                 if (!this._isDraw)
                 {

@@ -26,7 +26,7 @@ namespace SWF.UIComponent.FlowList
             return new Size(size, size);
         }
 
-        private static readonly SKColor BACK_COLOR = new(64, 68, 71);
+        private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
         private static readonly SKColor ITEM_TEXT_COLOR = new(255, 255, 255, 255);
         private static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
@@ -34,6 +34,12 @@ namespace SWF.UIComponent.FlowList
         private static readonly SKColor MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
         private static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
+
+        public readonly SKPaint BackgroundPaint = new()
+        {
+            Color = BACKGROUND_COLOR,
+            BlendMode = SKBlendMode.Src,
+        };
 
         public readonly SKPaint ImagePaint = new()
         {
