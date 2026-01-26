@@ -21,7 +21,7 @@ namespace PicSum.Main.UIComponent
             // pageContainer
             // 
             this.pageContainer.AllowDrop = true;
-            this.pageContainer.BackColor = Color.FromArgb(250, 250, 250);
+            this.pageContainer.BackColor = Color.FromArgb(255, 64, 68, 71);
             this.pageContainer.DragDrop += this.PageContainer_DragDrop;
             this.pageContainer.DragEnter += this.PageContainer_DragEnter;
             // 
