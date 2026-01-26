@@ -323,7 +323,22 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-
+                this.viewButton.Dispose();
+                this.thumbnailSizeSlider.Dispose();
+                this.viewMenu.Dispose();
+                this.directoryMenuItem.Dispose();
+                this.imageFileMenuItem.Dispose();
+                this.otherFileMenuItem.Dispose();
+                this.toolStripSeparator1.Dispose();
+                this.fileNameMenuItem.Dispose();
+                this.movePreviewButton.Dispose();
+                this.moveNextButton.Dispose();
+                this.nameSortButton.Dispose();
+                this.pathSortButton.Dispose();
+                this.createDateSortButton.Dispose();
+                this.updateDateSortButton.Dispose();
+                this.takenDateSortButton.Dispose();
+                this.addDateSortButton.Dispose();
             }
 
             this._disposed = true;

@@ -271,7 +271,38 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (disposing)
             {
-
+                this.viewMenu.Dispose();
+                this.doublePreviewButton.Dispose();
+                this.singlePreviewButton.Dispose();
+                this.doubleNextButton.Dispose();
+                this.singleNextButton.Dispose();
+                this.indexSlider.Dispose();
+                this.viewButton.Dispose();
+                this.singleViewMenuItem.Dispose();
+                this.spreadLeftFeedMenuItem.Dispose();
+                this.spreadRightFeedMenuItem.Dispose();
+                this.sizeButton.Dispose();
+                this.sizeMenu.Dispose();
+                this.originalSizeMenuItem.Dispose();
+                this.fitWindowMenuItem.Dispose();
+                this.fitWindowLargeOnlyMenuItem.Dispose();
+                this.sizeMenuSeparator.Dispose();
+                this.filePathToolTip.Dispose();
+                this.zoomMenuItem01.Dispose();
+                this.zoomMenuItem02.Dispose();
+                this.zoomMenuItem03.Dispose();
+                this.zoomMenuItem04.Dispose();
+                this.zoomMenuItem05.Dispose();
+                this.zoomMenuItem06.Dispose();
+                this.zoomMenuItem07.Dispose();
+                this.zoomMenuItem08.Dispose();
+                this.zoomMenuItem09.Dispose();
+                this.zoomMenuItem10.Dispose();
+                this.zoomMenuItem11.Dispose();
+                this.zoomMenuItem12.Dispose();
+                this.zoomMenuItem13.Dispose();
+                this.zoomMenuItem14.Dispose();
+                this.zoomMenuItem15.Dispose();
             }
 
             this._disposed = true;

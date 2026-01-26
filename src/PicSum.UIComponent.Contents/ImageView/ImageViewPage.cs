@@ -262,10 +262,11 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 this._parameter.GetImageFiles -= this.Parameter_GetImageFiles;
 
-                this.fileContextMenu.Close();
-
                 this.leftImagePanel.Dispose();
                 this.rightImagePanel.Dispose();
+                this.checkPatternPanel.Dispose();
+                this.toolBar.Dispose();
+                this.fileContextMenu.Dispose();
             }
 
             this._disposed = true;

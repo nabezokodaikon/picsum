@@ -274,7 +274,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                 }
 
-                this.fileContextMenu.Close();
+                this.fileContextMenu.Dispose();
+                this.flowList.Dispose();
+                this.toolBar.Dispose();
             }
 
             this._disposed = true;
@@ -744,7 +746,6 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void CacheFileNameImage(
-            SKDrawItemInfo info,
             FileEntity item,
             SKRectI textRect,
             SolidBrush textBrush)
@@ -778,7 +779,6 @@ namespace PicSum.UIComponent.Contents.FileList
         }
 
         private void DrawFileNameImage(
-            SKDrawItemInfo info,
             SKCanvas canvas,
             FileEntity item,
             SKRectI textRect)
@@ -1006,10 +1006,6 @@ namespace PicSum.UIComponent.Contents.FileList
                 return;
             }
 
-            using var recorder = new SKPictureRecorder();
-            using var canvas = recorder.BeginRecording(
-                new SKRectI(0, 0, this.flowList.Width, this.flowList.Height));
-
             var itemTextHeight = this.GetItemTextHeight();
 
             Parallel.ForEach(
@@ -1031,7 +1027,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (e.LocalClipBounds.IntersectsWith(textRect))
                     {
                         this.CacheFileNameImage(
-                            info,
                             item,
                             textRect,
                             textBrush);
@@ -1066,7 +1061,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         if (e.LocalClipBounds.IntersectsWith(textRect))
                         {
                             this.CacheFileNameImage(
-                                info,
                                 item,
                                 textRect,
                                 textBrush);
@@ -1074,6 +1068,10 @@ namespace PicSum.UIComponent.Contents.FileList
                     }
                 }
             });
+
+            using var recorder = new SKPictureRecorder();
+            using var canvas = recorder.BeginRecording(
+                new SKRectI(0, 0, this.flowList.Width, this.flowList.Height));
 
             foreach (var info in e.DrawItemInfos.AsSpan())
             {
@@ -1115,7 +1113,6 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (e.LocalClipBounds.IntersectsWith(textRect))
                     {
                         this.DrawFileNameImage(
-                            info,
                             canvas,
                             item,
                             textRect);
@@ -1155,7 +1152,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         if (e.LocalClipBounds.IntersectsWith(textRect))
                         {
                             this.DrawFileNameImage(
-                                info,
                                 canvas,
                                 item,
                                 textRect);

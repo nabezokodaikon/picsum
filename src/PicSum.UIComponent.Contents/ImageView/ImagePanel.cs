@@ -233,7 +233,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (disposing)
             {
                 this.ClearImage();
-
                 this._stringFormat.Dispose();
             }
 
