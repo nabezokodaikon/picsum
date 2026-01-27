@@ -70,8 +70,6 @@ namespace SWF.UIComponent.FlowList
         // スクロール関連
         private Timer _animationTimer;
         private int _targetVerticalScroll;
-        private const int STEP_SIZE = 4; // 1回のアニメーションで動く細かさ(小さいほど滑らか)
-        private const float SMOOTHNESS = 0.12f; // 追従の滑らかさ(0.1-0.3推奨)
 
         public FlowList()
         {
@@ -770,10 +768,12 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            var currentScroll = this._scrollBar.Value;
-            var distance = this._targetVerticalScroll - currentScroll;
+            var current = (float)this._scrollBar.Value;
+            var target = (float)this._targetVerticalScroll;
+            var distance = target - current;
 
-            if (Math.Abs(distance) <= STEP_SIZE)
+            // 1. 停止判定（1ピクセル未満になったら即座に終了）
+            if (Math.Abs(distance) < 1.0f)
             {
                 this._scrollBar.Value = this._targetVerticalScroll;
                 this._animationTimer.Stop();
@@ -781,18 +781,31 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            var move = (int)(distance * SMOOTHNESS);
-            if (Math.Abs(move) < STEP_SIZE)
+            // 2. Chrome風の計算（現在の位置をターゲットに向けて「急加速・急停止」させる）
+            // 0.2f を大きくするとよりキビキビし、小さくするとよりヌルヌルします。
+            // Chromeと同等の「キュッ」とした止まり方には 0.25f 程度が理想的です。
+            var lerpFactor = 0.25f;
+            var nextValue = current + (distance * lerpFactor);
+
+            // 3. 整数値への丸め（ここが「キュッと止まる」秘訣）
+            // 単純な(int)キャストではなく、移動方向に応じて丸める
+            int moveScroll;
+            if (distance > 0)
             {
-                move = (distance > 0) ? STEP_SIZE : -STEP_SIZE;
+                moveScroll = (int)Math.Ceiling(nextValue);
+            }
+            else
+            {
+                moveScroll = (int)Math.Floor(nextValue);
             }
 
-            var moveScroll = currentScroll + move;
+            // 範囲外チェック
             if (moveScroll < this._scrollBar.Minimum)
             {
                 moveScroll = this._scrollBar.Minimum;
             }
-            else if (moveScroll > this._scrollBar.Maximum)
+
+            if (moveScroll > this._scrollBar.Maximum)
             {
                 moveScroll = this._scrollBar.Maximum;
             }
