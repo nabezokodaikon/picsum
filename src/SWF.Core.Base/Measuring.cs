@@ -10,8 +10,6 @@ namespace SWF.Core.Base
 
         public static void SetMeasuringThresholdMilliseconds(long threshold)
         {
-            AppConstants.ThrowIfNotUIThread();
-
             if (threshold < 0)
             {
                 return;
