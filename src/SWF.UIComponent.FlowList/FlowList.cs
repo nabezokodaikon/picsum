@@ -77,6 +77,7 @@ namespace SWF.UIComponent.FlowList
         {
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
+            this._scrollBar.Scroll += this.ScrollBar_Scroll;
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
             this._animationTimer = new Timer();
@@ -1548,6 +1549,42 @@ namespace SWF.UIComponent.FlowList
             else if (this._rectangleSelection.IsBegun)
             {
                 e.Cancel = true;
+            }
+        }
+
+        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.Type == ScrollEventType.LargeIncrement
+                || e.Type == ScrollEventType.SmallIncrement
+                || e.Type == ScrollEventType.LargeDecrement
+                || e.Type == ScrollEventType.SmallDecrement)
+            {
+                if (!this._animationTimer.Enabled)
+                {
+                    this._targetVerticalScroll = e.NewValue;
+                    e.NewValue = e.OldValue;
+                }
+                else
+                {
+                    var scrollDelta = (e.NewValue - e.OldValue);
+                    this._targetVerticalScroll += scrollDelta;
+                    e.NewValue = e.OldValue;
+                }
+
+                if (this._targetVerticalScroll < this._scrollBar.Minimum)
+                {
+                    this._targetVerticalScroll = this._scrollBar.Minimum;
+                }
+                else if (this._targetVerticalScroll > this._scrollBar.Maximum)
+                {
+                    this._targetVerticalScroll = this._scrollBar.Maximum;
+                }
+
+                this._animationTimer.Start();
+            }
+            else if (e.Type == ScrollEventType.ThumbTrack)
+            {
+                this._animationTimer.Stop();
             }
         }
 
