@@ -5,11 +5,16 @@ namespace SWF.Core.Base
 {
     public static class BootTimeMeasurement
     {
+        private static readonly Process _currentProcess
+            = Process.GetCurrentProcess();
+
         private static Stopwatch? _stopwatch = null;
 
         public static void Start()
         {
             AppConstants.ThrowIfNotUIThread();
+
+            _currentProcess.PriorityClass = ProcessPriorityClass.High;
 
             if (_stopwatch != null)
             {
@@ -31,6 +36,8 @@ namespace SWF.Core.Base
             _stopwatch.Stop();
             ConsoleUtil.Write(true, $"{_stopwatch.ElapsedMilliseconds.ToString("D4", CultureInfo.InvariantCulture)} ms | Boot End");
             NLogManager.GetLogger().Info($"Boot End: {_stopwatch.ElapsedMilliseconds} ms");
+
+            _currentProcess.PriorityClass = ProcessPriorityClass.Normal;
         }
     }
 }
