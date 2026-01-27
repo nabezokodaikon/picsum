@@ -19,36 +19,36 @@ namespace PicSum.Main
         [STAThread]
         static void Main()
         {
-            ConsoleUtil.Write(true, $"Program.Main 1");
             using (var mutex = new Mutex(true, AppConstants.MUTEX_NAME, out var createdNew))
             {
-                ConsoleUtil.Write(true, $"Program.Main 2");
+                ConsoleUtil.Write(true, $"Mutex");
                 if (createdNew)
                 {
+                    BootTimeMeasurement.Start();
+                    ConsoleUtil.Write(true, $"BootTimeMeasurement.Start");
+
                     AppFiles.CreateApplicationDirectories();
-                    ConsoleUtil.Write(true, $"Program.Main 3");
+                    ConsoleUtil.Write(true, $"AppFiles.CreateApplicationDirectories");
 
                     ProfileOptimization.SetProfileRoot(AppFiles.PROFILE_DIRECTORY.Value);
                     ProfileOptimization.StartProfile(AppFiles.PROFILE_FILE_NAME);
-                    ConsoleUtil.Write(true, $"Program.Main 4");
+                    ConsoleUtil.Write(true, $"ProfileOptimization.StartProfile");
 
-                    AppConstants.SetUIThreadName();
-                    ConsoleUtil.Write(true, $"Program.Main 5");
+                    //AssemblyPreloader.PreJIT(GetTypes());
+                    //ConsoleUtil.Write(true, $"AssemblyPreloader.PreJIT");
 
                     Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
-                    ConsoleUtil.Write(true, $"Program.Main 6");
-
-                    WindowsFormsSynchronizationContext.AutoInstall = false;
-                    ConsoleUtil.Write(true, $"Program.Main 7");
+                    ConsoleUtil.Write(true, $"Measuring.SetMeasuringThresholdMilliseconds");
 
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
-                    ConsoleUtil.Write(true, $"Program.Main 8");
+                    ConsoleUtil.Write(true, $"ThreadPool.SetMinThreads");
 
-                    BootTimeMeasurement.Start();
-                    ConsoleUtil.Write(true, $"Program.Main 9");
+                    AppConstants.SetUIThreadName();
+                    ConsoleUtil.Write(true, $"AppConstants.SetUIThreadName");
 
-                    //AssemblyPreloader.OptimizeStartup(GetTypes());
+                    WindowsFormsSynchronizationContext.AutoInstall = false;
+                    ConsoleUtil.Write(true, $"WindowsFormsSynchronizationContext.AutoInstall");
 
                     using (Measuring.Time(true, "Program.Main Load Configs"))
                     {
@@ -65,7 +65,6 @@ namespace PicSum.Main
                     }
 
                     var logger = NLogManager.GetLogger();
-
                     logger.Info("アプリケーションを開始します。");
 
 #if UWP
@@ -154,6 +153,7 @@ namespace PicSum.Main
                 typeof(OpenCvSharp.AccessFlag),
                 typeof(OpenCvSharp.Extensions.BitmapConverter),
                 typeof(SixLabors.ImageSharp.Advanced.AdvancedImageExtensions),
+                typeof(SkiaSharp.GRContext),
                 typeof(Svg.AttributeEventArgs),
                 typeof(ZLinq.DropInGenerateTypes),
                 typeof(ZLinq.FileSystemInfoExtensions),
