@@ -51,5 +51,32 @@ namespace SWF.Core.Base
                 );
             }
         }
+
+        public static void PreJIT(Type[] types)
+        {
+            ArgumentNullException.ThrowIfNull(types, nameof(types));
+
+            using (Measuring.Time(true, "AssemblyPreloader.PreJIT"))
+            {
+                Parallel.ForEach(
+                    types,
+                    new ParallelOptions { MaxDegreeOfParallelism = Math.Max(types.Length, 1) },
+                    type =>
+                    {
+                        foreach (var method in type.GetMethods(System.Reflection.BindingFlags.DeclaredOnly |
+                                                               System.Reflection.BindingFlags.NonPublic |
+                                                               System.Reflection.BindingFlags.Public |
+                                                               System.Reflection.BindingFlags.Instance |
+                                                               System.Reflection.BindingFlags.Static))
+                        {
+                            if (!method.IsAbstract && !method.ContainsGenericParameters)
+                            {
+                                System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(method.MethodHandle);
+                            }
+                        }
+                    }
+                );
+            }
+        }
     }
 }
