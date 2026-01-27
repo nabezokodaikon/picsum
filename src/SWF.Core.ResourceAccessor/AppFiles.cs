@@ -6,10 +6,16 @@ namespace SWF.Core.ResourceAccessor
 
     public static class AppFiles
     {
+        public const string PROFILE_FILE_NAME = "startup.profile";
+
         //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
         //    = new(IsRunningAsUwp);
         public static readonly Lazy<string> APPLICATION_DIRECTORY = new(
             GetApplicationDirectory,
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
+        public static readonly Lazy<string> PROFILE_DIRECTORY = new(
+            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "profile"),
             LazyThreadSafetyMode.ExecutionAndPublication);
         public static readonly Lazy<string> LOG_DIRECTORY = new(
             static () => Path.Combine(APPLICATION_DIRECTORY.Value, "log"),
@@ -63,6 +69,11 @@ namespace SWF.Core.ResourceAccessor
                 if (!FileUtil.IsExistsDirectory(APPLICATION_DIRECTORY.Value))
                 {
                     Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
+                }
+
+                if (!FileUtil.IsExistsDirectory(PROFILE_DIRECTORY.Value))
+                {
+                    Directory.CreateDirectory(PROFILE_DIRECTORY.Value);
                 }
 
                 if (!FileUtil.IsExistsDirectory(LOG_DIRECTORY.Value))

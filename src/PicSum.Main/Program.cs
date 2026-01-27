@@ -4,6 +4,7 @@ using SWF.Core.ResourceAccessor;
 using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,25 +25,30 @@ namespace PicSum.Main
                 ConsoleUtil.Write(true, $"Program.Main 2");
                 if (createdNew)
                 {
-                    AppConstants.SetUIThreadName();
+                    AppFiles.CreateApplicationDirectories();
                     ConsoleUtil.Write(true, $"Program.Main 3");
 
-                    Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
+                    ProfileOptimization.SetProfileRoot(AppFiles.PROFILE_DIRECTORY.Value);
+                    ProfileOptimization.StartProfile(AppFiles.PROFILE_FILE_NAME);
                     ConsoleUtil.Write(true, $"Program.Main 4");
 
-                    WindowsFormsSynchronizationContext.AutoInstall = false;
+                    AppConstants.SetUIThreadName();
                     ConsoleUtil.Write(true, $"Program.Main 5");
+
+                    Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
+                    ConsoleUtil.Write(true, $"Program.Main 6");
+
+                    WindowsFormsSynchronizationContext.AutoInstall = false;
+                    ConsoleUtil.Write(true, $"Program.Main 7");
 
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
-                    ConsoleUtil.Write(true, $"Program.Main 6");
+                    ConsoleUtil.Write(true, $"Program.Main 8");
 
                     BootTimeMeasurement.Start();
-                    ConsoleUtil.Write(true, $"Program.Main 7");
+                    ConsoleUtil.Write(true, $"Program.Main 9");
 
                     //AssemblyPreloader.OptimizeStartup(GetTypes());
-
-                    AppFiles.CreateApplicationDirectories();
 
                     using (Measuring.Time(true, "Program.Main Load Configs"))
                     {
