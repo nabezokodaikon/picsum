@@ -1,5 +1,4 @@
 using SWF.Core.Base;
-using SWF.Core.FileAccessor;
 
 namespace SWF.Core.ResourceAccessor
 {
@@ -66,30 +65,11 @@ namespace SWF.Core.ResourceAccessor
         {
             using (Measuring.Time(true, "AppFiles.CreateApplicationDirectories"))
             {
-                if (!FileUtil.IsExistsDirectory(APPLICATION_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
-                }
-
-                if (!FileUtil.IsExistsDirectory(PROFILE_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(PROFILE_DIRECTORY.Value);
-                }
-
-                if (!FileUtil.IsExistsDirectory(LOG_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(LOG_DIRECTORY.Value);
-                }
-
-                if (!FileUtil.IsExistsDirectory(CONFIG_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
-                }
-
-                if (!FileUtil.IsExistsDirectory(DATABASE_DIRECTORY.Value))
-                {
-                    Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
-                }
+                Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
+                Directory.CreateDirectory(PROFILE_DIRECTORY.Value);
+                Directory.CreateDirectory(LOG_DIRECTORY.Value);
+                Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
+                Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
             }
         }
     }
