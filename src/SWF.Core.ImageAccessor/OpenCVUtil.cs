@@ -116,13 +116,22 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Mat ReadImageFileToMat(byte[] bf)
+        public static unsafe Mat ReadImageFileToMat(byte[] bf)
         {
-            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+            if (bf == null || bf.Length == 0)
+            {
+                ArgumentNullException.ThrowIfNull(bf);
+            }
 
             using (Measuring.Time(false, "OpenCVUtil.ReadImageFileToMat"))
             {
-                return Cv2.ImDecode(bf, ImreadModes.Unchanged);
+                fixed (byte* p = bf)
+                {
+                    using (var rawData = Mat.FromPixelData(1, bf.Length, MatType.CV_8UC1, (IntPtr)p))
+                    {
+                        return Cv2.ImDecode(rawData, ImreadModes.Unchanged);
+                    }
+                }
             }
         }
 
