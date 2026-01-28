@@ -921,16 +921,16 @@ namespace SWF.UIComponent.SKFlowList
 
                 if (this._drawParameter.ScrollBarMaximum > 0)
                 {
-                    this._scrollBar.LargeChange = (int)(this.Height / 2f);
-                    this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 8f);
+                    this._scrollBar.LargeChange = this._itemHeight * 2;
+                    this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 4f);
                     this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
                     this._scrollBar.Visible = true;
                 }
                 else
                 {
                     this._scrollBar.Visible = false;
-                    this._scrollBar.LargeChange = this._itemHeight;
-                    this._scrollBar.SmallChange = this._scrollBar.LargeChange / 8;
+                    this._scrollBar.LargeChange = this._itemHeight * 2;
+                    this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 4f);
                     this._scrollBar.Value = this._scrollBar.Minimum;
                     this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
                 }
@@ -939,8 +939,8 @@ namespace SWF.UIComponent.SKFlowList
             {
                 this._drawParameter = new DrawParameter();
                 this._scrollBar.Visible = false;
-                this._scrollBar.LargeChange = this._itemHeight;
-                this._scrollBar.SmallChange = this._scrollBar.LargeChange / 8;
+                this._scrollBar.LargeChange = this._itemHeight * 2;
+                this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 4f);
                 this._scrollBar.Value = this._scrollBar.Minimum;
                 this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
             }
