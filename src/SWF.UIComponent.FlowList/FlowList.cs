@@ -1084,10 +1084,16 @@ namespace SWF.UIComponent.FlowList
             else
             {
                 var drawRect = this.GetItemDrawRectangle(itemIndex);
-                if (drawRect.Top < 0 || drawRect.Bottom > this.Height)
+                if (drawRect.Top < 0)
                 {
                     var virtualRect = this.GetItemVirtualRectangle(itemIndex);
                     this._scrollBar.Value = virtualRect.Top - this._itemSpace;
+                    return true;
+                }
+                else if (drawRect.Bottom > this.Height)
+                {
+                    var virtualRect = this.GetItemVirtualRectangle(itemIndex);
+                    this._scrollBar.Value = virtualRect.Bottom - this.Height + this._itemSpace;
                     return true;
                 }
                 else
