@@ -1012,7 +1012,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 e.DrawItemInfos,
                 new ParallelOptions
                 {
-                    MaxDegreeOfParallelism = Math.Min(e.DrawItemInfos.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM),
+                    MaxDegreeOfParallelism = Math.Min(e.DrawItemInfos.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM_LIGHT),
                 },
                 info =>
             {

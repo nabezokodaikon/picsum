@@ -11,6 +11,9 @@ namespace SWF.Core.Base
         public static readonly int MAX_DEGREE_OF_PARALLELISM
             = Math.Min(16, Environment.ProcessorCount / 2);
 
+        public static readonly int MAX_DEGREE_OF_PARALLELISM_LIGHT
+            = Math.Min(4, Environment.ProcessorCount / 2);
+
         private static WindowsFormsSynchronizationContext? _uiContext = null;
 
         public static void SetUIThreadName()
