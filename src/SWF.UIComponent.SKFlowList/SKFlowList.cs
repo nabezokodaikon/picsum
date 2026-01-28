@@ -177,7 +177,7 @@ namespace SWF.UIComponent.SKFlowList
             this._selectedItemIndexs.Clear();
             this._selectedItemIndexs.Add(itemIndex);
 
-            this.EnsureVisible(itemIndex);
+            this.EnsureVisible(itemIndex, false);
 
             this.Invalidate();
 
@@ -209,7 +209,7 @@ namespace SWF.UIComponent.SKFlowList
             }
             else
             {
-                this.EnsureVisible(itemIndex);
+                this.EnsureVisible(itemIndex, false);
             }
 
             this.Invalidate();
@@ -1066,27 +1066,59 @@ namespace SWF.UIComponent.SKFlowList
             return list;
         }
 
-        private bool EnsureVisible(int itemIndex)
+        private bool EnsureVisible(int itemIndex, bool isScroll)
         {
-            var drawRect = this.GetItemDrawRectangle(itemIndex);
-            if (drawRect.Top < 0)
+            if (isScroll)
             {
-                // 上へスクロール
-                var virtualRect = this.GetItemVirtualRectangle(itemIndex);
-                this._scrollBar.Value = (int)(virtualRect.Top - this._itemSpace);
-                return true;
-            }
-            else if (drawRect.Bottom > this.Height)
-            {
-                // 下へスクロール              
-                var virtualRect = this.GetItemVirtualRectangle(itemIndex);
-                this._scrollBar.Value = (int)(virtualRect.Bottom - this.Height + this._itemSpace);
-                return true;
+                var drawRect = this.GetItemDrawRectangle(itemIndex);
+                if (drawRect.Top < 0)
+                {
+                    var virtualRect = this.GetItemVirtualRectangle(itemIndex);
+                    if (!this._animationTimer.Enabled)
+                    {
+                        this._targetVerticalScroll = virtualRect.Top - this._itemSpace;
+                    }
+                    else
+                    {
+                        this._targetVerticalScroll += virtualRect.Top - this._itemSpace - this._targetVerticalScroll;
+                    }
+
+                    this._animationTimer.Start();
+                    return true;
+                }
+                else if (drawRect.Bottom > this.Height)
+                {
+                    var virtualRect = this.GetItemVirtualRectangle(itemIndex);
+                    if (!this._animationTimer.Enabled)
+                    {
+                        this._targetVerticalScroll = virtualRect.Bottom - this.Height + this._itemSpace;
+                    }
+                    else
+                    {
+                        this._targetVerticalScroll += virtualRect.Bottom - this.Height + this._itemSpace - this._targetVerticalScroll;
+                    }
+
+                    this._animationTimer.Start();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                // 既に表示されています。
-                return false;
+                var drawRect = this.GetItemDrawRectangle(itemIndex);
+                if (drawRect.Top < 0 || drawRect.Bottom > this.Height)
+                {
+                    var virtualRect = this.GetItemVirtualRectangle(itemIndex);
+                    this._scrollBar.Value = virtualRect.Top - this._itemSpace;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -1189,13 +1221,7 @@ namespace SWF.UIComponent.SKFlowList
                     this._selectedItemIndexs.Add(newIndex);
                 }
 
-                var itemRect = this.GetItemDrawRectangle(newIndex);
-                if (itemRect.Top < 0)
-                {
-                    this._scrollBar.Value = Math.Max(this._scrollBar.Minimum, this._scrollBar.Value - this._itemHeight);
-                }
-
-                this.EnsureVisible(newIndex);
+                this.EnsureVisible(newIndex, true);
 
                 this._foucusItemIndex = newIndex;
 
@@ -1233,13 +1259,7 @@ namespace SWF.UIComponent.SKFlowList
                     this._selectedItemIndexs.Add(newIndex);
                 }
 
-                var itemRect = this.GetItemDrawRectangle(newIndex);
-                if (itemRect.Bottom > this.Height)
-                {
-                    this._scrollBar.Value = Math.Min(this._scrollBar.Maximum, this._scrollBar.Value + this._itemHeight);
-                }
-
-                this.EnsureVisible(newIndex);
+                this.EnsureVisible(newIndex, true);
 
                 this._foucusItemIndex = newIndex;
 
@@ -1277,13 +1297,7 @@ namespace SWF.UIComponent.SKFlowList
                     this._selectedItemIndexs.Add(newIndex);
                 }
 
-                var itemRect = this.GetItemDrawRectangle(newIndex);
-                if (itemRect.Top < 0)
-                {
-                    this._scrollBar.Value = Math.Max(this._scrollBar.Minimum, this._scrollBar.Value - this._itemHeight);
-                }
-
-                this.EnsureVisible(newIndex);
+                this.EnsureVisible(newIndex, true);
 
                 this._foucusItemIndex = newIndex;
 
@@ -1322,13 +1336,7 @@ namespace SWF.UIComponent.SKFlowList
                     this._selectedItemIndexs.Add(newIndex);
                 }
 
-                var itemRect = this.GetItemDrawRectangle(newIndex);
-                if (itemRect.Bottom > this.Height)
-                {
-                    this._scrollBar.Value = Math.Min(this._scrollBar.Maximum, this._scrollBar.Value + this._itemHeight);
-                }
-
-                this.EnsureVisible(newIndex);
+                this.EnsureVisible(newIndex, true);
 
                 this._foucusItemIndex = newIndex;
 
@@ -1381,7 +1389,7 @@ namespace SWF.UIComponent.SKFlowList
                 this._selectedItemIndexs.Add(newIndex);
             }
 
-            this.EnsureVisible(newIndex);
+            this.EnsureVisible(newIndex, true);
 
             this._foucusItemIndex = newIndex;
         }
@@ -1415,7 +1423,7 @@ namespace SWF.UIComponent.SKFlowList
                 this._selectedItemIndexs.Add(newIndex);
             }
 
-            this.EnsureVisible(newIndex);
+            this.EnsureVisible(newIndex, true);
 
             this._foucusItemIndex = newIndex;
         }
@@ -1444,7 +1452,7 @@ namespace SWF.UIComponent.SKFlowList
                 this._selectedItemIndexs.Add(newIndex);
             }
 
-            this.EnsureVisible(newIndex);
+            this.EnsureVisible(newIndex, true);
 
             this._foucusItemIndex = newIndex;
         }
@@ -1473,7 +1481,7 @@ namespace SWF.UIComponent.SKFlowList
                 this._selectedItemIndexs.Add(newIndex);
             }
 
-            this.EnsureVisible(newIndex);
+            this.EnsureVisible(newIndex, true);
 
             this._foucusItemIndex = newIndex;
         }
