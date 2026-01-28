@@ -17,8 +17,6 @@ namespace PicSum.Job.Jobs
     public sealed class FilesGetByTagJob
         : AbstractTwoWayJob<FilesGetByTagParameter, ListResult<FileShallowInfoEntity>>
     {
-        private const int MAX_DEGREE_OF_PARALLELISM = 8;
-
         protected override async ValueTask Execute(FilesGetByTagParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
@@ -43,7 +41,7 @@ namespace PicSum.Job.Jobs
                             new ParallelOptions
                             {
                                 CancellationToken = cts.Token,
-                                MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                                MaxDegreeOfParallelism = Math.Min(dtos.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM),
                             },
                             async (dto, token) =>
                             {

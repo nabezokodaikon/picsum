@@ -10,8 +10,6 @@ namespace PicSum.Job.Jobs
     public sealed class ImageFileCacheJob
         : AbstractOneWayJob<ImageFileCacheParameter>
     {
-        private const int MAX_DEGREE_OF_PARALLELISM = 4;
-
         protected override async ValueTask Execute(ImageFileCacheParameter parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
@@ -58,7 +56,7 @@ namespace PicSum.Job.Jobs
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
-                            MaxDegreeOfParallelism = MAX_DEGREE_OF_PARALLELISM,
+                            MaxDegreeOfParallelism = Math.Min(targetFiles.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM),
                         },
                         async (file, token) =>
                         {

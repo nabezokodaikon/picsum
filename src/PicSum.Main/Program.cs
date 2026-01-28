@@ -59,7 +59,10 @@ namespace PicSum.Main
 
                         Parallel.ForEach(
                             actions,
-                            new ParallelOptions { MaxDegreeOfParallelism = actions.Length },
+                            new ParallelOptions
+                            {
+                                MaxDegreeOfParallelism = Math.Min(actions.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM),
+                            },
                             _ => _()
                         );
                     }

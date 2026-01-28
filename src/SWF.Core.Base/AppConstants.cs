@@ -7,6 +7,10 @@ namespace SWF.Core.Base
         public const string MUTEX_NAME = "fadae40f7f7e837033b2ac472808f03e7c9cce257210a11ff9cf4b8bf8b1ce0d";
         public const string PIPE_NAME = "2cb501081d1ec16e2feb1988139bcba70f0539d98b80d2d2fc83d0e167814331";
         public const float DEFAULT_ZOOM_VALUE = 1f;
+
+        public static readonly int MAX_DEGREE_OF_PARALLELISM
+            = Math.Min(16, Environment.ProcessorCount / 2);
+
         private static WindowsFormsSynchronizationContext? _uiContext = null;
 
         public static void SetUIThreadName()

@@ -46,7 +46,10 @@ namespace SWF.Core.Base
             {
                 Parallel.ForEach(
                     criticalTypes,
-                    new ParallelOptions { MaxDegreeOfParallelism = Math.Max(criticalTypes.Length, 1) },
+                    new ParallelOptions
+                    {
+                        MaxDegreeOfParallelism = Math.Min(criticalTypes.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM)
+                    },
                     SyncPreloadAssemblyForType
                 );
             }
@@ -60,7 +63,10 @@ namespace SWF.Core.Base
             {
                 Parallel.ForEach(
                     types,
-                    new ParallelOptions { MaxDegreeOfParallelism = Math.Max(types.Length, 1) },
+                    new ParallelOptions
+                    {
+                        MaxDegreeOfParallelism = Math.Min(types.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM)
+                    },
                     type =>
                     {
                         foreach (var method in type.GetMethods(System.Reflection.BindingFlags.DeclaredOnly |
