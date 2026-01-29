@@ -48,7 +48,7 @@ namespace SWF.Core.Base
                     criticalTypes,
                     new ParallelOptions
                     {
-                        MaxDegreeOfParallelism = Math.Min(criticalTypes.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM)
+                        MaxDegreeOfParallelism = AppConstants.GetHeavyMaxDegreeOfParallelism(criticalTypes)
                     },
                     SyncPreloadAssemblyForType
                 );
@@ -65,7 +65,7 @@ namespace SWF.Core.Base
                     types,
                     new ParallelOptions
                     {
-                        MaxDegreeOfParallelism = Math.Min(types.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM)
+                        MaxDegreeOfParallelism = AppConstants.GetHeavyMaxDegreeOfParallelism(types)
                     },
                     type =>
                     {

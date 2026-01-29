@@ -61,7 +61,7 @@ namespace PicSum.Main
                             actions,
                             new ParallelOptions
                             {
-                                MaxDegreeOfParallelism = Math.Min(actions.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM),
+                                MaxDegreeOfParallelism = AppConstants.GetHeavyMaxDegreeOfParallelism(actions),
                             },
                             _ => _()
                         );

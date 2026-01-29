@@ -8,10 +8,10 @@ namespace SWF.Core.Base
         public const string PIPE_NAME = "2cb501081d1ec16e2feb1988139bcba70f0539d98b80d2d2fc83d0e167814331";
         public const float DEFAULT_ZOOM_VALUE = 1f;
 
-        public static readonly int MAX_DEGREE_OF_PARALLELISM
+        private static readonly int HEAVY_MAX_DEGREE_OF_PARALLELISM
             = Math.Min(16, Environment.ProcessorCount / 2);
 
-        public static readonly int MAX_DEGREE_OF_PARALLELISM_LIGHT
+        private static readonly int LIGHT_MAX_DEGREE_OF_PARALLELISM
             = Math.Min(4, Environment.ProcessorCount / 2);
 
         private static WindowsFormsSynchronizationContext? _uiContext = null;
@@ -47,6 +47,20 @@ namespace SWF.Core.Base
             }
 
             return _uiContext;
+        }
+
+        public static int GetHeavyMaxDegreeOfParallelism<T>(T[] collection)
+        {
+            ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+
+            return Math.Min(Math.Max(collection.Length, 1), HEAVY_MAX_DEGREE_OF_PARALLELISM);
+        }
+
+        public static int GetLightMaxDegreeOfParallelism<T>(T[] collection)
+        {
+            ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+
+            return Math.Min(Math.Max(collection.Length, 1), LIGHT_MAX_DEGREE_OF_PARALLELISM);
         }
     }
 

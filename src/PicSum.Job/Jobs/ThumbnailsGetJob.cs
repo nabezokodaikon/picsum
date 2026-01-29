@@ -41,7 +41,7 @@ namespace PicSum.Job.Jobs
                         new ParallelOptions
                         {
                             CancellationToken = cts.Token,
-                            MaxDegreeOfParallelism = Math.Min(filePathList.Length, AppConstants.MAX_DEGREE_OF_PARALLELISM_LIGHT),
+                            MaxDegreeOfParallelism = AppConstants.GetLightMaxDegreeOfParallelism(filePathList),
                         },
                         async (filePath, token) =>
                         {
