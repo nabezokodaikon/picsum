@@ -494,6 +494,11 @@ namespace SWF.Core.ImageAccessor
                         {
                             return MagickUtil.ReadImageFile(filePath);
                         }
+                    case ImageMagick.MagickFormat.Ico:
+                        using (Measuring.Time(false, "ImageUtil.ReadImageFileWithImageMagick: Ico"))
+                        {
+                            return MagickUtil.ReadImageFile(filePath);
+                        }
                     case ImageMagick.MagickFormat.Icon:
                         using (Measuring.Time(false, "ImageUtil.ReadImageFileWithImageMagick: Icon"))
                         {
