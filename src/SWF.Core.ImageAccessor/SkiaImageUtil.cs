@@ -61,6 +61,50 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static SKImage ToSKImageFast(Bitmap src)
+        {
+            ArgumentNullException.ThrowIfNull(src, nameof(src));
+
+            using (Measuring.Time(false, "SkiaImageUtil.ToSKImageFast"))
+            {
+                // 1. LockBits (GDI+ 側で 1~3ms 程度消費)
+                var data = src.LockBits(
+                    new Rectangle(0, 0, src.Width, src.Height),
+                    ImageLockMode.ReadOnly,
+                    PixelFormat.Format32bppPArgb);
+
+                try
+                {
+                    // 2. ピクセル情報の定義
+                    var info = new SKImageInfo(src.Width, src.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
+
+                    // 3. SKPixmap を作成 (ピクセルポインタを包むだけの超軽量オブジェクト)
+                    using var pixmap = new SKPixmap(info, data.Scan0, data.Stride);
+
+                    // 4. FromPixels (SKPixmap, releaseProc, context) を使用
+                    // これが SkiaSharp における「ポインタ参照のみ」の最速ルートの一つです
+                    var skImage = SKImage.FromPixels(pixmap, (address, context) =>
+                    {
+                        var bmp = (Bitmap)context;
+                        bmp.UnlockBits(data);
+                    }, src);
+
+                    if (skImage == null)
+                    {
+                        src.UnlockBits(data);
+                        throw new InvalidOperationException("Failed to create SKImage from pixmap.");
+                    }
+
+                    return skImage;
+                }
+                catch
+                {
+                    src.UnlockBits(data);
+                    throw;
+                }
+            }
+        }
+
         public static Bitmap ReadImageFile(Stream stream)
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
