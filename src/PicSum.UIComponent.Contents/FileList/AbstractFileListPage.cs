@@ -1037,22 +1037,11 @@ namespace PicSum.UIComponent.Contents.FileList
                     var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
                     if (e.LocalClipBounds.IntersectsWith(thumbRect))
                     {
-                        if (item.IsFile)
-                        {
-                            ThumbnailUtil.CacheFileThumbnail(
-                                item.ThumbnailImage,
-                                thumbRect,
-                                new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                this._scale);
-                        }
-                        else
-                        {
-                            ThumbnailUtil.CacheFileThumbnail(
-                                item.ThumbnailImage,
-                                thumbRect,
-                                new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                this._scale);
-                        }
+                        ThumbnailUtil.CacheFileThumbnail(
+                            item.ThumbnailImage,
+                            thumbRect,
+                            new Size(item.SourceImageWidth, item.SourceImageHeight),
+                            this._scale);
                     }
 
                     if (this.IsShowFileName)

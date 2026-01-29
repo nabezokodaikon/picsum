@@ -116,14 +116,14 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static unsafe Mat ReadImageFileToMat(byte[] bf)
+        public static unsafe Mat ReadImageBuffer(byte[] bf)
         {
             if (bf == null || bf.Length == 0)
             {
                 ArgumentNullException.ThrowIfNull(bf);
             }
 
-            using (Measuring.Time(false, "OpenCVUtil.ReadImageFileToMat"))
+            using (Measuring.Time(false, "OpenCVUtil.ReadImageBuffer"))
             {
                 fixed (byte* p = bf)
                 {

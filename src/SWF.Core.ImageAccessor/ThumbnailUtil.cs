@@ -25,15 +25,15 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static OpenCvSharp.Mat ToImage(byte[] bf)
+        public static OpenCvSharp.Mat ReadImageBuffer(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
-            using (Measuring.Time(false, "ThumbnailUtil.ToImage"))
+            using (Measuring.Time(false, "ThumbnailUtil.ReadImageBuffer"))
             {
                 try
                 {
-                    return OpenCVUtil.ReadImageFileToMat(bf);
+                    return OpenCVUtil.ReadImageBuffer(bf);
                 }
                 catch (OutOfMemoryException ex)
                 {

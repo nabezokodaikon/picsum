@@ -278,7 +278,7 @@ namespace PicSum.Job.Logics
                 {
                     return new CvImage(
                         filePath,
-                        ThumbnailUtil.ToImage(cache.ThumbnailBuffer),
+                        ThumbnailUtil.ReadImageBuffer(cache.ThumbnailBuffer),
                         imageSize,
                         zoomValue);
                 }

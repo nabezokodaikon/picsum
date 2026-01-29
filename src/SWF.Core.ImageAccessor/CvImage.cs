@@ -12,7 +12,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
-        private Bitmap? _bitmapCache = null;
+        private Bitmap? _gdiCache = null;
         private SKImage? _skCache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
@@ -108,8 +108,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this._mat?.Dispose();
                 this._mat = null;
-                this._bitmapCache?.Dispose();
-                this._bitmapCache = null;
+                this._gdiCache?.Dispose();
+                this._gdiCache = null;
                 this._skCache?.Dispose();
                 this._skCache = null;
             }
@@ -123,7 +123,7 @@ namespace SWF.Core.ImageAccessor
             GC.SuppressFinalize(this);
         }
 
-        public void DrawEmptyImage(Graphics g, Brush brush, RectangleF destRect)
+        public void DrawEmpty(Graphics g, Brush brush, RectangleF destRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
             ArgumentNullException.ThrowIfNull(brush, nameof(brush));
@@ -131,7 +131,7 @@ namespace SWF.Core.ImageAccessor
             g.FillRectangle(brush, destRect);
         }
 
-        public void DrawZoomThumbnailImage(
+        public void DrawZoomThumbnail(
             Graphics g, RectangleF destRect, RectangleF srcRect)
         {
             ArgumentNullException.ThrowIfNull(g, nameof(g));
@@ -141,18 +141,18 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("MatがNullです。");
             }
 
-            using (Measuring.Time(false, "CvImage.DrawZoomThumbnailImage"))
+            using (Measuring.Time(false, "CvImage.DrawZoomThumbnail"))
             {
-                if (this._bitmapCache == null
-                    || this._bitmapCache.Width != (int)destRect.Width
-                    || this._bitmapCache.Height != (int)destRect.Height)
+                if (this._gdiCache == null
+                    || this._gdiCache.Width != (int)destRect.Width
+                    || this._gdiCache.Height != (int)destRect.Height)
                 {
-                    this._bitmapCache?.Dispose();
-                    this._bitmapCache = OpenCVUtil.ToBitmap(this._mat);
+                    this._gdiCache?.Dispose();
+                    this._gdiCache = OpenCVUtil.ToBitmap(this._mat);
                 }
 
                 var zoomRect = this.GetZoomRectange(srcRect);
-                g.DrawImage(this._bitmapCache, destRect, zoomRect, GraphicsUnit.Pixel);
+                g.DrawImage(this._gdiCache, destRect, zoomRect, GraphicsUnit.Pixel);
             }
         }
 
@@ -168,16 +168,16 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
             {
-                if (this._bitmapCache == null
-                    || this._bitmapCache.Width != (int)destRect.Width
-                    || this._bitmapCache.Height != (int)destRect.Height)
+                if (this._gdiCache == null
+                    || this._gdiCache.Width != (int)destRect.Width
+                    || this._gdiCache.Height != (int)destRect.Height)
                 {
-                    this._bitmapCache?.Dispose();
-                    this._bitmapCache = OpenCVUtil.ToBitmap(this._mat);
+                    this._gdiCache?.Dispose();
+                    this._gdiCache = OpenCVUtil.ToBitmap(this._mat);
                 }
 
-                var srcRect = new Rectangle(0, 0, this._bitmapCache.Width, this._bitmapCache.Height);
-                g.DrawImage(this._bitmapCache, destRect, srcRect, GraphicsUnit.Pixel);
+                var srcRect = new Rectangle(0, 0, this._gdiCache.Width, this._gdiCache.Height);
+                g.DrawImage(this._gdiCache, destRect, srcRect, GraphicsUnit.Pixel);
             }
         }
 
@@ -320,15 +320,15 @@ namespace SWF.Core.ImageAccessor
 
                 using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
-                    if (this._bitmapCache == null
-                        || this._bitmapCache.Width != width
-                        || this._bitmapCache.Height != height)
+                    if (this._gdiCache == null
+                        || this._gdiCache.Width != width
+                        || this._gdiCache.Height != height)
                     {
-                        this._bitmapCache?.Dispose();
-                        this._bitmapCache = OpenCVUtil.Resize(this._mat, width, height);
+                        this._gdiCache?.Dispose();
+                        this._gdiCache = OpenCVUtil.Resize(this._mat, width, height);
                     }
 
-                    g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
+                    g.DrawImageUnscaled(this._gdiCache, (int)destRect.X, (int)destRect.Y);
                 }
             }
             catch (Exception ex) when (
@@ -356,15 +356,15 @@ namespace SWF.Core.ImageAccessor
             {
                 using (Measuring.Time(false, "CvImage.DrawResizeImage"))
                 {
-                    if (this._bitmapCache == null
-                        || this._bitmapCache.Width != destRect.Width
-                        || this._bitmapCache.Height != destRect.Height)
+                    if (this._gdiCache == null
+                        || this._gdiCache.Width != destRect.Width
+                        || this._gdiCache.Height != destRect.Height)
                     {
-                        this._bitmapCache?.Dispose();
-                        this._bitmapCache = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height);
+                        this._gdiCache?.Dispose();
+                        this._gdiCache = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height);
                     }
 
-                    g.DrawImageUnscaled(this._bitmapCache, destRect);
+                    g.DrawImageUnscaled(this._gdiCache, destRect);
                 }
             }
             catch (Exception ex) when (

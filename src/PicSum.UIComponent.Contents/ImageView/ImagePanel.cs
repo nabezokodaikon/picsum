@@ -623,7 +623,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     if (image.IsLoadingImage)
                     {
                         var destRect = this.GetImageDestRectangle();
-                        image.DrawEmptyImage(g, Brushes.LightGray, destRect);
+                        image.DrawEmpty(g, Brushes.LightGray, destRect);
 
                         g.DrawString(
                             FileUtil.GetFileName(this.FilePath),
@@ -638,7 +638,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomThumbnailImage(g, destRect, srcRect);
+                            image.DrawZoomThumbnail(g, destRect, srcRect);
                         }
                         else
                         {
