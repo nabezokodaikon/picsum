@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
-    public static class SkiaUtil
+    public static class SkiaImageUtil
     {
         private const int WEBP_QUALITY = 80;
 
@@ -15,7 +15,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(src, nameof(src));
 
-            using (Measuring.Time(false, "SkiaUtil.ToBitmap"))
+            using (Measuring.Time(false, "SkiaImageUtil.ToBitmap"))
             {
                 var bitmap = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppPArgb);
                 var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
@@ -41,7 +41,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(src, nameof(src));
 
-            using (Measuring.Time(false, "SkiaUtil.ToSKImage"))
+            using (Measuring.Time(false, "SkiaImageUtil.ToSKImage"))
             {
                 var data = src.LockBits(new Rectangle(0, 0, src.Width, src.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
                 try
@@ -65,7 +65,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
-            using (Measuring.Time(false, "SkiaUtil.ReadImageFile"))
+            using (Measuring.Time(false, "SkiaImageUtil.ReadImageFile"))
             {
                 if (stream.CanSeek)
                 {
@@ -86,7 +86,7 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap Resize(SKImage srcImage, float newWidth, float newHeight)
         {
-            using (Measuring.Time(false, "SkiaUtil.Resize"))
+            using (Measuring.Time(false, "SkiaImageUtil.Resize"))
             {
                 ArgumentNullException.ThrowIfNull(srcImage, nameof(srcImage));
 
@@ -118,7 +118,7 @@ namespace SWF.Core.ImageAccessor
 
         public static Bitmap Resize(SKImage src, SKRectI roi, float targetWidth, float targetHeight)
         {
-            using (Measuring.Time(false, "SkiaUtil.Resize"))
+            using (Measuring.Time(false, "SkiaBitmapUtil.Resize"))
             {
                 ArgumentNullException.ThrowIfNull(src, nameof(src));
 
@@ -145,7 +145,7 @@ namespace SWF.Core.ImageAccessor
 
         public static SKImage ReadImageFileToSKImage(byte[] bf)
         {
-            using (Measuring.Time(false, "SkiaUtil.ReadImageFileToSKImage"))
+            using (Measuring.Time(false, "SkiaImageUtil.ReadImageFileToSKImage"))
             {
                 if (bf == null || bf.Length == 0)
                 {
@@ -164,7 +164,7 @@ namespace SWF.Core.ImageAccessor
 
         public static byte[] ToCompressionBinary(SKImage image)
         {
-            using (Measuring.Time(false, "SkiaUtil.ToCompressionBinary"))
+            using (Measuring.Time(false, "SkiaImageUtil.ToCompressionBinary"))
             {
                 ArgumentNullException.ThrowIfNull(image, nameof(image));
 

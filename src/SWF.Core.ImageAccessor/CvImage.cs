@@ -197,7 +197,7 @@ namespace SWF.Core.ImageAccessor
                     this._skCache?.Dispose();
                     using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
                     {
-                        this._skCache = SkiaUtil.ToSKImage(bmp);
+                        this._skCache = SkiaImageUtil.ToSKImage(bmp);
                     }
                 }
             }

@@ -147,7 +147,7 @@ namespace SWF.Core.ImageAccessor
                     || this._bitmapCache.Height != (int)destRect.Height)
                 {
                     this._bitmapCache?.Dispose();
-                    this._bitmapCache = SkiaUtil.ToBitmap(this._src);
+                    this._bitmapCache = SkiaImageUtil.ToBitmap(this._src);
                 }
 
                 var zoomRect = this.GetZoomRectange(srcRect);
@@ -172,7 +172,7 @@ namespace SWF.Core.ImageAccessor
                     || this._bitmapCache.Height != (int)destRect.Height)
                 {
                     this._bitmapCache?.Dispose();
-                    this._bitmapCache = SkiaUtil.ToBitmap(this._src);
+                    this._bitmapCache = SkiaImageUtil.ToBitmap(this._src);
                 }
 
                 var srcRect = new Rectangle(0, 0, this._bitmapCache.Width, this._bitmapCache.Height);
@@ -194,9 +194,9 @@ namespace SWF.Core.ImageAccessor
                     || this._skCache.Height != destRect.Height)
                 {
                     this._skCache?.Dispose();
-                    using (var bmp = SkiaUtil.Resize(this._src, destRect.Width, destRect.Height))
+                    using (var bmp = SkiaImageUtil.Resize(this._src, destRect.Width, destRect.Height))
                     {
-                        this._skCache = SkiaUtil.ToSKImage(bmp);
+                        this._skCache = SkiaImageUtil.ToSKImage(bmp);
                     }
                 }
             }
@@ -245,7 +245,7 @@ namespace SWF.Core.ImageAccessor
             {
                 using (Measuring.Time(false, "SkiaImage.CreateScaleImage"))
                 {
-                    return SkiaUtil.Resize(this._src, width, height);
+                    return SkiaImageUtil.Resize(this._src, width, height);
                 }
             }
             catch (Exception ex) when (
@@ -284,7 +284,7 @@ namespace SWF.Core.ImageAccessor
                         (int)zoomRect.Right,
                         (int)zoomRect.Bottom);
 
-                    using (var resizedBmp = SkiaUtil.Resize(this._src, roi, destRect.Width, destRect.Height))
+                    using (var resizedBmp = SkiaImageUtil.Resize(this._src, roi, destRect.Width, destRect.Height))
                     {
                         g.DrawImage(resizedBmp,
                             destRect,
@@ -325,7 +325,7 @@ namespace SWF.Core.ImageAccessor
                         || this._bitmapCache.Height != height)
                     {
                         this._bitmapCache?.Dispose();
-                        this._bitmapCache = SkiaUtil.Resize(this._src, width, height);
+                        this._bitmapCache = SkiaImageUtil.Resize(this._src, width, height);
                     }
 
                     g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
@@ -361,7 +361,7 @@ namespace SWF.Core.ImageAccessor
                         || this._bitmapCache.Height != destRect.Height)
                     {
                         this._bitmapCache?.Dispose();
-                        this._bitmapCache = SkiaUtil.Resize(this._src, destRect.Width, destRect.Height);
+                        this._bitmapCache = SkiaImageUtil.Resize(this._src, destRect.Width, destRect.Height);
                     }
 
                     g.DrawImageUnscaled(this._bitmapCache, destRect);
