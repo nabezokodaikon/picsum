@@ -430,7 +430,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     using (Measuring.Time(false, "ImageUtil.ReadImageFileWithVarious: Webp"))
                     {
-                        return ConvertIfGrayscale(OpenCVUtil.ReadImageFile(ms), ms);
+                        return SkiaBitmapUtil.ReadImageFile(ms);
                     }
                 }
                 else
