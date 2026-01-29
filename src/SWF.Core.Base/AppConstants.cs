@@ -10,7 +10,8 @@ namespace SWF.Core.Base
 
         private static readonly int HEAVY_MAX_DEGREE_OF_PARALLELISM
             = Math.Min(16, Environment.ProcessorCount / 2);
-
+        private static readonly int MIDDLE_MAX_DEGREE_OF_PARALLELISM
+            = Math.Min(8, Environment.ProcessorCount / 2);
         private static readonly int LIGHT_MAX_DEGREE_OF_PARALLELISM
             = Math.Min(4, Environment.ProcessorCount / 2);
 
@@ -54,6 +55,13 @@ namespace SWF.Core.Base
             ArgumentNullException.ThrowIfNull(collection, nameof(collection));
 
             return Math.Min(Math.Max(collection.Length, 1), HEAVY_MAX_DEGREE_OF_PARALLELISM);
+        }
+
+        public static int GetMiddleMaxDegreeOfParallelism<T>(T[] collection)
+        {
+            ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+
+            return Math.Min(Math.Max(collection.Length, 1), MIDDLE_MAX_DEGREE_OF_PARALLELISM);
         }
 
         public static int GetLightMaxDegreeOfParallelism<T>(T[] collection)
