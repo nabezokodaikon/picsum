@@ -715,7 +715,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DrawImage(SKCanvas canvas)
         {
-            using (Measuring.Time(true, "ImagePanel.DrawImage"))
+            using (Measuring.Time(false, "ImagePanel.DrawImage"))
             {
                 try
                 {

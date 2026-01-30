@@ -130,7 +130,7 @@ namespace SWF.Core.ImageAccessor
 
         public static SKImage Resize(SKImage srcImage, float newWidth, float newHeight)
         {
-            using (Measuring.Time(true, "SkiaImageUtil.Resize"))
+            using (Measuring.Time(false, "SkiaImageUtil.Resize"))
             {
                 ArgumentNullException.ThrowIfNull(srcImage, nameof(srcImage));
 
@@ -150,8 +150,13 @@ namespace SWF.Core.ImageAccessor
                 using (var canvas = new SKCanvas(destBitmap))
                 using (var paint = new SKPaint { IsAntialias = true })
                 {
-                    using (Measuring.Time(true, "SkiaImageUtil.Resize"))
-                        canvas.DrawImage(srcImage, new SKRect(0, 0, targetWidth, targetHeight), sampling, paint);
+                    using (Measuring.Time(false, "SkiaImageUtil.Resize"))
+                    {
+                        canvas.DrawImage(
+                            srcImage,
+                            new SKRect(0, 0, targetWidth, targetHeight),
+                            sampling, paint);
+                    }
                 }
 
                 var resultImage = SKImage.FromBitmap(destBitmap);
