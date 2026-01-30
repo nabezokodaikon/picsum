@@ -42,7 +42,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         public event EventHandler DragStart;
 
 #pragma warning disable CA2213 // リソースを保持する変数。
-        private readonly Image _thumbnailPanelImage = ResourceFiles.ThumbnailPanelIcon.Value;
+        private readonly Image _thumbnailPanelImage = new Bitmap(144, 144);
 #pragma warning restore CA2213
 
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
