@@ -81,6 +81,24 @@ namespace SWF.Core.ImageAccessor
             }).False();
         }
 
+        public async ValueTask<SkiaImage> GetSKCache(string filePath, float zoomValue)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+
+            return await this.Get(filePath, cache =>
+            {
+                if (!cache.IsEmpty && cache.Bitmap != null)
+                {
+                    return new SkiaImage(
+                        filePath, SkiaImageUtil.ToSKImage(cache.Bitmap), zoomValue);
+                }
+                else
+                {
+                    return SkiaImage.EMPTY;
+                }
+            }).False();
+        }
+
         public async ValueTask Create(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

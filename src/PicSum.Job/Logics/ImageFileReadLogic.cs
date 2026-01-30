@@ -1,6 +1,7 @@
 using PicSum.Job.Common;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SkiaSharp;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -22,8 +23,8 @@ namespace PicSum.Job.Logics
             float thumbnailSize,
             ImageSizeMode sizeMode)
         {
-            CvImage? image = null;
-            Bitmap? thumbnail = null;
+            SkiaImage? image = null;
+            SKImage? thumbnail = null;
 
             try
             {
@@ -70,7 +71,7 @@ namespace PicSum.Job.Logics
         {
             var thumbnail = await this.GetThumbnail(filePath, imageSize, zoomValue).False();
             var isEmpty = thumbnail.IsEmpry;
-            var image = isEmpty ? new CvImage(filePath, imageSize, zoomValue) : thumbnail;
+            var image = isEmpty ? new SkiaImage(filePath, imageSize, zoomValue) : thumbnail;
 
             return new()
             {
@@ -237,13 +238,13 @@ namespace PicSum.Job.Logics
             }
         }
 
-        private async ValueTask<CvImage> ReadImageFile(string filePath, float zoomValue)
+        private async ValueTask<SkiaImage> ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
                 using (Measuring.Time(false, "ImageFileReadLogic.ReadImageFile Get Cache"))
                 {
-                    var image = await Instance<IImageFileCacher>.Value.GetCache(filePath, zoomValue).False();
+                    var image = await Instance<IImageFileCacher>.Value.GetSKCache(filePath, zoomValue).False();
                     if (!image.IsEmpry)
                     {
                         return image;
@@ -254,8 +255,8 @@ namespace PicSum.Job.Logics
                 {
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
-                        return new CvImage(
-                            filePath, OpenCVUtil.ToMat(bmp), zoomValue);
+                        return new SkiaImage(
+                            filePath, SkiaImageUtil.ToSKImage(bmp), zoomValue);
                     }
                 }
             }
@@ -264,11 +265,12 @@ namespace PicSum.Job.Logics
                 ex is ImageUtilException)
             {
                 this.WriteErrorLog(ex);
-                return CvImage.EMPTY;
+                return SkiaImage.EMPTY;
             }
         }
 
-        private async ValueTask<CvImage> GetThumbnail(string filePath, Size imageSize, float zoomValue)
+        private async ValueTask<SkiaImage> GetThumbnail(
+            string filePath, Size imageSize, float zoomValue)
         {
             using (Measuring.Time(false, "ImageFileReadLogic.GetThumbnail"))
             {
@@ -276,15 +278,15 @@ namespace PicSum.Job.Logics
                 if (!cache.IsEmpry
                     && cache.ThumbnailBuffer != null)
                 {
-                    return new CvImage(
+                    return new SkiaImage(
                         filePath,
-                        ThumbnailUtil.ReadImageBuffer(cache.ThumbnailBuffer),
+                        ThumbnailUtil.ReadSKImageBuffer(cache.ThumbnailBuffer),
                         imageSize,
                         zoomValue);
                 }
                 else
                 {
-                    return CvImage.EMPTY;
+                    return SkiaImage.EMPTY;
                 }
             }
         }

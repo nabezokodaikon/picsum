@@ -42,6 +42,23 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        public static SKImage ReadSKImageBuffer(byte[] bf)
+        {
+            ArgumentNullException.ThrowIfNull(bf, nameof(bf));
+
+            using (Measuring.Time(false, "ThumbnailUtil.ReadSKImageBuffer"))
+            {
+                try
+                {
+                    return SkiaImageUtil.ReadImageFileToSKImage(bf);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    throw new ImageUtilException("メモリが不足しています。", ex);
+                }
+            }
+        }
+
         /// <summary>
         /// サムネイルを作成します。
         /// </summary>

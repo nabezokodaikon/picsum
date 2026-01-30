@@ -18,9 +18,9 @@ namespace PicSum.UIComponent.Contents.ImageView
         /// </summary>
         private void InitializeComponent()
         {
-            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
+            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
             this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
-            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.ImagePanel();
+            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
             this.checkPatternPanel = new SWF.UIComponent.Base.CheckPatternPanel();
             this.toolBar = new PicSum.UIComponent.Contents.ImageView.ImageViewToolBar();
             this.checkPatternPanel.SuspendLayout();
@@ -30,7 +30,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             // leftImagePanel
             // 
             this.leftImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.leftImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.leftImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
             this.leftImagePanel.IsShowThumbnailPanel = true;
@@ -55,7 +54,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             // rightImagePanel
             // 
             this.rightImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.rightImagePanel.BackColor = System.Drawing.Color.Transparent;
             this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
             this.rightImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
             this.rightImagePanel.IsShowThumbnailPanel = true;
@@ -103,8 +101,8 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.ResumeLayout(false);
         }
 
-        private PicSum.UIComponent.Contents.ImageView.ImagePanel leftImagePanel;
-        private PicSum.UIComponent.Contents.ImageView.ImagePanel rightImagePanel;
+        private PicSum.UIComponent.Contents.ImageView.SKImagePanel leftImagePanel;
+        private PicSum.UIComponent.Contents.ImageView.SKImagePanel rightImagePanel;
         private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
         private SWF.UIComponent.Base.CheckPatternPanel checkPatternPanel;
         private PicSum.UIComponent.Contents.ImageView.ImageViewToolBar toolBar;

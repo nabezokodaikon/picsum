@@ -128,9 +128,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static Bitmap Resize(SKImage srcImage, float newWidth, float newHeight)
+        public static SKImage Resize(SKImage srcImage, float newWidth, float newHeight)
         {
-            using (Measuring.Time(false, "SkiaImageUtil.Resize"))
+            using (Measuring.Time(true, "SkiaImageUtil.Resize"))
             {
                 ArgumentNullException.ThrowIfNull(srcImage, nameof(srcImage));
 
@@ -139,7 +139,7 @@ namespace SWF.Core.ImageAccessor
 
                 if (srcImage.Width == targetWidth && srcImage.Height == targetHeight)
                 {
-                    return ToBitmap(srcImage);
+                    return srcImage;
                 }
 
                 var sampling = srcImage.Width > targetWidth || srcImage.Height > targetHeight
@@ -150,40 +150,103 @@ namespace SWF.Core.ImageAccessor
                 using (var canvas = new SKCanvas(destBitmap))
                 using (var paint = new SKPaint { IsAntialias = true })
                 {
-                    canvas.DrawImage(srcImage, new SKRect(0, 0, targetWidth, targetHeight), sampling, paint);
+                    using (Measuring.Time(true, "SkiaImageUtil.Resize"))
+                        canvas.DrawImage(srcImage, new SKRect(0, 0, targetWidth, targetHeight), sampling, paint);
                 }
 
-                using (var resultImage = SKImage.FromBitmap(destBitmap))
+                var resultImage = SKImage.FromBitmap(destBitmap);
+                return resultImage;
+
+                //var sampling = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.None);
+                //var info = new SKImageInfo(targetWidth, targetHeight);
+                //using var surface = SKSurface.Create(info);
+                //var canvas = surface.Canvas;
+                //using var paint = new SKPaint { IsAntialias = true };
+                //canvas.DrawImage(srcImage, new SKRect(0, 0, targetWidth, targetHeight), sampling, paint);
+                //return surface.Snapshot();
+            }
+        }
+
+        public static SKImage Resize(
+            SKPaint paint, SKImage srcImage, float newWidth, float newHeight)
+        {
+            using (Measuring.Time(true, "SkiaImageUtil.Resize"))
+            {
+                ArgumentNullException.ThrowIfNull(srcImage, nameof(srcImage));
+
+                var targetWidth = (int)newWidth;
+                var targetHeight = (int)newHeight;
+
+                if (srcImage.Width == targetWidth && srcImage.Height == targetHeight)
                 {
-                    return ToBitmap(resultImage);
+                    return srcImage;
+                }
+
+                var sampling = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+
+                var info = new SKImageInfo(
+                    targetWidth,
+                    targetHeight,
+                    srcImage.ColorType,
+                    srcImage.AlphaType);
+
+                using var surface = SKSurface.Create(info);
+
+                var canvas = surface.Canvas;
+                canvas.DrawImage(
+                    srcImage,
+                    new SKRect(0, 0, targetWidth, targetHeight),
+                    sampling,
+                    paint);
+
+                return surface.Snapshot();
+            }
+        }
+
+        public static SKImage Resize(SKImage srcImage, int targetWidth, int targetHeight)
+        {
+            using (Measuring.Time(true, "SkiaImageUtil.Resize"))
+            {
+                // 変換先のピクセル情報を定義
+                var info = new SKImageInfo(targetWidth, targetHeight, srcImage.ColorType, srcImage.AlphaType);
+
+                // 新しいメモリ領域を確保（SKBitmap経由が扱いやすい）
+                using var bitmap = new SKBitmap(info);
+
+                srcImage.ScalePixels(bitmap.PeekPixels(), SKSamplingOptions.Default);
+                using (Measuring.Time(true, "SkiaImageUtil.Resize SKImage.FromBitmap"))
+                {
+                    return SKImage.FromBitmap(bitmap);
                 }
             }
         }
 
-        public static Bitmap Resize(SKImage src, SKRectI roi, float targetWidth, float targetHeight)
+        public static SKImage Resize(
+            SKPaint paint, SKImage src, SKRectI roi)
         {
             using (Measuring.Time(false, "SkiaBitmapUtil.Resize"))
             {
                 ArgumentNullException.ThrowIfNull(src, nameof(src));
 
-                var tw = (int)targetWidth;
-                var th = (int)targetHeight;
+                var sampling = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
 
-                var sampling = roi.Width > tw || roi.Height > th
-                    ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
-                    : new SKSamplingOptions(SKCubicResampler.CatmullRom);
+                var info = new SKImageInfo(
+                    roi.Width,
+                    roi.Height,
+                    src.ColorType,
+                    src.AlphaType);
 
-                using var destSkia = new SKBitmap(tw, th);
-                using (var canvas = new SKCanvas(destSkia))
-                using (var paint = new SKPaint { IsAntialias = true })
-                {
-                    canvas.DrawImage(src, (SKRect)roi, new SKRect(0, 0, tw, th), sampling, paint);
-                }
+                using var surface = SKSurface.Create(info);
 
-                using (var resultImage = SKImage.FromBitmap(destSkia))
-                {
-                    return ToBitmap(resultImage);
-                }
+                var canvas = surface.Canvas;
+                canvas.DrawImage(
+                    src,
+                    roi,
+                    new SKRect(0, 0, roi.Width, roi.Height),
+                    sampling,
+                    paint);
+
+                return surface.Snapshot();
             }
         }
 

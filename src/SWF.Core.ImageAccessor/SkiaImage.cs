@@ -11,8 +11,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private SKImage? _src;
-        private Bitmap? _bitmapCache = null;
-        private SKImage? _skCache = null;
+        private SKImage? _cache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -107,10 +106,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this._src?.Dispose();
                 this._src = null;
-                this._bitmapCache?.Dispose();
-                this._bitmapCache = null;
-                this._skCache?.Dispose();
-                this._skCache = null;
+                this._cache?.Dispose();
+                this._cache = null;
             }
 
             this._disposed = true;
@@ -122,85 +119,71 @@ namespace SWF.Core.ImageAccessor
             GC.SuppressFinalize(this);
         }
 
-        public void DrawEmptyImage(Graphics g, Brush brush, RectangleF destRect)
+        public void DrawEmpty(SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(brush, nameof(brush));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
-            g.FillRectangle(brush, destRect);
+            canvas.DrawRect(destRect, paint);
         }
 
-        public void DrawZoomThumbnailImage(
-            Graphics g, RectangleF destRect, RectangleF srcRect)
+        public void DrawZoomThumbnail(
+            SKCanvas canvas, SKPaint paint, SKRect destRect, SKRect srcRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
             if (this._src == null)
             {
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnailImage"))
+            using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnail"))
             {
-                if (this._bitmapCache == null
-                    || this._bitmapCache.Width != (int)destRect.Width
-                    || this._bitmapCache.Height != (int)destRect.Height)
-                {
-                    this._bitmapCache?.Dispose();
-                    this._bitmapCache = SkiaImageUtil.ToBitmap(this._src);
-                }
-
                 var zoomRect = this.GetZoomRectange(srcRect);
-                g.DrawImage(this._bitmapCache, destRect, zoomRect, GraphicsUnit.Pixel);
+                canvas.DrawImage(this._src, zoomRect, destRect, paint);
             }
         }
 
         public void DrawResizeThumbnail(
-            Graphics g, RectangleF destRect)
+            SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
             if (this._src == null)
             {
-                throw new InvalidOperationException("SKImageがNullですがNullです。");
+                throw new InvalidOperationException("SKImageがNullです。");
             }
 
             using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
-                if (this._bitmapCache == null
-                    || this._bitmapCache.Width != (int)destRect.Width
-                    || this._bitmapCache.Height != (int)destRect.Height)
-                {
-                    this._bitmapCache?.Dispose();
-                    this._bitmapCache = SkiaImageUtil.ToBitmap(this._src);
-                }
-
-                var srcRect = new Rectangle(0, 0, this._bitmapCache.Width, this._bitmapCache.Height);
-                g.DrawImage(this._bitmapCache, destRect, srcRect, GraphicsUnit.Pixel);
+                var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
+                canvas.DrawImage(this._src, destRect, paint);
             }
         }
 
-        public void CacheResizeThumbnail(SKRectI destRect)
-        {
-            if (this._src == null)
-            {
-                throw new InvalidOperationException("SKImageがNullですがNullです。");
-            }
+        //public void CacheResizeThumbnail(SKRectI destRect)
+        //{
+        //    if (this._src == null)
+        //    {
+        //        throw new InvalidOperationException("SKImageがNullです。");
+        //    }
 
-            using (Measuring.Time(false, "SkiaImage.CacheResizeThumbnail"))
-            {
-                if (this._skCache == null
-                    || this._skCache.Width != destRect.Width
-                    || this._skCache.Height != destRect.Height)
-                {
-                    this._skCache?.Dispose();
-                    using (var bmp = SkiaImageUtil.Resize(this._src, destRect.Width, destRect.Height))
-                    {
-                        this._skCache = SkiaImageUtil.ToSKImage(bmp);
-                    }
-                }
-            }
-        }
+        //    using (Measuring.Time(false, "SkiaImage.CacheResizeThumbnail"))
+        //    {
+        //        if (this._skCache == null
+        //            || this._skCache.Width != destRect.Width
+        //            || this._skCache.Height != destRect.Height)
+        //        {
+        //            this._skCache?.Dispose();
+        //            using (var bmp = SkiaImageUtil.Resize(this._src, destRect.Width, destRect.Height))
+        //            {
+        //                this._skCache = SkiaImageUtil.ToSKImage(bmp);
+        //            }
+        //        }
+        //    }
+        //}
 
         public void DrawResizeThumbnail(
             SKCanvas canvas, SKPaint paint, SKRectI destRect)
@@ -210,32 +193,32 @@ namespace SWF.Core.ImageAccessor
 
             if (this._src == null)
             {
-                throw new InvalidOperationException("SKImageがNullですがNullです。");
+                throw new InvalidOperationException("SKImageがNullです。");
             }
 
             using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
-                if (this._skCache == null
-                    || this._skCache.Width != destRect.Width
-                    || this._skCache.Height != destRect.Height)
+                if (this._cache == null
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
                 {
                     return;
                 }
 
-                var x = destRect.Left + (destRect.Width - this._skCache.Width) / 2f;
-                var y = destRect.Top + (destRect.Height - this._skCache.Height) / 2f;
-                var r = x + this._skCache.Width;
-                var b = y + this._skCache.Height;
+                var x = destRect.Left + (destRect.Width - this._cache.Width) / 2f;
+                var y = destRect.Top + (destRect.Height - this._cache.Height) / 2f;
+                var r = x + this._cache.Width;
+                var b = y + this._cache.Height;
 
-                canvas.DrawImage(this._skCache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
+                canvas.DrawImage(this._cache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
             }
         }
 
-        public Bitmap CreateScaleImage(float scale)
+        public SKImage CreateScaleImage(float scale)
         {
             if (this._src == null)
             {
-                throw new InvalidOperationException("SKImageがNullですがNullです。");
+                throw new InvalidOperationException("SKImageがNullです。");
             }
 
             var width = this.Width * scale;
@@ -245,7 +228,8 @@ namespace SWF.Core.ImageAccessor
             {
                 using (Measuring.Time(false, "SkiaImage.CreateScaleImage"))
                 {
-                    return SkiaImageUtil.Resize(this._src, width, height);
+                    using var paint = new SKPaint();
+                    return SkiaImageUtil.Resize(paint, this._src, (int)width, (int)height);
                 }
             }
             catch (Exception ex) when (
@@ -261,15 +245,17 @@ namespace SWF.Core.ImageAccessor
         }
 
         public void DrawZoomImage(
-            Graphics g,
-            RectangleF destRect,
-            RectangleF srcRect)
+            SKCanvas canvas,
+            SKPaint paint,
+            SKRect destRect,
+            SKRect srcRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
             if (this._src == null)
             {
-                throw new InvalidOperationException("SKImageがNullですがNullです。");
+                throw new InvalidOperationException("SKImageがNullです。");
             }
 
             try
@@ -278,19 +264,16 @@ namespace SWF.Core.ImageAccessor
                 {
                     var zoomRect = this.GetZoomRectange(srcRect);
 
-                    var roi = new SKRectI(
-                        (int)zoomRect.X,
-                        (int)zoomRect.Y,
-                        (int)zoomRect.Right,
-                        (int)zoomRect.Bottom);
+                    var sampling = this._src.Width > destRect.Width || this._src.Height > destRect.Height
+                        ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
+                        : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    using (var resizedBmp = SkiaImageUtil.Resize(this._src, roi, destRect.Width, destRect.Height))
-                    {
-                        g.DrawImage(resizedBmp,
-                            destRect,
-                            new RectangleF(0, 0, destRect.Width, destRect.Height),
-                            GraphicsUnit.Pixel);
-                    }
+                    canvas.DrawImage(
+                        this._src,
+                        zoomRect,
+                        destRect,
+                        sampling,
+                        paint);
                 }
             }
             catch (Exception ex) when (
@@ -304,9 +287,9 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeImage(Graphics g, RectangleF destRect)
+        public void DrawResizeImage(SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
 
             if (this._src == null)
             {
@@ -315,20 +298,17 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                var width = (int)destRect.Width;
-                var height = (int)destRect.Height;
-
-                using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
+                using (Measuring.Time(true, "SkiaImage.DrawResizeImage"))
                 {
-                    if (this._bitmapCache == null
-                        || this._bitmapCache.Width != width
-                        || this._bitmapCache.Height != height)
-                    {
-                        this._bitmapCache?.Dispose();
-                        this._bitmapCache = SkiaImageUtil.Resize(this._src, width, height);
-                    }
+                    var sampling = this._src.Width > destRect.Width || this._src.Height > destRect.Height
+                        ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
+                        : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    g.DrawImageUnscaled(this._bitmapCache, (int)destRect.X, (int)destRect.Y);
+                    canvas.DrawImage(
+                        this._src,
+                        destRect,
+                        sampling,
+                        paint);
                 }
             }
             catch (Exception ex) when (
@@ -343,9 +323,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeThumbnail(Graphics g, Rectangle destRect)
+        public void DrawResizeThumbnail(SKCanvas canvas, SKPaint paint, Rectangle destRect)
         {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
             if (this._src == null)
             {
@@ -356,15 +337,19 @@ namespace SWF.Core.ImageAccessor
             {
                 using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
                 {
-                    if (this._bitmapCache == null
-                        || this._bitmapCache.Width != destRect.Width
-                        || this._bitmapCache.Height != destRect.Height)
+                    if (this._cache == null
+                        || this._cache.Width != destRect.Width
+                        || this._cache.Height != destRect.Height)
                     {
-                        this._bitmapCache?.Dispose();
-                        this._bitmapCache = SkiaImageUtil.Resize(this._src, destRect.Width, destRect.Height);
+                        this._cache?.Dispose();
+                        this._cache = SkiaImageUtil.Resize(
+                            paint, this._src, destRect.Width, destRect.Height);
                     }
 
-                    g.DrawImageUnscaled(this._bitmapCache, destRect);
+                    canvas.DrawImage(
+                        this._cache,
+                        new SKRect(destRect.Left, destRect.Top, destRect.Right, destRect.Bottom),
+                        paint);
                 }
             }
             catch (Exception ex) when (
@@ -378,13 +363,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        private RectangleF GetZoomRectange(RectangleF srcRect)
+        private SKRect GetZoomRectange(SKRect srcRect)
         {
-            return new RectangleF(
-                srcRect.X * this._scaleValue / this._zoomValue,
-                srcRect.Y * this._scaleValue / this._zoomValue,
-                srcRect.Width * this._scaleValue / this._zoomValue,
-                srcRect.Height * this._scaleValue / this._zoomValue);
+            var x = srcRect.Left * this._scaleValue / this._zoomValue;
+            var y = srcRect.Top * this._scaleValue / this._zoomValue;
+            var w = srcRect.Width * this._scaleValue / this._zoomValue;
+            var h = srcRect.Height * this._scaleValue / this._zoomValue;
+            return new SKRect(x, y, x + w, y + h);
         }
     }
 }
