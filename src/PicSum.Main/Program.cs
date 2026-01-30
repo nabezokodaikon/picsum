@@ -31,6 +31,9 @@ namespace PicSum.Main
                     ProfileOptimization.StartProfile(AppFiles.PROFILE_FILE_NAME);
                     ConsoleUtil.Write(true, $"ProfileOptimization.StartProfile");
 
+                    //AssemblyPreloader.OptimizeStartup(GetAssemblyNames());
+                    //ConsoleUtil.Write(true, $"AssemblyPreloader.OptimizeStartup");
+
                     Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
                     ConsoleUtil.Write(true, $"Measuring.SetMeasuringThresholdMilliseconds");
 
@@ -121,60 +124,64 @@ namespace PicSum.Main
             ExceptionUtil.ShowFatalDialog("Unhandled Non-UI Exception.", ex);
         }
 
-        private static Type[] GetTypes()
+        private static string[] GetAssemblyNames()
         {
             return [
-                typeof(Accessibility.AnnoScope),
-                typeof(Microsoft.Win32.SystemEvents),
-                typeof(System.Data.Common.CatalogLocation),
-                typeof(System.Data.SQLite.AssemblySourceIdAttribute),
-                typeof(System.Diagnostics.Process),
-                typeof(System.Diagnostics.TraceSource),
-                typeof(System.IO.DriveInfo),
-                typeof(System.IO.MemoryMappedFiles.MemoryMappedFile),
-                typeof(System.Resources.Extensions.DeserializingResourceReader),
-                typeof(System.Threading.Channels.BoundedChannelFullMode),
-                typeof(System.Threading.ThreadPool),
-                typeof(System.Transactions.CommittableTransaction),
-                typeof(System.Text.RegularExpressions.Capture),
-                typeof(System.Xml.ConformanceLevel),
-#if UWP
-                typeof(Windows.Storage.AppDataPaths),
-#endif
-                typeof(MemoryPack.BitPackFormatterAttribute),
-                typeof(NLog.GlobalDiagnosticsContext),
+                ////"aom",
+                //"ExCSS",
+                //"ImageSharp.Heif",
+                ////"libde265",
+                ////"libheif",
+                //"LibHeifSharp",
+                ////"libSkiaSharp",
+                ////"libx265",
+                ////"Magick.Native-Q8-x64",
+                //"Magick.NET.Core",
+                //"Magick.NET.SystemDrawing",
+                //"Magick.NET-Q8-x64",
+                //"MemoryPack.Core",
+                //"MetadataExtractor",
+                //"Microsoft.Windows.SDK.NET",
+                //"NLog",
+                ////"opencv_videoio_ffmpeg4110_64",
+                //"OpenCvSharp",
+                //"OpenCvSharp.Extensions",
+                ////"OpenCvSharpExtern",
+                //"OpenTK",
+                //"OpenTK.GLControl",
+                //"SixLabors.ImageSharp",
+                //"SkiaSharp",
+                //"SkiaSharp.Views.Desktop.Common",
+                //"SkiaSharp.Views.WindowsForms",
+                ////"SQLite.Interop",
+                //"Svg",
+                //"System.Data.SQLite",
+                //"WinRT.Runtime",
+                //"XmpCore",
+                //"ZLinq",
+                //"ZLinq.FileSystem",
 
-                typeof(HeyRed.ImageSharp.Heif.DecodingMode),
-                typeof(ImageMagick.AlphaOption),
-                typeof(LibHeifSharp.AuxiliaryImageType),
-                typeof(OpenCvSharp.AccessFlag),
-                typeof(OpenCvSharp.Extensions.BitmapConverter),
-                typeof(SixLabors.ImageSharp.Advanced.AdvancedImageExtensions),
-                typeof(SkiaSharp.GRContext),
-                typeof(Svg.AttributeEventArgs),
-                typeof(ZLinq.DropInGenerateTypes),
-                typeof(ZLinq.FileSystemInfoExtensions),
+                "PicSum.DatabaseAccessor",
+                "PicSum.Job",
+                "PicSum.UIComponent.AddressBar",
+                "PicSum.UIComponent.Contents",
+                "PicSum.UIComponent.InfoPanel",
 
-                typeof(PicSum.DatabaseAccessor.Connection.FileInfoDao),
-                typeof(PicSum.Job.Common.IThumbnailCacher),
-                typeof(PicSum.UIComponent.AddressBar.AddressBar),
-                typeof(PicSum.UIComponent.Contents.Common.AbstractBrowsePage),
-                typeof(PicSum.UIComponent.InfoPanel.InfoPanel),
+                //"SWF.Core.DatabaseAccessor",
+                //"SWF.Core.FileAccessor",
+                //"SWF.Core.ImageAccessor",
+                //"SWF.Core.Job",
+                //"SWF.Core.ResourceAccessor",
+                //"SWF.Core.StringAccessor",
 
-                typeof(SWF.Core.DatabaseAccessor.AbstractDao),
-                typeof(SWF.Core.FileAccessor.CacheFileController),
-                typeof(SWF.Core.ImageAccessor.CvImage),
-                typeof(SWF.Core.Job.AbstractJob),
-                typeof(SWF.Core.ResourceAccessor.ResourceFiles),
-                typeof(SWF.Core.StringAccessor.NaturalStringComparer),
+                //"SWF.UIComponent.Base",
+                //"SWF.UIComponent.FlowList",
+                //"SWF.UIComponent.Form",
+                //"SWF.UIComponent.SKFlowList",
+                //"SWF.UIComponent.TabOperation",
+                //"SWF.UIComponent.WideDropDown",
 
-                typeof(SWF.UIComponent.Base.CheckPatternPanel),
-                typeof(SWF.UIComponent.FlowList.DrawItemChangedEventArgs),
-                typeof(SWF.UIComponent.Form.GrassForm),
-                typeof(SWF.UIComponent.TabOperation.DrawTabEventArgs),
-                typeof(SWF.UIComponent.WideDropDown.AddItemEventArgs),
-
-                typeof(WinApi.WinApiMembers)
+                //"WinApi"
             ];
         }
     }
