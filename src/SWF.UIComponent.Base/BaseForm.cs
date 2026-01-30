@@ -48,7 +48,7 @@ namespace SWF.UIComponent.Base
         public BaseForm()
         {
             this.DoubleBuffered = false;
-            this.AutoScaleMode = AutoScaleMode.Dpi;
+            this.AutoScaleMode = AutoScaleMode.None;
             this.AutoSize = false;
 
             this.Load += this.BaseForm_Load;
