@@ -9,6 +9,8 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNull(assemblyNames, nameof(assemblyNames));
 
+            AppConstants.ThrowIfNotUIThread();
+
             using (Measuring.Time(true, "AssemblyPreloader.OptimizeStartup"))
             {
                 Parallel.ForEach(

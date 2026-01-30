@@ -12,6 +12,8 @@ namespace SWF.Core.Base
 
         public static void Start()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             _currentProcess.PriorityClass = ProcessPriorityClass.High;
 
             if (_stopwatch != null)
@@ -24,6 +26,8 @@ namespace SWF.Core.Base
 
         public static void Stop()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             if (_stopwatch == null)
             {
                 throw new InvalidOperationException("起動時間の計測は開始されていません。");

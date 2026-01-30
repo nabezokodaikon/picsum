@@ -24,6 +24,9 @@ namespace PicSum.Main
                 ConsoleUtil.Write(true, $"Mutex");
                 if (createdNew)
                 {
+                    AppConstants.SetUIThreadName();
+                    ConsoleUtil.Write(true, $"AppConstants.SetUIThreadName");
+
                     BootTimeMeasurement.Start();
                     ConsoleUtil.Write(true, $"BootTimeMeasurement.Start");
 
@@ -40,9 +43,6 @@ namespace PicSum.Main
                     var coreCount = Environment.ProcessorCount;
                     ThreadPool.SetMinThreads(coreCount, coreCount);
                     ConsoleUtil.Write(true, $"ThreadPool.SetMinThreads");
-
-                    AppConstants.SetUIThreadName();
-                    ConsoleUtil.Write(true, $"AppConstants.SetUIThreadName");
 
                     WindowsFormsSynchronizationContext.AutoInstall = false;
                     ConsoleUtil.Write(true, $"WindowsFormsSynchronizationContext.AutoInstall");

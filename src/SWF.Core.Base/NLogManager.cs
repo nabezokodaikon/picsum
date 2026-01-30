@@ -11,6 +11,8 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNullOrEmpty(logDirectory, nameof(logDirectory));
 
+            AppConstants.ThrowIfNotUIThread();
+
             if (_logger != null)
             {
                 throw new InvalidOperationException("ロガーは初期化されています。");

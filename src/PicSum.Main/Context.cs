@@ -24,6 +24,8 @@ namespace PicSum.Main
 
         public Context()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             this._resourceManager = new();
             this._browseManager = new();
 
