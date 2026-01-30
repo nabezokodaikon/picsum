@@ -106,6 +106,11 @@ namespace SWF.Core.Job
             var factory = AppConstants.GetUITaskFactory();
             job.CallbackAction = result =>
             {
+                if (factory.Scheduler == null)
+                {
+                    throw new InvalidOperationException("スケジューラがNullです。");
+                }
+
                 factory.StartNew(() =>
                 {
                     if (job.CanUIThreadAccess())
@@ -161,6 +166,11 @@ namespace SWF.Core.Job
             var factory = AppConstants.GetUITaskFactory();
             job.CallbackAction = result =>
             {
+                if (factory.Scheduler == null)
+                {
+                    throw new InvalidOperationException("スケジューラがNullです。");
+                }
+
                 factory.StartNew(() =>
                 {
                     if (job.CanUIThreadAccess())
