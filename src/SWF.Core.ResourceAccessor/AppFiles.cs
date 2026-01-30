@@ -1,5 +1,3 @@
-using SWF.Core.Base;
-
 namespace SWF.Core.ResourceAccessor
 {
 
@@ -7,33 +5,67 @@ namespace SWF.Core.ResourceAccessor
     {
         public const string PROFILE_FILE_NAME = "startup.profile";
 
-        //private static readonly Lazy<bool> IS_RUNNING_AS_UWP
-        //    = new(IsRunningAsUwp);
-        public static readonly Lazy<string> APPLICATION_DIRECTORY = new(
-            GetApplicationDirectory,
+        public static readonly Lazy<string> APPLICATION_DIRECTORY
+            = new(() =>
+            {
+                var dir = GetApplicationDirectory();
+                Directory.CreateDirectory(dir);
+                return dir;
+            },
             LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly Lazy<string> PROFILE_DIRECTORY = new(
-            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "profile"),
+        public static readonly Lazy<string> PROFILE_DIRECTORY
+            = new(
+            () =>
+            {
+                var dir = Path.Combine(APPLICATION_DIRECTORY.Value, "profile");
+                Directory.CreateDirectory(dir);
+                return dir;
+            },
             LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> LOG_DIRECTORY = new(
-            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "log"),
+
+        public static readonly Lazy<string> LOG_DIRECTORY
+            = new(
+            () =>
+            {
+                var dir = Path.Combine(APPLICATION_DIRECTORY.Value, "log");
+                Directory.CreateDirectory(dir);
+                return dir;
+            },
             LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> CONFIG_DIRECTORY = new(
-            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "config"),
+
+        public static readonly Lazy<string> CONFIG_DIRECTORY
+            = new(
+            () =>
+            {
+                var dir = Path.Combine(APPLICATION_DIRECTORY.Value, "config");
+                Directory.CreateDirectory(dir);
+                return dir;
+            },
             LazyThreadSafetyMode.ExecutionAndPublication);
+
+        public static readonly Lazy<string> DATABASE_DIRECTORY
+            = new(
+            () =>
+            {
+                var dir = Path.Combine(APPLICATION_DIRECTORY.Value, "db");
+                Directory.CreateDirectory(dir);
+                return dir;
+            },
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
         public static readonly Lazy<string> CONFIG_FILE = new(
             static () => Path.Combine(CONFIG_DIRECTORY.Value, "config.dat"),
             LazyThreadSafetyMode.ExecutionAndPublication);
-        public static readonly Lazy<string> DATABASE_DIRECTORY = new(
-            static () => Path.Combine(APPLICATION_DIRECTORY.Value, "db"),
-            LazyThreadSafetyMode.ExecutionAndPublication);
+
         public static readonly Lazy<string> FILE_INFO_DATABASE_FILE = new(
             static () => Path.Combine(DATABASE_DIRECTORY.Value, "fileinfo.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         public static readonly Lazy<string> THUMBNAIL_DATABASE_FILE = new(
             static () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.sqlite"),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         public static readonly Lazy<string> THUMBNAIL_CACHE_FILE = new(
             static () => Path.Combine(DATABASE_DIRECTORY.Value, "thumbnail.cache"),
             LazyThreadSafetyMode.ExecutionAndPublication);
@@ -59,18 +91,6 @@ namespace SWF.Core.ResourceAccessor
 
             return appDir;
 #endif
-        }
-
-        public static void CreateApplicationDirectories()
-        {
-            using (Measuring.Time(true, "AppFiles.CreateApplicationDirectories"))
-            {
-                Directory.CreateDirectory(APPLICATION_DIRECTORY.Value);
-                Directory.CreateDirectory(PROFILE_DIRECTORY.Value);
-                Directory.CreateDirectory(LOG_DIRECTORY.Value);
-                Directory.CreateDirectory(CONFIG_DIRECTORY.Value);
-                Directory.CreateDirectory(DATABASE_DIRECTORY.Value);
-            }
         }
     }
 }

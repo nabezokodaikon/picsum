@@ -27,15 +27,9 @@ namespace PicSum.Main
                     BootTimeMeasurement.Start();
                     ConsoleUtil.Write(true, $"BootTimeMeasurement.Start");
 
-                    AppFiles.CreateApplicationDirectories();
-                    ConsoleUtil.Write(true, $"AppFiles.CreateApplicationDirectories");
-
                     ProfileOptimization.SetProfileRoot(AppFiles.PROFILE_DIRECTORY.Value);
                     ProfileOptimization.StartProfile(AppFiles.PROFILE_FILE_NAME);
                     ConsoleUtil.Write(true, $"ProfileOptimization.StartProfile");
-
-                    //AssemblyPreloader.PreJIT(GetTypes());
-                    //ConsoleUtil.Write(true, $"AssemblyPreloader.PreJIT");
 
                     Measuring.SetMeasuringThresholdMilliseconds(CommandLineArgs.GetMeasuringThresholdMilliseconds());
                     ConsoleUtil.Write(true, $"Measuring.SetMeasuringThresholdMilliseconds");
