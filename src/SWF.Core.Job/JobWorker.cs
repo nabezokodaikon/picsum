@@ -98,16 +98,19 @@ namespace SWF.Core.Job
 
             if (callback != null)
             {
-                var context = AppConstants.GetUIThreadContext();
-                job.CallbackAction = _ =>
+                var factory = AppConstants.GetUITaskFactory();
+                job.CallbackAction = result =>
                 {
-                    context.Post(state =>
+                    factory.StartNew(() =>
                     {
-                        if (job.CanUIThreadAccess() && state is TJobResult result)
+                        if (job.CanUIThreadAccess())
                         {
                             callback(result);
                         }
-                    }, _);
+                    },
+                    CancellationToken.None,
+                    TaskCreationOptions.None,
+                    factory.Scheduler);
                 };
             }
 

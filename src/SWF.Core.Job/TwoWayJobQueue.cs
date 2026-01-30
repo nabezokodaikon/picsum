@@ -103,16 +103,19 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-            var context = AppConstants.GetUIThreadContext();
-            job.CallbackAction = _ =>
+            var factory = AppConstants.GetUITaskFactory();
+            job.CallbackAction = result =>
             {
-                context.Post(state =>
+                factory.StartNew(() =>
                 {
-                    if (job.CanUIThreadAccess() && state is TJobResult result)
+                    if (job.CanUIThreadAccess())
                     {
                         callback(result);
                     }
-                }, _);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                factory.Scheduler);
             };
 
             this._currentJobDictionary.Add(type, job);
@@ -155,16 +158,19 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-            var context = AppConstants.GetUIThreadContext();
-            job.CallbackAction = _ =>
+            var factory = AppConstants.GetUITaskFactory();
+            job.CallbackAction = result =>
             {
-                context.Post(state =>
+                factory.StartNew(() =>
                 {
-                    if (job.CanUIThreadAccess() && state is TJobResult result)
+                    if (job.CanUIThreadAccess())
                     {
                         callback(result);
                     }
-                }, _);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                factory.Scheduler);
             };
 
             this._currentJobDictionary.Add(type, job);
