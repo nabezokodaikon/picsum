@@ -353,11 +353,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (tagInfo.IsAll)
             {
-                return FontCacher.GetBoldFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, scale);
             }
             else
             {
-                return FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
             }
         }
 
@@ -465,7 +465,7 @@ namespace PicSum.UIComponent.InfoPanel
             var text = $"{this.FilePathList.Length} files selected";
             g.DrawString(
                 text,
-                FontCacher.GetRegularFont(FontCacher.Size.Large, scale),
+                FontCacher.GetRegularGdiFont(FontCacher.Size.Large, scale),
                 this._foreColorBrush,
                 rect,
                 this._stringFormat);
@@ -477,7 +477,7 @@ namespace PicSum.UIComponent.InfoPanel
             var text = $"Failed to load file";
             g.DrawString(
                 text,
-                FontCacher.GetRegularFont(FontCacher.Size.Large, scale),
+                FontCacher.GetRegularGdiFont(FontCacher.Size.Large, scale),
                 this._foreColorBrush,
                 rect,
                 this._stringFormat);

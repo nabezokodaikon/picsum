@@ -4,6 +4,7 @@ using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
+using SWF.Core.ResourceAccessor;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -652,8 +653,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             const string TEXT = "Failed to load file";
 
-            var font = SWF.UIComponent.SKFlowList.FontCacher.GetRegularSKFont(
-                SWF.UIComponent.SKFlowList.FontCacher.Size.ExtraLarge,
+            var font = FontCacher.GetRegularSKFont(
+                FontCacher.Size.ExtraLarge,
                 WindowUtil.GetCurrentWindowScale(this));
             var bounds = new SKRect(0, 0, this.Width, this.Height);
             var textWidth = font.MeasureText(TEXT, this._messagePaint);
@@ -675,8 +676,8 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void DrawLoadingMessage(SKCanvas canvas, string text, SKRect bounds)
         {
-            var font = SWF.UIComponent.SKFlowList.FontCacher.GetRegularSKFont(
-                SWF.UIComponent.SKFlowList.FontCacher.Size.ExtraLarge,
+            var font = FontCacher.GetRegularSKFont(
+                FontCacher.Size.ExtraLarge,
                 WindowUtil.GetCurrentWindowScale(this));
 
             var maxWidth = bounds.Width;

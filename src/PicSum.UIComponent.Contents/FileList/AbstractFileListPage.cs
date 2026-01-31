@@ -11,6 +11,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.SKFlowList;
 using System;
@@ -732,7 +733,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 using (var bmp = new Bitmap(1, 1))
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    this._itemTextHeight = (int)(g.MeasureString("A", FontCacher.GetBoldFont(FontCacher.Size.Medium, this._scale)).Height * 2);
+                    this._itemTextHeight = (int)(g.MeasureString("A", FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale)).Height * 2);
                 }
             }
 
@@ -766,7 +767,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var textWidth = textRect.Width;
                 var textHeight = textRect.Height;
-                var font = FontCacher.GetBoldFont(FontCacher.Size.Medium, this._scale);
+                var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
 
                 using var bmp = new Bitmap(
                     textWidth,
