@@ -283,6 +283,8 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this._activeThumbnaiStrokePaint.Dispose();
                 this._messagePaint.Dispose();
                 this._loadingPaint.Dispose();
+
+                this.PaintSurface -= this.ImagePanel_PaintSurface;
             }
 
             base.Dispose(disposing);
@@ -292,6 +294,8 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
             {
+                //this.GRContext.SetResourceCacheLimit(256 * 1024 * 1024);
+
                 e.Surface.Canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
 
                 if (this._isError)
