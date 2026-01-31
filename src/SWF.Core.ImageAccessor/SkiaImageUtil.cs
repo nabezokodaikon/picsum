@@ -148,5 +148,89 @@ namespace SWF.Core.ImageAccessor
                 }
             }
         }
+
+        public static void DrawText(
+            SKCanvas canvas,
+            SKPaint paint,
+            SKFont font,
+            string text,
+            SKRect bounds)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+            ArgumentNullException.ThrowIfNull(font, nameof(font));
+            ArgumentNullException.ThrowIfNullOrEmpty(text, nameof(text));
+
+            var maxWidth = bounds.Width;
+            font.GetFontMetrics(out var metrics);
+
+            // 行の高さを計算
+            var lineHeight = metrics.Descent - metrics.Ascent;
+
+            // 1行目の切り出し
+            float measuredWidthL1;
+            var lengthL1 = (int)font.BreakText(text, maxWidth, out measuredWidthL1, paint);
+
+            var line1 = text.Substring(0, lengthL1);
+            var remainingText = text.Substring(lengthL1);
+
+            var line2 = string.Empty;
+            var measuredWidthL2 = 0f;
+
+            // 2行目の処理
+            if (!string.IsNullOrEmpty(remainingText))
+            {
+                measuredWidthL2 = font.MeasureText(remainingText, paint);
+
+                if (measuredWidthL2 > maxWidth)
+                {
+                    // "..." の幅を取得
+                    var ellipsisWidth = font.MeasureText("...", paint);
+                    // 2行目の制限幅から三点リーダ分を引いて切り出し
+                    var lengthL2 = (int)font.BreakText(remainingText, maxWidth - ellipsisWidth, out _, paint);
+
+                    line2 = string.Concat(remainingText.AsSpan(0, lengthL2), "...");
+                    measuredWidthL2 = font.MeasureText(line2, paint);
+                }
+                else
+                {
+                    line2 = remainingText;
+                }
+            }
+
+            // 垂直位置の計算(1行か2行かで全体の高さを変える)
+            var lineCount = string.IsNullOrEmpty(line2) ? 1 : 2;
+            var totalTextHeight = lineHeight * lineCount;
+
+            // boundsの中央から、全行の高さの半分を引いて、
+            // さらにAscent（上方向への高さ、負の値）を引いてベースラインを特定
+            var startBaselineY = bounds.MidY - (totalTextHeight / 2) - metrics.Ascent;
+
+            // 描画実行
+            DrawTextLine(canvas, paint, line1, font, bounds, startBaselineY, measuredWidthL1);
+
+            if (line2 != null)
+            {
+                DrawTextLine(canvas, paint, line2, font, bounds, startBaselineY + lineHeight, measuredWidthL2);
+            }
+        }
+
+        private static void DrawTextLine(
+            SKCanvas canvas,
+            SKPaint paint,
+            string text,
+            SKFont font,
+            SKRect bounds,
+            float y,
+            float textWidth)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+
+            // 水平中央: (領域の幅 - テキストの幅) / 2
+            var x = bounds.Left + (bounds.Width - textWidth) / 2;
+
+            using var blob = SKTextBlob.Create(text, font);
+            canvas.DrawText(blob, x, y, paint);
+        }
     }
 }

@@ -1,5 +1,7 @@
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
+using System;
 using System.Drawing;
 
 namespace PicSum.UIComponent.InfoPanel
@@ -14,7 +16,7 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.thumbnailPictureBox = new SWF.UIComponent.Base.BasePaintingControl();
+            this.thumbnailPictureBox = new SKControl();
             this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -28,7 +30,7 @@ namespace PicSum.UIComponent.InfoPanel
             // thumbnailPictureBox
             // 
             this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.thumbnailPictureBox.Paint += this.ThumbnailPictureBox_Paint;
+            this.thumbnailPictureBox.PaintSurface += this.ThumbnailPictureBox_PaintSurface;
             // 
             // tagContextMenuStrip
             //
@@ -91,7 +93,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Base.BasePaintingControl thumbnailPictureBox;
+        private SKControl thumbnailPictureBox;
         private SWF.UIComponent.Base.RatingBar ratingBar;
         private SWF.UIComponent.FlowList.FlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;

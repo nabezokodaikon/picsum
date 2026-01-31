@@ -10,7 +10,6 @@ namespace SWF.Core.ImageAccessor
         private static readonly SKSamplingOptions SAMPLING
             = new(SKFilterMode.Nearest, SKMipmapMode.None);
 
-        private static Bitmap? _bmpCache = null;
         private static SKImage? _skCache = null;
         private static IconImage? _iconCache = null;
 

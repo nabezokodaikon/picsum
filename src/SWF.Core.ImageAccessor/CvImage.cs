@@ -140,41 +140,6 @@ namespace SWF.Core.ImageAccessor
                 canvas.DrawImage(this._skCache, destRect, SAMPLING, paint);
             }
         }
-
-        public void DrawResizeThumbnail(Graphics g, Rectangle destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            try
-            {
-                using (Measuring.Time(false, "CvImage.DrawResizeImage"))
-                {
-                    if (this._gdiCache == null
-                        || this._gdiCache.Width != destRect.Width
-                        || this._gdiCache.Height != destRect.Height)
-                    {
-                        this._gdiCache?.Dispose();
-                        this._gdiCache = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height);
-                    }
-
-                    g.DrawImageUnscaled(this._gdiCache, destRect);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException)
-            {
-                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
-            }
-        }
     }
 }
 

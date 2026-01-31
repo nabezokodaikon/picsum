@@ -19,6 +19,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
         private const int THUMBNAIL_PANEL_SIZE = 144;
+        private const string ERROR_MESSAGE = "Failed to load file";
 
         private static readonly Logger LOGGER = NLogManager.GetLogger();
         private static readonly Size DRAG_SIZE = GetDragSize();
@@ -295,7 +296,16 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 if (this._isError)
                 {
-                    this.DrawErrorMessage(e.Surface.Canvas);
+                    var font = FontCacher.GetRegularSKFont(
+                        FontCacher.Size.ExtraLarge,
+                        WindowUtil.GetCurrentWindowScale(this));
+                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    SkiaImageUtil.DrawText(
+                        e.Surface.Canvas,
+                        this._messagePaint,
+                        font,
+                        ERROR_MESSAGE,
+                        bounds);
                 }
                 else
                 {
@@ -649,68 +659,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.GetImageSrcRectangle());
         }
 
-        private void DrawErrorMessage(SKCanvas canvas)
-        {
-            const string TEXT = "Failed to load file";
-
-            var font = FontCacher.GetRegularSKFont(
-                FontCacher.Size.ExtraLarge,
-                WindowUtil.GetCurrentWindowScale(this));
-            var bounds = new SKRect(0, 0, this.Width, this.Height);
-            var textWidth = font.MeasureText(TEXT, this._messagePaint);
-
-            // 垂直・水平のオフセット計算
-            font.GetFontMetrics(out var metrics);
-
-            // 水平中央: 矩形の中心からテキスト幅の半分を引く
-            var x = bounds.Left + (bounds.Width - textWidth) / 2;
-
-            // 垂直中央: FontMetricsを使用してベースラインを計算
-            var textHeightOffset = (metrics.Ascent + metrics.Descent) / 2;
-            var y = bounds.MidY - textHeightOffset;
-
-            // TextBlobを作成して描画
-            using var textBlob = SKTextBlob.Create(TEXT, font);
-            canvas.DrawText(textBlob, x, y, this._messagePaint);
-        }
-
-        private void DrawLoadingMessage(SKCanvas canvas, string text, SKRect bounds)
-        {
-            var font = FontCacher.GetRegularSKFont(
-                FontCacher.Size.ExtraLarge,
-                WindowUtil.GetCurrentWindowScale(this));
-
-            var maxWidth = bounds.Width;
-            var displayText = text;
-
-            // 三点リーダーの処理
-            var textWidth = font.MeasureText(text, this._messagePaint);
-            if (textWidth > maxWidth)
-            {
-                var length = text.Length;
-                while (length > 0 && font.MeasureText(string.Concat(text.AsSpan(0, length), "..."), this._loadingPaint) > maxWidth)
-                {
-                    length--;
-                }
-                displayText = string.Concat(text.AsSpan(0, length), "...");
-                textWidth = font.MeasureText(displayText, this._messagePaint);
-            }
-
-            // 垂直・水平のオフセット計算
-            font.GetFontMetrics(out var metrics);
-
-            // 水平中央: 矩形の中心からテキスト幅の半分を引く
-            var x = bounds.Left + (bounds.Width - textWidth) / 2;
-
-            // 垂直中央: FontMetricsを使用してベースラインを計算
-            var textHeightOffset = (metrics.Ascent + metrics.Descent) / 2;
-            var y = bounds.MidY - textHeightOffset;
-
-            // TextBlobを作成して描画
-            using var textBlob = SKTextBlob.Create(displayText, font);
-            canvas.DrawText(textBlob, x, y, this._messagePaint);
-        }
-
         private void DrawImage(GRContext context, SKCanvas canvas)
         {
             using (Measuring.Time(false, "ImagePanel.DrawImage"))
@@ -726,8 +674,15 @@ namespace PicSum.UIComponent.Contents.ImageView
                         image.DrawEmpty(
                             canvas, this._loadingPaint, destRect);
 
-                        this.DrawLoadingMessage(
-                            canvas, FileUtil.GetFileName(this.FilePath), destRect);
+                        var font = FontCacher.GetRegularSKFont(
+                            FontCacher.Size.ExtraLarge,
+                            WindowUtil.GetCurrentWindowScale(this));
+                        SkiaImageUtil.DrawText(
+                            canvas,
+                            this._messagePaint,
+                            font,
+                            FileUtil.GetFileName(this.FilePath),
+                            destRect);
                     }
                     else if (image.IsThumbnailImage)
                     {
@@ -763,7 +718,17 @@ namespace PicSum.UIComponent.Contents.ImageView
                     ex is OverflowException)
                 {
                     LOGGER.Error($"{ex}");
-                    this.DrawErrorMessage(canvas);
+
+                    var font = FontCacher.GetRegularSKFont(
+                        FontCacher.Size.ExtraLarge,
+                        WindowUtil.GetCurrentWindowScale(this));
+                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    SkiaImageUtil.DrawText(
+                        canvas,
+                        this._messagePaint,
+                        font,
+                        ERROR_MESSAGE,
+                        bounds);
                 }
             }
         }
