@@ -70,22 +70,38 @@ namespace PicSum.Job.Logics
             int index, string filePath, bool isMain, bool hasSub, Size imageSize, float zoomValue)
         {
             var thumbnail = await this.GetThumbnail(filePath, imageSize, zoomValue).False();
-            var isEmpty = thumbnail.IsEmpry;
-            var image = isEmpty ? new SkiaImage(filePath, imageSize, zoomValue) : thumbnail;
-
-            return new()
+            if (thumbnail.IsEmpry)
             {
-                Index = index,
-                IsMain = isMain,
-                HasSub = hasSub,
-                Image = new()
+                return new()
                 {
-                    FilePath = filePath,
-                    Image = image,
-                    IsEmpty = isEmpty,
-                    IsError = false,
-                }
-            };
+                    Index = index,
+                    IsMain = isMain,
+                    HasSub = hasSub,
+                    Image = new()
+                    {
+                        FilePath = filePath,
+                        Image = new SkiaImage(filePath, imageSize, zoomValue),
+                        IsEmpty = true,
+                        IsError = false,
+                    }
+                };
+            }
+            else
+            {
+                return new()
+                {
+                    Index = index,
+                    IsMain = isMain,
+                    HasSub = hasSub,
+                    Image = new()
+                    {
+                        FilePath = filePath,
+                        Image = thumbnail,
+                        IsEmpty = false,
+                        IsError = false,
+                    }
+                };
+            }
         }
 
         internal async ValueTask<Size> GetImageSize(string filePath)
