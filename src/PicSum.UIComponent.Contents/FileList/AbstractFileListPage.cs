@@ -41,6 +41,12 @@ namespace PicSum.UIComponent.Contents.FileList
         private string[] _filterFilePathList = null;
         private int? _itemTextHeight = null;
 
+        private readonly SKPaint _imagePaint = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
+        };
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
@@ -277,6 +283,8 @@ namespace PicSum.UIComponent.Contents.FileList
                         item.Value.FileNameImage?.Dispose();
                     }
                 }
+
+                this._imagePaint.Dispose();
             }
 
             this._disposed = true;
@@ -1092,7 +1100,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         ThumbnailUtil.DrawIcon(
                             canvas,
-                            this.flowList.ImagePaint,
+                            this._imagePaint,
                             item.JumboIcon,
                             iconRect,
                             this._scale);
@@ -1116,7 +1124,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             ThumbnailUtil.DrawFileThumbnail(
                                 canvas,
-                                this.flowList.ImagePaint,
+                                this._imagePaint,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),
@@ -1126,7 +1134,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             ThumbnailUtil.DrawDirectoryThumbnail(
                                 canvas,
-                                this.flowList.ImagePaint,
+                                this._imagePaint,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),

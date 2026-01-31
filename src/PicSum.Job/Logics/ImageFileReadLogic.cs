@@ -280,7 +280,7 @@ namespace PicSum.Job.Logics
                 {
                     return new SkiaImage(
                         filePath,
-                        ThumbnailUtil.ReadSKImageBuffer(cache.ThumbnailBuffer),
+                        ThumbnailUtil.ReadBufferToSKImage(cache.ThumbnailBuffer),
                         imageSize,
                         zoomValue);
                 }

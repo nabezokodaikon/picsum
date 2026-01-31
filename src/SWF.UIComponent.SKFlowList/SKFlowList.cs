@@ -278,7 +278,6 @@ namespace SWF.UIComponent.SKFlowList
                 }
 
                 this.BackgroundPaint.Dispose();
-                this.ImagePaint.Dispose();
                 this.TextPaint.Dispose();
                 this.SelectedFillPaint.Dispose();
                 this._selectedStrokePaint.Dispose();
@@ -320,7 +319,7 @@ namespace SWF.UIComponent.SKFlowList
 
         private void FlowList_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
+            using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface"))
             {
                 e.Surface.Canvas.DrawRect(e.Info.Rect, this.BackgroundPaint);
 

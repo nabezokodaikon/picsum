@@ -25,7 +25,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static OpenCvSharp.Mat ReadImageBuffer(byte[] bf)
+        public static OpenCvSharp.Mat ReadBufferToMat(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
@@ -33,7 +33,7 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    return OpenCVUtil.ReadImageBuffer(bf);
+                    return OpenCVUtil.ReadBuffer(bf);
                 }
                 catch (OutOfMemoryException ex)
                 {
@@ -42,7 +42,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static SKImage ReadSKImageBuffer(byte[] bf)
+        public static SKImage ReadBufferToSKImage(byte[] bf)
         {
             ArgumentNullException.ThrowIfNull(bf, nameof(bf));
 
@@ -50,7 +50,7 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    return SkiaImageUtil.ReadImageFileToSKImage(bf);
+                    return SkiaImageUtil.ReadBuffer(bf);
                 }
                 catch (OutOfMemoryException ex)
                 {

@@ -116,7 +116,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static unsafe Mat ReadImageBuffer(byte[] bf)
+        public static unsafe Mat ReadBuffer(byte[] bf)
         {
             if (bf == null || bf.Length == 0)
             {

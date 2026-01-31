@@ -9,6 +9,9 @@ namespace SWF.Core.ImageAccessor
     {
         public static readonly CvImage EMPTY = new(SizeF.Empty);
 
+        private static readonly SKSamplingOptions SAMPLING
+            = new(SKFilterMode.Nearest, SKMipmapMode.None);
+
         private bool _disposed = false;
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
@@ -31,22 +34,6 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public CvImage(string filePath, OpenCvSharp.Mat mat, SizeF size, float zoomValue)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-            ArgumentNullException.ThrowIfNull(mat, nameof(mat));
-
-            this._filePath = filePath;
-            this._mat = mat;
-            this._zoomValue = zoomValue;
-            this.Width = size.Width * zoomValue;
-            this.Height = size.Height * zoomValue;
-            this.Size = new SizeF(this.Width, this.Height);
-            this.IsLoadingImage = false;
-            this.IsThumbnailImage = true;
-            this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
-        }
-
         public CvImage(string filePath, OpenCvSharp.Mat mat)
             : this(filePath, mat, AppConstants.DEFAULT_ZOOM_VALUE)
         {
@@ -67,21 +54,6 @@ namespace SWF.Core.ImageAccessor
             this.IsLoadingImage = false;
             this.IsThumbnailImage = false;
             this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
-        }
-
-        public CvImage(string filePath, SizeF size, float zoomValue)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-
-            this._filePath = filePath;
-            this._mat = null;
-            this._zoomValue = zoomValue;
-            this.Width = size.Width * zoomValue;
-            this.Height = size.Height * zoomValue;
-            this.Size = new SizeF(this.Width, this.Height);
-            this.IsLoadingImage = true;
-            this.IsThumbnailImage = false;
-            this._scaleValue = 1f;
         }
 
         private CvImage(SizeF size)
@@ -121,64 +93,6 @@ namespace SWF.Core.ImageAccessor
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public void DrawEmpty(Graphics g, Brush brush, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-            ArgumentNullException.ThrowIfNull(brush, nameof(brush));
-
-            g.FillRectangle(brush, destRect);
-        }
-
-        public void DrawZoomThumbnail(
-            Graphics g, RectangleF destRect, RectangleF srcRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            using (Measuring.Time(false, "CvImage.DrawZoomThumbnail"))
-            {
-                if (this._gdiCache == null
-                    || this._gdiCache.Width != (int)destRect.Width
-                    || this._gdiCache.Height != (int)destRect.Height)
-                {
-                    this._gdiCache?.Dispose();
-                    this._gdiCache = OpenCVUtil.ToBitmap(this._mat);
-                }
-
-                var zoomRect = this.GetZoomRectange(srcRect);
-                g.DrawImage(this._gdiCache, destRect, zoomRect, GraphicsUnit.Pixel);
-            }
-        }
-
-        public void DrawResizeThumbnail(
-            Graphics g, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
-            {
-                if (this._gdiCache == null
-                    || this._gdiCache.Width != (int)destRect.Width
-                    || this._gdiCache.Height != (int)destRect.Height)
-                {
-                    this._gdiCache?.Dispose();
-                    this._gdiCache = OpenCVUtil.ToBitmap(this._mat);
-                }
-
-                var srcRect = new Rectangle(0, 0, this._gdiCache.Width, this._gdiCache.Height);
-                g.DrawImage(this._gdiCache, destRect, srcRect, GraphicsUnit.Pixel);
-            }
         }
 
         public void CacheResizeThumbnail(SKRectI destRect)
@@ -223,123 +137,7 @@ namespace SWF.Core.ImageAccessor
                     return;
                 }
 
-                var x = destRect.Left + (destRect.Width - this._skCache.Width) / 2f;
-                var y = destRect.Top + (destRect.Height - this._skCache.Height) / 2f;
-                var r = x + this._skCache.Width;
-                var b = y + this._skCache.Height;
-
-                canvas.DrawImage(this._skCache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
-            }
-        }
-
-        public Bitmap CreateScaleImage(float scale)
-        {
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            var width = this.Width * scale;
-            var height = this.Height * scale;
-
-            try
-            {
-                using (Measuring.Time(false, "CvImage.CreateScaleImage"))
-                {
-                    return OpenCVUtil.Resize(this._mat, width, height);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
-            {
-                throw new ImageUtilException($"スケールイメージの作成に失敗しました。", this._filePath, ex);
-            }
-        }
-
-        public void DrawZoomImage(
-            Graphics g,
-            RectangleF destRect,
-            RectangleF srcRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            try
-            {
-                using (Measuring.Time(false, "CvImage.DrawZoomImage"))
-                {
-                    var zoomRect = this.GetZoomRectange(srcRect);
-                    var point = new OpenCvSharp.Point(zoomRect.X, zoomRect.Y);
-                    var size = new OpenCvSharp.Size(zoomRect.Width, zoomRect.Height);
-                    var roi = new OpenCvSharp.Rect(point, size);
-
-                    using (var cropped = new OpenCvSharp.Mat(this._mat, roi))
-                    using (var bmp = OpenCVUtil.Resize(cropped, destRect.Width, destRect.Height))
-                    {
-                        g.DrawImage(bmp,
-                            destRect,
-                            new RectangleF(0, 0, destRect.Width, destRect.Height),
-                            GraphicsUnit.Pixel);
-                    }
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
-            {
-                throw new ImageUtilException($"ズームイメージの描画に失敗しました。", this._filePath, ex);
-            }
-        }
-
-        public void DrawResizeImage(Graphics g, RectangleF destRect)
-        {
-            ArgumentNullException.ThrowIfNull(g, nameof(g));
-
-            if (this._mat == null)
-            {
-                throw new InvalidOperationException("MatがNullです。");
-            }
-
-            try
-            {
-                var width = (int)destRect.Width;
-                var height = (int)destRect.Height;
-
-                using (Measuring.Time(false, "CvImage.DrawResizeImage"))
-                {
-                    if (this._gdiCache == null
-                        || this._gdiCache.Width != width
-                        || this._gdiCache.Height != height)
-                    {
-                        this._gdiCache?.Dispose();
-                        this._gdiCache = OpenCVUtil.Resize(this._mat, width, height);
-                    }
-
-                    g.DrawImageUnscaled(this._gdiCache, (int)destRect.X, (int)destRect.Y);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
-            {
-                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+                canvas.DrawImage(this._skCache, destRect, SAMPLING, paint);
             }
         }
 
@@ -376,15 +174,6 @@ namespace SWF.Core.ImageAccessor
             {
                 throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
             }
-        }
-
-        private RectangleF GetZoomRectange(RectangleF srcRect)
-        {
-            return new RectangleF(
-                srcRect.X * this._scaleValue / this._zoomValue,
-                srcRect.Y * this._scaleValue / this._zoomValue,
-                srcRect.Width * this._scaleValue / this._zoomValue,
-                srcRect.Height * this._scaleValue / this._zoomValue);
         }
     }
 }

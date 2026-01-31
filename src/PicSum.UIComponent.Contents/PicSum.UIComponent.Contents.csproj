@@ -47,9 +47,6 @@
     <Compile Update="ImageView\SKImagePanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="ImageView\ImagePanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="ImageView\ImageViewPage.cs" />
     <Compile Update="FileList\RatingFileListPage.cs" />
     <Compile Update="FileList\TagFileListPage.cs" />

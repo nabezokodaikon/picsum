@@ -91,7 +91,7 @@ namespace PicSum.Job.Logics
             {
                 info.ThumbnailImage = new CvImage(
                     filePath,
-                    ThumbnailUtil.ReadImageBuffer(thumbnailBuffer.ThumbnailBuffer));
+                    ThumbnailUtil.ReadBufferToMat(thumbnailBuffer.ThumbnailBuffer));
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
@@ -136,7 +136,7 @@ namespace PicSum.Job.Logics
             {
                 info.ThumbnailImage = new CvImage(
                     filePath,
-                    ThumbnailUtil.ReadImageBuffer(thumbnailBuffer.ThumbnailBuffer));
+                    ThumbnailUtil.ReadBufferToMat(thumbnailBuffer.ThumbnailBuffer));
                 info.ThumbnailWidth = thumbnailBuffer.ThumbnailWidth;
                 info.ThumbnailHeight = thumbnailBuffer.ThumbnailHeight;
                 info.SourceWidth = thumbnailBuffer.SourceWidth;
