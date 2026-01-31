@@ -128,8 +128,9 @@ namespace SWF.Core.ImageAccessor
         }
 
         public void DrawZoomThumbnail(
-            SKCanvas canvas, SKPaint paint, SKRect destRect, SKRect srcRect)
+            GRContext context, SKCanvas canvas, SKPaint paint, SKRect destRect, SKRect srcRect)
         {
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -138,16 +139,18 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnail"))
+            using (Measuring.Time(true, "SkiaImage.DrawZoomThumbnail"))
             {
                 var zoomRect = this.GetZoomRectange(srcRect);
-                canvas.DrawImage(this._src, zoomRect, destRect, paint);
+                using var gpuImg = this._src.ToTextureImage(context, false);
+                canvas.DrawImage(gpuImg, zoomRect, destRect, paint);
             }
         }
 
         public void DrawResizeThumbnail(
-            SKCanvas canvas, SKPaint paint, SKRect destRect)
+            GRContext context, SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -156,10 +159,11 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
+            using (Measuring.Time(true, "SkiaImage.DrawResizeThumbnail"))
             {
                 var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
-                canvas.DrawImage(this._src, destRect, paint);
+                using var gpuImg = this._src.ToTextureImage(context, false);
+                canvas.DrawImage(gpuImg, destRect, paint);
             }
         }
 
@@ -245,11 +249,13 @@ namespace SWF.Core.ImageAccessor
         }
 
         public void DrawZoomImage(
+            GRContext context,
             SKCanvas canvas,
             SKPaint paint,
             SKRect destRect,
             SKRect srcRect)
         {
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -260,7 +266,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (Measuring.Time(false, "SkiaImage.DrawZoomImage"))
+                using (Measuring.Time(true, "SkiaImage.DrawZoomImage"))
                 {
                     var zoomRect = this.GetZoomRectange(srcRect);
 
@@ -268,8 +274,10 @@ namespace SWF.Core.ImageAccessor
                         ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
                         : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
+                    using var gpuImg = this._src.ToTextureImage(context, false);
+
                     canvas.DrawImage(
-                        this._src,
+                        gpuImg,
                         zoomRect,
                         destRect,
                         sampling,
@@ -287,9 +295,15 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public void DrawResizeImage(SKCanvas canvas, SKPaint paint, SKRect destRect)
+        public void DrawResizeImage(
+            GRContext context, 
+            SKCanvas canvas, 
+            SKPaint paint, 
+            SKRect destRect)
         {
+            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
             if (this._src == null)
             {
@@ -300,12 +314,14 @@ namespace SWF.Core.ImageAccessor
             {
                 using (Measuring.Time(true, "SkiaImage.DrawResizeImage"))
                 {
-                    var sampling = this._src.Width > destRect.Width || this._src.Height > destRect.Height
+                    var sampling = this._src.Width > destRect.Width
                         ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
                         : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
+                    using var gpuImg = this._src.ToTextureImage(context, false);
+
                     canvas.DrawImage(
-                        this._src,
+                        gpuImg,
                         destRect,
                         sampling,
                         paint);
@@ -316,8 +332,7 @@ namespace SWF.Core.ImageAccessor
                 ex is ArgumentNullException ||
                 ex is ArgumentException ||
                 ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
+                ex is NotImplementedException)
             {
                 throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
             }

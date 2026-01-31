@@ -288,30 +288,27 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
         {
-            using (Measuring.Time(false, "ImagePanel.ImagePanel_PaintSurface"))
+            using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
             {
-                var canvas = e.Surface.Canvas;
-
-                canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
+                e.Surface.Canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
 
                 if (this._isError)
                 {
-                    this.DrawErrorMessage(canvas);
+                    this.DrawErrorMessage(e.Surface.Canvas);
                 }
                 else
                 {
                     if (this.HasImage)
                     {
-                        this.DrawImage(canvas);
+                        this.DrawImage(e.Surface.Context as GRContext, e.Surface.Canvas);
                     }
 
                     if (this.CanDrawThumbnailPanel())
                     {
-                        this.DrawThumbnailPanel(canvas);
+                        this.DrawThumbnailPanel(e.Surface.Canvas);
+                        var _ = WinApiMembers.DwmFlush();
                     }
                 }
-
-                var _ = WinApiMembers.DwmFlush();
             }
         }
 
@@ -713,7 +710,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             canvas.DrawText(textBlob, x, y, this._messagePaint);
         }
 
-        private void DrawImage(SKCanvas canvas)
+        private void DrawImage(GRContext context, SKCanvas canvas)
         {
             using (Measuring.Time(false, "ImagePanel.DrawImage"))
             {
@@ -737,12 +734,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomThumbnail(canvas, this._imagePaint, destRect, srcRect);
+                            image.DrawZoomThumbnail(context, canvas, this._imagePaint, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeThumbnail(canvas, this._imagePaint, destRect);
+                            image.DrawResizeThumbnail(context, canvas, this._imagePaint, destRect);
                         }
                     }
                     else
@@ -751,12 +748,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomImage(canvas, this._imagePaint, destRect, srcRect);
+                            image.DrawZoomImage(context, canvas, this._imagePaint, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeImage(canvas, this._imagePaint, destRect);
+                            image.DrawResizeImage(context, canvas, this._imagePaint, destRect);
                         }
                     }
                 }
