@@ -52,58 +52,48 @@ namespace PicSum.UIComponent.Contents.ImageView
         private bool _isError = false;
 
         private Rectangle _dragJudgementRectangle = new();
+        private bool _isWarmUpDone = false;
 
-        private readonly StringFormat _stringFormat = new()
+        private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
+
+        private static readonly SKPaint IMAGE_PAINT = new()
         {
-            Alignment = StringAlignment.Center,
-            LineAlignment = StringAlignment.Center,
-            Trimming = StringTrimming.EllipsisCharacter,
+            IsAntialias = false,
         };
 
-        private readonly SKPaint _imagePaint = new()
-        {
-            IsAntialias = true,
-        };
-
-        private readonly SKPaint _backgroundPaint = new()
-        {
-            Color = new(64, 68, 71),
-            //BlendMode = SKBlendMode.Src,
-        };
-
-        private readonly SKPaint _inactiveThumbnailPaint = new()
+        private static readonly SKPaint INACTIVE_THUMBNAIL_PAINT = new()
         {
 
         };
 
-        private readonly SKPaint _activeThumbnailPaint = new()
+        private static readonly SKPaint ACTIVE_THUMBNAIL_PAINT = new()
         {
 
         };
 
-        private readonly SKPaint _thumbnaiPanelPaint = new()
+        private static readonly SKPaint THUMBNAI_PANEL_PAINT = new()
         {
             Color = new(128, 128, 128, 128),
         };
 
-        private readonly SKPaint _thumbnaiFilterPaint = new()
+        private static readonly SKPaint THUMBNAI_FILTER_PAINT = new()
         {
             Color = new(0, 0, 0, 128),
         };
 
-        private readonly SKPaint _activeThumbnaiStrokePaint = new()
+        private static readonly SKPaint ACTIVE_THUMBNAI_STROKE_PAINT = new()
         {
             Color = new(255, 0, 0, 255),
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
-        private readonly SKPaint _messagePaint = new()
+        private static readonly SKPaint MESSAGE_PAINT = new()
         {
             Color = new(192, 192, 192),
         };
 
-        private readonly SKPaint _loadingPaint = new()
+        private static readonly SKPaint LOADING_PAINT = new()
         {
             Color = new(128, 128, 128),
         };
@@ -311,17 +301,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (disposing)
             {
                 this.ClearImage();
-                this._stringFormat.Dispose();
-                this._imagePaint.Dispose();
-                this._backgroundPaint.Dispose();
-                this._inactiveThumbnailPaint.Dispose();
-                this._activeThumbnailPaint.Dispose();
-                this._thumbnaiPanelPaint.Dispose();
-                this._thumbnaiFilterPaint.Dispose();
-                this._activeThumbnaiStrokePaint.Dispose();
-                this._messagePaint.Dispose();
-                this._loadingPaint.Dispose();
-
                 this.PaintSurface -= this.ImagePanel_PaintSurface;
             }
 
@@ -344,9 +323,13 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
             {
-                this.GRContext?.SetResourceCacheLimit(512 * 1024 * 1024);
+                if (!this._isWarmUpDone && this.GRContext != null)
+                {
+                    this.GRContext.SetResourceCacheLimit(512 * 1024 * 1024);
+                    this._isWarmUpDone = true;
+                }
 
-                e.Surface.Canvas.Clear(this._backgroundPaint.Color);
+                e.Surface.Canvas.Clear(BACKGROUND_COLOR);
 
                 if (this._isError)
                 {
@@ -356,7 +339,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     var bounds = new SKRect(0, 0, this.Width, this.Height);
                     SkiaUtil.DrawText(
                         e.Surface.Canvas,
-                        this._messagePaint,
+                        MESSAGE_PAINT,
                         font,
                         ERROR_MESSAGE,
                         bounds);
@@ -721,14 +704,14 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var destRect = this.GetImageDestRectangle();
 
                         image.DrawEmpty(
-                            canvas, this._loadingPaint, destRect);
+                            canvas, LOADING_PAINT, destRect);
 
                         var font = FontCacher.GetRegularSKFont(
                             FontCacher.Size.ExtraLarge,
                             WindowUtil.GetCurrentWindowScale(this));
                         SkiaUtil.DrawText(
                             canvas,
-                            this._messagePaint,
+                            MESSAGE_PAINT,
                             font,
                             FileUtil.GetFileName(this.FilePath),
                             destRect);
@@ -739,12 +722,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomThumbnail(context, canvas, this._imagePaint, destRect, srcRect);
+                            image.DrawZoomThumbnail(context, canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeThumbnail(context, canvas, this._imagePaint, destRect);
+                            image.DrawResizeThumbnail(context, canvas, IMAGE_PAINT, destRect);
                         }
                     }
                     else
@@ -753,12 +736,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomImage(context, canvas, this._imagePaint, destRect, srcRect);
+                            image.DrawZoomImage(context, canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeImage(context, canvas, this._imagePaint, destRect);
+                            image.DrawResizeImage(context, canvas, IMAGE_PAINT, destRect);
                         }
                     }
                 }
@@ -774,7 +757,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     var bounds = new SKRect(0, 0, this.Width, this.Height);
                     SkiaUtil.DrawText(
                         canvas,
-                        this._messagePaint,
+                        MESSAGE_PAINT,
                         font,
                         ERROR_MESSAGE,
                         bounds);
@@ -789,16 +772,16 @@ namespace PicSum.UIComponent.Contents.ImageView
                 var panelRect = this.GetThumbnailPanelRectangle();
                 canvas.DrawRect(
                     panelRect,
-                    this._thumbnaiPanelPaint);
+                    THUMBNAI_PANEL_PAINT);
 
                 var thumbRect = this.GetThumbnailRectangle(panelRect);
                 canvas.DrawImage(
                     this._thumbnail,
                     thumbRect,
-                    this._inactiveThumbnailPaint);
+                    INACTIVE_THUMBNAIL_PAINT);
                 canvas.DrawRect(
                     thumbRect,
-                    this._thumbnaiFilterPaint);
+                    THUMBNAI_FILTER_PAINT);
 
                 var srcRect = this.GetImageSrcRectangle();
                 var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
@@ -806,13 +789,13 @@ namespace PicSum.UIComponent.Contents.ImageView
 
                 canvas.DrawRect(
                     viewDestRect,
-                    this._activeThumbnaiStrokePaint);
+                    ACTIVE_THUMBNAI_STROKE_PAINT);
 
                 canvas.DrawImage(
                     this._thumbnail,
                     viewSrcRect,
                     viewDestRect,
-                    this._activeThumbnailPaint);
+                    ACTIVE_THUMBNAIL_PAINT);
             }
         }
 
