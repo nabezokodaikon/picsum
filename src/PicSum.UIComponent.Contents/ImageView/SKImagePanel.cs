@@ -342,9 +342,9 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
         {
-            using (Measuring.Time(false, "ImagePanel.ImagePanel_PaintSurface"))
+            using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
             {
-                //this.GRContext.SetResourceCacheLimit(256 * 1024 * 1024);
+                this.GRContext?.SetResourceCacheLimit(512 * 1024 * 1024);
 
                 e.Surface.Canvas.Clear(this._backgroundPaint.Color);
 

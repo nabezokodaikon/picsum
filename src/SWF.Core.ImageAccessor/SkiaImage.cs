@@ -10,7 +10,8 @@ namespace SWF.Core.ImageAccessor
 
         private bool _disposed = false;
         private readonly string _filePath;
-        private SKImage? _src;
+        private SKImage? _src = null;
+        private SKImage? _cache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -99,6 +100,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this._src?.Dispose();
                 this._src = null;
+                this._cache?.Dispose();
+                this._cache = null;
             }
 
             this._disposed = true;
@@ -133,8 +136,13 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnail"))
             {
                 var zoomRect = this.GetZoomRectange(srcRect);
-                using var gpuImg = this._src.ToTextureImage(context, false);
-                canvas.DrawImage(gpuImg, zoomRect, destRect, paint);
+
+                if (this._cache == null)
+                {
+                    this._cache = this._src.ToTextureImage(context, false);
+                }
+
+                canvas.DrawImage(this._cache, zoomRect, destRect, paint);
             }
         }
 
@@ -153,8 +161,13 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
                 var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
-                using var gpuImg = this._src.ToTextureImage(context, false);
-                canvas.DrawImage(gpuImg, destRect, paint);
+
+                if (this._cache == null)
+                {
+                    this._cache = this._src.ToTextureImage(context, false);
+                }
+
+                canvas.DrawImage(this._cache, destRect, paint);
             }
         }
 
@@ -214,10 +227,13 @@ namespace SWF.Core.ImageAccessor
                         ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
                         : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    using var gpuImg = this._src.ToTextureImage(context, false);
+                    if (this._cache == null)
+                    {
+                        this._cache = this._src.ToTextureImage(context, false);
+                    }
 
                     canvas.DrawImage(
-                        gpuImg,
+                        this._cache,
                         zoomRect,
                         destRect,
                         sampling,
@@ -258,10 +274,13 @@ namespace SWF.Core.ImageAccessor
                         ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
                         : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    using var gpuImg = this._src.ToTextureImage(context, false);
+                    if (this._cache == null)
+                    {
+                        this._cache = this._src.ToTextureImage(context, false);
+                    }
 
                     canvas.DrawImage(
-                        gpuImg,
+                        this._cache,
                         destRect,
                         sampling,
                         paint);
