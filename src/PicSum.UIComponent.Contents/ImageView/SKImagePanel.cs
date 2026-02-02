@@ -188,6 +188,14 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
+        public new bool Visible
+        {
+            get
+            {
+                return base.Visible;
+            }
+        }
+
         public SKImagePanel()
         {
             this.VSync = true;
@@ -198,7 +206,6 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.MouseClick += this.ImagePanel_MouseClick;
             this.MouseDoubleClick += this.ImagePanel_MouseDoubleClick;
             this.MouseMove += this.ImagePanel_MouseMove;
-            this.Invalidated += this.ImagePanel_Invalidated;
             this.LostFocus += this.ImagePanel_LostFocus;
             this.PaintSurface += this.ImagePanel_PaintSurface;
         }
@@ -266,6 +273,37 @@ namespace PicSum.UIComponent.Contents.ImageView
             this._thumbnail = null;
             this._imageScaleSize = SizeF.Empty;
             this.FilePath = string.Empty;
+        }
+
+        public new void Show()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Hide()
+        {
+            base.Visible = false;
+        }
+
+        public new void Invalidate()
+        {
+            if (!base.Visible)
+            {
+                base.Visible = true;
+            }
+
+            this.SetDrawParameter();
+            base.Invalidate();
+        }
+
+        public new void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Refresh()
+        {
+            throw new NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)
@@ -392,11 +430,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                         dragSize.Height);
                 }
             }
-        }
-
-        private void ImagePanel_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this.SetDrawParameter();
         }
 
         private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
