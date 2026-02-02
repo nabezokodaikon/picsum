@@ -31,7 +31,7 @@ namespace PicSum.Job.Results
         }
 
         public string FilePath { get; internal set; } = string.Empty;
-        public CvImage? ThumbnailImage { get; internal set; }
+        public OpenCVImage? ThumbnailImage { get; internal set; }
         public int ThumbnailWidth { get; internal set; }
         public int ThumbnailHeight { get; internal set; }
         public int SourceWidth { get; internal set; }

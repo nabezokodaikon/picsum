@@ -63,7 +63,7 @@ namespace SWF.Core.ImageAccessor
             }).False();
         }
 
-        public async ValueTask<CvImage> GetCache(string filePath, float zoomValue)
+        public async ValueTask<OpenCVImage> GetCache(string filePath, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -71,12 +71,12 @@ namespace SWF.Core.ImageAccessor
             {
                 if (!cache.IsEmpty && cache.Bitmap != null)
                 {
-                    return new CvImage(
+                    return new OpenCVImage(
                         filePath, OpenCVUtil.ToMat(cache.Bitmap), zoomValue);
                 }
                 else
                 {
-                    return CvImage.EMPTY;
+                    return OpenCVImage.EMPTY;
                 }
             }).False();
         }

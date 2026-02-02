@@ -137,7 +137,7 @@ namespace SWF.Core.ImageAccessor
         }
 
         public static void CacheFileThumbnail(
-            CvImage thumb,
+            OpenCVImage thumb,
             SKRectI destRect,
             Size srcSize,
             float displayScale)
@@ -151,7 +151,7 @@ namespace SWF.Core.ImageAccessor
         public static void DrawFileThumbnail(
             SKCanvas canvas,
             SKPaint paint,
-            CvImage thumb,
+            OpenCVImage thumb,
             SKRectI destRect,
             Size srcSize,
             float displayScale)
@@ -167,7 +167,7 @@ namespace SWF.Core.ImageAccessor
         public static void DrawDirectoryThumbnail(
             SKCanvas canvas,
             SKPaint paint,
-            CvImage thumb,
+            OpenCVImage thumb,
             SKRectI destRect,
             Size srcSize,
             IconImage icon,

@@ -423,14 +423,14 @@ namespace SWF.Core.ImageAccessor
                 {
                     using (Measuring.Time(false, "ImageUtil.ReadImageFileWithVarious: Png"))
                     {
-                        return SkiaBitmapUtil.ReadImageFile(ms);
+                        return ConvertIfGrayscale((Bitmap)Bitmap.FromStream(ms, false, true), ms);
                     }
                 }
                 else if (IsWebpFile(formatName))
                 {
-                    using (Measuring.Time(false, "ImageUtil.ReadImageFileWithVarious: Webp"))
+                    using (Measuring.Time(true, "ImageUtil.ReadImageFileWithVarious: Webp"))
                     {
-                        return SkiaBitmapUtil.ReadImageFile(ms);
+                        return SkiaImageUtil.ReadImageFile(ms);
                     }
                 }
                 else

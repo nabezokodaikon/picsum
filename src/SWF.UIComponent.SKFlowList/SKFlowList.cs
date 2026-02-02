@@ -319,9 +319,13 @@ namespace SWF.UIComponent.SKFlowList
 
         private void FlowList_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface"))
+            using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
-                e.Surface.Canvas.DrawRect(e.Info.Rect, this.BackgroundPaint);
+                using var recorder = new SKPictureRecorder();
+                using var canvas = recorder.BeginRecording(
+                    new SKRectI(0, 0, this.Width, this.Height));
+
+                canvas.Clear(this.BackgroundPaint.Color);
 
                 if (!this._isDraw)
                 {
@@ -371,9 +375,12 @@ namespace SWF.UIComponent.SKFlowList
                 }
 
                 this.OnSKDrawItems(new SKDrawItemsEventArgs(
-                    e.Surface.Canvas,
+                    canvas,
                     e.Surface.Canvas.LocalClipBounds,
                     infos));
+
+                using var recordedMap = recorder.EndRecording();
+                e.Surface.Canvas.DrawPicture(recordedMap);
             }
         }
 

@@ -4,10 +4,10 @@ using SWF.Core.Base;
 namespace SWF.Core.ImageAccessor
 {
 
-    public sealed class CvImage
+    public sealed class OpenCVImage
         : IDisposable
     {
-        public static readonly CvImage EMPTY = new(SizeF.Empty);
+        public static readonly OpenCVImage EMPTY = new(SizeF.Empty);
 
         private static readonly SKSamplingOptions SAMPLING
             = new(SKFilterMode.Nearest, SKMipmapMode.None);
@@ -15,8 +15,7 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
-        private Bitmap? _gdiCache = null;
-        private SKImage? _skCache = null;
+        private SKImage? _cache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -34,13 +33,13 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public CvImage(string filePath, OpenCvSharp.Mat mat)
+        public OpenCVImage(string filePath, OpenCvSharp.Mat mat)
             : this(filePath, mat, AppConstants.DEFAULT_ZOOM_VALUE)
         {
 
         }
 
-        public CvImage(string filePath, OpenCvSharp.Mat mat, float zoomValue)
+        public OpenCVImage(string filePath, OpenCvSharp.Mat mat, float zoomValue)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
@@ -56,7 +55,7 @@ namespace SWF.Core.ImageAccessor
             this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
         }
 
-        private CvImage(SizeF size)
+        private OpenCVImage(SizeF size)
         {
             this._filePath = string.Empty;
             this._mat = null;
@@ -80,10 +79,8 @@ namespace SWF.Core.ImageAccessor
             {
                 this._mat?.Dispose();
                 this._mat = null;
-                this._gdiCache?.Dispose();
-                this._gdiCache = null;
-                this._skCache?.Dispose();
-                this._skCache = null;
+                this._cache?.Dispose();
+                this._cache = null;
             }
 
             this._disposed = true;
@@ -102,16 +99,16 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("MatがNullです。");
             }
 
-            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
+            using (Measuring.Time(false, "OpenCVImage.CacheResizeThumbnail"))
             {
-                if (this._skCache == null
-                    || this._skCache.Width != destRect.Width
-                    || this._skCache.Height != destRect.Height)
+                if (this._cache == null
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
                 {
-                    this._skCache?.Dispose();
+                    this._cache?.Dispose();
                     using (var bmp = OpenCVUtil.Resize(this._mat, destRect.Width, destRect.Height))
                     {
-                        this._skCache = SkiaImageUtil.ToSKImage(bmp);
+                        this._cache = SkiaImageUtil.ToSKImage(bmp);
                     }
                 }
             }
@@ -128,16 +125,16 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("MatがNullです。");
             }
 
-            using (Measuring.Time(false, "CvImage.DrawResizeThumbnailImage"))
+            using (Measuring.Time(false, "OpenCVImage.DrawResizeThumbnail"))
             {
-                if (this._skCache == null
-                    || this._skCache.Width != destRect.Width
-                    || this._skCache.Height != destRect.Height)
+                if (this._cache == null
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
                 {
                     return;
                 }
 
-                canvas.DrawImage(this._skCache, destRect, SAMPLING, paint);
+                canvas.DrawImage(this._cache, destRect, SAMPLING, paint);
             }
         }
     }

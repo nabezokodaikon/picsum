@@ -37,7 +37,7 @@ namespace PicSum.Job.Logics
                     if (sizeMode == ImageSizeMode.Original)
                     {
                         var thumbnailScale = this.GetThumbnailScale(thumbnailSize, image.Size);
-                        thumbnail = image.CreateScaleImage(thumbnailScale);
+                        thumbnail = image.GetScaleImage(thumbnailScale);
                     }
 
                     this.ThrowIfJobCancellationRequested();

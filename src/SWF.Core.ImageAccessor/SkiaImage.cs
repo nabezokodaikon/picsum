@@ -11,7 +11,6 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private SKImage? _src;
-        private SKImage? _cache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
@@ -100,8 +99,6 @@ namespace SWF.Core.ImageAccessor
             {
                 this._src?.Dispose();
                 this._src = null;
-                this._cache?.Dispose();
-                this._cache = null;
             }
 
             this._disposed = true;
@@ -153,7 +150,7 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            using (Measuring.Time(true, "SkiaImage.DrawResizeThumbnail"))
+            using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
                 var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
                 using var gpuImg = this._src.ToTextureImage(context, false);
@@ -161,7 +158,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public SKImage CreateScaleImage(float scale)
+        public SKImage GetScaleImage(float scale)
         {
             if (this._src == null)
             {
@@ -255,7 +252,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (Measuring.Time(true, "SkiaImage.DrawResizeImage"))
+                using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
                 {
                     var sampling = this._src.Width > destRect.Width
                         ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
