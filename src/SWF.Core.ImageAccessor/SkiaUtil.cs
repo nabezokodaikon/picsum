@@ -109,7 +109,7 @@ namespace SWF.Core.ImageAccessor
         {
             ArgumentNullException.ThrowIfNull(srcImage, nameof(srcImage));
 
-            using (Measuring.Time(true, "SkiaImageUtil.Resize"))
+            using (Measuring.Time(false, "SkiaImageUtil.Resize"))
             {
                 var info = new SKImageInfo(
                     targetWidth,
@@ -117,9 +117,13 @@ namespace SWF.Core.ImageAccessor
                     srcImage.ColorType,
                     srcImage.AlphaType);
 
+                var sampling = srcImage.Width > targetWidth || srcImage.Height > targetHeight
+                    ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
+                    : new SKSamplingOptions(SKCubicResampler.CatmullRom);
+
                 using var bitmap = new SKBitmap(info);
 
-                srcImage.ScalePixels(bitmap.PeekPixels(), SKSamplingOptions.Default);
+                srcImage.ScalePixels(bitmap.PeekPixels(), sampling);
 
                 return SKImage.FromBitmap(bitmap);
             }

@@ -130,7 +130,7 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            using (Measuring.Time(true, "SkiaImage.DrawZoomThumbnail"))
+            using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnail"))
             {
                 var zoomRect = this.GetZoomRectange(srcRect);
                 using var gpuImg = this._src.ToTextureImage(context, false);
@@ -206,7 +206,7 @@ namespace SWF.Core.ImageAccessor
 
             try
             {
-                using (Measuring.Time(true, "SkiaImage.DrawZoomImage"))
+                using (Measuring.Time(false, "SkiaImage.DrawZoomImage"))
                 {
                     var zoomRect = this.GetZoomRectange(srcRect);
 
