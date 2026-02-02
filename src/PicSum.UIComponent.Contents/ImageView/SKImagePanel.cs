@@ -191,7 +191,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         public SKImagePanel()
         {
             this.VSync = true;
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = false;
 
             this.MouseDown += this.ImagePanel_MouseDown;
             this.MouseUp += this.ImagePanel_MouseUp;
@@ -290,13 +290,25 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Dispose(disposing);
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            using (Measuring.Time(false, "ImagePanel.OnPaint"))
+            {
+                this.MakeCurrent();
+
+                base.OnPaint(e);
+
+                this.GRContext?.Flush(true);
+            }
+        }
+
         private void ImagePanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
         {
-            using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
+            using (Measuring.Time(false, "ImagePanel.ImagePanel_PaintSurface"))
             {
                 //this.GRContext.SetResourceCacheLimit(256 * 1024 * 1024);
 
-                e.Surface.Canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
+                e.Surface.Canvas.Clear(this._backgroundPaint.Color);
 
                 if (this._isError)
                 {
