@@ -90,7 +90,7 @@ namespace SWF.Core.ImageAccessor
                 if (!cache.IsEmpty && cache.Bitmap != null)
                 {
                     return new SkiaImage(
-                        filePath, SkiaImageUtil.ToSKImage(cache.Bitmap), zoomValue);
+                        filePath, SkiaUtil.ToSKImage(cache.Bitmap), zoomValue);
                 }
                 else
                 {

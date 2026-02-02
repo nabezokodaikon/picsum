@@ -76,7 +76,7 @@ namespace SWF.Core.ImageAccessor
                                 GraphicsUnit.Pixel);
                         }
 
-                        _skCache = SkiaImageUtil.ToSKImage(bmp);
+                        _skCache = SkiaUtil.ToSKImage(bmp);
                     }
                 }
 

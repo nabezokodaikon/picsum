@@ -50,7 +50,7 @@ namespace SWF.Core.ImageAccessor
             {
                 try
                 {
-                    return SkiaImageUtil.ReadBuffer(bf);
+                    return SkiaUtil.ReadBuffer(bf);
                 }
                 catch (OutOfMemoryException ex)
                 {

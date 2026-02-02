@@ -272,7 +272,7 @@ namespace PicSum.Job.Logics
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
                         return new SkiaImage(
-                            filePath, SkiaImageUtil.ToSKImage(bmp), zoomValue);
+                            filePath, SkiaUtil.ToSKImage(bmp), zoomValue);
                     }
                 }
             }

@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace SWF.Core.ImageAccessor
 {
-    public static class SkiaImageUtil
+    public static class SkiaUtil
     {
         public static Bitmap ToBitmap(SKImage src)
         {

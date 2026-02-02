@@ -524,7 +524,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
                     WindowUtil.GetCurrentWindowScale(this));
-                SkiaImageUtil.DrawText(e.Surface.Canvas, this._imagePaint, font, text, rect);
+                SkiaUtil.DrawText(e.Surface.Canvas, this._imagePaint, font, text, rect);
             }
             else if (!this.Thumbnail.IsEmpty
                 && !this.Thumbnail.ThumbnailImage.IsEmpry)
@@ -598,7 +598,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
                     WindowUtil.GetCurrentWindowScale(this));
-                SkiaImageUtil.DrawText(e.Surface.Canvas, this._messagePaint, font, text, rect);
+                SkiaUtil.DrawText(e.Surface.Canvas, this._messagePaint, font, text, rect);
             }
         }
 

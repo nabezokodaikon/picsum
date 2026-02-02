@@ -173,7 +173,7 @@ namespace SWF.Core.ImageAccessor
                 using (Measuring.Time(false, "SkiaImage.CreateScaleImage"))
                 {
                     using var paint = new SKPaint();
-                    return SkiaImageUtil.Resize(this._src, (int)width, (int)height);
+                    return SkiaUtil.Resize(this._src, (int)width, (int)height);
                 }
             }
             catch (Exception ex) when (

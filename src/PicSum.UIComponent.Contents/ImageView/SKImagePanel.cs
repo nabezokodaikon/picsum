@@ -316,7 +316,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         FontCacher.Size.ExtraLarge,
                         WindowUtil.GetCurrentWindowScale(this));
                     var bounds = new SKRect(0, 0, this.Width, this.Height);
-                    SkiaImageUtil.DrawText(
+                    SkiaUtil.DrawText(
                         e.Surface.Canvas,
                         this._messagePaint,
                         font,
@@ -693,7 +693,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var font = FontCacher.GetRegularSKFont(
                             FontCacher.Size.ExtraLarge,
                             WindowUtil.GetCurrentWindowScale(this));
-                        SkiaImageUtil.DrawText(
+                        SkiaUtil.DrawText(
                             canvas,
                             this._messagePaint,
                             font,
@@ -739,7 +739,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         FontCacher.Size.ExtraLarge,
                         WindowUtil.GetCurrentWindowScale(this));
                     var bounds = new SKRect(0, 0, this.Width, this.Height);
-                    SkiaImageUtil.DrawText(
+                    SkiaUtil.DrawText(
                         canvas,
                         this._messagePaint,
                         font,

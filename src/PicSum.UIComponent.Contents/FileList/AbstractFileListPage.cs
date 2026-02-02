@@ -783,7 +783,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     new Rectangle(0, 0, textWidth, textHeight),
                     this.flowList.ItemTextFormat);
 
-                item.FileNameImage = SkiaImageUtil.ToSKImage(bmp);
+                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
             }
         }
 

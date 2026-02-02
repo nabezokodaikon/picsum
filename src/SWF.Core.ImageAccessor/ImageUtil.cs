@@ -430,7 +430,7 @@ namespace SWF.Core.ImageAccessor
                 {
                     using (Measuring.Time(true, "ImageUtil.ReadImageFileWithVarious: Webp"))
                     {
-                        return SkiaImageUtil.ReadImageFile(ms);
+                        return SkiaUtil.ReadImageFile(ms);
                     }
                 }
                 else
