@@ -74,6 +74,8 @@ namespace SWF.UIComponent.SKFlowList
 
         public SKFlowList()
         {
+            this.DoubleBuffered = true;
+
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._scrollBar.Scroll += this.ScrollBar_Scroll;
@@ -322,8 +324,7 @@ namespace SWF.UIComponent.SKFlowList
             using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
                 using var recorder = new SKPictureRecorder();
-                using var canvas = recorder.BeginRecording(
-                    new SKRectI(0, 0, this.Width, this.Height));
+                using var canvas = recorder.BeginRecording(e.Info.Rect);
 
                 canvas.Clear(this.BackgroundPaint.Color);
 
