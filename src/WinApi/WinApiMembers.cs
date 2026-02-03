@@ -685,6 +685,9 @@ namespace WinApi
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern uint GetFileAttributes(string lpFileName);
 
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmFlush();
+
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {
             var fullPath = Path.GetFullPath(filePath);

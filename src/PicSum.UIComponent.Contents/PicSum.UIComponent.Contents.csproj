@@ -44,7 +44,7 @@
     <Compile Update="FileList\FavoriteDirectoryListPage.cs" />
     <Compile Update="FileList\AbstractFileListPage.cs" />
     <Compile Update="FileList\DirectoryFileListPage.cs" />
-    <Compile Update="ImageView\ImagePanel.cs">
+    <Compile Update="ImageView\SKImagePanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="ImageView\ImageViewPage.cs" />

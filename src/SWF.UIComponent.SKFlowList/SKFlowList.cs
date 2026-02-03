@@ -74,6 +74,8 @@ namespace SWF.UIComponent.SKFlowList
 
         public SKFlowList()
         {
+            this.DoubleBuffered = true;
+
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._scrollBar.Scroll += this.ScrollBar_Scroll;
@@ -278,7 +280,6 @@ namespace SWF.UIComponent.SKFlowList
                 }
 
                 this.BackgroundPaint.Dispose();
-                this.ImagePaint.Dispose();
                 this.TextPaint.Dispose();
                 this.SelectedFillPaint.Dispose();
                 this._selectedStrokePaint.Dispose();
@@ -322,7 +323,10 @@ namespace SWF.UIComponent.SKFlowList
         {
             using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
-                e.Surface.Canvas.DrawRect(e.Info.Rect, this.BackgroundPaint);
+                using var recorder = new SKPictureRecorder();
+                using var canvas = recorder.BeginRecording(e.Info.Rect);
+
+                canvas.Clear(this.BackgroundPaint.Color);
 
                 if (!this._isDraw)
                 {
@@ -372,9 +376,12 @@ namespace SWF.UIComponent.SKFlowList
                 }
 
                 this.OnSKDrawItems(new SKDrawItemsEventArgs(
-                    e.Surface.Canvas,
+                    canvas,
                     e.Surface.Canvas.LocalClipBounds,
                     infos));
+
+                using var recordedMap = recorder.EndRecording();
+                e.Surface.Canvas.DrawPicture(recordedMap);
             }
         }
 

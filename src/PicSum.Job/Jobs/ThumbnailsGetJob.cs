@@ -69,9 +69,9 @@ namespace PicSum.Job.Jobs
                                     var img = new ThumbnailImageResult
                                     {
                                         FilePath = bf.FilePath,
-                                        ThumbnailImage = new CvImage(
+                                        ThumbnailImage = new OpenCVImage(
                                             bf.FilePath,
-                                            ThumbnailUtil.ReadImageBuffer(bf.ThumbnailBuffer)),
+                                            ThumbnailUtil.ReadBufferToMat(bf.ThumbnailBuffer)),
                                         ThumbnailWidth = bf.ThumbnailWidth,
                                         ThumbnailHeight = bf.ThumbnailHeight,
                                         SourceWidth = bf.SourceWidth,

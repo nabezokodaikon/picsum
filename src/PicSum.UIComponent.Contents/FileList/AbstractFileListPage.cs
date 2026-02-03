@@ -11,6 +11,7 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.SKFlowList;
 using System;
@@ -40,6 +41,12 @@ namespace PicSum.UIComponent.Contents.FileList
         private Dictionary<string, FileEntity> _masterFileDictionary = null;
         private string[] _filterFilePathList = null;
         private int? _itemTextHeight = null;
+
+        private readonly SKPaint _imagePaint = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
+        };
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
@@ -277,6 +284,8 @@ namespace PicSum.UIComponent.Contents.FileList
                         item.Value.FileNameImage?.Dispose();
                     }
                 }
+
+                this._imagePaint.Dispose();
             }
 
             this._disposed = true;
@@ -724,7 +733,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 using (var bmp = new Bitmap(1, 1))
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    this._itemTextHeight = (int)(g.MeasureString("A", FontCacher.GetBoldFont(FontCacher.Size.Medium, this._scale)).Height * 2);
+                    this._itemTextHeight = (int)(g.MeasureString("A", FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale)).Height * 2);
                 }
             }
 
@@ -758,7 +767,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 var textWidth = textRect.Width;
                 var textHeight = textRect.Height;
-                var font = FontCacher.GetBoldFont(FontCacher.Size.Medium, this._scale);
+                var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
 
                 using var bmp = new Bitmap(
                     textWidth,
@@ -774,7 +783,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     new Rectangle(0, 0, textWidth, textHeight),
                     this.flowList.ItemTextFormat);
 
-                item.FileNameImage = SkiaImageUtil.ToSKImage(bmp);
+                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
             }
         }
 
@@ -1058,27 +1067,23 @@ namespace PicSum.UIComponent.Contents.FileList
                 }
             });
 
-            using var recorder = new SKPictureRecorder();
-            using var canvas = recorder.BeginRecording(
-                new SKRectI(0, 0, this.flowList.Width, this.flowList.Height));
-
             foreach (var info in e.DrawItemInfos.AsSpan())
             {
                 if (info.IsSelected)
                 {
-                    canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedFillPaint);
-                    canvas.DrawRect(info.ItemRectangle, this.flowList.GetSelectedStrokePaint());
+                    e.Canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedFillPaint);
+                    e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetSelectedStrokePaint());
                 }
                 else
                 {
                     if (info.IsFocus)
                     {
-                        canvas.DrawRect(info.ItemRectangle, this.flowList.GetFocusStrokePaint());
+                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetFocusStrokePaint());
                     }
 
                     if (info.IsMousePoint)
                     {
-                        canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
+                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
                     }
                 }
 
@@ -1091,8 +1096,8 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (e.LocalClipBounds.IntersectsWith(iconRect))
                     {
                         ThumbnailUtil.DrawIcon(
-                            canvas,
-                            this.flowList.ImagePaint,
+                            e.Canvas,
+                            this._imagePaint,
                             item.JumboIcon,
                             iconRect,
                             this._scale);
@@ -1102,7 +1107,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (e.LocalClipBounds.IntersectsWith(textRect))
                     {
                         this.DrawFileNameImage(
-                            canvas,
+                            e.Canvas,
                             item,
                             textRect);
                     }
@@ -1115,8 +1120,8 @@ namespace PicSum.UIComponent.Contents.FileList
                         if (item.IsFile)
                         {
                             ThumbnailUtil.DrawFileThumbnail(
-                                canvas,
-                                this.flowList.ImagePaint,
+                                e.Canvas,
+                                this._imagePaint,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),
@@ -1125,8 +1130,8 @@ namespace PicSum.UIComponent.Contents.FileList
                         else
                         {
                             ThumbnailUtil.DrawDirectoryThumbnail(
-                                canvas,
-                                this.flowList.ImagePaint,
+                                e.Canvas,
+                                this._imagePaint,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),
@@ -1141,16 +1146,13 @@ namespace PicSum.UIComponent.Contents.FileList
                         if (e.LocalClipBounds.IntersectsWith(textRect))
                         {
                             this.DrawFileNameImage(
-                                canvas,
+                                e.Canvas,
                                 item,
                                 textRect);
                         }
                     }
                 }
             }
-
-            using var recordedMap = recorder.EndRecording();
-            e.Canvas.DrawPicture(recordedMap);
         }
 
         private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)

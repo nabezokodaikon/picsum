@@ -80,7 +80,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // viewMenu
             //
-            this.viewMenu.Font = FontCacher.GetRegularFont(FontCacher.Size.Medium);
+            this.viewMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.directoryMenuItem, this.imageFileMenuItem, this.otherFileMenuItem, this.toolStripSeparator1, this.fileNameMenuItem });
             // 
             // directoryMenuItem

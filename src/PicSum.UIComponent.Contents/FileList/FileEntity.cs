@@ -18,7 +18,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public Image SmallIcon { get; set; }
         public Image ExtraLargeIcon { get; set; }
         public IconImage JumboIcon { get; set; }
-        public CvImage ThumbnailImage { get; set; }
+        public OpenCVImage ThumbnailImage { get; set; }
         public int ThumbnailWidth { get; set; }
         public int ThumbnailHeight { get; set; }
         public int SourceImageWidth { get; set; }

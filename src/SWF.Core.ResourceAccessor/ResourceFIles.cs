@@ -70,10 +70,6 @@ namespace SWF.Core.ResourceAccessor
             static () => CreateBitmapFromByteArray(Resources.TagIcon),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public static readonly Lazy<Bitmap> ThumbnailPanelIcon = new(
-            static () => CreateBitmapFromByteArray(Resources.ThumbnailPanelIcon),
-            LazyThreadSafetyMode.ExecutionAndPublication);
-
         private static Bitmap CreateBitmapFromByteArray(byte[] byteArray)
         {
             using (Measuring.Time(false, "ResourceFiles.CreateBitmapFromByteArray"))

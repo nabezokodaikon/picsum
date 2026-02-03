@@ -41,11 +41,6 @@ namespace SWF.UIComponent.SKFlowList
             BlendMode = SKBlendMode.Src,
         };
 
-        public readonly SKPaint ImagePaint = new()
-        {
-
-        };
-
         public readonly SKPaint TextPaint = new()
         {
             Color = new(255, 255, 255, 255),

@@ -2,6 +2,8 @@ using PicSum.Job.Common;
 using PicSum.Job.Entities;
 using PicSum.Job.Parameters;
 using PicSum.Job.Results;
+using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -51,9 +53,24 @@ namespace PicSum.UIComponent.InfoPanel
         private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
         private readonly Dictionary<float, Bitmap> _tagIconCache = [];
         private string _contextMenuOperationTag = string.Empty;
-        private readonly SolidBrush _foreColorBrush;
-        private readonly StringFormat _stringFormat;
         private bool _isLoading = false;
+
+        public readonly SKPaint _backgroundPaint = new()
+        {
+            Color = new SKColor(250, 250, 250),
+            BlendMode = SKBlendMode.Src,
+        };
+
+        private readonly SKPaint _imagePaint = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
+        };
+
+        private readonly SKPaint _messagePaint = new()
+        {
+            Color = new(0, 0, 0),
+        };
 
         private string[] FilePathList
         {
@@ -128,14 +145,6 @@ namespace PicSum.UIComponent.InfoPanel
         public InfoPanel()
         {
             this.InitializeComponent();
-
-            this._foreColorBrush = new SolidBrush(this.ForeColor);
-            this._stringFormat = new StringFormat()
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center,
-                Trimming = StringTrimming.EllipsisCharacter,
-            };
         }
 
         public void SetControlsBounds(float scale)
@@ -290,8 +299,9 @@ namespace PicSum.UIComponent.InfoPanel
                 }
                 this._tagIconCache.Clear();
 
-                this._foreColorBrush.Dispose();
-                this._stringFormat.Dispose();
+                this._imagePaint.Dispose();
+                this._backgroundPaint.Dispose();
+                this._messagePaint.Dispose();
             }
 
             this.disposed = true;
@@ -353,11 +363,11 @@ namespace PicSum.UIComponent.InfoPanel
         {
             if (tagInfo.IsAll)
             {
-                return FontCacher.GetBoldFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, scale);
             }
             else
             {
-                return FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
             }
         }
 
@@ -435,54 +445,6 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagFlowList.ItemCount = this.TagList.Count;
         }
 
-        private void DrawFileIcon(Graphics g, Image icon, Rectangle rect)
-        {
-            var iconWidth = (float)icon.Width;
-            var iconHeight = (float)icon.Height;
-
-            if (Math.Max(iconWidth, iconHeight) <= Math.Min(rect.Width, rect.Height))
-            {
-                var w = iconWidth;
-                var h = iconHeight;
-                var x = rect.X + (rect.Width - w) / 2f;
-                var y = rect.Y + (rect.Height - h) / 2f;
-                g.DrawImage(icon, new RectangleF(x, y, w, h));
-            }
-            else
-            {
-                var scale = Math.Min(rect.Width / iconWidth, rect.Height / iconHeight);
-                var w = iconWidth * scale;
-                var h = iconWidth * scale;
-                var x = rect.X + (rect.Width - w) / 2f;
-                var y = rect.Y + (rect.Height - h) / 2f;
-                g.DrawImage(icon, new RectangleF(x, y, w, h));
-            }
-        }
-
-        private void DrawSelectedFileCount(Graphics g, Rectangle rect)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var text = $"{this.FilePathList.Length} files selected";
-            g.DrawString(
-                text,
-                FontCacher.GetRegularFont(FontCacher.Size.Large, scale),
-                this._foreColorBrush,
-                rect,
-                this._stringFormat);
-        }
-
-        private void DrawErrorMessage(Graphics g, Rectangle rect)
-        {
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var text = $"Failed to load file";
-            g.DrawString(
-                text,
-                FontCacher.GetRegularFont(FontCacher.Size.Large, scale),
-                this._foreColorBrush,
-                rect,
-                this._stringFormat);
-        }
-
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
         {
             this.ClearInfo();
@@ -547,56 +509,96 @@ namespace PicSum.UIComponent.InfoPanel
             this.wideComboBox.SelectItem();
         }
 
-        private void ThumbnailPictureBox_Paint(object sender, PaintEventArgs e)
+        private void ThumbnailPictureBox_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+            e.Surface.Canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
+
             if (this.FileInfo.IsError)
             {
-                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                this.DrawErrorMessage(e.Graphics, rect);
+                var rect = new SKRect(
+                    0,
+                    0,
+                    this.thumbnailPictureBox.Width,
+                    this.thumbnailPictureBox.Height);
+                var text = $"Failed to load file";
+                var font = FontCacher.GetRegularSKFont(
+                    FontCacher.Size.Large,
+                    WindowUtil.GetCurrentWindowScale(this));
+                SkiaUtil.DrawText(e.Surface.Canvas, this._imagePaint, font, text, rect);
             }
             else if (!this.Thumbnail.IsEmpty
                 && !this.Thumbnail.ThumbnailImage.IsEmpry)
             {
-                e.Graphics.SmoothingMode = SmoothingMode.None;
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
-                var size = Math.Min(this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
+                var size = Math.Min(
+                    this.thumbnailPictureBox.Width,
+                    this.thumbnailPictureBox.Height);
                 var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
                 var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
-                var rect = new Rectangle(x, y, size, size);
+                var rect = new SKRectI(x, y, x + size, y + size);
                 if (this.FileInfo.IsFile)
                 {
-                    ThumbnailUtil.DrawFileThumbnail(
-                        e.Graphics,
+                    var thumbSize = new Size(
+                        this.Thumbnail.SourceWidth,
+                        this.Thumbnail.SourceHeight);
+                    var scale = WindowUtil.GetCurrentWindowScale(this);
+                    ThumbnailUtil.CacheFileThumbnail(
                         this.Thumbnail.ThumbnailImage,
                         rect,
-                        new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
+                        thumbSize,
+                        scale);
+                    ThumbnailUtil.DrawFileThumbnail(
+                        e.Surface.Canvas,
+                        this._imagePaint,
+                        this.Thumbnail.ThumbnailImage,
+                        rect,
+                        thumbSize,
                         WindowUtil.GetCurrentWindowScale(this));
                 }
                 else
                 {
+                    var thumbSize = new Size(
+                        this.Thumbnail.SourceWidth,
+                        this.Thumbnail.SourceHeight);
+                    var scale = WindowUtil.GetCurrentWindowScale(this);
+                    ThumbnailUtil.CacheFileThumbnail(
+                        this.Thumbnail.ThumbnailImage,
+                        rect,
+                        thumbSize,
+                        scale);
+                    var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
                     ThumbnailUtil.DrawDirectoryThumbnail(
-                        e.Graphics,
+                        e.Surface.Canvas,
+                        this._imagePaint,
                         this.Thumbnail.ThumbnailImage,
                         rect,
                         new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
-                        Instance<IFileIconCacher>.Value.JumboDirectoryIcon,
+                        icon,
                         WindowUtil.GetCurrentWindowScale(this));
                 }
             }
             else if (this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
-                var rect = new Rectangle(margin, margin, this.thumbnailPictureBox.Width - margin * 2, this.thumbnailPictureBox.Height - margin * 2);
-                this.DrawFileIcon(e.Graphics, this.FileInfo.FileIcon, rect);
+                var rect = new SKRectI(
+                    margin,
+                    margin,
+                    this.thumbnailPictureBox.Width - margin,
+                    this.thumbnailPictureBox.Height - margin);
+                var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
+                icon.Draw(e.Surface.Canvas, this._imagePaint, rect);
             }
             else if (this.FilePathList != null)
             {
-                var rect = new Rectangle(0, 0, this.thumbnailPictureBox.Width, this.thumbnailPictureBox.Height);
-                this.DrawSelectedFileCount(e.Graphics, rect);
+                var text = $"{this.FilePathList.Length} files selected";
+                var rect = new SKRect(
+                    0,
+                    0,
+                    this.thumbnailPictureBox.Width,
+                    this.thumbnailPictureBox.Height);
+                var font = FontCacher.GetRegularSKFont(
+                    FontCacher.Size.Large,
+                    WindowUtil.GetCurrentWindowScale(this));
+                SkiaUtil.DrawText(e.Surface.Canvas, this._messagePaint, font, text, rect);
             }
         }
 

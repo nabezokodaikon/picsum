@@ -1,34 +1,27 @@
 using NLog;
+using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.Base;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using WinApi;
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
-    /// <summary>
-    /// 画像パネルコントロール
-    /// </summary>
-
-    public sealed partial class ImagePanel
-        : BasePaintingControl
+    public sealed partial class SKImagePanel
+        : SKGLControl
     {
         private const int THUMBNAIL_PANEL_OFFSET = 16;
         private const int THUMBNAIL_OFFSET = 8;
+        private const int THUMBNAIL_PANEL_SIZE = 144;
+        private const string ERROR_MESSAGE = "Failed to load file";
 
         private static readonly Logger LOGGER = NLogManager.GetLogger();
-
-        private static readonly SolidBrush THUMBNAIL_FILTER_BRUSH
-            = new(Color.FromArgb(128, 0, 0, 0));
-        private static readonly Pen THUMBNAIL_VIEW_BORDER_PEN
-            = new(Color.FromArgb(250, 0, 0));
-
         private static readonly Size DRAG_SIZE = GetDragSize();
 
         private static Size GetDragSize()
@@ -41,17 +34,13 @@ namespace PicSum.UIComponent.Contents.ImageView
         public event EventHandler<MouseEventArgs> ImageMouseDoubleClick;
         public event EventHandler DragStart;
 
-#pragma warning disable CA2213 // リソースを保持する変数。
-        private readonly Image _thumbnailPanelImage = ResourceFiles.ThumbnailPanelIcon.Value;
-#pragma warning restore CA2213
-
         private ImageSizeMode _sizeMode = ImageSizeMode.FitOnlyBigImage;
         private ImageAlign _align = ImageAlign.Center;
         private bool _isShowThumbnailPanel = false;
 
         private SizeF _imageScaleSize = SizeF.Empty;
-        private CvImage _image = CvImage.EMPTY;
-        private Bitmap _thumbnail = null;
+        private SkiaImage _image = SkiaImage.EMPTY;
+        private SKImage _thumbnail = null;
 
         private float _hMaximumScrollValue = 0f;
         private float _vMaximumScrollValue = 0f;
@@ -63,12 +52,50 @@ namespace PicSum.UIComponent.Contents.ImageView
         private bool _isError = false;
 
         private Rectangle _dragJudgementRectangle = new();
+        private bool _isWarmUpDone = false;
 
-        private readonly StringFormat _stringFormat = new()
+        private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
+
+        private static readonly SKPaint IMAGE_PAINT = new()
         {
-            Alignment = StringAlignment.Center,
-            LineAlignment = StringAlignment.Center,
-            Trimming = StringTrimming.EllipsisCharacter,
+            IsAntialias = false,
+        };
+
+        private static readonly SKPaint INACTIVE_THUMBNAIL_PAINT = new()
+        {
+
+        };
+
+        private static readonly SKPaint ACTIVE_THUMBNAIL_PAINT = new()
+        {
+
+        };
+
+        private static readonly SKPaint THUMBNAI_PANEL_PAINT = new()
+        {
+            Color = new(128, 128, 128, 128),
+        };
+
+        private static readonly SKPaint THUMBNAI_FILTER_PAINT = new()
+        {
+            Color = new(0, 0, 0, 128),
+        };
+
+        private static readonly SKPaint ACTIVE_THUMBNAI_STROKE_PAINT = new()
+        {
+            Color = new(255, 0, 0, 255),
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        private static readonly SKPaint MESSAGE_PAINT = new()
+        {
+            Color = new(192, 192, 192),
+        };
+
+        private static readonly SKPaint LOADING_PAINT = new()
+        {
+            Color = new(128, 128, 128),
         };
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -138,7 +165,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             get
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                return this._thumbnailPanelImage.Width * scale;
+                return THUMBNAIL_PANEL_SIZE * scale;
             }
         }
 
@@ -147,27 +174,37 @@ namespace PicSum.UIComponent.Contents.ImageView
             get
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
-                return (this._thumbnailPanelImage.Width - THUMBNAIL_OFFSET) * scale;
+                return (THUMBNAIL_PANEL_SIZE - THUMBNAIL_OFFSET) * scale;
             }
         }
 
-        public ImagePanel()
+        public new bool Visible
         {
+            get
+            {
+                return base.Visible;
+            }
+        }
+
+        public SKImagePanel()
+        {
+            this.VSync = true;
+            this.DoubleBuffered = false;
+
             this.MouseDown += this.ImagePanel_MouseDown;
             this.MouseUp += this.ImagePanel_MouseUp;
             this.MouseClick += this.ImagePanel_MouseClick;
             this.MouseDoubleClick += this.ImagePanel_MouseDoubleClick;
             this.MouseMove += this.ImagePanel_MouseMove;
-            this.Invalidated += this.ImagePanel_Invalidated;
             this.LostFocus += this.ImagePanel_LostFocus;
-            this.Paint += this.ImagePanel_Paint;
+            this.PaintSurface += this.ImagePanel_PaintSurface;
         }
 
         public void SetImage(
             string filePath,
             ImageSizeMode sizeMode,
-            CvImage img,
-            Bitmap thumbnail)
+            SkiaImage img,
+            SKImage thumbnail)
         {
             ArgumentNullException.ThrowIfNull(filePath, nameof(filePath));
 
@@ -219,7 +256,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (!this._image.IsEmpry)
             {
                 this._image.Dispose();
-                this._image = CvImage.EMPTY;
+                this._image = SkiaImage.EMPTY;
             }
 
             this._thumbnail?.Dispose();
@@ -228,41 +265,96 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.FilePath = string.Empty;
         }
 
+        public new void Show()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Hide()
+        {
+            base.Visible = false;
+        }
+
+        public new void Invalidate()
+        {
+            if (!base.Visible)
+            {
+                base.Visible = true;
+            }
+
+            this.SetDrawParameter();
+            base.Invalidate();
+        }
+
+        public new void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Refresh()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 this.ClearImage();
-                this._stringFormat.Dispose();
+                this.PaintSurface -= this.ImagePanel_PaintSurface;
             }
 
             base.Dispose(disposing);
         }
 
-        private void ImagePanel_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            using (Measuring.Time(false, "ImagePanel.ImagePanel_Paint"))
+            using (Measuring.Time(false, "ImagePanel.OnPaint"))
             {
-                e.Graphics.SmoothingMode = SmoothingMode.None;
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                e.Graphics.CompositingMode = CompositingMode.SourceOver;
+                this.MakeCurrent();
+
+                base.OnPaint(e);
+
+                this.GRContext?.Flush(true);
+            }
+        }
+
+        private void ImagePanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
+        {
+            using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
+            {
+                if (!this._isWarmUpDone && this.GRContext != null)
+                {
+                    this.GRContext.SetResourceCacheLimit(512 * 1024 * 1024);
+                    this._isWarmUpDone = true;
+                }
+
+                e.Surface.Canvas.Clear(BACKGROUND_COLOR);
 
                 if (this._isError)
                 {
-                    this.DrawErrorImage(e.Graphics);
+                    var font = FontCacher.GetRegularSKFont(
+                        FontCacher.Size.ExtraLarge,
+                        WindowUtil.GetCurrentWindowScale(this));
+                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    SkiaUtil.DrawText(
+                        e.Surface.Canvas,
+                        MESSAGE_PAINT,
+                        font,
+                        ERROR_MESSAGE,
+                        bounds);
                 }
                 else
                 {
                     if (this.HasImage)
                     {
-                        this.DrawImage(e.Graphics);
+                        this.DrawImage(e.Surface.Context as GRContext, e.Surface.Canvas);
                     }
 
                     if (this.CanDrawThumbnailPanel())
                     {
-                        this.DrawThumbnailPanel(e.Graphics);
+                        this.DrawThumbnailPanel(e.Surface.Canvas);
+                        var _ = WinApiMembers.DwmFlush();
                     }
                 }
             }
@@ -288,9 +380,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                         var scale = this.GetThumbnailToScaleImageScale();
                         var thumbRect = this.GetThumbnailRectangle();
                         var srcRect = this.GetImageSrcRectangle();
-                        var centerPoint = new PointF(srcRect.X + srcRect.Width / 2f, srcRect.Y + srcRect.Height / 2f);
-                        if (this.SetHScrollValue(this._hScrollValue + (e.X - thumbRect.X) * scale - centerPoint.X) |
-                            this.SetVScrollValue(this._vScrollValue + (e.Y - thumbRect.Y) * scale - centerPoint.Y))
+                        var centerPoint = new SKPoint(srcRect.Left + srcRect.Width / 2f, srcRect.Top + srcRect.Height / 2f);
+                        if (this.SetHScrollValue(this._hScrollValue + (e.X - thumbRect.Left) * scale - centerPoint.X) |
+                            this.SetVScrollValue(this._vScrollValue + (e.Y - thumbRect.Top) * scale - centerPoint.Y))
                         {
                             this.Invalidate();
                         }
@@ -321,11 +413,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                         dragSize.Height);
                 }
             }
-        }
-
-        private void ImagePanel_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this.SetDrawParameter();
         }
 
         private void ImagePanel_MouseMove(object sender, MouseEventArgs e)
@@ -478,8 +565,8 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (this.HasImage)
             {
                 var rect = this.GetImageDestRectangle();
-                var imgX = x - rect.X;
-                var imgY = y - rect.Y;
+                var imgX = x - rect.Left;
+                var imgY = y - rect.Top;
                 if (imgX >= 0 && this._imageScaleSize.Width >= imgX && imgY >= 0 && this._imageScaleSize.Height >= imgY)
                 {
                     //Bitmap bmp = (Bitmap)_image;
@@ -498,7 +585,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
         }
 
-        private RectangleF GetImageDestRectangle()
+        private SKRect GetImageDestRectangle()
         {
             var scaleWidth = this._imageScaleSize.Width;
             var scaleHeight = this._imageScaleSize.Height;
@@ -532,10 +619,10 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = (float)Math.Ceiling(scaleWidth - this._hMaximumScrollValue);
             var h = scaleHeight - this._vMaximumScrollValue;
 
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetImageSrcRectangle()
+        private SKRect GetImageSrcRectangle()
         {
             var image = this._image;
 
@@ -544,10 +631,10 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = image.Width - this._hMaximumScrollValue;
             var h = image.Height - this._vMaximumScrollValue;
 
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetThumbnailPanelRectangle()
+        private SKRect GetThumbnailPanelRectangle()
         {
             var thumbnailPanelSize = this.ThumbnailPanelSize;
 
@@ -555,64 +642,56 @@ namespace PicSum.UIComponent.Contents.ImageView
             var y = this.Height - THUMBNAIL_PANEL_OFFSET - thumbnailPanelSize;
             var w = thumbnailPanelSize;
             var h = thumbnailPanelSize;
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetThumbnailRectangle(RectangleF panelRect)
+        private SKRect GetThumbnailRectangle(SKRect panelRect)
         {
             var image = this._image;
             var scale = this.GetImageToThumbnailScale();
             var thumbSize = new SizeF(image.Width * scale, image.Height * scale);
-            var x = panelRect.X + (panelRect.Width - thumbSize.Width) / 2f;
-            var y = panelRect.Y + (panelRect.Height - thumbSize.Height) / 2f;
+            var x = panelRect.Left + (panelRect.Width - thumbSize.Width) / 2f;
+            var y = panelRect.Top + (panelRect.Height - thumbSize.Height) / 2f;
             var w = thumbSize.Width;
             var h = thumbSize.Height;
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetThumbnailRectangle()
+        private SKRect GetThumbnailRectangle()
         {
             return this.GetThumbnailRectangle(this.GetThumbnailPanelRectangle());
         }
 
-        private RectangleF GetThumbnailViewDestRectangle(RectangleF thumbRect, RectangleF srcRect)
+        private SKRect GetThumbnailViewDestRectangle(SKRect thumbRect, SKRect srcRect)
         {
             var scale = this.GetImageToThumbnailScale();
-            var x = thumbRect.X + srcRect.X * scale;
-            var y = thumbRect.Y + srcRect.Y * scale;
+            var x = thumbRect.Left + srcRect.Left * scale;
+            var y = thumbRect.Top + srcRect.Top * scale;
             var w = srcRect.Width * scale;
             var h = srcRect.Height * scale;
 
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetThumbnailViewSrcRectangle(RectangleF srcRect)
+        private SKRect GetThumbnailViewSrcRectangle(SKRect srcRect)
         {
             var scale = this.GetImageToThumbnailScale();
-            var x = srcRect.X * scale;
-            var y = srcRect.Y * scale;
+            var x = srcRect.Left * scale;
+            var y = srcRect.Top * scale;
             var w = srcRect.Width * scale;
             var h = srcRect.Height * scale;
 
-            return new RectangleF(x, y, w, h);
+            return new SKRect(x, y, x + w, y + h);
         }
 
-        private RectangleF GetThumbnailViewDestRectangle()
+        private SKRect GetThumbnailViewDestRectangle()
         {
-            return this.GetThumbnailViewDestRectangle(this.GetThumbnailRectangle(), this.GetImageSrcRectangle());
+            return this.GetThumbnailViewDestRectangle(
+                this.GetThumbnailRectangle(),
+                this.GetImageSrcRectangle());
         }
 
-        private void DrawErrorImage(Graphics g)
-        {
-            g.DrawString(
-                $"Failed to load file",
-                FontCacher.GetRegularFont(FontCacher.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
-                Brushes.LightGray,
-                new RectangleF(0, 0, this.Width, this.Height),
-                this._stringFormat);
-        }
-
-        private void DrawImage(Graphics g)
+        private void DrawImage(GRContext context, SKCanvas canvas)
         {
             using (Measuring.Time(false, "ImagePanel.DrawImage"))
             {
@@ -623,14 +702,19 @@ namespace PicSum.UIComponent.Contents.ImageView
                     if (image.IsLoadingImage)
                     {
                         var destRect = this.GetImageDestRectangle();
-                        image.DrawEmpty(g, Brushes.LightGray, destRect);
 
-                        g.DrawString(
+                        image.DrawEmpty(
+                            canvas, LOADING_PAINT, destRect);
+
+                        var font = FontCacher.GetRegularSKFont(
+                            FontCacher.Size.ExtraLarge,
+                            WindowUtil.GetCurrentWindowScale(this));
+                        SkiaUtil.DrawText(
+                            canvas,
+                            MESSAGE_PAINT,
+                            font,
                             FileUtil.GetFileName(this.FilePath),
-                            FontCacher.GetRegularFont(FontCacher.Size.ExtraLarge, WindowUtil.GetCurrentWindowScale(this)),
-                            Brushes.DarkGray,
-                            destRect,
-                            this._stringFormat);
+                            destRect);
                     }
                     else if (image.IsThumbnailImage)
                     {
@@ -638,12 +722,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomThumbnail(g, destRect, srcRect);
+                            image.DrawZoomThumbnail(context, canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeThumbnail(g, destRect);
+                            image.DrawResizeThumbnail(context, canvas, IMAGE_PAINT, destRect);
                         }
                     }
                     else
@@ -652,12 +736,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomImage(g, destRect, srcRect);
+                            image.DrawZoomImage(context, canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeImage(g, destRect);
+                            image.DrawResizeImage(context, canvas, IMAGE_PAINT, destRect);
                         }
                     }
                 }
@@ -666,27 +750,52 @@ namespace PicSum.UIComponent.Contents.ImageView
                     ex is OverflowException)
                 {
                     LOGGER.Error($"{ex}");
-                    this.DrawErrorImage(g);
+
+                    var font = FontCacher.GetRegularSKFont(
+                        FontCacher.Size.ExtraLarge,
+                        WindowUtil.GetCurrentWindowScale(this));
+                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    SkiaUtil.DrawText(
+                        canvas,
+                        MESSAGE_PAINT,
+                        font,
+                        ERROR_MESSAGE,
+                        bounds);
                 }
             }
         }
 
-        private void DrawThumbnailPanel(Graphics g)
+        private void DrawThumbnailPanel(SKCanvas canvas)
         {
             using (Measuring.Time(false, "ImagePanel.DrawThumbnailPanel"))
             {
                 var panelRect = this.GetThumbnailPanelRectangle();
-                g.DrawImage(this._thumbnailPanelImage, panelRect);
+                canvas.DrawRect(
+                    panelRect,
+                    THUMBNAI_PANEL_PAINT);
 
                 var thumbRect = this.GetThumbnailRectangle(panelRect);
-                g.DrawImage(this._thumbnail, thumbRect);
-                g.FillRectangle(THUMBNAIL_FILTER_BRUSH, thumbRect);
+                canvas.DrawImage(
+                    this._thumbnail,
+                    thumbRect,
+                    INACTIVE_THUMBNAIL_PAINT);
+                canvas.DrawRect(
+                    thumbRect,
+                    THUMBNAI_FILTER_PAINT);
 
                 var srcRect = this.GetImageSrcRectangle();
                 var viewDestRect = this.GetThumbnailViewDestRectangle(thumbRect, srcRect);
                 var viewSrcRect = this.GetThumbnailViewSrcRectangle(srcRect);
-                g.DrawImage(this._thumbnail, viewDestRect, viewSrcRect, GraphicsUnit.Pixel);
-                g.DrawRectangle(THUMBNAIL_VIEW_BORDER_PEN, viewDestRect);
+
+                canvas.DrawRect(
+                    viewDestRect,
+                    ACTIVE_THUMBNAI_STROKE_PAINT);
+
+                canvas.DrawImage(
+                    this._thumbnail,
+                    viewSrcRect,
+                    viewDestRect,
+                    ACTIVE_THUMBNAIL_PAINT);
             }
         }
 
@@ -743,6 +852,5 @@ namespace PicSum.UIComponent.Contents.ImageView
                 return false;
             }
         }
-
     }
 }

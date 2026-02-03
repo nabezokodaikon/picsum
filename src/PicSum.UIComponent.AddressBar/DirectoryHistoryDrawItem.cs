@@ -132,7 +132,7 @@ namespace PicSum.UIComponent.AddressBar
             var text = FileUtil.IsSystemRoot(item.DirectoryPath) ?
                 item.DirectoryName : item.DirectoryPath;
 
-            var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
+            var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
 
             var textRect = new Rectangle(
                 e.ItemRectangle.X + base.DropDownList.ItemHeight,
@@ -174,7 +174,7 @@ namespace PicSum.UIComponent.AddressBar
             base.DropDownList.ItemHeight = (int)this.GetDropDownItemHeight();
 
             var scale = WindowUtil.GetCurrentWindowScale(base.AddressBar);
-            var font = FontCacher.GetRegularFont(FontCacher.Size.Medium, scale);
+            var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
             var width = this.GetMinimumDropDownWidth();
 
             foreach (var info in e)

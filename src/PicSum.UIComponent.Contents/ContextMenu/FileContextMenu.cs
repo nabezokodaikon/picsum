@@ -248,7 +248,7 @@ namespace PicSum.UIComponent.Contents.ContextMenu
 
         public FileContextMenu()
         {
-            this.Font = FontCacher.GetRegularFont(FontCacher.Size.Medium);
+            this.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
 
             this.ShowImageMargin = false;
 

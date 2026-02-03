@@ -1,5 +1,5 @@
+using SkiaSharp;
 using SWF.Core.ImageAccessor;
-using System.Drawing;
 
 namespace PicSum.Job.Entities
 {
@@ -12,15 +12,15 @@ namespace PicSum.Job.Entities
         public static readonly ImageFileEntity EMPTY = new()
         {
             FilePath = string.Empty,
-            Image = CvImage.EMPTY,
+            Image = SkiaImage.EMPTY,
             Thumbnail = null,
             IsEmpty = false,
             IsError = false,
         };
 
         public string FilePath { get; internal set; } = string.Empty;
-        public CvImage Image { get; internal set; } = CvImage.EMPTY;
-        public Bitmap? Thumbnail { get; internal set; } = null;
+        public SkiaImage Image { get; internal set; } = SkiaImage.EMPTY;
+        public SKImage? Thumbnail { get; internal set; } = null;
         public bool IsEmpty { get; internal set; }
         public bool IsError { get; internal set; }
     }

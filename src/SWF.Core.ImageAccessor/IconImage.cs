@@ -7,7 +7,9 @@ namespace SWF.Core.ImageAccessor
 {
     public sealed class IconImage
     {
-        private static Bitmap? _bmpCache = null;
+        private static readonly SKSamplingOptions SAMPLING
+            = new(SKFilterMode.Nearest, SKMipmapMode.None);
+
         private static SKImage? _skCache = null;
         private static IconImage? _iconCache = null;
 
@@ -34,41 +36,6 @@ namespace SWF.Core.ImageAccessor
             ArgumentNullException.ThrowIfNull(icon, nameof(icon));
 
             this._icon = icon;
-        }
-
-        public void Draw(Graphics graphics, Rectangle destRect)
-        {
-            ArgumentNullException.ThrowIfNull(graphics, nameof(graphics));
-
-            using (Measuring.Time(false, "IconImage.Draw"))
-            {
-                if (_bmpCache == null
-                    || _iconCache == null
-                    || _iconCache._icon != this._icon
-                    || _bmpCache.Width != destRect.Width
-                    || _bmpCache.Height != destRect.Height)
-                {
-                    _iconCache = this;
-                    _bmpCache?.Dispose();
-                    _bmpCache = new Bitmap(destRect.Width, destRect.Height, PixelFormat.Format32bppPArgb);
-                    using (var innerGraphics = Graphics.FromImage(_bmpCache))
-                    {
-                        innerGraphics.SmoothingMode = SmoothingMode.None;
-                        innerGraphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-                        innerGraphics.CompositingQuality = CompositingQuality.HighSpeed;
-                        innerGraphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                        innerGraphics.CompositingMode = CompositingMode.SourceOver;
-
-                        innerGraphics.DrawImage(
-                            this._icon,
-                            new Rectangle(0, 0, _bmpCache.Width, _bmpCache.Height),
-                            new Rectangle(0, 0, this._icon.Width, this._icon.Height),
-                            GraphicsUnit.Pixel);
-                    }
-                }
-
-                graphics.DrawImageUnscaled(_bmpCache, destRect);
-            }
         }
 
         public void Draw(
@@ -109,16 +76,11 @@ namespace SWF.Core.ImageAccessor
                                 GraphicsUnit.Pixel);
                         }
 
-                        _skCache = SkiaImageUtil.ToSKImage(bmp);
+                        _skCache = SkiaUtil.ToSKImage(bmp);
                     }
                 }
 
-                var x = destRect.Left + (destRect.Width - _skCache.Width) / 2f;
-                var y = destRect.Top + (destRect.Height - _skCache.Height) / 2f;
-                var r = x + _skCache.Width;
-                var b = y + _skCache.Height;
-
-                canvas.DrawImage(_skCache, new SKRectI((int)x, (int)y, (int)r, (int)b), paint);
+                canvas.DrawImage(_skCache, destRect, SAMPLING, paint);
             }
         }
     }

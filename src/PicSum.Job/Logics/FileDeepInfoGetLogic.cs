@@ -206,7 +206,7 @@ namespace PicSum.Job.Logics
             return info;
         }
 
-        private async ValueTask<CvImage> ReadImageFile(string filePath, float zoomValue)
+        private async ValueTask<OpenCVImage> ReadImageFile(string filePath, float zoomValue)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace PicSum.Job.Logics
                 {
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
-                        return new CvImage(
+                        return new OpenCVImage(
                             filePath, OpenCVUtil.ToMat(bmp), zoomValue);
                     }
                 }
@@ -233,7 +233,7 @@ namespace PicSum.Job.Logics
                 ex is ImageUtilException)
             {
                 this.WriteErrorLog(ex);
-                return CvImage.EMPTY;
+                return OpenCVImage.EMPTY;
             }
         }
 

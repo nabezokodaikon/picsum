@@ -47,7 +47,7 @@ namespace PicSum.Job.Entities
         public Image? ExtraLargeIcon { get; internal set; } = null;
         public Image? SmallIcon { get; internal set; } = null;
         public IconImage? JumboIcon { get; internal set; } = null;
-        public CvImage? ThumbnailImage { get; internal set; } = null;
+        public OpenCVImage? ThumbnailImage { get; internal set; } = null;
         public int ThumbnailWidth { get; internal set; } = 0;
         public int ThumbnailHeight { get; internal set; } = 0;
         public int SourceWidth { get; internal set; } = 0;

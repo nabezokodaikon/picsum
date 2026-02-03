@@ -28,7 +28,7 @@ namespace SWF.UIComponent.WideDropDown
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Font = FontCacher.GetRegularFont(FontCacher.Size.Medium);
+            this.inputTextBox.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
             this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // WideComboBox

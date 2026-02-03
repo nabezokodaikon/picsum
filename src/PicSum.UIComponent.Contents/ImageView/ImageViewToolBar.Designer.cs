@@ -57,7 +57,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // viewMenu
             //
-            this.viewMenu.Font = FontCacher.GetRegularFont(FontCacher.Size.Medium);
+            this.viewMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
             this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
@@ -114,7 +114,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             // 
             // sizeMenu
             //
-            this.sizeMenu.Font = FontCacher.GetRegularFont(FontCacher.Size.Medium);
+            this.sizeMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
             this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
                 this.fitWindowMenuItem,
