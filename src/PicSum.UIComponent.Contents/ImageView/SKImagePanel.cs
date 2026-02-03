@@ -321,7 +321,7 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         private void ImagePanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
         {
-            using (Measuring.Time(true, "ImagePanel.ImagePanel_PaintSurface"))
+            using (Measuring.Time(false, "ImagePanel.ImagePanel_PaintSurface"))
             {
                 if (!this._isWarmUpDone && this.GRContext != null)
                 {
