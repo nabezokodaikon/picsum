@@ -33,10 +33,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Fonts\NotoSansCJKjp-Regular.otf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
   </ItemGroup>
 
