@@ -1017,7 +1017,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
             var itemTextHeight = this.GetItemTextHeight();
 
-            using (Measuring.Time(false, "AbstractFileListPage.FlowList_Drawitems Parallel.ForEach"))
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems Parallel.ForEach"))
             {
                 Parallel.ForEach(
                     e.DrawItemInfos,
@@ -1070,7 +1070,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     });
             }
 
-            using (Measuring.Time(false, "AbstractFileListPage.FlowList_Drawitems foreach"))
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems foreach"))
             {
                 foreach (var info in e.DrawItemInfos.AsSpan())
                 {
