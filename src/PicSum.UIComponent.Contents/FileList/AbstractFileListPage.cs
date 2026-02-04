@@ -1030,8 +1030,7 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var filePath = this._filterFilePathList[info.ItemIndex];
                         var item = this._masterFileDictionary[filePath];
-                        using var textBrush =
-                        new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
+                        using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
 
                         if (item.ThumbnailImage == null)
                         {
@@ -1039,9 +1038,9 @@ namespace PicSum.UIComponent.Contents.FileList
                             if (e.LocalClipBounds.IntersectsWith(textRect))
                             {
                                 this.CacheFileNameImage(
-                                item,
-                                textRect,
-                                textBrush);
+                                    item,
+                                    textRect,
+                                    textBrush);
                             }
                         }
                         else
@@ -1050,10 +1049,10 @@ namespace PicSum.UIComponent.Contents.FileList
                             if (e.LocalClipBounds.IntersectsWith(thumbRect))
                             {
                                 ThumbnailUtil.CacheFileThumbnail(
-                                item.ThumbnailImage,
-                                thumbRect,
-                                new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                this._scale);
+                                    item.ThumbnailImage,
+                                    thumbRect,
+                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                    this._scale);
                             }
 
                             if (this.IsShowFileName)
@@ -1062,9 +1061,9 @@ namespace PicSum.UIComponent.Contents.FileList
                                 if (e.LocalClipBounds.IntersectsWith(textRect))
                                 {
                                     this.CacheFileNameImage(
-                                    item,
-                                    textRect,
-                                    textBrush);
+                                        item,
+                                        textRect,
+                                        textBrush);
                                 }
                             }
                         }
