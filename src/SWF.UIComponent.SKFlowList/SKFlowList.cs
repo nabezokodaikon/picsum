@@ -338,51 +338,49 @@ namespace SWF.UIComponent.SKFlowList
                     this.DrawRectangleSelection(canvas);
                 }
 
-                if (this._itemCount < 1)
+                if (this._itemCount > 0)
                 {
-                    return;
-                }
+                    var infos = new SKDrawItemInfo[
+                         this._drawParameter.DrawLastItemIndex -
+                         this._drawParameter.DrawFirstItemIndex + 1];
 
-                var infos = new SKDrawItemInfo[
-                    this._drawParameter.DrawLastItemIndex -
-                    this._drawParameter.DrawFirstItemIndex + 1];
-
-                using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
-                {
-                    var arrayIndex = 0;
-                    for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
-                         itemIndex <= this._drawParameter.DrawLastItemIndex;
-                         itemIndex++)
+                    using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
                     {
-                        bool isSelected;
-                        if (this._rectangleSelection.IsBegun)
+                        var arrayIndex = 0;
+                        for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
+                             itemIndex <= this._drawParameter.DrawLastItemIndex;
+                             itemIndex++)
                         {
-                            isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
-                                this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
-                        }
-                        else
-                        {
-                            isSelected = this._selectedItemIndexs.Contains(itemIndex);
-                        }
+                            bool isSelected;
+                            if (this._rectangleSelection.IsBegun)
+                            {
+                                isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
+                                    this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
+                            }
+                            else
+                            {
+                                isSelected = this._selectedItemIndexs.Contains(itemIndex);
+                            }
 
-                        var isMousePoint = this._mousePointItemIndex == itemIndex;
-                        var isFocus = this._foucusItemIndex == itemIndex;
-                        var drawRect = this.GetItemDrawRectangle(itemIndex);
-                        var info = new SKDrawItemInfo(
-                            itemIndex,
-                            drawRect,
-                            isSelected,
-                            isMousePoint,
-                            isFocus);
-                        infos[arrayIndex] = info;
-                        arrayIndex++;
+                            var isMousePoint = this._mousePointItemIndex == itemIndex;
+                            var isFocus = this._foucusItemIndex == itemIndex;
+                            var drawRect = this.GetItemDrawRectangle(itemIndex);
+                            var info = new SKDrawItemInfo(
+                                itemIndex,
+                                drawRect,
+                                isSelected,
+                                isMousePoint,
+                                isFocus);
+                            infos[arrayIndex] = info;
+                            arrayIndex++;
+                        }
                     }
-                }
 
-                this.OnSKDrawItems(new SKDrawItemsEventArgs(
-                    canvas,
-                    e.Surface.Canvas.LocalClipBounds,
-                    infos));
+                    this.OnSKDrawItems(new SKDrawItemsEventArgs(
+                        canvas,
+                        e.Surface.Canvas.LocalClipBounds,
+                        infos));
+                }
 
                 using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface DrawPicture"))
                 {

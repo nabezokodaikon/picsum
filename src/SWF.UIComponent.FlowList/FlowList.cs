@@ -317,40 +317,38 @@ namespace SWF.UIComponent.FlowList
                     this.DrawRectangleSelection(e.Graphics);
                 }
 
-                if (this._itemCount < 1)
+                if (this._itemCount > 0)
                 {
-                    return;
-                }
-
-                for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
-                     itemIndex <= this._drawParameter.DrawLastItemIndex;
-                     itemIndex++)
-                {
-                    var drawRect = this.GetItemDrawRectangle(itemIndex);
-
-                    bool isSelected;
-                    if (this._rectangleSelection.IsBegun)
+                    for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
+                         itemIndex <= this._drawParameter.DrawLastItemIndex;
+                         itemIndex++)
                     {
-                        isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
-                            this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
+                        var drawRect = this.GetItemDrawRectangle(itemIndex);
+
+                        bool isSelected;
+                        if (this._rectangleSelection.IsBegun)
+                        {
+                            isSelected = this._selectedItemIndexs.Contains(itemIndex) ||
+                                this._rectangleSelection.VirtualRectangle.IntersectsWith(this.GetItemVirtualRectangle(itemIndex));
+                        }
+                        else
+                        {
+                            isSelected = this._selectedItemIndexs.Contains(itemIndex);
+                        }
+
+                        var isMousePoint = this._mousePointItemIndex == itemIndex;
+                        var isFocus = this._foucusItemIndex == itemIndex;
+
+                        var arg = new DrawItemEventArgs(
+                            e.Graphics,
+                            itemIndex,
+                            drawRect,
+                            isSelected,
+                            isMousePoint,
+                            isFocus);
+
+                        this.OnDrawItem(arg);
                     }
-                    else
-                    {
-                        isSelected = this._selectedItemIndexs.Contains(itemIndex);
-                    }
-
-                    var isMousePoint = this._mousePointItemIndex == itemIndex;
-                    var isFocus = this._foucusItemIndex == itemIndex;
-
-                    var arg = new DrawItemEventArgs(
-                        e.Graphics,
-                        itemIndex,
-                        drawRect,
-                        isSelected,
-                        isMousePoint,
-                        isFocus);
-
-                    this.OnDrawItem(arg);
                 }
             }
         }
