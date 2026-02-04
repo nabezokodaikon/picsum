@@ -397,7 +397,7 @@ namespace SWF.Core.FileAccessor
             {
                 return [.. Directory
                     .EnumerateFiles(directoryPath)
-                    .AsEnumerable()
+                    .AsValueEnumerable()
                     .Where(static _ => CanAccess(_))];
             }
             catch (Exception ex) when (
@@ -463,7 +463,7 @@ namespace SWF.Core.FileAccessor
                 if (isSort)
                 {
                     return [.. GetDrives()
-                        .AsEnumerable()
+                        .AsValueEnumerable()
                         .OrderBy(static drive => drive, NaturalStringComparer.WINDOWS)];
                 }
                 else
@@ -706,20 +706,20 @@ namespace SWF.Core.FileAccessor
                     else if (IsExistsDrive(direcotryPath))
                     {
                         var filesCount = Directory.EnumerateFiles(
-                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsValueEnumerable().Count();
 
                         var directoriesCount = Directory.EnumerateDirectories(
-                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsValueEnumerable().Count();
 
                         return (filesCount, directoriesCount);
                     }
                     else if (IsExistsDirectory(direcotryPath))
                     {
                         var filesCount = Directory.EnumerateFiles(
-                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsValueEnumerable().Count();
 
                         var directoriesCount = Directory.EnumerateDirectories(
-                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsEnumerable().Count();
+                            direcotryPath, "*", SearchOption.TopDirectoryOnly).AsValueEnumerable().Count();
 
                         return (filesCount, directoriesCount);
                     }

@@ -3,6 +3,7 @@ using PicSum.Job.Results;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
+using ZLinq;
 
 namespace PicSum.Job.Jobs
 {
@@ -29,7 +30,7 @@ namespace PicSum.Job.Jobs
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
             var files = param.FilePathList
-                .AsEnumerable()
+                .AsValueEnumerable()
                 .Where(static _ => ImageUtil.CanRetainExifImageFormat(_))
                 .ToArray();
             if (files.Length < 1)

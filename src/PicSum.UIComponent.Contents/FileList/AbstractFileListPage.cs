@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZLinq;
 
 namespace PicSum.UIComponent.Contents.FileList
 {
@@ -352,7 +353,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 this.flowList.Focus();
 
                 var imageFiles = this._masterFileDictionary
-                    .AsEnumerable()
+                    .AsValueEnumerable()
                     .Where(static item => ImageUtil.IsImageFile(item.Value.FilePath))
                     .Select(static item => item.Value.FilePath)
                     .ToArray();
@@ -626,13 +627,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (isAscending)
                     {
                         var a = filterList
-                            .AsEnumerable()
+                            .AsValueEnumerable()
                             .Where(static item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderBy(static item => item.TakenDate)
                             .ToArray();
                         var b = filterList
-                            .AsEnumerable()
+                            .AsValueEnumerable()
                             .Where(static item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
@@ -641,13 +642,13 @@ namespace PicSum.UIComponent.Contents.FileList
                     else
                     {
                         var a = filterList
-                            .AsEnumerable()
+                            .AsValueEnumerable()
                             .Where(static item => item.TakenDate != null && !item.TakenDate.Value.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .OrderByDescending(static item => item.TakenDate)
                             .ToArray();
                         var b = filterList
-                            .AsEnumerable()
+                            .AsValueEnumerable()
                             .Where(static item => item.TakenDate == null || item.TakenDate.Value.IsEmpty())
                             .OrderBy(static item => item.FilePath, NaturalStringComparer.WINDOWS)
                             .ToArray();
