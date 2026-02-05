@@ -12,25 +12,46 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "SkiaImageUtil.ToBitmap"))
             {
-                var bitmap = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppPArgb);
-                var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                Bitmap? bitmap = null;
+                BitmapData? data = null;
 
                 try
                 {
+                    bitmap = new Bitmap(src.Width, src.Height, PixelFormat.Format32bppPArgb);
+
+                    data = bitmap.LockBits(
+                        new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                        ImageLockMode.WriteOnly,
+                        bitmap.PixelFormat);
+
                     var info = new SKImageInfo(
                         src.Width,
                         src.Height,
                         SKImageInfo.PlatformColorType,
                         SKAlphaType.Premul);
 
-                    src.ReadPixels(info, data.Scan0, data.Stride, 0, 0);
+                    if (!src.ReadPixels(info, data.Scan0, data.Stride, 0, 0))
+                    {
+                        throw new InvalidOperationException("Failed to read pixels from SKImage.");
+                    }
+
+                    bitmap.UnlockBits(data);
+                    data = null;  // UnlockBits完了を記録
+
+                    var result = bitmap;
+                    bitmap = null;  // 所有権を移譲
+                    return result;
                 }
                 finally
                 {
-                    bitmap.UnlockBits(data);
-                }
+                    // dataがnullでない = まだUnlockされていない
+                    if (data != null && bitmap != null)
+                    {
+                        bitmap.UnlockBits(data);
+                    }
 
-                return bitmap;
+                    bitmap?.Dispose();
+                }
             }
         }
 
@@ -40,29 +61,45 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "SkiaImageUtil.ToSKImage"))
             {
-                var data = src.LockBits(
-                    new Rectangle(0, 0, src.Width, src.Height),
-                    ImageLockMode.ReadOnly,
-                    PixelFormat.Format32bppPArgb);
+                BitmapData? data = null;
+                SKBitmap? tempBitmap = null;
 
                 try
                 {
-                    using (var tempBitmap = new SKBitmap())
-                    {
-                        var info = new SKImageInfo(
-                            src.Width,
-                            src.Height,
-                            SKImageInfo.PlatformColorType,
-                            SKAlphaType.Premul);
+                    data = src.LockBits(
+                        new Rectangle(0, 0, src.Width, src.Height),
+                        ImageLockMode.ReadOnly,
+                        PixelFormat.Format32bppPArgb);
 
-                        tempBitmap.InstallPixels(info, data.Scan0, data.Stride);
+                    var info = new SKImageInfo(
+                        src.Width,
+                        src.Height,
+                        SKImageInfo.PlatformColorType,
+                        SKAlphaType.Premul);
 
-                        return SKImage.FromBitmap(tempBitmap);
-                    }
+                    tempBitmap = new SKBitmap();
+                    tempBitmap.InstallPixels(info, data.Scan0, data.Stride);
+
+                    // 重要：ピクセルデータをコピーしてから新しいSKImageを作成
+                    var image = SKImage.FromBitmap(tempBitmap);
+
+                    // UnlockBitsとtempBitmapの破棄を先に実行
+                    tempBitmap.Dispose();
+                    tempBitmap = null;
+
+                    src.UnlockBits(data);
+                    data = null;
+
+                    return image;
                 }
                 finally
                 {
-                    src.UnlockBits(data);
+                    tempBitmap?.Dispose();
+
+                    if (data != null)
+                    {
+                        src.UnlockBits(data);
+                    }
                 }
             }
         }
@@ -82,26 +119,48 @@ namespace SWF.Core.ImageAccessor
                 using var codec = SKCodec.Create(managedStream);
 
                 var info = codec.Info;
-                var bitmap = new Bitmap(info.Width, info.Height, PixelFormat.Format32bppPArgb);
+                Bitmap? bitmap = null;
+                BitmapData? data = null;
 
-                var data = bitmap.LockBits(
-                    new Rectangle(0, 0, info.Width, info.Height),
-                    ImageLockMode.WriteOnly,
-                    PixelFormat.Format32bppPArgb);
-
-                var options = new SKCodecOptions(SKZeroInitialized.No);
-                var decodeInfo = new SKImageInfo(info.Width, info.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
-
-                var result = codec.GetPixels(decodeInfo, data.Scan0);
-                if (result != SKCodecResult.Success)
+                try
                 {
-                    bitmap.UnlockBits(data);
-                    bitmap.Dispose();
-                    throw new InvalidOperationException($"Decode failed: {result}");
-                }
+                    bitmap = new Bitmap(info.Width, info.Height, PixelFormat.Format32bppPArgb);
 
-                bitmap.UnlockBits(data);
-                return bitmap;
+                    data = bitmap.LockBits(
+                        new Rectangle(0, 0, info.Width, info.Height),
+                        ImageLockMode.WriteOnly,
+                        PixelFormat.Format32bppPArgb);
+
+                    var decodeInfo = new SKImageInfo(
+                        info.Width,
+                        info.Height,
+                        SKColorType.Bgra8888,
+                        SKAlphaType.Premul);
+
+                    var result = codec.GetPixels(decodeInfo, data.Scan0);
+
+                    if (result != SKCodecResult.Success)
+                    {
+                        throw new InvalidOperationException($"Decode failed: {result}");
+                    }
+
+                    bitmap.UnlockBits(data);
+                    data = null;  // UnlockBits完了を記録
+
+                    var resultBitmap = bitmap;
+                    bitmap = null;  // 所有権を移譲
+                    return resultBitmap;
+                }
+                finally
+                {
+                    // dataがnullでない = まだUnlockされていない
+                    if (data != null && bitmap != null)
+                    {
+                        bitmap.UnlockBits(data);
+                    }
+
+                    bitmap?.Dispose();
+                }
             }
         }
 

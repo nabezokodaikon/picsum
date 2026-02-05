@@ -68,12 +68,13 @@ namespace SWF.Core.ImageAccessor
         {
             var width = image.Width;
             var height = image.Height;
-            var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
+            Bitmap? bitmap = null;
             System.Drawing.Imaging.BitmapData? bitmapData = null;
 
             try
             {
+                bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
                 bitmapData = bitmap.LockBits(
                     new System.Drawing.Rectangle(0, 0, width, height),
                     System.Drawing.Imaging.ImageLockMode.WriteOnly,
@@ -84,31 +85,42 @@ namespace SWF.Core.ImageAccessor
                     var ptr = (byte*)bitmapData.Scan0;
                     var stride = bitmapData.Stride;
 
-                    for (var y = 0; y < height; y++)
+                    image.ProcessPixelRows(accessor =>
                     {
-                        var row = ptr + (y * stride);
-                        for (var x = 0; x < width; x++)
+                        for (var y = 0; y < height; y++)
                         {
-                            var pixel = image[x, y];
-                            var pixelPtr = row + (x * 4);
+                            var pixelRow = accessor.GetRowSpan(y);
+                            var row = ptr + (y * stride);
 
-                            pixelPtr[0] = pixel.B; // Blue
-                            pixelPtr[1] = pixel.G; // Green
-                            pixelPtr[2] = pixel.R; // Red
-                            pixelPtr[3] = pixel.A; // Alpha
+                            for (var x = 0; x < width; x++)
+                            {
+                                var pixel = pixelRow[x];
+                                var pixelPtr = row + (x * 4);
+                                pixelPtr[0] = pixel.B;
+                                pixelPtr[1] = pixel.G;
+                                pixelPtr[2] = pixel.R;
+                                pixelPtr[3] = pixel.A;
+                            }
                         }
-                    }
+                    });
                 }
 
-                return bitmap;
+                bitmap.UnlockBits(bitmapData);
+                bitmapData = null;  // UnlockBitsŠ®—¹‚ð‹L˜^
+
+                var result = bitmap;
+                bitmap = null;  // Š—LŒ ‚ðˆÚ÷
+                return result;
             }
             finally
             {
-                if (bitmapData != null)
+                // bitmapData‚ªnull‚Å‚È‚¢ = ‚Ü‚¾Unlock‚³‚ê‚Ä‚¢‚È‚¢
+                if (bitmapData != null && bitmap != null)
                 {
                     bitmap.UnlockBits(bitmapData);
-                    bitmapData = null;
                 }
+
+                bitmap?.Dispose();
             }
         }
     }

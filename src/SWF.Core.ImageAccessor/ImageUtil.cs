@@ -2,7 +2,6 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.Job;
 using SWF.Core.StringAccessor;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -549,53 +548,79 @@ namespace SWF.Core.ImageAccessor
 
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new ArgumentException($"ピクセルフォーマットが'{PixelFormat.Format32bppArgb}'ではありません。");
+                throw new ArgumentException(
+                    $"Pixel format must be '{PixelFormat.Format32bppArgb}'.",
+                    nameof(bmp));
             }
 
             var w = bmp.Width;
             var h = bmp.Height;
+            var region = new Region();
+            region.MakeEmpty(); // 空のリージョンから開始
 
-            using (var path = new GraphicsPath())
+            var rect = new Rectangle(0, 0, w, h);
+            BitmapData? bd = null;
+
+            try
             {
-                var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                path.AddRectangle(rect);
-                BitmapData? bd = null;
+                bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                try
+                unsafe
                 {
-                    bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                    var stride = bd.Stride;
+                    var scan0 = (byte*)bd.Scan0;
 
-                    unsafe
+                    for (var y = 0; y < h; y++)
                     {
-                        var p = (byte*)(void*)bd.Scan0;
+                        var row = scan0 + (y * stride);
+                        var x = 0;
 
-                        for (var y = 0; y < h; ++y)
+                        while (x < w)
                         {
-                            for (var x = 0; x < w; ++x)
+                            var p = row + (x * 4);
+
+                            // 不透明ピクセルを探す
+                            if (p[3] != transparent.A ||
+                                p[2] != transparent.R ||
+                                p[1] != transparent.G ||
+                                p[0] != transparent.B)
                             {
-                                if (p[3] == transparent.A &&
-                                    p[2] == transparent.R &&
-                                    p[1] == transparent.G &&
-                                    p[0] == transparent.B)
+                                // 連続した不透明ピクセルの範囲を見つける
+                                var startX = x;
+                                x++;
+
+                                while (x < w)
                                 {
-                                    path.AddRectangle(new Rectangle(x, y, 1, 1));
+                                    p = row + (x * 4);
+                                    if (p[3] == transparent.A &&
+                                        p[2] == transparent.R &&
+                                        p[1] == transparent.G &&
+                                        p[0] == transparent.B)
+                                    {
+                                        break;
+                                    }
+                                    x++;
                                 }
 
-                                p += 4;
+                                // 不透明な矩形をリージョンに追加
+                                region.Union(new Rectangle(startX, y, x - startX, 1));
+                            }
+                            else
+                            {
+                                x++;
                             }
                         }
                     }
                 }
-                finally
-                {
-                    if (bd != null)
-                    {
-                        bmp.UnlockBits(bd);
-                        bd = null;
-                    }
-                }
 
-                return new Region(path);
+                return region;
+            }
+            finally
+            {
+                if (bd != null)
+                {
+                    bmp.UnlockBits(bd);
+                }
             }
         }
 
