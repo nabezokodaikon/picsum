@@ -153,6 +153,7 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea _pageDrawArea;
 
+        private bool _isInitialized = true;
         private Timer _animationTimer;
 
         private int GetTabsRightOffset()
@@ -956,22 +957,32 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var stopAnimation = false;
-            foreach (var tab in this._tabList)
+            if (this._isInitialized && this._tabList.Count == 1)
             {
-                if (TabDragOperation.IsTarget(tab))
-                {
-                    tab.DrawArea.DoNotAnimation();
-                }
-                else if (!TabDragOperation.IsTarget(tab))
-                {
-                    stopAnimation = tab.DrawArea.DoAnimation();
-                }
-            }
-
-            if (stopAnimation)
-            {
+                var tab = this._tabList.First();
+                tab.DrawArea.DoNotAnimation();
                 this._animationTimer.Stop();
+                this._isInitialized = false;
+            }
+            else
+            {
+                var stopAnimation = false;
+                foreach (var tab in this._tabList)
+                {
+                    if (TabDragOperation.IsTarget(tab))
+                    {
+                        tab.DrawArea.DoNotAnimation();
+                    }
+                    else if (!TabDragOperation.IsTarget(tab))
+                    {
+                        stopAnimation = tab.DrawArea.DoAnimation();
+                    }
+                }
+
+                if (stopAnimation)
+                {
+                    this._animationTimer.Stop();
+                }
             }
 
             this.Invalidate();
