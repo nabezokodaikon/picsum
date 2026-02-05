@@ -782,6 +782,11 @@ namespace SWF.UIComponent.TabOperation
 
         private void TabSwitch_MouseClick(object sender, MouseEventArgs e)
         {
+            if (TabDragOperation.IsBegin)
+            {
+                return;
+            }
+
             var tab = this.GetTabFromPoint(e.X, e.Y);
             if (tab != null && tab == this._mouseDownTab)
             {
