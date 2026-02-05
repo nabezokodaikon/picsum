@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
@@ -776,13 +777,26 @@ namespace PicSum.UIComponent.Contents.FileList
                     PixelFormat.Format32bppPArgb);
                 using var g = Graphics.FromImage(bmp);
 
+                g.SmoothingMode = SmoothingMode.None;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.CompositingQuality = CompositingQuality.HighSpeed;
+                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                g.CompositingMode = CompositingMode.SourceOver;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
                 g.DrawString(
                     item.FileName,
                     font,
                     textBrush,
                     new Rectangle(0, 0, textWidth, textHeight),
                     this.flowList.ItemTextFormat);
+
+                //DrawTextUtil.DrawText(
+                //    g,
+                //    item.FileName,
+                //    font,
+                //    new Rectangle(0, 0, textRect.Width, textRect.Height),
+                //    textBrush.Color);
 
                 item.FileNameImage = SkiaUtil.ToSKImage(bmp);
             }
