@@ -10,7 +10,7 @@ namespace SWF.Core.ImageAccessor
         public static readonly OpenCVImage EMPTY = new(SizeF.Empty);
 
         private static readonly SKSamplingOptions SAMPLING
-            = new(SKFilterMode.Nearest, SKMipmapMode.None);
+            = new(SKFilterMode.Nearest);
 
         private bool _disposed = false;
         private readonly string _filePath;

@@ -40,9 +40,7 @@
     <Compile Update="SKFlowList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="SKFlowList.Definition.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="SKFlowList.Definition.cs" />
   </ItemGroup>
 
 </Project>

@@ -758,7 +758,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void CacheFileNameImage(
             FileEntity item,
-            SKRectI textRect,
+            Rectangle textRect,
             SolidBrush textBrush)
         {
             if (item.FileNameImage == null
@@ -767,13 +767,11 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 item.FileNameImage?.Dispose();
 
-                var textWidth = textRect.Width;
-                var textHeight = textRect.Height;
                 var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
 
                 using var bmp = new Bitmap(
-                    textWidth,
-                    textHeight,
+                    textRect.Width,
+                    textRect.Height,
                     PixelFormat.Format32bppPArgb);
                 using var g = Graphics.FromImage(bmp);
 
@@ -788,15 +786,45 @@ namespace PicSum.UIComponent.Contents.FileList
                     item.FileName,
                     font,
                     textBrush,
-                    new Rectangle(0, 0, textWidth, textHeight),
+                    textRect,
                     this.flowList.ItemTextFormat);
 
-                //DrawTextUtil.DrawText(
-                //    g,
-                //    item.FileName,
-                //    font,
-                //    new Rectangle(0, 0, textRect.Width, textRect.Height),
-                //    textBrush.Color);
+                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
+            }
+        }
+
+        private void CacheFileNameImage(
+            FileEntity item,
+            Rectangle textRect,
+            Color textColor)
+        {
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                item.FileNameImage?.Dispose();
+
+                var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
+
+                using var bmp = new Bitmap(
+                    textRect.Width,
+                    textRect.Height,
+                    PixelFormat.Format32bppPArgb);
+                using var g = Graphics.FromImage(bmp);
+
+                g.SmoothingMode = SmoothingMode.None;
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g.CompositingQuality = CompositingQuality.HighSpeed;
+                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                g.CompositingMode = CompositingMode.SourceOver;
+                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                DrawTextUtil.DrawText(
+                    g,
+                    item.FileName,
+                    font,
+                    textRect,
+                    textColor);
 
                 item.FileNameImage = SkiaUtil.ToSKImage(bmp);
             }
@@ -817,6 +845,7 @@ namespace PicSum.UIComponent.Contents.FileList
             canvas.DrawImage(
                 item.FileNameImage,
                 textRect,
+                this.flowList.TextSamplingOptions,
                 this.flowList.TextPaint);
         }
 
@@ -1032,8 +1061,12 @@ namespace PicSum.UIComponent.Contents.FileList
 
             var itemTextHeight = this.GetItemTextHeight();
 
-            using (Measuring.Time(false, "AbstractFileListPage.FlowList_Drawitems Parallel.ForEach"))
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems Parallel.ForEach"))
             {
+                var firstInfo = e.DrawItemInfos.First();
+                var textRectTemp = this.GetTextRectangle(firstInfo, itemTextHeight);
+                var textRect = new Rectangle(0, 0, textRectTemp.Width, textRectTemp.Height);
+
                 Parallel.ForEach(
                     e.DrawItemInfos,
                     new ParallelOptions
@@ -1044,47 +1077,35 @@ namespace PicSum.UIComponent.Contents.FileList
                     {
                         var filePath = this._filterFilePathList[info.ItemIndex];
                         var item = this._masterFileDictionary[filePath];
-                        using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
 
                         if (item.ThumbnailImage == null)
                         {
-                            var textRect = this.GetTextRectangle(info, itemTextHeight);
-                            if (e.LocalClipBounds.IntersectsWith(textRect))
-                            {
-                                this.CacheFileNameImage(
-                                    item,
-                                    textRect,
-                                    textBrush);
-                            }
+                            this.CacheFileNameImage(
+                                item,
+                                textRect,
+                                SKFlowList.ITEM_TEXT_COLOR);
                         }
                         else
                         {
                             var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
-                            if (e.LocalClipBounds.IntersectsWith(thumbRect))
-                            {
-                                ThumbnailUtil.CacheFileThumbnail(
-                                    item.ThumbnailImage,
-                                    thumbRect,
-                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                    this._scale);
-                            }
+                            ThumbnailUtil.CacheFileThumbnail(
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                this._scale);
 
                             if (this.IsShowFileName)
                             {
-                                var textRect = this.GetTextRectangle(info, itemTextHeight);
-                                if (e.LocalClipBounds.IntersectsWith(textRect))
-                                {
-                                    this.CacheFileNameImage(
-                                        item,
-                                        textRect,
-                                        textBrush);
-                                }
+                                this.CacheFileNameImage(
+                                    item,
+                                    textRect,
+                                    SKFlowList.ITEM_TEXT_COLOR);
                             }
                         }
                     });
             }
 
-            using (Measuring.Time(false, "AbstractFileListPage.FlowList_Drawitems foreach"))
+            using (Measuring.Time(true, "AbstractFileListPage.FlowList_Drawitems foreach"))
             {
                 foreach (var info in e.DrawItemInfos.AsSpan())
                 {
@@ -1112,63 +1133,51 @@ namespace PicSum.UIComponent.Contents.FileList
                     if (item.ThumbnailImage == null)
                     {
                         var iconRect = this.GetIconRectangle(info, itemTextHeight);
-                        if (e.LocalClipBounds.IntersectsWith(iconRect))
-                        {
-                            ThumbnailUtil.DrawIcon(
-                                e.Canvas,
-                                this._imagePaint,
-                                item.JumboIcon,
-                                iconRect,
-                                this._scale);
-                        }
+                        ThumbnailUtil.DrawIcon(
+                            e.Canvas,
+                            this._imagePaint,
+                            item.JumboIcon,
+                            iconRect,
+                            this._scale);
 
                         var textRect = this.GetTextRectangle(info, itemTextHeight);
-                        if (e.LocalClipBounds.IntersectsWith(textRect))
-                        {
-                            this.DrawFileNameImage(
-                                e.Canvas,
-                                item,
-                                textRect);
-                        }
+                        this.DrawFileNameImage(
+                            e.Canvas,
+                            item,
+                            textRect);
                     }
                     else
                     {
                         var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
-                        if (e.LocalClipBounds.IntersectsWith(thumbRect))
+                        if (item.IsFile)
                         {
-                            if (item.IsFile)
-                            {
-                                ThumbnailUtil.DrawFileThumbnail(
-                                    e.Canvas,
-                                    this._imagePaint,
-                                    item.ThumbnailImage,
-                                    thumbRect,
-                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                    this._scale);
-                            }
-                            else
-                            {
-                                ThumbnailUtil.DrawDirectoryThumbnail(
-                                    e.Canvas,
-                                    this._imagePaint,
-                                    item.ThumbnailImage,
-                                    thumbRect,
-                                    new Size(item.SourceImageWidth, item.SourceImageHeight),
-                                    item.JumboIcon,
-                                    this._scale);
-                            }
+                            ThumbnailUtil.DrawFileThumbnail(
+                                e.Canvas,
+                                this._imagePaint,
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                this._scale);
+                        }
+                        else
+                        {
+                            ThumbnailUtil.DrawDirectoryThumbnail(
+                                e.Canvas,
+                                this._imagePaint,
+                                item.ThumbnailImage,
+                                thumbRect,
+                                new Size(item.SourceImageWidth, item.SourceImageHeight),
+                                item.JumboIcon,
+                                this._scale);
                         }
 
                         if (this.IsShowFileName)
                         {
                             var textRect = this.GetTextRectangle(info, itemTextHeight);
-                            if (e.LocalClipBounds.IntersectsWith(textRect))
-                            {
-                                this.DrawFileNameImage(
-                                    e.Canvas,
-                                    item,
-                                    textRect);
-                            }
+                            this.DrawFileNameImage(
+                                e.Canvas,
+                                item,
+                                textRect);
                         }
                     }
                 }

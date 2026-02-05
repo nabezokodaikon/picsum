@@ -35,55 +35,70 @@ namespace SWF.UIComponent.SKFlowList
         private static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
         private static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
 
+        public readonly SKSamplingOptions TextSamplingOptions
+            = new(SKFilterMode.Nearest);
+
         public readonly SKPaint BackgroundPaint = new()
         {
-            Color = BACKGROUND_COLOR,
             BlendMode = SKBlendMode.Src,
+            Color = BACKGROUND_COLOR,
+            IsAntialias = false,
         };
 
         public readonly SKPaint TextPaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = new(255, 255, 255, 255),
+            IsAntialias = false,
         };
-
-        public readonly SKSamplingOptions Sampling
-            = new(SKCubicResampler.CatmullRom);
 
         public readonly SKPaint SelectedFillPaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = SELECTED_FILL_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
         public readonly SKPaint MousePointFillPaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = MOUSE_POINT_FILL_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
         private readonly SKPaint _selectedStrokePaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = SELECTED_STROKE_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
         private readonly SKPaint _rectangleSelectionFillPaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = RECTANGLE_SELECTION_FILL_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
         private readonly SKPaint _rectangleSelectionStrokePaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = RECTANGLE_SELECTION_STROKE_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
         private readonly SKPaint _focusStrokePaint = new()
         {
+            BlendMode = SKBlendMode.SrcOver,
             Color = FOCUS_STROKE_COLOR,
+            IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
@@ -103,9 +118,11 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
+                    BlendMode = this._selectedStrokePaint.BlendMode,
                     Color = this._selectedStrokePaint.Color,
-                    Style = SKPaintStyle.Stroke,
+                    IsAntialias = this._selectedStrokePaint.IsAntialias,
                     StrokeWidth = this._selectedStrokePaint.StrokeWidth * scale,
+                    Style = this._selectedStrokePaint.Style,
                 };
                 this._selectedStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
@@ -123,9 +140,11 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
+                    BlendMode = this._rectangleSelectionStrokePaint.BlendMode,
                     Color = this._rectangleSelectionStrokePaint.Color,
-                    Style = SKPaintStyle.Stroke,
+                    IsAntialias = this._rectangleSelectionStrokePaint.IsAntialias,
                     StrokeWidth = this._rectangleSelectionStrokePaint.StrokeWidth * scale,
+                    Style = this._rectangleSelectionStrokePaint.Style,
                 };
                 this._rectangleSelectionStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
@@ -143,9 +162,11 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
+                    BlendMode = this._focusStrokePaint.BlendMode,
                     Color = this._focusStrokePaint.Color,
-                    Style = SKPaintStyle.Stroke,
+                    IsAntialias = this._focusStrokePaint.IsAntialias,
                     StrokeWidth = this._focusStrokePaint.StrokeWidth * scale,
+                    Style = this._focusStrokePaint.Style,
                 };
                 this._focusStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
