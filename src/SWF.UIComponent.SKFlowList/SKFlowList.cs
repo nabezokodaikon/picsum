@@ -73,6 +73,7 @@ namespace SWF.UIComponent.SKFlowList
         private int _targetVerticalScroll;
 
         private bool _isRunningPaintSurfaceEvent = false;
+        private bool _needsRepaint = false;
 
         public SKFlowList()
         {
@@ -315,12 +316,12 @@ namespace SWF.UIComponent.SKFlowList
         {
             if (this._isRunningPaintSurfaceEvent)
             {
-                this.Invalidate();
+                this._needsRepaint = true;
+                return;
             }
-            else
-            {
-                base.OnPaint(e);
-            }
+
+            base.OnPaint(e);
+            this._needsRepaint = false;
         }
 
         private void FlowList_Invalidated(object sender, InvalidateEventArgs e)
@@ -338,6 +339,7 @@ namespace SWF.UIComponent.SKFlowList
             using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
                 this._isRunningPaintSurfaceEvent = true;
+                this._needsRepaint = false;
 
                 using var recorder = new SKPictureRecorder();
                 using var canvas = recorder.BeginRecording(e.Info.Rect);
@@ -405,6 +407,11 @@ namespace SWF.UIComponent.SKFlowList
                 }
 
                 this._isRunningPaintSurfaceEvent = false;
+
+                if (this._needsRepaint)
+                {
+                    this.Invalidate();
+                }
             }
         }
 
