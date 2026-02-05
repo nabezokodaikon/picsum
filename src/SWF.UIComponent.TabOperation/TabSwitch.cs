@@ -153,6 +153,8 @@ namespace SWF.UIComponent.TabOperation
         // コンテンツ描画クラス
         private readonly PageDrawArea _pageDrawArea;
 
+        private Timer _animationTimer;
+
         private int GetTabsRightOffset()
         {
             var size = WindowUtil.GetControlBoxSize(this.GetForm().Handle);
@@ -223,6 +225,10 @@ namespace SWF.UIComponent.TabOperation
         {
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
+
+            this._animationTimer = new Timer();
+            this._animationTimer.Interval = 12;
+            this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Loaded += this.TabSwitch_Loaded;
             this.Invalidated += this.TabSwitch_Invalidated;
@@ -635,6 +641,10 @@ namespace SWF.UIComponent.TabOperation
         {
             if (disposing)
             {
+                this._animationTimer?.Stop();
+                this._animationTimer?.Dispose();
+                this._animationTimer = null;
+
                 foreach (var tab in this._tabList)
                 {
                     tab.Close();
@@ -772,6 +782,11 @@ namespace SWF.UIComponent.TabOperation
 
         private void TabSwitch_MouseClick(object sender, MouseEventArgs e)
         {
+            if (TabDragOperation.IsBegin)
+            {
+                return;
+            }
+
             var tab = this.GetTabFromPoint(e.X, e.Y);
             if (tab != null && tab == this._mouseDownTab)
             {
@@ -932,6 +947,34 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._dropPoint = null;
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            var stopAnimation = false;
+            foreach (var tab in this._tabList)
+            {
+                if (TabDragOperation.IsTarget(tab))
+                {
+                    tab.DrawArea.DoNotAnimation();
+                }
+                else if (!TabDragOperation.IsTarget(tab))
+                {
+                    stopAnimation = tab.DrawArea.DoAnimation();
+                }
+            }
+
+            if (stopAnimation)
+            {
+                this._animationTimer.Stop();
+            }
+
+            this.Invalidate();
         }
 
         private void OnActiveTabChanged(EventArgs e)
@@ -1171,9 +1214,12 @@ namespace SWF.UIComponent.TabOperation
                     tab.DrawArea.X = x;
                     tab.DrawArea.Y = rect.Y;
                     tab.DrawArea.Width = w;
+
                     x += (w + tabMargin);
                 }
             }
+
+            this._animationTimer.Start();
         }
 
         private void SetAddTabButtonDrawArea()
@@ -1341,7 +1387,7 @@ namespace SWF.UIComponent.TabOperation
                         var img = ResourceFiles.DropArrowIcon.Value;
                         var scale = WindowUtil.GetCurrentWindowScale(this);
                         var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
-                        var x = (tab.DrawArea.Left - tabMargin / 2f) - size / 2f;
+                        var x = (tab.DrawArea.X - tabMargin / 2f) - size / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, size, size);
                         return;
@@ -1421,7 +1467,7 @@ namespace SWF.UIComponent.TabOperation
 
         private bool IsTabLeftDrop(int x, TabInfo tab)
         {
-            return x > tab.DrawArea.Left && tab.DrawArea.Left + tab.DrawArea.Width / 3f > x;
+            return x > tab.DrawArea.X && tab.DrawArea.X + tab.DrawArea.Width / 3f > x;
         }
 
         private bool IsTabRightDrop(int x, TabInfo tab)

@@ -167,6 +167,7 @@ namespace SWF.UIComponent.TabOperation
                     g.DrawImage(pageCap, pageRect);
                     g.DrawRectangle(Pens.Black, outlineRect);
 
+                    this.TabDrawArea.DoNotAnimation();
                     this.TabDrawArea.DrawActiveTab(g, scale);
                 }
 
