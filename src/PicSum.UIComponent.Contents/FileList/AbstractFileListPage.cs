@@ -804,7 +804,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 item.FileNameImage?.Dispose();
 
-                var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
+                var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, this._scale);
 
                 using var bmp = new Bitmap(
                     textRect.Width,
@@ -819,7 +819,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 g.CompositingMode = CompositingMode.SourceOver;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                DrawTextUtil.DrawText(
+                TextRenderUtil.DrawText(
                     g,
                     item.FileName,
                     font,
