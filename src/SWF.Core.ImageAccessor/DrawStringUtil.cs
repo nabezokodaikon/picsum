@@ -2,8 +2,14 @@
 {
     public static class DrawStringUtil
     {
+        private const int MaxFileNameLength = 255;
+        private const int MaxBufferSize = MaxFileNameLength + 3;
+
         [ThreadStatic]
         private static Dictionary<Font, FontMetrics>? _tlsFontCache;
+
+        [ThreadStatic]
+        private static char[]? _tlsBuffer;
 
         private sealed class FontMetrics
         {
@@ -21,6 +27,7 @@
         };
 
         private static Dictionary<Font, FontMetrics> GetCache() => _tlsFontCache ??= new();
+        private static char[] GetBuffer() => _tlsBuffer ??= new char[MaxBufferSize];
 
         public static void DrawText(Graphics g, string text, Font font, Rectangle rect, SolidBrush brush)
         {
@@ -43,16 +50,18 @@
             Span<bool> needsEll = stackalloc bool[MaxLines];
             int lineCnt = 0, pos = 0;
 
-            // 行分割ロジック
+            // 行分割ロジック - ギリギリまで詰める
             while (pos < text.Length && lineCnt < MaxLines)
             {
                 bool isLast = lineCnt == MaxLines - 1;
-                float max = availWidth - (isLast ? metrics.EllipsisWidth : 0f);
+                float ellipsisSpace = isLast ? metrics.EllipsisWidth : 0f;
+                float max = availWidth - ellipsisSpace;
 
                 int fit = 0;
                 float currentSum = 0;
                 ReadOnlySpan<char> rest = text.AsSpan(pos);
 
+                // 幅がギリギリまで収まる文字数を計測
                 for (; fit < rest.Length; fit++)
                 {
                     char c = rest[fit];
@@ -62,10 +71,13 @@
                         w = g.MeasureString(c.ToString(), font).Width;
                         widths[c] = w;
                     }
+
+                    // ギリギリまで詰める（超えない範囲で最大）
                     if (currentSum + w > max) break;
                     currentSum += w;
                 }
 
+                // 1文字も入らない場合でも最低1文字は表示
                 if (fit == 0 && rest.Length > 0) fit = 1;
 
                 starts[lineCnt] = pos;
@@ -75,36 +87,44 @@
                 pos += fit;
             }
 
+            // 垂直方向もギリギリまで詰める
             float totalH = lineCnt * metrics.LineHeight;
             float startY = rect.Y + (rect.Height - totalH) / 2f;
 
-            // **最適化: 1行の場合**
+            // 1行の場合
             if (lineCnt == 1)
             {
-                if (!needsEll[0] && starts[0] == 0 && lengths[0] == text.Length)
+                int s = starts[0], len = lengths[0];
+
+                if (!needsEll[0] && s == 0 && len == text.Length)
                 {
-                    // 省略なし・全体表示
                     g.DrawString(text, font, brush, new RectangleF(rect.X, startY, rect.Width, metrics.LineHeight), FORMAT);
                 }
                 else
                 {
-                    // 省略ありまたは部分表示
-                    Span<char> buffer = stackalloc char[23];
-                    int s = starts[0], len = lengths[0];
-                    text.AsSpan(s, len).CopyTo(buffer);
-                    if (needsEll[0])
+                    char[] buffer = GetBuffer();
+
+                    int copyLen = Math.Min(len, text.Length - s);
+                    if (copyLen > 0)
                     {
-                        Ellipsis.AsSpan().CopyTo(buffer.Slice(len));
-                        len += 3;
+                        text.AsSpan(s, copyLen).CopyTo(buffer);
                     }
-                    g.DrawString(new string(buffer.Slice(0, len)), font, brush,
+
+                    int finalLen = copyLen;
+                    if (needsEll[0] && finalLen + 3 <= buffer.Length)
+                    {
+                        Ellipsis.AsSpan().CopyTo(buffer.AsSpan(finalLen));
+                        finalLen += 3;
+                    }
+
+                    g.DrawString(new string(buffer, 0, finalLen), font, brush,
                         new RectangleF(rect.X, startY, rect.Width, metrics.LineHeight), FORMAT);
                 }
                 return;
             }
 
-            // **最適化: 2行を改行文字で結合して1回のDrawStringで描画**
-            Span<char> multiLineBuffer = stackalloc char[50]; // 20文字×2行 + 省略記号×2 + 改行1 = 最大45文字
+            // 2行を改行文字で結合して1回のDrawStringで描画
+            char[] multiLineBuffer = GetBuffer();
             int totalLen = 0;
 
             for (int i = 0; i < lineCnt; i++)
@@ -115,12 +135,17 @@
                 }
 
                 int s = starts[i], len = lengths[i];
-                text.AsSpan(s, len).CopyTo(multiLineBuffer.Slice(totalLen));
-                totalLen += len;
 
-                if (needsEll[i])
+                if (s >= text.Length) continue;
+                int copyLen = Math.Min(len, text.Length - s);
+                if (copyLen <= 0) continue;
+
+                text.AsSpan(s, copyLen).CopyTo(multiLineBuffer.AsSpan(totalLen));
+                totalLen += copyLen;
+
+                if (needsEll[i] && totalLen + 3 <= multiLineBuffer.Length)
                 {
-                    Ellipsis.AsSpan().CopyTo(multiLineBuffer.Slice(totalLen));
+                    Ellipsis.AsSpan().CopyTo(multiLineBuffer.AsSpan(totalLen));
                     totalLen += 3;
                 }
             }
@@ -133,7 +158,7 @@
                 Trimming = StringTrimming.None
             };
 
-            g.DrawString(new string(multiLineBuffer.Slice(0, totalLen)), font, brush,
+            g.DrawString(new string(multiLineBuffer, 0, totalLen), font, brush,
                 new RectangleF(rect.X, startY, rect.Width, totalH), multiLineFormat);
         }
 
