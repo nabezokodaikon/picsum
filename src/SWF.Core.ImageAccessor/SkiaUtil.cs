@@ -55,52 +55,28 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public static SKImage ToSKImage(Bitmap src)
+        public static unsafe SKImage ToSKImage(Bitmap src)
         {
             ArgumentNullException.ThrowIfNull(src, nameof(src));
 
-            using (Measuring.Time(false, "SkiaImageUtil.ToSKImage"))
+            var data = src.LockBits(
+                new Rectangle(0, 0, src.Width, src.Height),
+                ImageLockMode.ReadOnly,
+                PixelFormat.Format32bppPArgb);
+
+            try
             {
-                BitmapData? data = null;
-                SKBitmap? tempBitmap = null;
+                var info = new SKImageInfo(
+                    src.Width,
+                    src.Height,
+                    SKImageInfo.PlatformColorType,
+                    SKAlphaType.Premul);
 
-                try
-                {
-                    data = src.LockBits(
-                        new Rectangle(0, 0, src.Width, src.Height),
-                        ImageLockMode.ReadOnly,
-                        PixelFormat.Format32bppPArgb);
-
-                    var info = new SKImageInfo(
-                        src.Width,
-                        src.Height,
-                        SKImageInfo.PlatformColorType,
-                        SKAlphaType.Premul);
-
-                    tempBitmap = new SKBitmap();
-                    tempBitmap.InstallPixels(info, data.Scan0, data.Stride);
-
-                    // 重要：ピクセルデータをコピーしてから新しいSKImageを作成
-                    var image = SKImage.FromBitmap(tempBitmap);
-
-                    // UnlockBitsとtempBitmapの破棄を先に実行
-                    tempBitmap.Dispose();
-                    tempBitmap = null;
-
-                    src.UnlockBits(data);
-                    data = null;
-
-                    return image;
-                }
-                finally
-                {
-                    tempBitmap?.Dispose();
-
-                    if (data != null)
-                    {
-                        src.UnlockBits(data);
-                    }
-                }
+                return SKImage.FromPixelCopy(info, data.Scan0, data.Stride);
+            }
+            finally
+            {
+                src.UnlockBits(data);
             }
         }
 
