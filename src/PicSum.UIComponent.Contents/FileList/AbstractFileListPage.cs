@@ -7,6 +7,7 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
 using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -825,6 +826,32 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
+        private void CacheFileNameImage(
+            FileEntity item,
+            SKRectI textRect)
+        {
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                item.FileNameImage?.Dispose();
+
+                using var surface = SKSurface.Create(
+                     new SKImageInfo(textRect.Width, textRect.Height));
+                using var canvas = surface.Canvas;
+                canvas.Clear(SKColors.Transparent);
+
+                SkiaUtil.DrawText(
+                    canvas,
+                    this.flowList.TextPaint,
+                    FontCacher.GetRegularSKFont(FontCacher.Size.Medium, this._scale),
+                    item.FileName,
+                    textRect);
+
+                item.FileNameImage = surface.Snapshot();
+            }
+        }
+
         private void DrawFileNameImage(
             SKCanvas canvas,
             FileEntity item,
@@ -1060,7 +1087,7 @@ namespace PicSum.UIComponent.Contents.FileList
             {
                 var firstInfo = e.DrawItemInfos.First();
                 var textRectTemp = this.GetTextRectangle(firstInfo, itemTextHeight);
-                var textRect = new Rectangle(0, 0, textRectTemp.Width, textRectTemp.Height);
+                var textRect = SKRectI.Create(0, 0, textRectTemp.Width, textRectTemp.Height);
 
                 Parallel.ForEach(
                     e.DrawItemInfos,
@@ -1075,16 +1102,20 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         if (item.ThumbnailImage == null)
                         {
-                            using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
+                            //using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
+                            //this.CacheFileNameImage(
+                            //    item,
+                            //    textRect.ToDrawingRect(),
+                            //    textBrush);
+
                             this.CacheFileNameImage(
                                 item,
-                                textRect,
-                                textBrush);
+                                textRect.ToDrawingRect(),
+                                SKFlowList.ITEM_TEXT_COLOR);
 
                             //this.CacheFileNameImage(
                             //    item,
-                            //    textRect,
-                            //    SKFlowList.ITEM_TEXT_COLOR);
+                            //    textRect);
                         }
                         else
                         {
@@ -1097,16 +1128,20 @@ namespace PicSum.UIComponent.Contents.FileList
 
                             if (this.IsShowFileName)
                             {
-                                using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
+                                //using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
+                                //this.CacheFileNameImage(
+                                //    item,
+                                //    textRect.ToDrawingRect(),
+                                //    textBrush);
+
                                 this.CacheFileNameImage(
                                     item,
-                                    textRect,
-                                    textBrush);
+                                    textRect.ToDrawingRect(),
+                                    SKFlowList.ITEM_TEXT_COLOR);
 
                                 //this.CacheFileNameImage(
                                 //    item,
-                                //    textRect,
-                                //    SKFlowList.ITEM_TEXT_COLOR);
+                                //    textRect);
                             }
                         }
                     });

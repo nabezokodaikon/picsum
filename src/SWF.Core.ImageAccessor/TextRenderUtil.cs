@@ -20,7 +20,7 @@
             public float EllipsisWidth { get; init; }
         }
 
-        private static Dictionary<Font, FontMetrics> GetCache() => _tlsFontCache ??= new();
+        private static Dictionary<Font, FontMetrics> GetCache() => _tlsFontCache ??= [];
         private static char[] GetBuffer() => _tlsBuffer ??= new char[MaxBufferSize];
 
         public static void DrawText(Graphics g, string text, Font font, Rectangle rect, Color color)

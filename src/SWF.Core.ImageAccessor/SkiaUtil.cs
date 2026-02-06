@@ -1,6 +1,8 @@
 ﻿using SkiaSharp;
 using SWF.Core.Base;
+using System.Collections.Concurrent;
 using System.Drawing.Imaging;
+using System.Runtime.CompilerServices;
 
 namespace SWF.Core.ImageAccessor
 {
@@ -183,6 +185,17 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        // フォントごとのキャッシュ（スレッドセーフ、グリッド描画で8並列対応）
+        private static readonly ConcurrentDictionary<SKFont, ConcurrentDictionary<char, float>> _fontCharWidthCaches = new();
+
+        // 省略記号 "..." の幅キャッシュ
+        private static readonly ConcurrentDictionary<SKFont, float> _ellipsisWidthCache = new();
+
+        /// <summary>
+        /// サムネイルグリッド（120x120）向けテキスト描画：最大2行、溢れ時...、水平/垂直中央揃え。
+        /// 30文字程度、10ms/frame目標で最適化（キャッシュ + Span + 非推奨API回避）。
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void DrawText(
             SKCanvas canvas,
             SKPaint paint,
@@ -190,81 +203,98 @@ namespace SWF.Core.ImageAccessor
             string text,
             SKRect bounds)
         {
-            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
-            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
-            ArgumentNullException.ThrowIfNull(font, nameof(font));
-            ArgumentNullException.ThrowIfNullOrEmpty(text, nameof(text));
+            ArgumentNullException.ThrowIfNull(canvas);
+            ArgumentNullException.ThrowIfNull(paint);
+            ArgumentNullException.ThrowIfNull(font);
+            ArgumentNullException.ThrowIfNullOrEmpty(text);
 
-            var maxWidth = bounds.Width;
+            const int MaxChars = 255;
+            if (text.Length > MaxChars)
+                text = text[..MaxChars];  // Range演算子で高速カット
+
+            ReadOnlySpan<char> textSpan = text.AsSpan();
+
             font.GetFontMetrics(out var metrics);
+            float lineHeight = metrics.Descent - metrics.Ascent + metrics.Leading;  // 正確な行高（Leading含む）
+            float maxWidth = bounds.Width;
+            float ellipsisWidth = GetEllipsisWidth(font, paint);
 
-            // 行の高さを計算
-            var lineHeight = metrics.Descent - metrics.Ascent;
-
-            // 1行目の切り出し
-            float measuredWidthL1;
-            var lengthL1 = (int)font.BreakText(text, maxWidth, out measuredWidthL1, paint);
-
-            var line1 = text.Substring(0, lengthL1);
-            var remainingText = text.Substring(lengthL1);
-
-            var line2 = string.Empty;
-            var measuredWidthL2 = 0f;
-
-            // 2行目の処理
-            if (!string.IsNullOrEmpty(remainingText))
+            // 1行目折り返し（文字単位積算、キャッシュ活用）
+            float currentWidth = 0f;
+            int breakPos1 = 0;
+            for (int i = 0; i < textSpan.Length; i++)
             {
-                measuredWidthL2 = font.MeasureText(remainingText, paint);
-
-                if (measuredWidthL2 > maxWidth)
-                {
-                    // "..." の幅を取得
-                    var ellipsisWidth = font.MeasureText("...", paint);
-                    // 2行目の制限幅から三点リーダ分を引いて切り出し
-                    var lengthL2 = (int)font.BreakText(remainingText, maxWidth - ellipsisWidth, out _, paint);
-
-                    line2 = string.Concat(remainingText.AsSpan(0, lengthL2), "...");
-                    measuredWidthL2 = font.MeasureText(line2, paint);
-                }
-                else
-                {
-                    line2 = remainingText;
-                }
+                char c = textSpan[i];
+                float cw = GetCharWidthInline(font, paint, c);  // インラインでJIT最適化
+                if (currentWidth + cw > maxWidth) break;
+                currentWidth += cw;
+                breakPos1 = i + 1;
             }
 
-            // 垂直位置の計算(1行か2行かで全体の高さを変える)
-            var lineCount = string.IsNullOrEmpty(line2) ? 1 : 2;
-            var totalTextHeight = lineHeight * lineCount;
+            ReadOnlySpan<char> line1Span = textSpan[..breakPos1];
+            ReadOnlySpan<char> remainingSpan = breakPos1 < textSpan.Length ? textSpan[breakPos1..] : [];
 
-            // boundsの中央から、全行の高さの半分を引いて、
-            // さらにAscent（上方向への高さ、負の値）を引いてベースラインを特定
-            var startBaselineY = bounds.MidY - (totalTextHeight / 2) - metrics.Ascent;
-
-            // 描画実行
-            DrawTextLine(canvas, paint, line1, font, bounds, startBaselineY, measuredWidthL1);
-
-            if (line2 != null)
+            string line2 = "";
+            if (!remainingSpan.IsEmpty)
             {
-                DrawTextLine(canvas, paint, line2, font, bounds, startBaselineY + lineHeight, measuredWidthL2);
+                currentWidth = 0f;
+                int breakPos2 = 0;
+                for (int i = 0; i < remainingSpan.Length; i++)
+                {
+                    char c = remainingSpan[i];
+                    float cw = GetCharWidthInline(font, paint, c);
+                    if (currentWidth + cw + ellipsisWidth > maxWidth) break;
+                    currentWidth += cw;
+                    breakPos2 = i + 1;
+                }
+
+                // 最低1文字保証
+                if (breakPos2 == 0) breakPos2 = 1;
+
+                // Spanで...連結（効率的）
+                ReadOnlySpan<char> line2Body = remainingSpan[..breakPos2];
+                line2 = breakPos2 < remainingSpan.Length
+                    ? string.Concat(line2Body, "...")
+                    : line2Body.ToString();
+            }
+
+            int lineCount = string.IsNullOrEmpty(line2) ? 1 : 2;
+            float totalHeight = lineHeight * lineCount;
+            float baselineY = bounds.MidY - (totalHeight / 2f) - metrics.Ascent;  // 垂直中央（サムネイル最適）
+
+            // DrawText で SKTextAlign.Center を直接指定（非推奨回避）
+            canvas.DrawText(line1Span.ToString(), bounds.MidX, baselineY, SKTextAlign.Center, font, paint);
+
+            if (!string.IsNullOrEmpty(line2))
+            {
+                canvas.DrawText(line2, bounds.MidX, baselineY + lineHeight, SKTextAlign.Center, font, paint);
             }
         }
 
-        private static void DrawTextLine(
-            SKCanvas canvas,
-            SKPaint paint,
-            string text,
-            SKFont font,
-            SKRect bounds,
-            float y,
-            float textWidth)
+        /// <summary>
+        /// キャッシュクリア（メモリ節約、フォントDispose後推奨）
+        /// </summary>
+        public static void ClearAll()
         {
-            if (string.IsNullOrEmpty(text)) return;
+            _fontCharWidthCaches.Clear();
+            _ellipsisWidthCache.Clear();
+        }
 
-            // 水平中央: (領域の幅 - テキストの幅) / 2
-            var x = bounds.Left + (bounds.Width - textWidth) / 2;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float GetCharWidthInline(SKFont font, SKPaint paint, char c)
+        {
+            var charCache = _fontCharWidthCaches.GetOrAdd(font, _ => new ConcurrentDictionary<char, float>());
+            if (charCache.TryGetValue(c, out float width)) return width;
 
-            using var blob = SKTextBlob.Create(text, font);
-            canvas.DrawText(blob, x, y, paint);
+            width = font.MeasureText(c.ToString(), paint);
+            charCache[c] = width;
+            return width;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float GetEllipsisWidth(SKFont font, SKPaint paint)
+        {
+            return _ellipsisWidthCache.GetOrAdd(font, f => f.MeasureText("...", paint));
         }
     }
 }

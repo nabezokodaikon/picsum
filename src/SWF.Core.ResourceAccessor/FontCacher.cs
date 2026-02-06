@@ -19,7 +19,8 @@ namespace SWF.Core.ResourceAccessor
         private const string FONT_RESOURCE_NAME
             = "SWF.Core.ResourceAccessor.Fonts.NotoSansCJKjp-Regular.otf";
         private const string GDI_FONT_FAMILY = "Yu Gothic UI";
-        private const string SK_FONT_FAMILY = "Microsoft YaHei";
+        private const string SK_FONT_FAMILY = "Yu Gothic UI";
+        //private const string SK_FONT_FAMILY = "Microsoft YaHei UI";
         private const GraphicsUnit UNIT = GraphicsUnit.Pixel;
 
         private static readonly PrivateFontCollection PRIVATE_GDI_FONT_COLLECTION = new();
