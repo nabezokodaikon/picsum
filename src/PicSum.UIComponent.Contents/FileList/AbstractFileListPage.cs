@@ -782,12 +782,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 g.CompositingMode = CompositingMode.SourceOver;
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                g.DrawString(
-                    item.FileName,
-                    font,
-                    textBrush,
-                    textRect,
-                    this.flowList.ItemTextFormat);
+                DrawStringUtil.DrawText(g, item.FileName, font, textRect, textBrush);
 
                 item.FileNameImage = SkiaUtil.ToSKImage(bmp);
             }
@@ -1080,10 +1075,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         if (item.ThumbnailImage == null)
                         {
+                            using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
                             this.CacheFileNameImage(
                                 item,
                                 textRect,
-                                SKFlowList.ITEM_TEXT_COLOR);
+                                textBrush);
+
+                            //this.CacheFileNameImage(
+                            //    item,
+                            //    textRect,
+                            //    SKFlowList.ITEM_TEXT_COLOR);
                         }
                         else
                         {
@@ -1096,10 +1097,16 @@ namespace PicSum.UIComponent.Contents.FileList
 
                             if (this.IsShowFileName)
                             {
+                                using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
                                 this.CacheFileNameImage(
                                     item,
                                     textRect,
-                                    SKFlowList.ITEM_TEXT_COLOR);
+                                    textBrush);
+
+                                //this.CacheFileNameImage(
+                                //    item,
+                                //    textRect,
+                                //    SKFlowList.ITEM_TEXT_COLOR);
                             }
                         }
                     });

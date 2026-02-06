@@ -244,26 +244,6 @@ namespace SWF.UIComponent.SKFlowList
             }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormat ItemTextFormat
-        {
-            get
-            {
-                this._itemTextFormat ??= new()
-                {
-                    Trimming = this._itemTextTrimming,
-                    Alignment = this._itemTextAlignment,
-                    LineAlignment = this._itemTextLineAlignment,
-                    FormatFlags = this._itemTextFormatFlags
-                };
-                return this._itemTextFormat;
-            }
-            set
-            {
-                this._itemTextFormat = value;
-            }
-        }
-
         /// <summary>
         /// スクロールバー表示フラグ
         /// </summary>

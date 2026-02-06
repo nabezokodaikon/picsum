@@ -20,7 +20,6 @@ namespace SWF.UIComponent.SKFlowList
         private StringAlignment _itemTextAlignment = StringAlignment.Center;
         private StringAlignment _itemTextLineAlignment = StringAlignment.Center;
         private StringFormatFlags _itemTextFormatFlags = 0;
-        private StringFormat _itemTextFormat = null;
 
         // 描画フラグ
         private bool _isDraw = true;
@@ -270,7 +269,6 @@ namespace SWF.UIComponent.SKFlowList
                 this._animationTimer.Stop();
                 this._animationTimer.Dispose();
                 this._scrollBar.Dispose();
-                this._itemTextFormat?.Dispose();
 
                 foreach (var item in this._selectedStrokePaintCache)
                 {
@@ -291,8 +289,6 @@ namespace SWF.UIComponent.SKFlowList
                 this._rectangleSelectionFillPaint.Dispose();
                 this._rectangleSelectionStrokePaint.Dispose();
             }
-
-            this._itemTextFormat = null;
 
             base.Dispose(disposing);
         }
