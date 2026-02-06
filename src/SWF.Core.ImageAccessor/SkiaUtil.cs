@@ -154,17 +154,27 @@ namespace SWF.Core.ImageAccessor
                     srcImage.ColorType,
                     srcImage.AlphaType);
 
+                using var surface = SKSurface.Create(info);
+                using var canvas = surface.Canvas;
+                using var paint = new SKPaint
+                {
+                    IsAntialias = false
+                };
+
                 var sampling = srcImage.Width > targetWidth || srcImage.Height > targetHeight
                     ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
                     : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                using var bitmap = new SKBitmap(info);
+                canvas.DrawImage(srcImage,
+                    new SKRectI(0, 0, srcImage.Width, srcImage.Height),
+                    new SKRectI(0, 0, targetWidth, targetHeight),
+                    sampling,
+                    paint);
 
-                srcImage.ScalePixels(bitmap.PeekPixels(), sampling);
-
-                return SKImage.FromBitmap(bitmap);
+                return surface.Snapshot();
             }
         }
+
 
         public static SKImage ReadBuffer(byte[] bf)
         {

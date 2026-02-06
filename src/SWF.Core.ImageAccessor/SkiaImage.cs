@@ -76,6 +76,12 @@ namespace SWF.Core.ImageAccessor
             this._scaleValue = 1f;
         }
 
+        public SkiaImage(string filePath, SKImage src)
+            : this(filePath, src, AppConstants.DEFAULT_ZOOM_VALUE)
+        {
+
+        }
+
         private SkiaImage(SizeF size)
         {
             this._filePath = string.Empty;
@@ -278,6 +284,69 @@ namespace SWF.Core.ImageAccessor
                     {
                         this._cache = this._src.ToTextureImage(context, false);
                     }
+
+                    canvas.DrawImage(
+                        this._cache,
+                        destRect,
+                        sampling,
+                        paint);
+                }
+            }
+            catch (Exception ex) when (
+                ex is NotSupportedException ||
+                ex is ArgumentNullException ||
+                ex is ArgumentException ||
+                ex is ObjectDisposedException ||
+                ex is NotImplementedException)
+            {
+                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+            }
+        }
+
+        public void CacheResizeThumbnail(SKRectI destRect)
+        {
+            if (this._src == null)
+            {
+                throw new InvalidOperationException("SKImageがNullです。");
+            }
+
+            using (Measuring.Time(false, "OpenCVImage.CacheResizeThumbnail"))
+            {
+                if (this._cache == null
+                    || this._cache.Width != destRect.Width
+                    || this._cache.Height != destRect.Height)
+                {
+                    this._cache?.Dispose();
+                    this._cache = SkiaUtil.Resize(this._src, destRect.Width, destRect.Height);
+                }
+            }
+        }
+
+        public void DrawResizeThumbnail(
+            SKCanvas canvas,
+            SKPaint paint,
+            SKRect destRect)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+
+            if (this._src == null)
+            {
+                throw new InvalidOperationException("SKImageがNullです。");
+            }
+
+            try
+            {
+                using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
+                {
+                    if (this._cache == null
+                        || this._cache.Width != destRect.Width
+                        || this._cache.Height != destRect.Height)
+                    {
+                        return;
+                    }
+
+                    var sampling = new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None);
 
                     canvas.DrawImage(
                         this._cache,

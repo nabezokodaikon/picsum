@@ -3,6 +3,7 @@ using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -332,7 +333,7 @@ namespace SWF.UIComponent.SKFlowList
 
         private void FlowList_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
+            using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface"))
             {
                 this._isRunningPaintSurfaceEvent = true;
                 this._needsRepaint = false;
@@ -354,17 +355,21 @@ namespace SWF.UIComponent.SKFlowList
 
                 if (this._itemCount > 0)
                 {
-                    var infos = new SKDrawItemInfo[
-                         this._drawParameter.DrawLastItemIndex -
-                         this._drawParameter.DrawFirstItemIndex + 1];
+                    var infoList = new List<SKDrawItemInfo>(
+                        this._drawParameter.DrawLastItemIndex - this._drawParameter.DrawFirstItemIndex + 1);
 
-                    using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
+                    using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
                     {
-                        var arrayIndex = 0;
                         for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
                              itemIndex <= this._drawParameter.DrawLastItemIndex;
                              itemIndex++)
                         {
+                            var drawRect = this.GetItemDrawRectangle(itemIndex);
+                            if (!e.Surface.Canvas.LocalClipBounds.IntersectsWith(drawRect))
+                            {
+                                continue;
+                            }
+
                             bool isSelected;
                             if (this._rectangleSelection.IsBegun)
                             {
@@ -378,25 +383,25 @@ namespace SWF.UIComponent.SKFlowList
 
                             var isMousePoint = this._mousePointItemIndex == itemIndex;
                             var isFocus = this._foucusItemIndex == itemIndex;
-                            var drawRect = this.GetItemDrawRectangle(itemIndex);
+
                             var info = new SKDrawItemInfo(
                                 itemIndex,
                                 drawRect,
                                 isSelected,
                                 isMousePoint,
                                 isFocus);
-                            infos[arrayIndex] = info;
-                            arrayIndex++;
+
+                            infoList.Add(info);
                         }
                     }
 
                     this.OnSKDrawItems(new SKDrawItemsEventArgs(
                         canvas,
                         e.Surface.Canvas.LocalClipBounds,
-                        infos));
+                        [.. infoList]));
                 }
 
-                using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface DrawPicture"))
+                using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface DrawPicture"))
                 {
                     using var recordedMap = recorder.EndRecording();
                     e.Surface.Canvas.DrawPicture(recordedMap);

@@ -1,8 +1,7 @@
 using SkiaSharp;
 using System.Collections.Concurrent;
-using System.Drawing.Text;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using Windows.Globalization;
+using Windows.Globalization.Fonts;
 
 namespace SWF.Core.ResourceAccessor
 {
@@ -16,14 +15,11 @@ namespace SWF.Core.ResourceAccessor
             ExtraLarge,
         }
 
-        private const string FONT_RESOURCE_NAME
-            = "SWF.Core.ResourceAccessor.Fonts.NotoSansCJKjp-Regular.otf";
-        private const string GDI_FONT_FAMILY = "Yu Gothic UI";
-        private const string SK_FONT_FAMILY = "Yu Gothic UI";
-        //private const string SK_FONT_FAMILY = "Microsoft YaHei UI";
         private const GraphicsUnit UNIT = GraphicsUnit.Pixel;
 
-        private static readonly PrivateFontCollection PRIVATE_GDI_FONT_COLLECTION = new();
+        private static readonly Lazy<string> FONT_FAMILY = new(
+            static () => GetFotFamily(), LazyThreadSafetyMode.ExecutionAndPublication);
+
         private static readonly ConcurrentDictionary<float, Font> REGULAR_GDI_FONT_CACHE = [];
         private static readonly ConcurrentDictionary<float, Font> BOLD_GDI_FONT_CACHE = [];
         private static readonly ConcurrentDictionary<float, SKFont> REGULAR_SK_FONT_CACHE = [];
@@ -41,7 +37,7 @@ namespace SWF.Core.ResourceAccessor
             return REGULAR_GDI_FONT_CACHE.GetOrAdd(size, key =>
             {
                 return new Font(
-                    GDI_FONT_FAMILY,
+                    FONT_FAMILY.Value,
                     size,
                     FontStyle.Regular,
                     UNIT);
@@ -65,7 +61,7 @@ namespace SWF.Core.ResourceAccessor
             return BOLD_GDI_FONT_CACHE.GetOrAdd(size, key =>
             {
                 return new Font(
-                    GDI_FONT_FAMILY,
+                    FONT_FAMILY.Value,
                     size,
                     FontStyle.Bold,
                     UNIT);
@@ -88,12 +84,7 @@ namespace SWF.Core.ResourceAccessor
 
             return REGULAR_SK_FONT_CACHE.GetOrAdd(size, key =>
             {
-                //var typeface = LoadSKFontFromResource(FONT_RESOURCE_NAME);
-                var typeface = SKTypeface.FromFamilyName(SK_FONT_FAMILY, SKFontStyle.Normal);
-                if (typeface == null)
-                {
-                    typeface = SKTypeface.FromFamilyName("Yu Gothic UI", SKFontStyle.Normal);
-                }
+                var typeface = SKTypeface.FromFamilyName(FONT_FAMILY.Value, SKFontStyle.Normal);
 
                 return new SKFont
                 {
@@ -116,12 +107,7 @@ namespace SWF.Core.ResourceAccessor
 
             return BOLD_SK_FONT_CACHE.GetOrAdd(size, key =>
             {
-                //var typeface = LoadSKFontFromResource(FONT_RESOURCE_NAME);
-                var typeface = SKTypeface.FromFamilyName(SK_FONT_FAMILY, SKFontStyle.Bold);
-                if (typeface == null)
-                {
-                    typeface = SKTypeface.FromFamilyName("Yu Gothic UI", SKFontStyle.Bold);
-                }
+                var typeface = SKTypeface.FromFamilyName(FONT_FAMILY.Value, SKFontStyle.Bold);
 
                 return new SKFont
                 {
@@ -133,45 +119,17 @@ namespace SWF.Core.ResourceAccessor
             });
         }
 
-        private static Font LoadGdiFontFromResource(
-             string resourceName,
-             float size,
-             FontStyle style,
-             GraphicsUnit unit)
+        private static string GetFotFamily()
         {
-            if (PRIVATE_GDI_FONT_COLLECTION.Families.Length == 0)
+            var languages = ApplicationLanguages.Languages.ToArray();
+            if (languages.Length < 1)
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                using var stream = assembly.GetManifestResourceStream(resourceName);
-                if (stream == null)
-                {
-                    throw new InvalidOperationException("Resource not found");
-                }
-
-                var fontData = new byte[stream.Length];
-                _ = stream.Read(fontData, 0, (int)stream.Length);
-
-                var fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
-                Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
-
-                PRIVATE_GDI_FONT_COLLECTION.AddMemoryFont(fontPtr, fontData.Length);
-
-                Marshal.FreeCoTaskMem(fontPtr);
+                throw new InvalidOperationException("カルチャー名が取得できませんでした。");
             }
 
-            return new Font(PRIVATE_GDI_FONT_COLLECTION.Families[0], size, style, unit);
-        }
-
-        private static SKTypeface LoadSKFontFromResource(string resourceName)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            using var stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-            {
-                throw new InvalidOperationException("Resource not found");
-            }
-
-            return SKTypeface.FromStream(stream);
+            var languageTag = ApplicationLanguages.Languages[0];
+            var languageFontGroup = new LanguageFontGroup(languageTag);
+            return languageFontGroup.UITextFont.FontFamily;
         }
 
         private static int ToSize(Size size)

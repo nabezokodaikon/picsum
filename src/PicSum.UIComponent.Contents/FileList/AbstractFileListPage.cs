@@ -7,7 +7,6 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
 using SkiaSharp;
-using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -19,9 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -759,75 +755,6 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void CacheFileNameImage(
             FileEntity item,
-            Rectangle textRect,
-            SolidBrush textBrush)
-        {
-            if (item.FileNameImage == null
-                || item.FileNameImage.Width != textRect.Width
-                || item.FileNameImage.Height != textRect.Height)
-            {
-                item.FileNameImage?.Dispose();
-
-                var font = FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale);
-
-                using var bmp = new Bitmap(
-                    textRect.Width,
-                    textRect.Height,
-                    PixelFormat.Format32bppPArgb);
-                using var g = Graphics.FromImage(bmp);
-
-                g.SmoothingMode = SmoothingMode.None;
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.CompositingQuality = CompositingQuality.HighSpeed;
-                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-                DrawStringUtil.DrawText(g, item.FileName, font, textRect, textBrush);
-
-                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
-            }
-        }
-
-        private void CacheFileNameImage(
-            FileEntity item,
-            Rectangle textRect,
-            Color textColor)
-        {
-            if (item.FileNameImage == null
-                || item.FileNameImage.Width != textRect.Width
-                || item.FileNameImage.Height != textRect.Height)
-            {
-                item.FileNameImage?.Dispose();
-
-                var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, this._scale);
-
-                using var bmp = new Bitmap(
-                    textRect.Width,
-                    textRect.Height,
-                    PixelFormat.Format32bppPArgb);
-                using var g = Graphics.FromImage(bmp);
-
-                g.SmoothingMode = SmoothingMode.None;
-                g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.CompositingQuality = CompositingQuality.HighSpeed;
-                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-                TextRenderUtil.DrawText(
-                    g,
-                    item.FileName,
-                    font,
-                    textRect,
-                    textColor);
-
-                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
-            }
-        }
-
-        private void CacheFileNameImage(
-            FileEntity item,
             SKRectI textRect)
         {
             if (item.FileNameImage == null
@@ -1102,20 +1029,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         if (item.ThumbnailImage == null)
                         {
-                            //using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
-                            //this.CacheFileNameImage(
-                            //    item,
-                            //    textRect.ToDrawingRect(),
-                            //    textBrush);
-
                             this.CacheFileNameImage(
                                 item,
-                                textRect.ToDrawingRect(),
-                                SKFlowList.ITEM_TEXT_COLOR);
-
-                            //this.CacheFileNameImage(
-                            //    item,
-                            //    textRect);
+                                textRect);
                         }
                         else
                         {
@@ -1128,20 +1044,9 @@ namespace PicSum.UIComponent.Contents.FileList
 
                             if (this.IsShowFileName)
                             {
-                                //using var textBrush = new SolidBrush(SKFlowList.ITEM_TEXT_COLOR);
-                                //this.CacheFileNameImage(
-                                //    item,
-                                //    textRect.ToDrawingRect(),
-                                //    textBrush);
-
                                 this.CacheFileNameImage(
                                     item,
-                                    textRect.ToDrawingRect(),
-                                    SKFlowList.ITEM_TEXT_COLOR);
-
-                                //this.CacheFileNameImage(
-                                //    item,
-                                //    textRect);
+                                    textRect);
                             }
                         }
                     });

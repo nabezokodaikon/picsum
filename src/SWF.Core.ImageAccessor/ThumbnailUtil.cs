@@ -148,6 +148,18 @@ namespace SWF.Core.ImageAccessor
             thumb.CacheResizeThumbnail(rect);
         }
 
+        public static void CacheFileThumbnail(
+            SkiaImage thumb,
+            SKRectI destRect,
+            Size srcSize,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            var rect = GetDrawFileThumbnailRect(destRect, srcSize, displayScale);
+            thumb.CacheResizeThumbnail(rect);
+        }
+
         public static void DrawFileThumbnail(
             SKCanvas canvas,
             SKPaint paint,
@@ -168,6 +180,50 @@ namespace SWF.Core.ImageAccessor
             SKCanvas canvas,
             SKPaint paint,
             OpenCVImage thumb,
+            SKRectI destRect,
+            Size srcSize,
+            IconImage icon,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+            ArgumentNullException.ThrowIfNull(icon, nameof(icon));
+
+            DrawFileThumbnail(canvas, paint, thumb, destRect, srcSize, displayScale);
+
+            var destIconSize = new SKSizeI(
+                (int)(destRect.Width * 0.5f),
+                (int)(destRect.Height * 0.5f));
+            var x = destRect.Left + 2;
+            var y = destRect.Bottom - destIconSize.Height;
+            var destIconRect = new SKRectI(
+                x, y,
+                x + destIconSize.Width, y + destIconSize.Height);
+
+            icon.Draw(canvas, paint, destIconRect);
+        }
+
+        public static void DrawFileThumbnail(
+            SKCanvas canvas,
+            SKPaint paint,
+            SkiaImage thumb,
+            SKRectI destRect,
+            Size srcSize,
+            float displayScale)
+        {
+            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
+            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
+            ArgumentNullException.ThrowIfNull(thumb, nameof(thumb));
+
+            var rect = GetDrawFileThumbnailRect(destRect, srcSize, displayScale);
+            thumb.DrawResizeThumbnail(canvas, paint, rect);
+        }
+
+        public static void DrawDirectoryThumbnail(
+            SKCanvas canvas,
+            SKPaint paint,
+            SkiaImage thumb,
             SKRectI destRect,
             Size srcSize,
             IconImage icon,
