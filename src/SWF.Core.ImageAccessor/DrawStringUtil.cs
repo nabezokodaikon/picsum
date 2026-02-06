@@ -5,9 +5,6 @@
         [ThreadStatic]
         private static Dictionary<Font, FontMetrics>? _tlsFontCache;
 
-        [ThreadStatic]
-        private static char[]? _tlsBuffer;
-
         private sealed class FontMetrics
         {
             public readonly float[] CharWidths = new float[0x10000];
@@ -24,13 +21,11 @@
         };
 
         private static Dictionary<Font, FontMetrics> GetCache() => _tlsFontCache ??= new();
-        private static char[] GetBuffer() => _tlsBuffer ??= new char[128];
 
         public static void DrawText(Graphics g, string text, Font font, Rectangle rect, SolidBrush brush)
         {
             if (string.IsNullOrEmpty(text)) return;
 
-            // 1. キャッシュ取得（ロックなし）
             var cache = GetCache();
             if (!cache.TryGetValue(font, out var metrics))
             {
@@ -48,7 +43,7 @@
             Span<bool> needsEll = stackalloc bool[MaxLines];
             int lineCnt = 0, pos = 0;
 
-            // 2. 行分割ロジック
+            // 行分割ロジック
             while (pos < text.Length && lineCnt < MaxLines)
             {
                 bool isLast = lineCnt == MaxLines - 1;
@@ -64,7 +59,6 @@
                     float w = widths[c];
                     if (w <= 0)
                     {
-                        // キャッシュになければ計測して保存
                         w = g.MeasureString(c.ToString(), font).Width;
                         widths[c] = w;
                     }
@@ -81,46 +75,98 @@
                 pos += fit;
             }
 
-            // 3. 描画位置の計算
             float totalH = lineCnt * metrics.LineHeight;
             float startY = rect.Y + (rect.Height - totalH) / 2f;
 
-            char[] buffer = GetBuffer();
-
-            // 4. 描画
-            for (int i = 0; i < lineCnt; i++)
+            // **最適化: 1行の場合**
+            if (lineCnt == 1)
             {
-                int s = starts[i], len = lengths[i];
-                var r = new RectangleF(rect.X, startY + i * metrics.LineHeight,
-                                       rect.Width, metrics.LineHeight);
-
-                string lineStr;
-                if (needsEll[i])
+                if (!needsEll[0] && starts[0] == 0 && lengths[0] == text.Length)
                 {
-                    text.AsSpan(s, len).CopyTo(buffer);
-                    Ellipsis.AsSpan().CopyTo(buffer.AsSpan(len));
-                    lineStr = new string(buffer, 0, len + 3);
+                    // 省略なし・全体表示
+                    g.DrawString(text, font, brush, new RectangleF(rect.X, startY, rect.Width, metrics.LineHeight), FORMAT);
                 }
                 else
                 {
-                    lineStr = (s == 0 && len == text.Length) ? text : text.Substring(s, len);
+                    // 省略ありまたは部分表示
+                    Span<char> buffer = stackalloc char[23];
+                    int s = starts[0], len = lengths[0];
+                    text.AsSpan(s, len).CopyTo(buffer);
+                    if (needsEll[0])
+                    {
+                        Ellipsis.AsSpan().CopyTo(buffer.Slice(len));
+                        len += 3;
+                    }
+                    g.DrawString(new string(buffer.Slice(0, len)), font, brush,
+                        new RectangleF(rect.X, startY, rect.Width, metrics.LineHeight), FORMAT);
+                }
+                return;
+            }
+
+            // **最適化: 2行を改行文字で結合して1回のDrawStringで描画**
+            Span<char> multiLineBuffer = stackalloc char[50]; // 20文字×2行 + 省略記号×2 + 改行1 = 最大45文字
+            int totalLen = 0;
+
+            for (int i = 0; i < lineCnt; i++)
+            {
+                if (i > 0)
+                {
+                    multiLineBuffer[totalLen++] = '\n';
                 }
 
-                g.DrawString(lineStr, font, brush, r, FORMAT);
+                int s = starts[i], len = lengths[i];
+                text.AsSpan(s, len).CopyTo(multiLineBuffer.Slice(totalLen));
+                totalLen += len;
+
+                if (needsEll[i])
+                {
+                    Ellipsis.AsSpan().CopyTo(multiLineBuffer.Slice(totalLen));
+                    totalLen += 3;
+                }
             }
+
+            // 改行を含む文字列を1回で描画
+            using var multiLineFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.None
+            };
+
+            g.DrawString(new string(multiLineBuffer.Slice(0, totalLen)), font, brush,
+                new RectangleF(rect.X, startY, rect.Width, totalH), multiLineFormat);
         }
 
         private static FontMetrics BuildMetrics(Graphics g, Font font)
         {
-            // 初期計測
             SizeF sample = g.MeasureString("A", font);
             float ellW = g.MeasureString("...", font).Width;
 
-            return new FontMetrics
+            var metrics = new FontMetrics
             {
                 LineHeight = sample.Height,
                 EllipsisWidth = ellW
             };
+
+            // ASCII事前キャッシュ
+            for (char c = ' '; c <= '~'; c++)
+            {
+                metrics.CharWidths[c] = g.MeasureString(c.ToString(), font).Width;
+            }
+
+            // ひらがな事前キャッシュ
+            for (char c = '\u3040'; c <= '\u309F'; c++)
+            {
+                metrics.CharWidths[c] = g.MeasureString(c.ToString(), font).Width;
+            }
+
+            // カタカナ事前キャッシュ
+            for (char c = '\u30A0'; c <= '\u30FF'; c++)
+            {
+                metrics.CharWidths[c] = g.MeasureString(c.ToString(), font).Width;
+            }
+
+            return metrics;
         }
     }
 }
