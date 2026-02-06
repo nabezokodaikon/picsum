@@ -4,6 +4,8 @@
     {
         private const int MaxFileNameLength = 255;
         private const int MaxBufferSize = MaxFileNameLength + 3;
+        private const int HorizontalMargin = 4; // 左右の余白（ピクセル）
+        private const int VerticalMargin = 2;   // 上下の余白（ピクセル）
 
         [ThreadStatic]
         private static Dictionary<Font, FontMetrics>? _tlsFontCache;
@@ -35,14 +37,16 @@
             const int MaxLines = 2;
             const string Ellipsis = "...";
             var widths = metrics.CharWidths;
-            var availWidth = (float)rect.Width;
+
+            // 余白を考慮した利用可能幅
+            var availWidth = rect.Width - (HorizontalMargin * 2);
 
             Span<int> starts = stackalloc int[MaxLines];
             Span<int> lengths = stackalloc int[MaxLines];
             Span<bool> needsEll = stackalloc bool[MaxLines];
             int lineCnt = 0, pos = 0;
 
-            // 行分割ロジック - ギリギリまで詰める
+            // 行分割ロジック
             while (pos < text.Length && lineCnt < MaxLines)
             {
                 bool isLast = lineCnt == MaxLines - 1;
@@ -53,7 +57,6 @@
                 float currentSum = 0;
                 ReadOnlySpan<char> rest = text.AsSpan(pos);
 
-                // 幅がギリギリまで収まる文字数を計測
                 for (; fit < rest.Length; fit++)
                 {
                     char c = rest[fit];
@@ -64,12 +67,10 @@
                         widths[c] = w;
                     }
 
-                    // ギリギリまで詰める（超えない範囲で最大）
                     if (currentSum + w > max) break;
                     currentSum += w;
                 }
 
-                // 1文字も入らない場合でも最低1文字は表示
                 if (fit == 0 && rest.Length > 0) fit = 1;
 
                 starts[lineCnt] = pos;
@@ -79,9 +80,11 @@
                 pos += fit;
             }
 
-            // 垂直方向もギリギリまで詰める
+            // 垂直方向も余白を考慮
             int totalH = lineCnt * metrics.LineHeight;
-            int startY = rect.Y + (rect.Height - totalH) / 2;
+            int availableHeight = rect.Height - (VerticalMargin * 2);
+            int startY = rect.Y + VerticalMargin + (availableHeight - totalH) / 2;
+
             const TextFormatFlags flags = TextFormatFlags.HorizontalCenter |
                                           TextFormatFlags.VerticalCenter |
                                           TextFormatFlags.NoPadding;
@@ -91,9 +94,17 @@
             {
                 int s = starts[0], len = lengths[0];
 
+                // 余白を考慮した描画領域
+                var drawRect = new Rectangle(
+                    rect.X + HorizontalMargin,
+                    rect.Y + VerticalMargin,
+                    rect.Width - (HorizontalMargin * 2),
+                    rect.Height - (VerticalMargin * 2)
+                );
+
                 if (!needsEll[0] && s == 0 && len == text.Length)
                 {
-                    TextRenderer.DrawText(g, text, font, rect, color, flags);
+                    TextRenderer.DrawText(g, text, font, drawRect, color, flags);
                 }
                 else
                 {
@@ -112,7 +123,7 @@
                         finalLen += 3;
                     }
 
-                    TextRenderer.DrawText(g, new string(buffer, 0, finalLen), font, rect, color, flags);
+                    TextRenderer.DrawText(g, new string(buffer, 0, finalLen), font, drawRect, color, flags);
                 }
                 return;
             }
@@ -123,8 +134,14 @@
             for (int i = 0; i < lineCnt; i++)
             {
                 int s = starts[i], len = lengths[i];
-                var r = new Rectangle(rect.X, startY + i * metrics.LineHeight,
-                                     rect.Width, metrics.LineHeight);
+
+                // 余白を考慮した描画領域
+                var r = new Rectangle(
+                    rect.X + HorizontalMargin,
+                    startY + i * metrics.LineHeight,
+                    rect.Width - (HorizontalMargin * 2),
+                    metrics.LineHeight
+                );
 
                 if (s >= text.Length) continue;
                 int copyLen = Math.Min(len, text.Length - s);
