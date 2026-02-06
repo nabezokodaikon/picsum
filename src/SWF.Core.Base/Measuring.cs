@@ -56,7 +56,7 @@ namespace SWF.Core.Base
 #if DEBUG
             this._stopwatch?.Stop();
 
-            if (this._enable && this._stopwatch?.ElapsedMilliseconds > 10)
+            if (this._enable || this._stopwatch?.ElapsedMilliseconds > _threshold)
             {
                 Console.WriteLine($"{DateTime.Now:HH:mm:ss.fff} | {this._stopwatch?.ElapsedMilliseconds.ToString("D4", System.Globalization.CultureInfo.InvariantCulture)} ms | {this._message} ");
             }

@@ -333,7 +333,7 @@ namespace SWF.UIComponent.SKFlowList
 
         private void FlowList_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface"))
+            using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface"))
             {
                 this._isRunningPaintSurfaceEvent = true;
                 this._needsRepaint = false;
@@ -358,7 +358,7 @@ namespace SWF.UIComponent.SKFlowList
                     var infoList = new List<SKDrawItemInfo>(
                         this._drawParameter.DrawLastItemIndex - this._drawParameter.DrawFirstItemIndex + 1);
 
-                    using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
+                    using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
                     {
                         for (var itemIndex = this._drawParameter.DrawFirstItemIndex;
                              itemIndex <= this._drawParameter.DrawLastItemIndex;
@@ -401,7 +401,7 @@ namespace SWF.UIComponent.SKFlowList
                         [.. infoList]));
                 }
 
-                using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface DrawPicture"))
+                using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface DrawPicture"))
                 {
                     using var recordedMap = recorder.EndRecording();
                     e.Surface.Canvas.DrawPicture(recordedMap);
