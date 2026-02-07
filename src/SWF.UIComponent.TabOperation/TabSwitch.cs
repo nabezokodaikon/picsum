@@ -232,7 +232,6 @@ namespace SWF.UIComponent.TabOperation
             this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Loaded += this.TabSwitch_Loaded;
-            this.Invalidated += this.TabSwitch_Invalidated;
             this.Paint += this.TabSwitch_Paint;
             this.LostFocus += this.TabSwitch_LostFocus;
             this.MouseLeave += this.TabSwitch_MouseLeave;
@@ -608,6 +607,18 @@ namespace SWF.UIComponent.TabOperation
             this._mouseDownTab = null;
         }
 
+        public new void Invalidate()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.SetTabsDrawArea();
+            this.SetAddTabButtonDrawArea();
+            base.Invalidate();
+        }
+
         /// <summary>
         /// タブのスクリーン領域を取得します。
         /// </summary>
@@ -653,12 +664,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             base.Dispose(disposing);
-        }
-
-        private void TabSwitch_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this.SetTabsDrawArea();
-            this.SetAddTabButtonDrawArea();
         }
 
         private void TabSwitch_Paint(object sender, PaintEventArgs e)

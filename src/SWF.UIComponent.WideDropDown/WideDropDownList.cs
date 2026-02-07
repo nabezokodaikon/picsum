@@ -229,7 +229,6 @@ namespace SWF.UIComponent.WideDropDown
             this._flowList.DrawItem += new(this.FlowList_DrawItem);
 
             this.Opening += this.WideDropDownList_Opening;
-            this.Invalidated += this.WideDropDownList_Invalidated;
 
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -298,6 +297,17 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
+        public new void Invalidate()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this._flowList.Invalidate();
+            base.Invalidate();
+        }
+
         private void WideDropDownList_Opening(object sender, CancelEventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this._owner);
@@ -307,11 +317,6 @@ namespace SWF.UIComponent.WideDropDown
             this._flowList.SetItemSize(
                 (int)(ITEM_DEFAULT_SIZE.Width * scale),
                 (int)(ITEM_DEFAULT_SIZE.Height * scale));
-        }
-
-        private void WideDropDownList_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this._flowList.Invalidate();
         }
 
         private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)

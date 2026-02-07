@@ -277,6 +277,11 @@ namespace PicSum.UIComponent.Contents.ImageView
 
         public new void Invalidate()
         {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
             if (!base.Visible)
             {
                 base.Visible = true;

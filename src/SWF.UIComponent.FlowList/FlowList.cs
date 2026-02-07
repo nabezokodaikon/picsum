@@ -87,7 +87,6 @@ namespace SWF.UIComponent.FlowList
             this.KeyDown += this.FlowList_KeyDown;
             this.MouseLeave += this.FlowList_MouseLeave;
             this.MouseDown += this.FlowList_MouseDown;
-            this.Invalidated += this.FlowList_Invalidated;
             this.MouseUp += this.FlowList_MouseUp;
             this.MouseMove += this.FlowList_MouseMove;
             this.MouseDoubleClick += this.FlowList_MouseDoubleClick;
@@ -257,6 +256,17 @@ namespace SWF.UIComponent.FlowList
             this.Invalidate(rect);
         }
 
+        public new void Invalidate()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.SetDrawParameter(false);
+            base.Invalidate();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -285,11 +295,6 @@ namespace SWF.UIComponent.FlowList
             }
 
             return base.IsInputKey(keyData);
-        }
-
-        private void FlowList_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this.SetDrawParameter(false);
         }
 
         private void FlowList_Resize(object sender, EventArgs e)

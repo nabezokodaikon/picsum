@@ -93,7 +93,6 @@ namespace SWF.UIComponent.SKFlowList
             this.KeyDown += this.FlowList_KeyDown;
             this.MouseLeave += this.FlowList_MouseLeave;
             this.MouseDown += this.FlowList_MouseDown;
-            this.Invalidated += this.FlowList_Invalidated;
             this.MouseUp += this.FlowList_MouseUp;
             this.MouseMove += this.FlowList_MouseMove;
             this.MouseDoubleClick += this.FlowList_MouseDoubleClick;
@@ -263,6 +262,17 @@ namespace SWF.UIComponent.SKFlowList
             this.Invalidate(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
+        public new void Invalidate()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.SetDrawParameter(false);
+            base.Invalidate();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -319,11 +329,6 @@ namespace SWF.UIComponent.SKFlowList
 
             base.OnPaint(e);
             this._needsRepaint = false;
-        }
-
-        private void FlowList_Invalidated(object sender, InvalidateEventArgs e)
-        {
-            this.SetDrawParameter(false);
         }
 
         private void FlowList_Resize(object sender, EventArgs e)

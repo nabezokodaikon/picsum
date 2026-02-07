@@ -55,7 +55,6 @@ namespace PicSum.UIComponent.AddressBar
             this._directoryHistoryItem.DropDownClosed += new(this.DrawItem_DropDownClosed);
             this._directoryHistoryItem.SelectedDirectory += new(this.DrawItem_SelectedDirectory);
 
-            this.Invalidated += this.AddressBar_Invalidated;
             this.LostFocus += this.AddressBar_LostFocus;
             this.MouseLeave += this.AddressBar_MouseLeave;
             this.MouseDown += this.AddressBar_MouseDown;
@@ -131,9 +130,15 @@ namespace PicSum.UIComponent.AddressBar
             base.Dispose(disposing);
         }
 
-        private void AddressBar_Invalidated(object sender, InvalidateEventArgs e)
+        public new void Invalidate()
         {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
             this.SetItemsRectangle();
+            base.Invalidate();
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
