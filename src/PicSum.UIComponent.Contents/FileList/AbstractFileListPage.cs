@@ -729,11 +729,10 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             if (!this._itemTextHeight.HasValue)
             {
-                using (var bmp = new Bitmap(1, 1))
-                using (var g = Graphics.FromImage(bmp))
-                {
-                    this._itemTextHeight = (int)(g.MeasureString("A", FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, this._scale)).Height * 2);
-                }
+                var size = TextRenderer.MeasureText(
+                    "A",
+                    FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, this._scale));
+                this._itemTextHeight = size.Height * 2;
             }
 
             return this._itemTextHeight.Value;
@@ -1029,6 +1028,8 @@ namespace PicSum.UIComponent.Contents.FileList
 
                         if (item.ThumbnailImage == null)
                         {
+                            //this.CacheFileNameImage(
+                            //    item,
                             this.CacheFileNameImage(
                                 item,
                                 textRect);
