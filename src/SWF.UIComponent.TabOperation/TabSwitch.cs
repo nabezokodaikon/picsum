@@ -1408,7 +1408,7 @@ namespace SWF.UIComponent.TabOperation
                         var img = ResourceFiles.DropArrowIcon.Value;
                         var scale = WindowUtil.GetCurrentWindowScale(this);
                         var size = Math.Min(ICON_SIZE * scale, img.Width * scale) - ICON_MARGIN * scale;
-                        var x = (tab.DrawArea.Right - tabMargin / 2f) - size / 2f;
+                        var x = (tab.DrawArea.Right + tabMargin / 2f) - size / 2f;
                         var y = 0;
                         g.DrawImage(img, x, y, size, size);
                         return;
