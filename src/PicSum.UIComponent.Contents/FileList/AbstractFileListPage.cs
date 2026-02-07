@@ -7,6 +7,7 @@ using PicSum.UIComponent.Contents.Conf;
 using PicSum.UIComponent.Contents.ContextMenu;
 using PicSum.UIComponent.Contents.Parameter;
 using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
@@ -18,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -754,6 +757,40 @@ namespace PicSum.UIComponent.Contents.FileList
 
         private void CacheFileNameImage(
             FileEntity item,
+            SKRectI textRect,
+            Color textColor)
+        {
+            if (item.FileNameImage == null
+                || item.FileNameImage.Width != textRect.Width
+                || item.FileNameImage.Height != textRect.Height)
+            {
+                item.FileNameImage?.Dispose();
+
+                var textWidth = textRect.Width;
+                var textHeight = textRect.Height;
+                var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, this._scale);
+
+                using var bmp = new Bitmap(
+                    textWidth,
+                    textHeight,
+                    PixelFormat.Format32bppPArgb);
+                using var g = Graphics.FromImage(bmp);
+
+                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                TextRenderUtil.DrawText(
+                    g,
+                    item.FileName,
+                    font,
+                    textRect.ToDrawingRect(),
+                    textColor);
+
+                item.FileNameImage = SkiaUtil.ToSKImage(bmp);
+            }
+        }
+
+        private void CacheFileNameImage(
+            FileEntity item,
             SKRectI textRect)
         {
             if (item.FileNameImage == null
@@ -1030,6 +1067,9 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             //this.CacheFileNameImage(
                             //    item,
+                            //    textRect,
+                            //    SKFlowList.ITEM_TEXT_COLOR);
+
                             this.CacheFileNameImage(
                                 item,
                                 textRect);
@@ -1045,6 +1085,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
                             if (this.IsShowFileName)
                             {
+                                //this.CacheFileNameImage(
+                                //    item,
+                                //    textRect,
+                                //    SKFlowList.ITEM_TEXT_COLOR);
+
                                 this.CacheFileNameImage(
                                     item,
                                     textRect);
