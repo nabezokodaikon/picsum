@@ -260,6 +260,13 @@ namespace SWF.UIComponent.TabOperation
                 y + this._parameter.IconRectangle.Height);
         }
 
+        public void DoInitializeAnimation()
+        {
+            this._currentX = 0;
+            this._currentWidth = 0;
+            this.DoAnimation();
+        }
+
         public void DoNotAnimation()
         {
             this._currentX = this._targetPoint.X;

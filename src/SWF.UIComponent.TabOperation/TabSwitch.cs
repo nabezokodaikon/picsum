@@ -960,7 +960,7 @@ namespace SWF.UIComponent.TabOperation
             if (this._isInitialized && this._tabList.Count == 1)
             {
                 var tab = this._tabList.First();
-                tab.DrawArea.DoNotAnimation();
+                tab.DrawArea.DoInitializeAnimation();
                 this._animationTimer.Stop();
                 this._isInitialized = false;
             }
