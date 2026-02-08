@@ -1051,6 +1051,8 @@ namespace PicSum.UIComponent.Contents.FileList
                 var firstInfo = e.DrawItemInfos.First();
                 var textRectTemp = this.GetTextRectangle(firstInfo, itemTextHeight);
                 var textRect = SKRectI.Create(0, 0, textRectTemp.Width, textRectTemp.Height);
+                var thumbRectTemp = this.GetThumbnailRectangle(firstInfo, itemTextHeight);
+                var thumbRect = SKRectI.Create(0, 0, thumbRectTemp.Width, thumbRectTemp.Height);
 
                 Parallel.ForEach(
                     e.DrawItemInfos,
@@ -1076,7 +1078,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         }
                         else
                         {
-                            var thumbRect = this.GetThumbnailRectangle(info, itemTextHeight);
                             ThumbnailUtil.CacheFileThumbnail(
                                 item.ThumbnailImage,
                                 thumbRect,
