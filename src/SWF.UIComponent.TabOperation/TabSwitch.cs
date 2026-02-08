@@ -611,6 +611,11 @@ namespace SWF.UIComponent.TabOperation
 
         public new void Invalidate()
         {
+            this.Invalidate(this.Bounds);
+        }
+
+        public new void Invalidate(Rectangle rc)
+        {
             if (this.IsDisposed)
             {
                 return;
@@ -618,7 +623,8 @@ namespace SWF.UIComponent.TabOperation
 
             this.SetTabsDrawArea();
             this.SetAddTabButtonDrawArea();
-            base.Invalidate();
+
+            base.Invalidate(rc);
         }
 
         /// <summary>

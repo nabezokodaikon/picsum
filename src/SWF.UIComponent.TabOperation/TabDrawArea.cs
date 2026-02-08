@@ -99,11 +99,6 @@ namespace SWF.UIComponent.TabOperation
             }
             set
             {
-                if (this._targetWidth < 0 && value != this._targetWidth)
-                {
-                    this._targetWidth = value;
-                }
-
                 this._targetWidth = value;
             }
         }
