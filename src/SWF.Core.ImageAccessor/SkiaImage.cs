@@ -11,15 +11,14 @@ namespace SWF.Core.ImageAccessor
         private bool _disposed = false;
         private readonly string _filePath;
         private SKImage? _src = null;
-        private SKImage? _cache = null;
         private readonly float _zoomValue;
         private readonly float _scaleValue;
 
-        public readonly SizeF Size;
-        public readonly float Width;
-        public readonly float Height;
-        public readonly bool IsLoadingImage;
-        public readonly bool IsThumbnailImage;
+        public SizeF Size { get; private set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+        public bool IsLoadingImage { get; private set; }
+        public bool IsThumbnailImage { get; private set; }
 
         public bool IsEmpry
         {
@@ -106,8 +105,6 @@ namespace SWF.Core.ImageAccessor
             {
                 this._src?.Dispose();
                 this._src = null;
-                this._cache?.Dispose();
-                this._cache = null;
             }
 
             this._disposed = true;
@@ -128,9 +125,8 @@ namespace SWF.Core.ImageAccessor
         }
 
         public void DrawZoomThumbnail(
-            GRContext context, SKCanvas canvas, SKPaint paint, SKRect destRect, SKRect srcRect)
+            SKCanvas canvas, SKPaint paint, SKRect destRect, SKRect srcRect)
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -142,20 +138,13 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "SkiaImage.DrawZoomThumbnail"))
             {
                 var zoomRect = this.GetZoomRectange(srcRect);
-
-                if (this._cache == null)
-                {
-                    this._cache = this._src.ToTextureImage(context, false);
-                }
-
-                canvas.DrawImage(this._cache, zoomRect, destRect, paint);
+                canvas.DrawImage(this._src, zoomRect, destRect, paint);
             }
         }
 
         public void DrawResizeThumbnail(
-            GRContext context, SKCanvas canvas, SKPaint paint, SKRect destRect)
+            SKCanvas canvas, SKPaint paint, SKRect destRect)
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -167,13 +156,7 @@ namespace SWF.Core.ImageAccessor
             using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
                 var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
-
-                if (this._cache == null)
-                {
-                    this._cache = this._src.ToTextureImage(context, false);
-                }
-
-                canvas.DrawImage(this._cache, destRect, paint);
+                canvas.DrawImage(this._src, destRect, paint);
             }
         }
 
@@ -184,37 +167,20 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            var width = this.Width * scale;
-            var height = this.Height * scale;
-
-            try
+            using (Measuring.Time(false, "SkiaImage.CreateScaleImage"))
             {
-                using (Measuring.Time(false, "SkiaImage.CreateScaleImage"))
-                {
-                    using var paint = new SKPaint();
-                    return SkiaUtil.Resize(this._src, (int)width, (int)height);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException ||
-                ex is OpenCvSharp.OpenCVException)
-            {
-                throw new ImageUtilException($"スケールイメージの作成に失敗しました。", this._filePath, ex);
+                var width = this.Width * scale;
+                var height = this.Height * scale;
+                return SkiaUtil.Resize(this._src, (int)width, (int)height);
             }
         }
 
         public void DrawZoomImage(
-            GRContext context,
             SKCanvas canvas,
             SKPaint paint,
             SKRect destRect,
             SKRect srcRect)
         {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
             ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
             ArgumentNullException.ThrowIfNull(paint, nameof(paint));
 
@@ -223,106 +189,24 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            try
+            using (Measuring.Time(false, "SkiaImage.DrawZoomImage"))
             {
-                using (Measuring.Time(false, "SkiaImage.DrawZoomImage"))
-                {
-                    var zoomRect = this.GetZoomRectange(srcRect);
+                var zoomRect = this.GetZoomRectange(srcRect);
 
-                    var sampling = this._src.Width > destRect.Width || this._src.Height > destRect.Height
-                        ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
-                        : new SKSamplingOptions(SKCubicResampler.CatmullRom);
+                var sampling = this._src.Width > destRect.Width || this._src.Height > destRect.Height
+                    ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
+                    : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    if (this._cache == null)
-                    {
-                        this._cache = this._src.ToTextureImage(context, false);
-                    }
-
-                    canvas.DrawImage(
-                        this._cache,
-                        zoomRect,
-                        destRect,
-                        sampling,
-                        paint);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException)
-            {
-                throw new ImageUtilException($"ズームイメージの描画に失敗しました。", this._filePath, ex);
+                canvas.DrawImage(
+                    this._src,
+                    zoomRect,
+                    destRect,
+                    sampling,
+                    paint);
             }
         }
 
         public void DrawResizeImage(
-            GRContext context,
-            SKCanvas canvas,
-            SKPaint paint,
-            SKRect destRect)
-        {
-            ArgumentNullException.ThrowIfNull(context, nameof(context));
-            ArgumentNullException.ThrowIfNull(canvas, nameof(canvas));
-            ArgumentNullException.ThrowIfNull(paint, nameof(paint));
-
-            if (this._src == null)
-            {
-                throw new InvalidOperationException("SKImageがNullです。");
-            }
-
-            try
-            {
-                using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
-                {
-                    var sampling = this._src.Width > destRect.Width
-                        ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
-                        : new SKSamplingOptions(SKCubicResampler.CatmullRom);
-
-                    if (this._cache == null)
-                    {
-                        this._cache = this._src.ToTextureImage(context, false);
-                    }
-
-                    canvas.DrawImage(
-                        this._cache,
-                        destRect,
-                        sampling,
-                        paint);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException)
-            {
-                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
-            }
-        }
-
-        public void CacheResizeThumbnail(SKRectI destRect)
-        {
-            if (this._src == null)
-            {
-                throw new InvalidOperationException("SKImageがNullです。");
-            }
-
-            using (Measuring.Time(false, "OpenCVImage.CacheResizeThumbnail"))
-            {
-                if (this._cache == null
-                    || this._cache.Width != destRect.Width
-                    || this._cache.Height != destRect.Height)
-                {
-                    this._cache?.Dispose();
-                    this._cache = SkiaUtil.Resize(this._src, destRect.Width, destRect.Height);
-                }
-            }
-        }
-
-        public void DrawResizeThumbnail(
             SKCanvas canvas,
             SKPaint paint,
             SKRect destRect)
@@ -335,34 +219,17 @@ namespace SWF.Core.ImageAccessor
                 throw new InvalidOperationException("SKImageがNullです。");
             }
 
-            try
+            using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
             {
-                using (Measuring.Time(false, "SkiaImage.DrawResizeImage"))
-                {
-                    if (this._cache == null
-                        || this._cache.Width != destRect.Width
-                        || this._cache.Height != destRect.Height)
-                    {
-                        return;
-                    }
+                var sampling = this._src.Width > destRect.Width
+                    ? new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)
+                    : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
-                    var sampling = new SKSamplingOptions(SKFilterMode.Nearest, SKMipmapMode.None);
-
-                    canvas.DrawImage(
-                        this._cache,
-                        destRect,
-                        sampling,
-                        paint);
-                }
-            }
-            catch (Exception ex) when (
-                ex is NotSupportedException ||
-                ex is ArgumentNullException ||
-                ex is ArgumentException ||
-                ex is ObjectDisposedException ||
-                ex is NotImplementedException)
-            {
-                throw new ImageUtilException($"リサイズイメージの描画に失敗しました。", this._filePath, ex);
+                canvas.DrawImage(
+                    this._src,
+                    destRect,
+                    sampling,
+                    paint);
             }
         }
 

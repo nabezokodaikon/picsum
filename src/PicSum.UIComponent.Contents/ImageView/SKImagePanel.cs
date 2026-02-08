@@ -353,7 +353,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 {
                     if (this.HasImage)
                     {
-                        this.DrawImage(e.Surface.Context as GRContext, e.Surface.Canvas);
+                        this.DrawImage(e.Surface.Canvas);
                     }
 
                     if (this.CanDrawThumbnailPanel())
@@ -696,7 +696,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                 this.GetImageSrcRectangle());
         }
 
-        private void DrawImage(GRContext context, SKCanvas canvas)
+        private void DrawImage(SKCanvas canvas)
         {
             using (Measuring.Time(false, "ImagePanel.DrawImage"))
             {
@@ -727,12 +727,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomThumbnail(context, canvas, IMAGE_PAINT, destRect, srcRect);
+                            image.DrawZoomThumbnail(canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeThumbnail(context, canvas, IMAGE_PAINT, destRect);
+                            image.DrawResizeThumbnail(canvas, IMAGE_PAINT, destRect);
                         }
                     }
                     else
@@ -741,12 +741,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             var destRect = this.GetImageDestRectangle();
                             var srcRect = this.GetImageSrcRectangle();
-                            image.DrawZoomImage(context, canvas, IMAGE_PAINT, destRect, srcRect);
+                            image.DrawZoomImage(canvas, IMAGE_PAINT, destRect, srcRect);
                         }
                         else
                         {
                             var destRect = this.GetImageDestRectangle();
-                            image.DrawResizeImage(context, canvas, IMAGE_PAINT, destRect);
+                            image.DrawResizeImage(canvas, IMAGE_PAINT, destRect);
                         }
                     }
                 }
