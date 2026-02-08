@@ -971,20 +971,24 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                var stopAnimation = false;
+                var stopAnimationCount = 0;
                 foreach (var tab in this._tabList)
                 {
                     if (TabDragOperation.IsTarget(tab))
                     {
                         tab.DrawArea.DoNotAnimation();
+                        stopAnimationCount++;
                     }
                     else if (!TabDragOperation.IsTarget(tab))
                     {
-                        stopAnimation = tab.DrawArea.DoAnimation();
+                        if (tab.DrawArea.DoAnimation())
+                        {
+                            stopAnimationCount++;
+                        }
                     }
                 }
 
-                if (stopAnimation)
+                if (stopAnimationCount == this._tabList.Count)
                 {
                     this._animationTimer.Stop();
                 }
