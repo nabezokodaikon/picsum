@@ -34,7 +34,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (this._page == null)
                 {
-                    throw new InvalidOperationException("ページが設定されていません。");
+                    return null;
                 }
 
                 return this._page.Icon;
