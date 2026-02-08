@@ -495,11 +495,13 @@ namespace SWF.UIComponent.TabOperation
                 throw new ArgumentException("含まれていないタブを削除しようとしました。", nameof(tab));
             }
 
-            var nextActiveTab = this.GetNextTab(tab) ?? this.GetPreviewTab(tab);
-
-            if (this.SetActiveTab(nextActiveTab))
+            if (tab == this._activeTab)
             {
-                this.OnActiveTabChanged(EventArgs.Empty);
+                var nextActiveTab = this.GetNextTab(tab) ?? this.GetPreviewTab(tab);
+                if (this.SetActiveTab(nextActiveTab))
+                {
+                    this.OnActiveTabChanged(EventArgs.Empty);
+                }
             }
 
             if (tab == this._mousePointTab)
