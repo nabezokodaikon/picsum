@@ -68,7 +68,10 @@ namespace SWF.UIComponent.FlowList
         private bool _isDrag = false;
 
         // スクロール関連
+        private const int ANIMATION_DURATION_MS = 300; // アニメーション時間
         private Timer _animationTimer;
+        private DateTime _animationStartTime;
+        private int _animationStartValue;
         private int _targetVerticalScroll;
 
         public FlowList()
@@ -761,6 +764,8 @@ namespace SWF.UIComponent.FlowList
                 this._targetVerticalScroll = this._scrollBar.Maximum;
             }
 
+            this._animationStartValue = this._scrollBar.Value;
+            this._animationStartTime = DateTime.Now;
             this._animationTimer.Start();
         }
 
@@ -771,12 +776,10 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            var current = (float)this._scrollBar.Value;
-            var target = (float)this._targetVerticalScroll;
-            var distance = target - current;
+            var elapsed = (DateTime.Now - this._animationStartTime).TotalMilliseconds;
+            var progress = Math.Min(1.0, elapsed / ANIMATION_DURATION_MS);
 
-            // 1. 停止判定（1ピクセル未満になったら即座に終了）
-            if (Math.Abs(distance) < 1.0f)
+            if (progress >= 1.0)
             {
                 this._scrollBar.Value = this._targetVerticalScroll;
                 this._animationTimer.Stop();
@@ -784,36 +787,14 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            // 2. Chrome風の計算（現在の位置をターゲットに向けて「急加速・急停止」させる）
-            // 0.2f を大きくするとよりキビキビし、小さくするとよりヌルヌルします。
-            // Chromeと同等の「キュッ」とした止まり方には 0.25f 程度が理想的です。
-            var lerpFactor = 0.25f;
-            var nextValue = current + (distance * lerpFactor);
+            var easedProgress = 1 - Math.Pow(1 - progress, 3);
 
-            // 3. 整数値への丸め（ここが「キュッと止まる」秘訣）
-            // 単純な(int)キャストではなく、移動方向に応じて丸める
-            int moveScroll;
-            if (distance > 0)
-            {
-                moveScroll = (int)Math.Ceiling(nextValue);
-            }
-            else
-            {
-                moveScroll = (int)Math.Floor(nextValue);
-            }
+            var distance = this._targetVerticalScroll - this._animationStartValue;
+            var newValue = this._animationStartValue + (int)(distance * easedProgress);
 
-            // 範囲外チェック
-            if (moveScroll < this._scrollBar.Minimum)
-            {
-                moveScroll = this._scrollBar.Minimum;
-            }
-
-            if (moveScroll > this._scrollBar.Maximum)
-            {
-                moveScroll = this._scrollBar.Maximum;
-            }
-
-            this._scrollBar.Value = moveScroll;
+            this._scrollBar.Value = Math.Max(
+                this._scrollBar.Minimum,
+                Math.Min(this._scrollBar.Maximum, newValue));
         }
 
         /// <summary>
@@ -1061,6 +1042,8 @@ namespace SWF.UIComponent.FlowList
                         this._targetVerticalScroll += virtualRect.Top - this._itemSpace - this._targetVerticalScroll;
                     }
 
+                    this._animationStartValue = this._scrollBar.Value;
+                    this._animationStartTime = DateTime.Now;
                     this._animationTimer.Start();
                     return true;
                 }
@@ -1076,6 +1059,8 @@ namespace SWF.UIComponent.FlowList
                         this._targetVerticalScroll += virtualRect.Bottom - this.Height + this._itemSpace - this._targetVerticalScroll;
                     }
 
+                    this._animationStartValue = this._scrollBar.Value;
+                    this._animationStartTime = DateTime.Now;
                     this._animationTimer.Start();
                     return true;
                 }
@@ -1622,6 +1607,8 @@ namespace SWF.UIComponent.FlowList
                     this._targetVerticalScroll = this._scrollBar.Maximum;
                 }
 
+                this._animationStartValue = this._scrollBar.Value;
+                this._animationStartTime = DateTime.Now;
                 this._animationTimer.Start();
             }
             else if (e.Type == ScrollEventType.ThumbTrack)
