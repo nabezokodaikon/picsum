@@ -974,6 +974,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 var tab = this._tabList.First();
                 tab.DrawArea.DoNotAnimation();
+                this._addTabButtonDrawArea.DoNotAnimation();
                 this._animationTimer.Stop();
                 this._isInitialized = false;
             }
@@ -996,7 +997,12 @@ namespace SWF.UIComponent.TabOperation
                     }
                 }
 
-                if (stopAnimationCount == this._tabList.Count)
+                if (this._addTabButtonDrawArea.DoAnimation())
+                {
+                    stopAnimationCount++;
+                }
+
+                if (stopAnimationCount == this._tabList.Count + 1)
                 {
                     this._animationTimer.Stop();
                 }

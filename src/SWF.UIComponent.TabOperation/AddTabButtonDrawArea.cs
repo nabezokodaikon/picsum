@@ -34,18 +34,24 @@ namespace SWF.UIComponent.TabOperation
 
         private float _width;
         private float _height;
-        private PointF _drawPoint;
+        private PointF _targetPoint;
+        private float _currentX = -1f;
         private readonly TabSwitch _tabSwitch;
 
         public float X
         {
             get
             {
-                return this._drawPoint.X;
+                return this._targetPoint.X;
             }
             set
             {
-                this._drawPoint.X = value;
+                if (this._currentX < 0 && value != this._currentX)
+                {
+                    this._currentX = value;
+                }
+
+                this._targetPoint.X = value;
             }
         }
 
@@ -53,11 +59,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this._drawPoint.Y;
+                return this._targetPoint.Y;
             }
             set
             {
-                this._drawPoint.Y = value;
+                this._targetPoint.Y = value;
             }
         }
 
@@ -65,11 +71,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this._drawPoint.X;
+                return this._targetPoint.X;
             }
             set
             {
-                this._drawPoint.X = value;
+                this._targetPoint.X = value;
             }
         }
 
@@ -77,11 +83,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this._drawPoint.Y;
+                return this._targetPoint.Y;
             }
             set
             {
-                this._drawPoint.Y = value;
+                this._targetPoint.Y = value;
             }
         }
 
@@ -89,11 +95,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this._drawPoint.X + this._width;
+                return this._targetPoint.X + this._width;
             }
             set
             {
-                this._drawPoint.X = value - this._width;
+                this._targetPoint.X = value - this._width;
             }
         }
 
@@ -101,11 +107,11 @@ namespace SWF.UIComponent.TabOperation
         {
             get
             {
-                return this._drawPoint.Y + this._height;
+                return this._targetPoint.Y + this._height;
             }
             set
             {
-                this._drawPoint.Y = value - this._height;
+                this._targetPoint.Y = value - this._height;
             }
         }
 
@@ -142,7 +148,7 @@ namespace SWF.UIComponent.TabOperation
             var defaultRect = GetDefaultRectangle(this._tabSwitch);
             this._width = defaultRect.Width;
             this._height = defaultRect.Height;
-            var rect = new RectangleF(this._drawPoint.X, this._drawPoint.Y, this._width, this._height);
+            var rect = new RectangleF(this._targetPoint.X, this._targetPoint.Y, this._width, this._height);
             return rect.Contains(x, y);
         }
 
@@ -160,12 +166,44 @@ namespace SWF.UIComponent.TabOperation
             this.Draw(g, true);
         }
 
+        public void DoNotAnimation()
+        {
+            this._currentX = this._targetPoint.X;
+        }
+
+        public bool DoAnimation()
+        {
+            var currentLeft = this._currentX;
+            var targetLeft = this._targetPoint.X;
+            var distanceLeft = targetLeft - currentLeft;
+
+            if (Math.Abs(distanceLeft) < 1.0f)
+            {
+                this._currentX = targetLeft;
+                return true;
+            }
+
+            const float lerpFactor = 0.25f;
+
+            var nextLeft = currentLeft + (distanceLeft * lerpFactor);
+            if (distanceLeft > 0)
+            {
+                this._currentX = (int)Math.Ceiling(nextLeft);
+            }
+            else
+            {
+                this._currentX = (int)Math.Floor(nextLeft);
+            }
+
+            return false;
+        }
+
         private void Draw(Graphics g, bool isMousePoint)
         {
             var scale = GetScale(this._tabSwitch);
             var OFFSET = 6.75f * scale;
 
-            var rect = new RectangleF(this._drawPoint.X, this._drawPoint.Y, this._width, this._height);
+            var rect = new RectangleF(this._currentX, this._targetPoint.Y, this._width, this._height);
             var bgRect = new RectangleF(rect.Left + OFFSET / 2f, rect.Top + OFFSET / 2f, rect.Width - OFFSET, rect.Height - OFFSET);
             var vp1 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Top + OFFSET);
             var vp2 = new PointF(bgRect.Left + OFFSET + bgRect.Width / 6f + 0.75f, bgRect.Bottom - OFFSET);
