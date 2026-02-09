@@ -38,6 +38,12 @@ namespace SWF.UIComponent.SKFlowList
         public readonly SKSamplingOptions TextSamplingOptions
             = new(SKFilterMode.Nearest);
 
+        private readonly SKPaint _atlasPaint = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
+        };
+
         public readonly SKPaint BackgroundPaint = new()
         {
             BlendMode = SKBlendMode.Src,
