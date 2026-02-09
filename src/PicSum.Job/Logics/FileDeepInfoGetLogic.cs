@@ -223,8 +223,7 @@ namespace PicSum.Job.Logics
                 {
                     using (var bmp = await ImageUtil.ReadImageFile(filePath).False())
                     {
-                        return new OpenCVImage(
-                            filePath, OpenCVUtil.ToMat(bmp), zoomValue);
+                        return new OpenCVImage(OpenCVUtil.ToMat(bmp));
                     }
                 }
             }

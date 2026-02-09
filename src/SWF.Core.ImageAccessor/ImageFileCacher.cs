@@ -71,8 +71,7 @@ namespace SWF.Core.ImageAccessor
             {
                 if (!cache.IsEmpty && cache.Bitmap != null)
                 {
-                    return new OpenCVImage(
-                        filePath, OpenCVUtil.ToMat(cache.Bitmap), zoomValue);
+                    return new OpenCVImage(OpenCVUtil.ToMat(cache.Bitmap));
                 }
                 else
                 {

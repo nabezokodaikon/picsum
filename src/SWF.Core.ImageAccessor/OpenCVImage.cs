@@ -3,27 +3,17 @@ using SWF.Core.Base;
 
 namespace SWF.Core.ImageAccessor
 {
-
     public sealed class OpenCVImage
         : IDisposable
     {
-        public static readonly OpenCVImage EMPTY = new(SizeF.Empty);
+        public static readonly OpenCVImage EMPTY = new();
 
         private static readonly SKSamplingOptions SAMPLING
             = new(SKFilterMode.Nearest);
 
         private bool _disposed = false;
-        private readonly string _filePath;
         private OpenCvSharp.Mat? _mat;
         private SKImage? _cache = null;
-        private readonly float _zoomValue;
-        private readonly float _scaleValue;
-
-        public readonly SizeF Size;
-        public readonly float Width;
-        public readonly float Height;
-        public readonly bool IsLoadingImage;
-        public readonly bool IsThumbnailImage;
 
         public bool IsEmpry
         {
@@ -33,39 +23,16 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        public OpenCVImage(string filePath, OpenCvSharp.Mat mat)
-            : this(filePath, mat, AppConstants.DEFAULT_ZOOM_VALUE)
+        public OpenCVImage(OpenCvSharp.Mat mat)
         {
-
-        }
-
-        public OpenCVImage(string filePath, OpenCvSharp.Mat mat, float zoomValue)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
             ArgumentNullException.ThrowIfNull(mat, nameof(mat));
 
-            this._filePath = filePath;
             this._mat = mat;
-            this._zoomValue = zoomValue;
-            this.Width = mat.Width * zoomValue;
-            this.Height = mat.Height * zoomValue;
-            this.Size = new SizeF(this.Width, this.Height);
-            this.IsLoadingImage = false;
-            this.IsThumbnailImage = false;
-            this._scaleValue = this._mat.Width / (this.Width / this._zoomValue);
         }
 
-        private OpenCVImage(SizeF size)
+        private OpenCVImage()
         {
-            this._filePath = string.Empty;
             this._mat = null;
-            this._zoomValue = AppConstants.DEFAULT_ZOOM_VALUE;
-            this.Width = size.Width * AppConstants.DEFAULT_ZOOM_VALUE;
-            this.Height = size.Height * AppConstants.DEFAULT_ZOOM_VALUE;
-            this.Size = size;
-            this.IsLoadingImage = true;
-            this.IsThumbnailImage = false;
-            this._scaleValue = 1f;
         }
 
         private void Dispose(bool disposing)
