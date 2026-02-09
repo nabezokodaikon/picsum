@@ -1,4 +1,3 @@
-using ImageMagick;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
@@ -77,15 +76,14 @@ namespace SWF.UIComponent.SKFlowList
         private int _animationStartValue;
         private int _targetVerticalScroll;
 
-        private bool _isRunningPaintSurfaceEvent = false;
-        private bool _needsRepaint = false;
         private bool _isWarmUpDone = false;
+        private SKImageInfo _imageInfo = new();
+        private SKSurface? _surface = null;
 
         public SKFlowList()
         {
-            //this.DoubleBuffered = true;
             this.VSync = true;
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = false;
 
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
@@ -307,6 +305,8 @@ namespace SWF.UIComponent.SKFlowList
                 this.MousePointFillPaint.Dispose();
                 this._rectangleSelectionFillPaint.Dispose();
                 this._rectangleSelectionStrokePaint.Dispose();
+                this._surface?.Dispose();
+                this._surface = null;
             }
 
             base.Dispose(disposing);
@@ -327,29 +327,17 @@ namespace SWF.UIComponent.SKFlowList
             return base.IsInputKey(keyData);
         }
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    if (this._isRunningPaintSurfaceEvent)
-        //    {
-        //        this._needsRepaint = true;
-        //        return;
-        //    }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            using (Measuring.Time(false, "SKFlowList.OnPaint"))
+            {
+                this.MakeCurrent();
 
-        //    base.OnPaint(e);
-        //    this._needsRepaint = false;
-        //}
+                base.OnPaint(e);
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    using (Measuring.Time(false, "SKFlowList.OnPaint"))
-        //    {
-        //        this.MakeCurrent();
-
-        //        base.OnPaint(e);
-
-        //        this.GRContext?.Flush(true);
-        //    }
-        //}
+                this.GRContext?.Flush(true);
+            }
+        }
 
         private void FlowList_Resize(object sender, EventArgs e)
         {
@@ -365,13 +353,6 @@ namespace SWF.UIComponent.SKFlowList
                     this.GRContext.SetResourceCacheLimit(512 * 1024 * 1024);
                     this._isWarmUpDone = true;
                 }
-
-                //this._isRunningPaintSurfaceEvent = true;
-                //this._needsRepaint = false;
-
-                //using var recorder = new SKPictureRecorder();
-                //using var canvas = recorder.BeginRecording(e.Info.Rect);
-                //var canvas = e.Surface.Canvas;
 
                 if (!this._isDraw)
                 {
@@ -434,22 +415,38 @@ namespace SWF.UIComponent.SKFlowList
                         }
                     }
 
-                    using var surface = SKSurface.Create(new SKImageInfo(
-                        e.Info.Rect.Width,
-                        e.Info.Rect.Height));
+                    if (this._surface == null
+                        || this._imageInfo.Width != e.Info.Rect.Width
+                        || this._imageInfo.Height != e.Info.Rect.Height)
+                    {
+                        using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface SKSurface.Create"))
+                        {
+                            this._surface?.Dispose();
 
+                            this._imageInfo = new SKImageInfo(
+                                e.Info.Rect.Width,
+                                e.Info.Rect.Height);
 
-                    var canvas = surface.Canvas;
-                    canvas.Clear(this.BackgroundPaint.Color);
+                            this._surface = SKSurface.Create(this._imageInfo);
+                        }
+                    }
 
-                    this.OnSKDrawItems(new SKDrawItemsEventArgs(
-                        canvas,
-                        e.Surface.Canvas.LocalClipBounds,
-                        [.. infoList]));
+                    using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface Canvas.Clear"))
+                    {
+                        this._surface.Canvas.Clear(this.BackgroundPaint.Color);
+                    }
+
+                    using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface OnSKDrawItems"))
+                    {
+                        this.OnSKDrawItems(new SKDrawItemsEventArgs(
+                            this._surface.Canvas,
+                            e.Info.Rect,
+                            [.. infoList]));
+                    }
 
                     using (Measuring.Time(true, "SKFlowList.FlowList_PaintSurface DrawAtlas"))
                     {
-                        using var atlasImage = surface.Snapshot();
+                        using var atlasImage = this._surface.Snapshot();
                         e.Surface.Canvas.DrawAtlas(
                             atlasImage,
                             infoList.Select(info => new SKRect(
@@ -457,10 +454,10 @@ namespace SWF.UIComponent.SKFlowList
                                 info.ItemRectangle.Top,
                                 info.ItemRectangle.Right,
                                 info.ItemRectangle.Bottom)).ToArray(),
-                            transformList.ToArray(),
+                            [.. transformList],
                             null,
                             SKBlendMode.SrcOver,
-                            null);
+                            this._atlasPaint);
                     }
                 }
             }
