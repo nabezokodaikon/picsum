@@ -356,7 +356,19 @@ namespace SWF.UIComponent.WideDropDown
                 e.Graphics.DrawImage(this.Icon, rect);
             }
 
-            if (e.IsMousePoint)
+            if (e.IsSelected && e.IsMousePoint)
+            {
+                e.Graphics.FillRectangle(
+                    SWF.UIComponent.FlowList.FlowList.LIGHT_SELECTED_ITEM_BRUSH,
+                    e.ItemRectangle);
+            }
+            else if (e.IsSelected)
+            {
+                e.Graphics.FillRectangle(
+                    SWF.UIComponent.FlowList.FlowList.LIGHT_SELECTED_ITEM_BRUSH,
+                    e.ItemRectangle);
+            }
+            else if (e.IsMousePoint)
             {
                 e.Graphics.FillRectangle(
                     SWF.UIComponent.FlowList.FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH,
