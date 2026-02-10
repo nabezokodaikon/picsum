@@ -9,6 +9,8 @@ namespace SWF.UIComponent.Base
     public sealed partial class VScrollBarEx
         : VScrollBar
     {
+        private int _largeChange = 0;
+
         public new string Name
         {
             get
@@ -94,6 +96,20 @@ namespace SWF.UIComponent.Base
             set
             {
                 base.Value = Math.Min(value, base.Maximum);
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new int LargeChange
+        {
+            get
+            {
+                return this._largeChange;
+            }
+            set
+            {
+                this._largeChange = value;
+                base.LargeChange = value;
             }
         }
 
