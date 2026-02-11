@@ -369,7 +369,7 @@ namespace SWF.UIComponent.SKFlowList
                 if (this._itemCount > 0)
                 {
                     var infoList = new List<SKDrawItemInfo>(
-                        this._drawParameter.DrawLastItemIndex - this._drawParameter.DrawFirstItemIndex + 1);
+                        Math.Max(0, this._drawParameter.DrawLastItemIndex - this._drawParameter.DrawFirstItemIndex + 1));
 
                     using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface Calculating drawing items"))
                     {
