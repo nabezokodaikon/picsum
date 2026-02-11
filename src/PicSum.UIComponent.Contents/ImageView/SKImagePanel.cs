@@ -9,7 +9,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using WinApi;
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
@@ -365,7 +364,6 @@ namespace PicSum.UIComponent.Contents.ImageView
                     if (this.CanDrawThumbnailPanel())
                     {
                         this.DrawThumbnailPanel(e.Surface.Canvas);
-                        var _ = WinApiMembers.DwmFlush();
                     }
                 }
             }
