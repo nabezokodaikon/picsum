@@ -275,7 +275,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             base.Visible = false;
         }
 
-        public new void Invalidate()
+        public new void Invalidate(Rectangle rc)
         {
             if (this.IsDisposed)
             {
@@ -288,7 +288,13 @@ namespace PicSum.UIComponent.Contents.ImageView
             }
 
             this.SetDrawParameter();
-            base.Invalidate();
+
+            base.Invalidate(rc);
+        }
+
+        public new void Invalidate()
+        {
+            this.Invalidate(this.ClientRectangle);
         }
 
         public new void Update()

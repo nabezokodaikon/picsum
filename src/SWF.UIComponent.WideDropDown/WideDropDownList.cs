@@ -297,15 +297,21 @@ namespace SWF.UIComponent.WideDropDown
             }
         }
 
-        public new void Invalidate()
+        public new void Invalidate(Rectangle rc)
         {
             if (this.IsDisposed)
             {
                 return;
             }
 
-            this._flowList.Invalidate();
-            base.Invalidate();
+            this._flowList.Invalidate(this._flowList.ClientRectangle);
+
+            base.Invalidate(rc);
+        }
+
+        public new void Invalidate()
+        {
+            this.Invalidate(this.ClientRectangle);
         }
 
         private void WideDropDownList_Opening(object sender, CancelEventArgs e)

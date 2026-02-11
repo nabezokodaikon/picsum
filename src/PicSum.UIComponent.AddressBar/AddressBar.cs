@@ -130,7 +130,7 @@ namespace PicSum.UIComponent.AddressBar
             base.Dispose(disposing);
         }
 
-        public new void Invalidate()
+        public new void Invalidate(Rectangle rc)
         {
             if (this.IsDisposed)
             {
@@ -138,7 +138,12 @@ namespace PicSum.UIComponent.AddressBar
             }
 
             this.SetItemsRectangle();
-            base.Invalidate();
+            base.Invalidate(rc);
+        }
+
+        public new void Invalidate()
+        {
+            this.Invalidate(this.ClientRectangle);
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)

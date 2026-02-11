@@ -265,7 +265,7 @@ namespace SWF.UIComponent.SKFlowList
             this.Invalidate(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height));
         }
 
-        public new void Invalidate()
+        public new void Invalidate(Rectangle rc)
         {
             if (this.IsDisposed)
             {
@@ -273,7 +273,13 @@ namespace SWF.UIComponent.SKFlowList
             }
 
             this.SetDrawParameter(false);
-            base.Invalidate();
+
+            base.Invalidate(rc);
+        }
+
+        public new void Invalidate()
+        {
+            this.Invalidate(this.ClientRectangle);
         }
 
         protected override void Dispose(bool disposing)

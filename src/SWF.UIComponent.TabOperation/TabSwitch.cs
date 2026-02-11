@@ -611,7 +611,7 @@ namespace SWF.UIComponent.TabOperation
 
         public new void Invalidate()
         {
-            this.Invalidate(this.Bounds);
+            this.Invalidate(this.ClientRectangle);
         }
 
         public new void Invalidate(Rectangle rc)
