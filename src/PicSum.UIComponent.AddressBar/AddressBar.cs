@@ -62,6 +62,7 @@ namespace PicSum.UIComponent.AddressBar
             this.MouseMove += this.AddressBar_MouseMove;
             this.MouseClick += this.AddressBar_MouseClick;
             this.Paint += this.AddressBar_Paint;
+            this.Resize += this.AddressBar_Resize;
         }
 
         public void SetAddress(string filePath)
@@ -149,6 +150,11 @@ namespace PicSum.UIComponent.AddressBar
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             //base.OnPaintBackground(pevent);
+        }
+
+        private void AddressBar_Resize(object sender, EventArgs e)
+        {
+            this.Invalidate();
         }
 
         private void AddressBar_Paint(object sender, PaintEventArgs e)
