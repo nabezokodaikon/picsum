@@ -228,7 +228,6 @@ namespace SWF.UIComponent.TabOperation
             this._pageDrawArea = new(this);
 
             this._animationTimer = new Timer();
-            this._animationTimer.Interval = 12;
             this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Loaded += this.TabSwitch_Loaded;
@@ -1253,6 +1252,7 @@ namespace SWF.UIComponent.TabOperation
                 }
             }
 
+            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
             this._animationTimer.Start();
         }
 

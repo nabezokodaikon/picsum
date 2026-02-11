@@ -316,6 +316,8 @@ namespace WinApi
         public const int ERROR_PATH_NOT_FOUND = 3;
         public const int ERROR_ACCESS_DENIED = 5;
 
+        public const int ENUM_CURRENT_SETTINGS = -1;
+
         [Flags]
         public enum FileAttributesFlags : uint
         {
@@ -580,6 +582,36 @@ namespace WinApi
             public POINT ptMaxTrackSize;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DEVMODE
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public int dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmFormName;
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;  // リフレッシュレート (Hz)
+                                            // 以降省略可
+        }
+
         [DllImport("ntdll.dll", SetLastError = true)]
         public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
 
@@ -687,6 +719,12 @@ namespace WinApi
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmFlush();
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplaySettings(
+            string deviceName,
+            int modeNum,
+            ref DEVMODE devMode);
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {

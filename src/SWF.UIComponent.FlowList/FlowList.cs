@@ -82,7 +82,6 @@ namespace SWF.UIComponent.FlowList
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
 
             this._animationTimer = new Timer();
-            this._animationTimer.Interval = 12;
             this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Controls.Add(this._scrollBar);
@@ -772,6 +771,7 @@ namespace SWF.UIComponent.FlowList
 
             this._animationStartValue = this._scrollBar.Value;
             this._animationStartTime = DateTime.Now;
+            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
             this._animationTimer.Start();
         }
 
@@ -1050,6 +1050,7 @@ namespace SWF.UIComponent.FlowList
 
                     this._animationStartValue = this._scrollBar.Value;
                     this._animationStartTime = DateTime.Now;
+                    this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
                     this._animationTimer.Start();
                     return true;
                 }
@@ -1067,6 +1068,7 @@ namespace SWF.UIComponent.FlowList
 
                     this._animationStartValue = this._scrollBar.Value;
                     this._animationStartTime = DateTime.Now;
+                    this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
                     this._animationTimer.Start();
                     return true;
                 }
@@ -1615,6 +1617,7 @@ namespace SWF.UIComponent.FlowList
 
                 this._animationStartValue = this._scrollBar.Value;
                 this._animationStartTime = DateTime.Now;
+                this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
                 this._animationTimer.Start();
             }
             else if (e.Type == ScrollEventType.ThumbTrack)
