@@ -69,7 +69,7 @@ namespace SWF.UIComponent.SKFlowList
         private bool _isDrag = false;
 
         // スクロール関連
-        private const int ANIMATION_DURATION_MS = 300; // アニメーション時間
+        private const int ANIMATION_DURATION_MS = 400; // アニメーション時間
         private Timer _animationTimer;
         private DateTime _animationStartTime;
         private int _animationStartValue;
