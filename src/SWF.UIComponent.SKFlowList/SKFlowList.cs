@@ -262,7 +262,7 @@ namespace SWF.UIComponent.SKFlowList
             }
 
             var rect = this.GetItemDrawRectangle(itemIndex);
-            this.Invalidate(new Rectangle(rect.Left, rect.Top, rect.Width, rect.Height));
+            this.Invalidate(rect.ToDrawingRect());
         }
 
         public new void Invalidate(Rectangle rc)
@@ -738,11 +738,11 @@ namespace SWF.UIComponent.SKFlowList
                     {
                         this._mousePointItemIndex = ht.ItemIndex;
                         var newRect = this.GetItemDrawRectangle(ht.ItemIndex);
-                        this.Invalidate(new Rectangle(newRect.Left, newRect.Top, newRect.Width, newRect.Height));
+                        this.Invalidate(newRect.ToDrawingRect());
                         if (oldIndex > -1)
                         {
                             var oldRect = this.GetItemDrawRectangle(oldIndex);
-                            this.Invalidate(new Rectangle(oldRect.Left, oldRect.Top, oldRect.Width, oldRect.Height));
+                            this.Invalidate(oldRect.ToDrawingRect());
                         }
                     }
                 }
@@ -753,7 +753,7 @@ namespace SWF.UIComponent.SKFlowList
                     if (oldIndex > -1)
                     {
                         var oldRect = this.GetItemDrawRectangle(oldIndex);
-                        this.Invalidate(new Rectangle(oldRect.Left, oldRect.Top, oldRect.Width, oldRect.Height));
+                        this.Invalidate(oldRect.ToDrawingRect());
                     }
                 }
 
@@ -1183,7 +1183,7 @@ namespace SWF.UIComponent.SKFlowList
             var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
             var y = row * this._itemHeight + this._itemSpace;
             var margin = this._itemSpace * 2;
-            return new SKRectI(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
+            return SKRectI.Create(x, y, this._itemWidth - margin, this._itemHeight - margin);
         }
 
         private SKRectI GetItemVirtualRectangle(int itemIndex)
@@ -1198,7 +1198,7 @@ namespace SWF.UIComponent.SKFlowList
             var x = col * (this._itemWidth + this._drawParameter.ItemSideSpace) + this._drawParameter.ItemSideSpace + this._itemSpace;
             var y = row * this._itemHeight + this._itemSpace - this._scrollBar.Value;
             var margin = this._itemSpace * 2;
-            return new SKRectI(x, y, x + this._itemWidth - margin, y + this._itemHeight - margin);
+            return SKRectI.Create(x, y, this._itemWidth - margin, this._itemHeight - margin);
         }
 
         private SKRectI GetItemDrawRectangle(int itemIndex)

@@ -166,8 +166,8 @@ namespace SWF.Core.ImageAccessor
                     : new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
                 canvas.DrawImage(srcImage,
-                    new SKRectI(0, 0, srcImage.Width, srcImage.Height),
-                    new SKRectI(0, 0, targetWidth, targetHeight),
+                    SKRectI.Create(0, 0, srcImage.Width, srcImage.Height),
+                    SKRectI.Create(0, 0, targetWidth, targetHeight),
                     sampling,
                     paint);
 

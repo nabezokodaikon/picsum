@@ -133,7 +133,7 @@ namespace SWF.Core.ImageAccessor
             var x = destRect.Left + (destRect.Width - w) / 2f;
             var y = destRect.Top + (destRect.Height - h) / 2f;
 
-            return new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h));
+            return SKRectI.Create((int)x, (int)y, (int)w, (int)h);
         }
 
         public static void CacheFileThumbnail(
@@ -185,9 +185,9 @@ namespace SWF.Core.ImageAccessor
                 (int)(destRect.Height * 0.5f));
             var x = destRect.Left + 2;
             var y = destRect.Bottom - destIconSize.Height;
-            var destIconRect = new SKRectI(
+            var destIconRect = SKRectI.Create(
                 x, y,
-                x + destIconSize.Width, y + destIconSize.Height);
+                destIconSize.Width, destIconSize.Height);
 
             icon.Draw(canvas, paint, destIconRect);
         }
@@ -211,7 +211,7 @@ namespace SWF.Core.ImageAccessor
                 var h = displayScaleHeight;
                 var x = rect.Left + (rect.Width - w) / 2f;
                 var y = rect.Top + (rect.Height - h) / 2f;
-                icon.Draw(canvas, paint, new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h)));
+                icon.Draw(canvas, paint, SKRectI.Create((int)x, (int)y, (int)w, (int)h));
             }
             else
             {
@@ -220,7 +220,7 @@ namespace SWF.Core.ImageAccessor
                 var h = icon.Width * scale;
                 var x = rect.Left + (rect.Width - w) / 2f;
                 var y = rect.Top + (rect.Height - h) / 2f;
-                icon.Draw(canvas, paint, new SKRectI((int)x, (int)y, (int)(x + w), (int)(y + h)));
+                icon.Draw(canvas, paint, SKRectI.Create((int)x, (int)y, (int)w, (int)h));
             }
         }
     }

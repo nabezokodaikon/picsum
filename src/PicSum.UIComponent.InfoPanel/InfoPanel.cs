@@ -515,7 +515,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (this.FileInfo.IsError)
             {
-                var rect = new SKRect(
+                var rect = SKRect.Create(
                     0,
                     0,
                     this.thumbnailPictureBox.Width,
@@ -534,7 +534,7 @@ namespace PicSum.UIComponent.InfoPanel
                     this.thumbnailPictureBox.Height);
                 var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
                 var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
-                var rect = new SKRectI(x, y, x + size, y + size);
+                var rect = SKRectI.Create(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
                     var thumbSize = new Size(
@@ -579,7 +579,7 @@ namespace PicSum.UIComponent.InfoPanel
             else if (this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
-                var rect = new SKRectI(
+                var rect = SKRectI.Create(
                     margin,
                     margin,
                     this.thumbnailPictureBox.Width - margin,
@@ -590,7 +590,7 @@ namespace PicSum.UIComponent.InfoPanel
             else if (this.FilePathList != null)
             {
                 var text = $"{this.FilePathList.Length} files selected";
-                var rect = new SKRect(
+                var rect = SKRect.Create(
                     0,
                     0,
                     this.thumbnailPictureBox.Width,

@@ -347,7 +347,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     var font = FontCacher.GetRegularSKFont(
                         FontCacher.Size.ExtraLarge,
                         WindowUtil.GetCurrentWindowScale(this));
-                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    var bounds = SKRect.Create(0, 0, this.Width, this.Height);
                     SkiaUtil.DrawText(
                         e.Surface.Canvas,
                         MESSAGE_PAINT,
@@ -630,7 +630,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = (float)Math.Ceiling(scaleWidth - this._hMaximumScrollValue);
             var h = scaleHeight - this._vMaximumScrollValue;
 
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetImageSrcRectangle()
@@ -642,7 +642,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = image.Width - this._hMaximumScrollValue;
             var h = image.Height - this._vMaximumScrollValue;
 
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetThumbnailPanelRectangle()
@@ -653,7 +653,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var y = this.Height - THUMBNAIL_PANEL_OFFSET - thumbnailPanelSize;
             var w = thumbnailPanelSize;
             var h = thumbnailPanelSize;
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetThumbnailRectangle(SKRect panelRect)
@@ -665,7 +665,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var y = panelRect.Top + (panelRect.Height - thumbSize.Height) / 2f;
             var w = thumbSize.Width;
             var h = thumbSize.Height;
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetThumbnailRectangle()
@@ -681,7 +681,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = srcRect.Width * scale;
             var h = srcRect.Height * scale;
 
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetThumbnailViewSrcRectangle(SKRect srcRect)
@@ -692,7 +692,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             var w = srcRect.Width * scale;
             var h = srcRect.Height * scale;
 
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
 
         private SKRect GetThumbnailViewDestRectangle()
@@ -765,7 +765,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                     var font = FontCacher.GetRegularSKFont(
                         FontCacher.Size.ExtraLarge,
                         WindowUtil.GetCurrentWindowScale(this));
-                    var bounds = new SKRect(0, 0, this.Width, this.Height);
+                    var bounds = SKRect.Create(0, 0, this.Width, this.Height);
                     SkiaUtil.DrawText(
                         canvas,
                         MESSAGE_PAINT,

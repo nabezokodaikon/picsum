@@ -155,7 +155,7 @@ namespace SWF.Core.ImageAccessor
 
             using (Measuring.Time(false, "SkiaImage.DrawResizeThumbnail"))
             {
-                var srcRect = new SKRect(0, 0, destRect.Width, destRect.Height);
+                var srcRect = SKRect.Create(0, 0, destRect.Width, destRect.Height);
                 canvas.DrawImage(this._src, destRect, paint);
             }
         }
@@ -239,7 +239,7 @@ namespace SWF.Core.ImageAccessor
             var y = srcRect.Top * this._scaleValue / this._zoomValue;
             var w = srcRect.Width * this._scaleValue / this._zoomValue;
             var h = srcRect.Height * this._scaleValue / this._zoomValue;
-            return new SKRect(x, y, x + w, y + h);
+            return SKRect.Create(x, y, w, h);
         }
     }
 }

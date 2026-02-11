@@ -46,11 +46,11 @@ namespace SWF.UIComponent.SKFlowList
         {
             var x = this._virtualRectangle.Left;
             var y = this._virtualRectangle.Top - scrollValue;
-            return new SKRectI(
+            return SKRectI.Create(
                 x,
                 y,
-                x + this._virtualRectangle.Width,
-                y + this._virtualRectangle.Height);
+                this._virtualRectangle.Width,
+                this._virtualRectangle.Height);
         }
 
         public void BeginSelection(int drawX, int drawY, int scrollValue)
@@ -75,7 +75,7 @@ namespace SWF.UIComponent.SKFlowList
             var y = Math.Min(this._drawFromPoint.Y, drawY + scrollValue);
             var w = Math.Abs(this._drawFromPoint.X - drawX);
             var h = Math.Abs(this._drawFromPoint.Y - (drawY + scrollValue));
-            this._virtualRectangle = new SKRectI(x, y, x + w, y + h);
+            this._virtualRectangle = SKRectI.Create(x, y, w, h);
         }
 
         public void EndSelection()
