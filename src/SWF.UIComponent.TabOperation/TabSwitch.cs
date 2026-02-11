@@ -285,7 +285,7 @@ namespace SWF.UIComponent.TabOperation
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
 
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace SWF.UIComponent.TabOperation
                     this.OnActiveTabChanged(EventArgs.Empty);
                 }
 
-                this.InvalidateHeader();
+                this.InvalidateHeaderWithAnimation();
             }
         }
 
@@ -413,7 +413,7 @@ namespace SWF.UIComponent.TabOperation
             container.SetPage(page);
             container.ResumeLayout(false);
 
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
 
             return page;
         }
@@ -512,7 +512,7 @@ namespace SWF.UIComponent.TabOperation
 
             this._tabList.Remove(tab);
 
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
         }
 
         /// <summary>
@@ -541,7 +541,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (this.SetActiveTab(this._tabList[index]))
             {
-                this.InvalidateHeader();
+                this.InvalidateHeaderWithAnimation();
                 this.OnActiveTabChanged(EventArgs.Empty);
             }
         }
@@ -551,7 +551,31 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         public void InvalidateHeader()
         {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.SetTabsDrawArea();
+            this.SetAddTabButtonDrawArea();
+
             this.Invalidate(this.GetHeaderRectangle());
+        }
+
+        public void InvalidateHeaderWithAnimation()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            this.SetTabsDrawArea();
+            this.SetAddTabButtonDrawArea();
+
+            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
+            this._animationTimer.Start();
+
+            base.Invalidate(this.GetHeaderRectangle());
         }
 
         public void CallEndTabDragOperation()
@@ -561,7 +585,7 @@ namespace SWF.UIComponent.TabOperation
                 var tab = TabDragOperation.EndTabDragOperation();
                 if (tab.Owner != null)
                 {
-                    this.InvalidateHeader();
+                    this.InvalidateHeaderWithAnimation();
                     this.OnTabDropouted(new TabDropoutedEventArgs(tab));
                 }
                 else
@@ -606,35 +630,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._mouseDownTab = null;
-        }
-
-        public new void Invalidate()
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            this.SetTabsDrawArea();
-            this.SetAddTabButtonDrawArea();
-
-            base.Invalidate(this.GetHeaderRectangle());
-        }
-
-        public new void Invalidate(Rectangle rc)
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            this.SetTabsDrawArea();
-            this.SetAddTabButtonDrawArea();
-
-            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-            this._animationTimer.Start();
-
-            base.Invalidate(rc);
         }
 
         /// <summary>
@@ -728,7 +723,7 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._mouseDownTab = null;
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
         }
 
         private void TabSwitch_MouseMove(object sender, MouseEventArgs e)
@@ -750,7 +745,7 @@ namespace SWF.UIComponent.TabOperation
 
                 var tab = this.GetTabFromPoint(e.X, e.Y);
                 this.SetMousePointTab(tab);
-                this.InvalidateHeader();
+                this.InvalidateHeaderWithAnimation();
 
                 if (tab == null && !this._addTabButtonDrawArea.Page(e.X, e.Y) && e.Button == MouseButtons.Left)
                 {
@@ -771,7 +766,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (e.Button == MouseButtons.Left)
                     {
-                        this.InvalidateHeader();
+                        this.InvalidateHeaderWithAnimation();
                     }
                 }
                 else
@@ -781,7 +776,7 @@ namespace SWF.UIComponent.TabOperation
                         case MouseButtons.Left:
                             if (this.SetActiveTab(tab))
                             {
-                                this.InvalidateHeader();
+                                this.InvalidateHeaderWithAnimation();
                                 this.OnActiveTabChanged(EventArgs.Empty);
                             }
                             TabDragOperation.BeginTabDragOperation(tab);
@@ -795,7 +790,7 @@ namespace SWF.UIComponent.TabOperation
             }
             else if (this._addTabButtonDrawArea.Page(e.X, e.Y))
             {
-                this.InvalidateHeader();
+                this.InvalidateHeaderWithAnimation();
             }
         }
 
@@ -884,7 +879,7 @@ namespace SWF.UIComponent.TabOperation
                         }
                     }
 
-                    this.InvalidateHeader();
+                    this.InvalidateHeaderWithAnimation();
                 }
 
                 this.OnActiveTabChanged(EventArgs.Empty);
@@ -918,13 +913,13 @@ namespace SWF.UIComponent.TabOperation
                 e.Effect = DragDropEffects.None;
             }
 
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
         }
 
         private void TabSwitch_DragLeave(object sender, EventArgs e)
         {
             this._dropPoint = null;
-            this.InvalidateHeader();
+            this.InvalidateHeaderWithAnimation();
         }
 
         private void TabSwitch_DragDrop(object sender, DragEventArgs e)
@@ -1018,7 +1013,7 @@ namespace SWF.UIComponent.TabOperation
                 }
             }
 
-            this.Invalidate();
+            this.InvalidateHeader();
         }
 
         private void OnActiveTabChanged(EventArgs e)

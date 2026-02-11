@@ -200,7 +200,7 @@ namespace SWF.UIComponent.TabOperation
                         tab.DrawArea.X = toX;
                     }
 
-                    tab.Owner.InvalidateHeader();
+                    tab.Owner.InvalidateHeaderWithAnimation();
                     return;
                 }
                 else

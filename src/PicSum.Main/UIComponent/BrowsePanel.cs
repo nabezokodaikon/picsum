@@ -662,7 +662,7 @@ namespace PicSum.Main.UIComponent
             }
 
             this.infoPanel.SetFileInfo(e.FilePathList);
-            this.tabSwitch.InvalidateHeader();
+            this.tabSwitch.InvalidateHeaderWithAnimation();
         }
 
         private void Page_OpenPage(object sender, BrowsePageEventArgs e)
