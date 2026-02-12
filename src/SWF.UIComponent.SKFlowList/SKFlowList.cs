@@ -955,6 +955,7 @@ namespace SWF.UIComponent.SKFlowList
                     this._scrollBar.LargeChange = this._itemHeight * 2;
                     this._scrollBar.SmallChange = (int)(this._scrollBar.LargeChange / 4f);
                     this._scrollBar.Maximum = this._drawParameter.ScrollBarMaximum;
+                    this._scrollBar.Value = Math.Min(this._scrollBar.Value, this._scrollBar.Maximum);
                     this._scrollBar.Visible = true;
                 }
                 else
