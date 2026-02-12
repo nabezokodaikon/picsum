@@ -408,10 +408,13 @@ namespace SWF.UIComponent.SKFlowList
                         }
                     }
 
-                    this.OnSKDrawItems(new SKDrawItemsEventArgs(
-                        canvas,
-                        e.Surface.Canvas.LocalClipBounds,
-                        [.. infoList]));
+                    if (infoList.Count > 0)
+                    {
+                        this.OnSKDrawItems(new SKDrawItemsEventArgs(
+                            canvas,
+                            e.Surface.Canvas.LocalClipBounds,
+                            [.. infoList]));
+                    }
                 }
 
                 using (Measuring.Time(false, "SKFlowList.FlowList_PaintSurface DrawPicture"))
