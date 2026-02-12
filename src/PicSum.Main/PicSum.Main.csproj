@@ -68,6 +68,20 @@
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
 
+	<IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	<StackTraceSupport>false</StackTraceSupport>
+	<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+	<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+	<UseNativeHttpHandler>true</UseNativeHttpHandler>
+	<DebuggerSupport>false</DebuggerSupport>
+	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+	<TrimMode>full</TrimMode>
+
+	<TieredPGO>true</TieredPGO>
+	<DynamicPGO>true</DynamicPGO>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UWP|x64'">
@@ -97,6 +111,20 @@
 	<AppContextSwitchOverrides>System.Globalization.UseNls=false</AppContextSwitchOverrides>
 	<InvariantGlobalization>true</InvariantGlobalization>
 	<UseAppHost>true</UseAppHost>
+
+	<IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+	<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+	<StackTraceSupport>false</StackTraceSupport>
+	<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+	<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+	<UseNativeHttpHandler>true</UseNativeHttpHandler>
+	<DebuggerSupport>false</DebuggerSupport>
+	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+	<TrimMode>full</TrimMode>
+
+	<TieredPGO>true</TieredPGO>
+	<DynamicPGO>true</DynamicPGO>
 
   </PropertyGroup>
 
