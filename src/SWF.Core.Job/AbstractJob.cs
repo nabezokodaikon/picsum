@@ -77,7 +77,8 @@ namespace SWF.Core.Job
                 throw new InvalidOperationException("呼び出し元のコントロールが設定されていません。");
             }
 
-            if (this.Sender.IsLoaded
+            if (this.Sender.IsHandleCreated
+                && this.Sender.IsLoaded
                 && !this.Sender.IsDisposed)
             {
                 return true;

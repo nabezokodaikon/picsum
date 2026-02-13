@@ -8,9 +8,6 @@ namespace SWF.UIComponent.Base
     {
         public event EventHandler? Loaded = null;
 
-        private bool _isHandleCreated = false;
-        private bool _isParentChanged = false;
-
         public new bool AutoSize
         {
             get
@@ -82,7 +79,6 @@ namespace SWF.UIComponent.Base
             this.DoubleBuffered = false;
 
             this.HandleCreated += this.BasePaintingControl_HandleCreated;
-            this.ParentChanged += this.BasePaintingControl_ParentChanged;
 
             this.SetStyle(
                 ControlStyles.AllPaintingInWmPaint |
@@ -110,29 +106,8 @@ namespace SWF.UIComponent.Base
                 return;
             }
 
-            this._isHandleCreated = true;
-
-            if (this._isParentChanged)
-            {
-                this.IsLoaded = true;
-                this.OnLoaded(EventArgs.Empty);
-            }
-        }
-
-        private void BasePaintingControl_ParentChanged(object? sender, EventArgs e)
-        {
-            if (this.IsLoaded)
-            {
-                return;
-            }
-
-            this._isParentChanged = true;
-
-            if (this._isHandleCreated)
-            {
-                this.IsLoaded = true;
-                this.OnLoaded(EventArgs.Empty);
-            }
+            this.IsLoaded = true;
+            this.OnLoaded(EventArgs.Empty);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace PicSum.Main
         private readonly ResourceManager _resourceManager;
         private readonly BrowseManager _browseManager;
 
+        public bool IsHandleCreated { get; private set; } = true;
         public bool IsLoaded { get; private set; } = true;
         public bool IsDisposed { get; private set; } = false;
 

@@ -58,12 +58,20 @@ namespace SWF.UIComponent.Base
             this._animationTimer = new System.Threading.Timer(
                 _ =>
                 {
-                    if (!control.IsHandleCreated)
+                    if (!control.IsHandleCreated && !control.IsDisposed)
                     {
                         return;
                     }
 
-                    control.BeginInvoke(animationTick);
+                    control.BeginInvoke(() =>
+                    {
+                        if (!control.IsHandleCreated && !control.IsDisposed)
+                        {
+                            return;
+                        }
+
+                        animationTick();
+                    });
                 },
                 null,
                 0,
