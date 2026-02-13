@@ -768,10 +768,7 @@ namespace SWF.UIComponent.FlowList
                 this._targetVerticalScroll = this._scrollBar.Maximum;
             }
 
-            this._currentScrollPosition = this._scrollBar.Value;
-            this._animationStartValue = this._currentScrollPosition;
-            this._animationStopwatch = Stopwatch.StartNew();
-            this._animationTimer.Start(this, this.AnimationTick);
+            this.StartAnimation();
         }
 
         private void AnimationTick()
@@ -1054,10 +1051,7 @@ namespace SWF.UIComponent.FlowList
                         this._targetVerticalScroll += virtualRect.Top - this._itemSpace - this._targetVerticalScroll;
                     }
 
-                    this._currentScrollPosition = this._scrollBar.Value;
-                    this._animationStartValue = this._currentScrollPosition;
-                    this._animationStopwatch = Stopwatch.StartNew();
-                    this._animationTimer.Start(this, this.AnimationTick);
+                    this.StartAnimation();
                     return true;
                 }
                 else if (drawRect.Bottom > this.Height)
@@ -1072,10 +1066,7 @@ namespace SWF.UIComponent.FlowList
                         this._targetVerticalScroll += virtualRect.Bottom - this.Height + this._itemSpace - this._targetVerticalScroll;
                     }
 
-                    this._currentScrollPosition = this._scrollBar.Value;
-                    this._animationStartValue = this._currentScrollPosition;
-                    this._animationStopwatch = Stopwatch.StartNew();
-                    this._animationTimer.Start(this, this.AnimationTick);
+                    this.StartAnimation();
                     return true;
                 }
                 else
@@ -1341,6 +1332,18 @@ namespace SWF.UIComponent.FlowList
             else
             {
                 return false;
+            }
+        }
+
+        private void StartAnimation()
+        {
+            this._currentScrollPosition = this._scrollBar.Value;
+            this._animationStartValue = this._currentScrollPosition;
+            this._animationStopwatch = Stopwatch.StartNew();
+
+            if (!this._animationTimer.Enabled)
+            {
+                this._animationTimer.Start(this, this.AnimationTick);
             }
         }
 
@@ -1621,10 +1624,7 @@ namespace SWF.UIComponent.FlowList
                     this._targetVerticalScroll = this._scrollBar.Maximum;
                 }
 
-                this._currentScrollPosition = this._scrollBar.Value;
-                this._animationStartValue = this._currentScrollPosition;
-                this._animationStopwatch = Stopwatch.StartNew();
-                this._animationTimer.Start(this, this.AnimationTick);
+                this.StartAnimation();
             }
             else if (e.Type == ScrollEventType.ThumbTrack)
             {
