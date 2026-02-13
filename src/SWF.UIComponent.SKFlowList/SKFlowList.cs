@@ -1134,6 +1134,7 @@ namespace SWF.UIComponent.SKFlowList
                         this._targetVerticalScroll += virtualRect.Bottom - this.Height + this._itemSpace - this._targetVerticalScroll;
                     }
 
+                    this.StartAnimation();
                     return true;
                 }
                 else
