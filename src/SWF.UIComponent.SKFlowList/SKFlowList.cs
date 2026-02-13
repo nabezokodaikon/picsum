@@ -5,6 +5,7 @@ using SWF.UIComponent.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -69,10 +70,11 @@ namespace SWF.UIComponent.SKFlowList
         private bool _isDrag = false;
 
         // スクロール関連
-        private const int ANIMATION_DURATION_MS = 400; // アニメーション時間
-        private Timer _animationTimer;
-        private DateTime _animationStartTime;
-        private int _animationStartValue;
+        private const int ANIMATION_DURATION_MS = 400;
+        private readonly AnimationTimer _animationTimer = new();
+        private Stopwatch _animationStopwatch;
+        private double _animationStartValue;
+        private double _currentScrollPosition;
         private int _targetVerticalScroll;
 
         private bool _isRunningPaintSurfaceEvent = false;
@@ -86,9 +88,6 @@ namespace SWF.UIComponent.SKFlowList
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._scrollBar.Scroll += this.ScrollBar_Scroll;
             this._selectedItemIndexs.Change += new(this.SelectedItemIndexs_Change);
-
-            this._animationTimer = new Timer();
-            this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Controls.Add(this._scrollBar);
 
@@ -837,39 +836,44 @@ namespace SWF.UIComponent.SKFlowList
                 this._targetVerticalScroll = this._scrollBar.Maximum;
             }
 
-            this._animationStartValue = this._scrollBar.Value;
-            this._animationStartTime = DateTime.Now;
-
-            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-            this._animationTimer.Start();
+            this._currentScrollPosition = this._scrollBar.Value;
+            this._animationStartValue = this._currentScrollPosition;
+            this._animationStopwatch = Stopwatch.StartNew();
+            this._animationTimer.Start(this, this.AnimationTick);
         }
 
-        private void AnimationTimer_Tick(object sender, EventArgs e)
+        private void AnimationTick()
         {
             if (this.IsDisposed)
             {
                 return;
             }
 
-            var elapsed = (DateTime.Now - this._animationStartTime).TotalMilliseconds;
+            var elapsed = this._animationStopwatch.Elapsed.TotalMilliseconds;
             var progress = Math.Min(1.0, elapsed / ANIMATION_DURATION_MS);
 
             if (progress >= 1.0)
             {
+                this._currentScrollPosition = this._targetVerticalScroll;
                 this._scrollBar.Value = this._targetVerticalScroll;
                 this._animationTimer.Stop();
                 this.SetDrawParameter(true);
                 return;
             }
 
-            var easedProgress = 1 - Math.Pow(1 - progress, 3);
-
+            var easedProgress = 1 - Math.Pow(1 - progress, 4);
             var distance = this._targetVerticalScroll - this._animationStartValue;
-            var newValue = this._animationStartValue + (int)(distance * easedProgress);
+            this._currentScrollPosition = this._animationStartValue + (distance * easedProgress);
 
-            this._scrollBar.Value = Math.Max(
-                this._scrollBar.Minimum,
-                Math.Min(this._scrollBar.Maximum, newValue));
+            var intValue = (int)Math.Round(this._currentScrollPosition);
+            if (intValue != this._scrollBar.Value)
+            {
+                this._scrollBar.Value = Math.Max(
+                    this._scrollBar.Minimum,
+                    Math.Min(this._scrollBar.Maximum, intValue));
+            }
+
+            this.Invalidate();
         }
 
         /// <summary>
@@ -1118,10 +1122,10 @@ namespace SWF.UIComponent.SKFlowList
                         this._targetVerticalScroll += virtualRect.Top - this._itemSpace - this._targetVerticalScroll;
                     }
 
-                    this._animationStartValue = this._scrollBar.Value;
-                    this._animationStartTime = DateTime.Now;
-                    this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-                    this._animationTimer.Start();
+                    this._currentScrollPosition = this._scrollBar.Value;
+                    this._animationStartValue = this._currentScrollPosition;
+                    this._animationStopwatch = Stopwatch.StartNew();
+                    this._animationTimer.Start(this, this.AnimationTick);
                     return true;
                 }
                 else if (drawRect.Bottom > this.Height)
@@ -1136,10 +1140,10 @@ namespace SWF.UIComponent.SKFlowList
                         this._targetVerticalScroll += virtualRect.Bottom - this.Height + this._itemSpace - this._targetVerticalScroll;
                     }
 
-                    this._animationStartValue = this._scrollBar.Value;
-                    this._animationStartTime = DateTime.Now;
-                    this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-                    this._animationTimer.Start();
+                    this._currentScrollPosition = this._scrollBar.Value;
+                    this._animationStartValue = this._currentScrollPosition;
+                    this._animationStopwatch = Stopwatch.StartNew();
+                    this._animationTimer.Start(this, this.AnimationTick);
                     return true;
                 }
                 else
@@ -1677,10 +1681,10 @@ namespace SWF.UIComponent.SKFlowList
                     this._targetVerticalScroll = this._scrollBar.Maximum;
                 }
 
-                this._animationStartValue = this._scrollBar.Value;
-                this._animationStartTime = DateTime.Now;
-                this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-                this._animationTimer.Start();
+                this._currentScrollPosition = this._scrollBar.Value;
+                this._animationStartValue = this._currentScrollPosition;
+                this._animationStopwatch = Stopwatch.StartNew();
+                this._animationTimer.Start(this, this.AnimationTick);
             }
             else if (e.Type == ScrollEventType.ThumbTrack)
             {
