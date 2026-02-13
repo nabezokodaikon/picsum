@@ -572,8 +572,11 @@ namespace SWF.UIComponent.TabOperation
             this.SetTabsDrawArea();
             this.SetAddTabButtonDrawArea();
 
-            this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-            this._animationTimer.Start();
+            if (!this._animationTimer.Enabled)
+            {
+                this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
+                this._animationTimer.Start();
+            }
 
             base.Invalidate(this.GetHeaderRectangle());
         }
