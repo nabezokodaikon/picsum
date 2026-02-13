@@ -69,7 +69,7 @@ namespace SWF.UIComponent.FlowList
         private bool _isDrag = false;
 
         // スクロール関連
-        private const int ANIMATION_DURATION_MS = 400;
+        private const int ANIMATION_DURATION_MS = 300;
         private readonly AnimationTimer _animationTimer = new();
         private Stopwatch _animationStopwatch;
         private double _animationStartValue;
@@ -793,7 +793,7 @@ namespace SWF.UIComponent.FlowList
                 return;
             }
 
-            var easedProgress = 1 - Math.Pow(1 - progress, 4);
+            var easedProgress = 1 - Math.Pow(1 - progress, 3);
             var distance = this._targetVerticalScroll - this._animationStartValue;
             this._currentScrollPosition = this._animationStartValue + (distance * easedProgress);
 
