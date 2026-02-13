@@ -56,7 +56,15 @@ namespace SWF.UIComponent.Base
 
             this._animationTimer?.Dispose();
             this._animationTimer = new System.Threading.Timer(
-                _ => control.BeginInvoke(animationTick),
+                _ =>
+                {
+                    if (!control.IsHandleCreated)
+                    {
+                        return;
+                    }
+
+                    control.BeginInvoke(animationTick);
+                },
                 null,
                 0,
                 DisplayUitl.GetAnimationInterval(control));
