@@ -754,6 +754,7 @@ namespace SWF.Core.ImageAccessor
                 JFIF_FILE_EXTENSION,
                 JPEG_FILE_EXTENSION,
                 JPG_FILE_EXTENSION,
+                PNG_FILE_EXTENSION,
                 HEIC_FILE_EXTENSION,
                 HEIF_FILE_EXTENSION,
                 WEBP_FILE_EXTENSION
