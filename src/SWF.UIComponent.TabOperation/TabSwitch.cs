@@ -154,7 +154,7 @@ namespace SWF.UIComponent.TabOperation
         private readonly PageDrawArea _pageDrawArea;
 
         private bool _isInitialized = true;
-        private Timer _animationTimer;
+        private readonly AnimationTimer _animationTimer = new();
 
         private int GetTabsRightOffset()
         {
@@ -226,9 +226,6 @@ namespace SWF.UIComponent.TabOperation
         {
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
-
-            this._animationTimer = new Timer();
-            this._animationTimer.Tick += this.AnimationTimer_Tick;
 
             this.Loaded += this.TabSwitch_Loaded;
             this.Paint += this.TabSwitch_Paint;
@@ -574,8 +571,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (!this._animationTimer.Enabled)
             {
-                this._animationTimer.Interval = DisplayUitl.GetAnimationInterval(this);
-                this._animationTimer.Start();
+                this._animationTimer.Start(this, this.AnimationTick);
             }
 
             base.Invalidate(this.GetHeaderRectangle());
@@ -671,7 +667,6 @@ namespace SWF.UIComponent.TabOperation
             {
                 this._animationTimer?.Stop();
                 this._animationTimer?.Dispose();
-                this._animationTimer = null;
 
                 foreach (var tab in this._tabList)
                 {
@@ -971,7 +966,7 @@ namespace SWF.UIComponent.TabOperation
             this._dropPoint = null;
         }
 
-        private void AnimationTimer_Tick(object sender, EventArgs e)
+        private void AnimationTick()
         {
             if (this.IsDisposed)
             {
