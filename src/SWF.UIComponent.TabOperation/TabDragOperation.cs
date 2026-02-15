@@ -313,7 +313,7 @@ namespace SWF.UIComponent.TabOperation
 
                     owner.OnTabDropouted(new TabDropoutedEventArgs(
                         this._targetTab,
-                        form.ClientSize,
+                        form.Size,
                         FormWindowState.Normal));
 
                     return;

@@ -119,7 +119,7 @@ namespace PicSum.Main.Mng
                 var location = new Point(
                     (int)(cursorPositon.X - tabDrawArea.X - tabDrawArea.Width / 2),
                     (int)(cursorPositon.Y - tabDrawArea.Y - tabDrawArea.Height / 2));
-                browse.Location = location;
+                browse.SetBounds(location.X, location.Y, e.WindowSize.Width, e.WindowSize.Height);
                 browse.Shown -= setLocation;
             }
 
