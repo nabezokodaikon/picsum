@@ -352,6 +352,11 @@ namespace SWF.UIComponent.Form
         private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
         {
             var control = sender as Control;
+            if (control is null || control.IsDisposed)
+            {
+                return;
+            }
+
             SetDefaultCrusor(this);
             SetDefaultCrusor(control);
 

@@ -318,6 +318,9 @@ namespace WinApi
 
         public const int ENUM_CURRENT_SETTINGS = -1;
 
+        public const int SC_MOVE = 0xF010;
+        public const int SC_RESTORE = 0xF120;
+
         [Flags]
         public enum FileAttributesFlags : uint
         {
@@ -632,6 +635,9 @@ namespace WinApi
 
         [DllImport("User32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool PostMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void CoTaskMemFree(IntPtr pv);

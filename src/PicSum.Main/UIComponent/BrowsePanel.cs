@@ -741,6 +741,7 @@ namespace PicSum.Main.UIComponent
 
             if (!this.tabSwitch.HasTab)
             {
+                this.FindForm().Opacity = 0;
                 this.OnClose(EventArgs.Empty);
             }
         }

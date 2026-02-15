@@ -62,15 +62,15 @@ namespace PicSum.Main.Mng
             }
         }
 
-        private BrowseForm CreateBrowse(Point windowLocation, Size windowSize, FormWindowState windowState)
+        private BrowseForm CreateBrowse(Size windowSize, FormWindowState windowState)
         {
             using (Measuring.Time(true, "BrowseManager.CreateBrowse"))
             {
                 var browse = new BrowseForm()
                 {
-                    Location = windowLocation,
                     Size = windowSize,
-                    WindowState = windowState
+                    StartPosition = FormStartPosition.Manual,
+                    WindowState = windowState,
                 };
 
                 this.InitializeBrowseDelegate(browse);
@@ -108,9 +108,25 @@ namespace PicSum.Main.Mng
 
         private void Browse_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
-            var browse = this.CreateBrowse(e.WindowLocation, e.WindowSize, e.WindowState);
+            var browse = this.CreateBrowse(e.WindowSize, e.WindowState);
             this.browseList.Add(browse);
+
+            void setLocation(object s, EventArgs arg)
+            {
+                var cursorPositon = Cursor.Position;
+                var location = new Point(
+                    cursorPositon.X - e.TabDrawArea.X - e.TabDrawArea.Width / 2,
+                    cursorPositon.Y - e.TabDrawArea.Y - e.TabDrawArea.Height / 2);
+                browse.Location = location;
+                browse.Shown -= setLocation;
+            }
+
+            browse.Shown += setLocation;
+
+            browse.Opacity = 0;
             browse.Show();
+            browse.Opacity = 1;
+
             browse.AddTab(e.Tab);
         }
 
