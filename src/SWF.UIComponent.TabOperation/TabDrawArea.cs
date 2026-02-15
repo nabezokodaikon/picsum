@@ -8,7 +8,7 @@ namespace SWF.UIComponent.TabOperation
     /// タブ描画領域
     /// </summary>
 
-    internal sealed class TabDrawArea
+    public sealed class TabDrawArea
     {
         private static readonly SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
             = new(Color.FromArgb(64, 0, 0, 0));

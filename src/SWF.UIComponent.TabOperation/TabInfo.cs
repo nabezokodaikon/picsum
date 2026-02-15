@@ -77,7 +77,7 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        internal TabDrawArea DrawArea
+        public TabDrawArea DrawArea
         {
             get
             {

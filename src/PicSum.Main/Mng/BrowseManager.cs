@@ -111,12 +111,14 @@ namespace PicSum.Main.Mng
             var browse = this.CreateBrowse(e.WindowSize, e.WindowState);
             this.browseList.Add(browse);
 
+            var tabDrawArea = e.Tab.DrawArea;
+
             void setLocation(object s, EventArgs arg)
             {
                 var cursorPositon = Cursor.Position;
                 var location = new Point(
-                    cursorPositon.X - e.TabDrawArea.X - e.TabDrawArea.Width / 2,
-                    cursorPositon.Y - e.TabDrawArea.Y - e.TabDrawArea.Height / 2);
+                    (int)(cursorPositon.X - tabDrawArea.X - tabDrawArea.Width / 2),
+                    (int)(cursorPositon.Y - tabDrawArea.Y - tabDrawArea.Height / 2));
                 browse.Location = location;
                 browse.Shown -= setLocation;
             }
