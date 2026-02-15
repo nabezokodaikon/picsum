@@ -15,6 +15,42 @@ namespace SWF.UIComponent.TabOperation
     internal static class TabDragOperation
     {
         private const int DEFAULT_WIDTH_OFFSET = 8;
+
+        public static bool IsCompletelyHidden(Form targetForm)
+        {
+            var formBounds = targetForm.Bounds;
+            var visibleRegion = new Region(formBounds);
+
+            var hWnd = targetForm.Handle;
+            var hWndAbove = WinApiMembers.GetWindow(hWnd, WinApiMembers.GW_HWNDPREV);
+
+            // 自分より前面にあるウィンドウをすべてチェック
+            while (hWndAbove != IntPtr.Zero)
+            {
+                if (WinApiMembers.IsWindowVisible(hWndAbove))
+                {
+                    if (WinApiMembers.GetWindowRect(hWndAbove, out WinApiMembers.RECT rect))
+                    {
+                        var aboveRect = rect.ToRectangle();
+
+                        // 重なっている部分を除外
+                        if (formBounds.IntersectsWith(aboveRect))
+                        {
+                            visibleRegion.Exclude(aboveRect);
+                        }
+                    }
+                }
+
+                hWndAbove = WinApiMembers.GetWindow(hWndAbove, WinApiMembers.GW_HWNDPREV);
+            }
+
+            // 見えている領域が空かチェック
+            var isEmpty = visibleRegion.IsEmpty(Graphics.FromHwnd(targetForm.Handle));
+            visibleRegion.Dispose();
+
+            return isEmpty;
+        }
+
         private static readonly List<Form> _formList = [];
         private static Point _dragCursorPoint = Point.Empty;
         private static float _widthOffset = 0;
@@ -160,13 +196,17 @@ namespace SWF.UIComponent.TabOperation
                     var currentTabRect = currentTab.DrawArea.GetRectangle();
                     if (!currentTabRect.Contains(clientPosition))
                     {
-                        ConsoleUtil.Write(true, $"Rect: {currentTabRect}, Point: {clientPosition}");
                         return;
                     }
 
                     foreach (var form in _formList)
                     {
                         if (form == ownerForm)
+                        {
+                            continue;
+                        }
+
+                        if (IsCompletelyHidden(form))
                         {
                             continue;
                         }

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -321,6 +322,8 @@ namespace WinApi
         public const int SC_MOVE = 0xF010;
         public const int SC_RESTORE = 0xF120;
 
+        public const uint GW_HWNDPREV = 3;
+
         [Flags]
         public enum FileAttributesFlags : uint
         {
@@ -464,6 +467,11 @@ namespace WinApi
         public struct RECT(int left, int top, int right, int bottom)
         {
             public int left = left, top = top, right = right, bottom = bottom;
+
+            public Rectangle ToRectangle()
+            {
+                return new Rectangle(this.left, this.top, this.right - this.left, this.bottom - this.top);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -731,6 +739,18 @@ namespace WinApi
             string deviceName,
             int modeNum,
             ref DEVMODE devMode);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {
