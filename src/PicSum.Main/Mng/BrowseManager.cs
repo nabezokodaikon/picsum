@@ -3,7 +3,6 @@ using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -108,28 +107,39 @@ namespace PicSum.Main.Mng
         private void Browse_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
             var browse = this.CreateBrowse(e.WindowState);
-            this.browseList.Add(browse);
-
+            var tabsRectange = e.TabsRectange;
+            var tabSwitchMouseLocation = e.TaSwitchMouseLocation;
             var windowSize = e.WindowSize;
             var tabDrawArea = e.Tab.DrawArea;
 
             void setLocation(object s, EventArgs arg)
             {
-                var cursorPositon = Cursor.Position;
-                var location = new Point(
-                    (int)(cursorPositon.X - tabDrawArea.X - tabDrawArea.Width / 2),
-                    (int)(cursorPositon.Y - tabDrawArea.Y - tabDrawArea.Height / 2));
-                browse.SetBounds(location.X, location.Y, windowSize.Width, windowSize.Height);
+                var cursorPosition = Cursor.Position;
+
+                if (tabsRectange.X <= cursorPosition.X && cursorPosition.X <= tabsRectange.Right)
+                {
+                    var x = cursorPosition.X + (tabsRectange.X - tabSwitchMouseLocation.X);
+                    var y = cursorPosition.Y - tabsRectange.Height / 2f;
+                    browse.SetBounds((int)x, (int)y, windowSize.Width, windowSize.Height);
+                }
+                else
+                {
+                    var x = cursorPosition.X - tabDrawArea.X - tabDrawArea.Width / 2f;
+                    var y = cursorPosition.Y - tabDrawArea.Y - tabDrawArea.Height / 2f;
+                    browse.SetBounds((int)x, (int)y, windowSize.Width, windowSize.Height);
+                }
+
                 browse.Shown -= setLocation;
             }
 
+            this.browseList.Add(browse);
             browse.AddTab(e.Tab);
 
             browse.Shown += setLocation;
 
-            browse.Opacity = 0;
+            //browse.Opacity = 0;
             browse.Show();
-            browse.Opacity = 1;
+            //browse.Opacity = 1;
         }
 
         private void Browse_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)

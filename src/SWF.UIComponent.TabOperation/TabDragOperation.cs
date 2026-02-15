@@ -130,7 +130,7 @@ namespace SWF.UIComponent.TabOperation
         /// <summary>
         /// タブを移動します。
         /// </summary>
-        public void MoveTab()
+        public void MoveTab(Point tabSwitchMouseLocation)
         {
             if (!this.IsBegin)
             {
@@ -168,27 +168,21 @@ namespace SWF.UIComponent.TabOperation
             {
                 // タブが一つ。
                 var currentTab = this._targetTab;
-                var ownerTabSwitch = currentTab.Owner;
-                var ownerForm = (BaseForm)ownerTabSwitch.GetForm();
+                var currentTabSwitch = currentTab.Owner;
+                var currentForm = (BaseForm)currentTabSwitch.GetForm();
 
                 void movingEvent(object sender, EventArgs e)
                 {
-                    if (ownerTabSwitch.IsDisposed)
+                    if (currentTabSwitch.IsDisposed)
                     {
                         return;
                     }
 
                     var cursorPosition = Cursor.Position;
-                    var clientPosition = ownerTabSwitch.PointToClient(cursorPosition);
-                    var currentTabRect = currentTab.DrawArea.GetRectangle();
-                    if (!currentTabRect.Contains(clientPosition))
-                    {
-                        return;
-                    }
 
                     foreach (var form in this._formList)
                     {
-                        if (form == ownerForm)
+                        if (form == currentForm)
                         {
                             continue;
                         }
@@ -203,12 +197,12 @@ namespace SWF.UIComponent.TabOperation
                             continue;
                         }
 
-                        if (ownerForm.IsDisposed)
+                        if (currentForm.IsDisposed)
                         {
                             continue;
                         }
 
-                        if (!ownerTabSwitch.Contains(currentTab))
+                        if (!currentTabSwitch.Contains(currentTab))
                         {
                             continue;
                         }
@@ -225,13 +219,13 @@ namespace SWF.UIComponent.TabOperation
                             continue;
                         }
 
-                        _ = WinApiMembers.SendMessage(ownerForm.Handle, WinApiMembers.WM_CANCELMODE, 0, 0);
+                        _ = WinApiMembers.SendMessage(currentForm.Handle, WinApiMembers.WM_CANCELMODE, 0, 0);
                         WinApiMembers.ReleaseCapture();
 
-                        ownerTabSwitch.RemoveTab(currentTab);
+                        currentTabSwitch.RemoveTab(currentTab);
                         tabSwitch.AddTab(currentTab);
 
-                        ownerTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(currentTab));
+                        currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(currentTab));
 
                         form.Activate();
                         tabSwitch.Focus();
@@ -249,19 +243,19 @@ namespace SWF.UIComponent.TabOperation
                         _ = this.EndTabDragOperation();
                     }
 
-                    ownerTabSwitch.InvalidateHeaderWithAnimation();
+                    currentTabSwitch.InvalidateHeaderWithAnimation();
                 }
 
-                ownerTabSwitch.InvalidateHeaderWithAnimation();
+                currentTabSwitch.InvalidateHeaderWithAnimation();
 
-                ownerForm.Moving -= movingEvent;
-                ownerForm.Moving += movingEvent;
-                ownerForm.Moved -= movedEvent;
-                ownerForm.Moved += movedEvent;
+                currentForm.Moving -= movingEvent;
+                currentForm.Moving += movingEvent;
+                currentForm.Moved -= movedEvent;
+                currentForm.Moved += movedEvent;
 
                 WinApiMembers.ReleaseCapture();
                 _ = WinApiMembers.SendMessage(
-                    ownerForm.Handle,
+                    currentForm.Handle,
                     WinApiMembers.WM_NCLBUTTONDOWN,
                     WinApiMembers.HTCAPTION,
                     0);
@@ -306,14 +300,19 @@ namespace SWF.UIComponent.TabOperation
                 else
                 {
                     // タブヘッダー外への移動。
-                    var owner = this._targetTab.Owner;
-                    var form = owner.GetForm();
-                    owner.RemoveTab(this._targetTab);
-                    owner.InvalidateHeader(false);
+                    var ownerTabSwitch = this._targetTab.Owner;
+                    var tabsRectange = ownerTabSwitch.GetTabsScreenRectangleWithOffset();
+                    var tagSwitchPoint = ownerTabSwitch.PointToScreen(tabSwitchMouseLocation);
+                    var formSize = ownerTabSwitch.GetForm().Size;
 
-                    owner.OnTabDropouted(new TabDropoutedEventArgs(
+                    ownerTabSwitch.RemoveTab(this._targetTab);
+                    ownerTabSwitch.InvalidateHeader(false);
+
+                    ownerTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(
                         this._targetTab,
-                        form.Size,
+                        tabsRectange,
+                        tagSwitchPoint,
+                        formSize,
                         FormWindowState.Normal));
 
                     return;

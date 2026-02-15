@@ -565,12 +565,13 @@ namespace SWF.UIComponent.TabOperation
 
         internal RectangleF GetTabsScreenRectangleWithOffset()
         {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
             var rect = this.GetTabsScreenRectangle();
             return new RectangleF(
-                rect.X - 24,
-                rect.Y - 8,
-                rect.Width + 48,
-                rect.Height + 16);
+                rect.X - 24 * scale,
+                rect.Y - 8 * scale,
+                rect.Width + 48 * scale,
+                rect.Height + 16 * scale);
         }
 
         /// <summary>
@@ -580,6 +581,17 @@ namespace SWF.UIComponent.TabOperation
         internal RectangleF GetTabsClientRectangle()
         {
             return this.GetTabsRectangle();
+        }
+
+        internal RectangleF GetTabsClientRectangleWithOffset()
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            var rect = this.GetTabsRectangle();
+            return new RectangleF(
+                rect.X - 24 * scale,
+                rect.Y - 8 * scale,
+                rect.Width + 48 * scale,
+                rect.Height + 16 * scale);
         }
 
         protected override void Dispose(bool disposing)
@@ -1171,7 +1183,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (TAB_DRAG_OPERATION.IsBegin)
             {
-                TAB_DRAG_OPERATION.MoveTab();
+                TAB_DRAG_OPERATION.MoveTab(e.Location);
             }
             else
             {
