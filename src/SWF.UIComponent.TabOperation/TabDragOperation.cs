@@ -11,7 +11,7 @@ namespace SWF.UIComponent.TabOperation
     /// <summary>
     /// タブのドラッグ操作を制御するクラスです。
     /// </summary>
-    internal class TabDragOperation
+    internal sealed class TabDragOperation
     {
         public static bool IsCompletelyHidden(Form targetForm)
         {
@@ -49,10 +49,8 @@ namespace SWF.UIComponent.TabOperation
         }
 
         private readonly List<Form> _formList = [];
-        private Point _dragStartScreenPoint = Point.Empty;
         private float _widthOffset = 0;
         private float _heightOffset = 0;
-        private bool _isMoving = false;
         private TabInfo _currentTab = null;
 
         /// <summary>
@@ -97,8 +95,6 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._currentTab = currentTab;
-            this._dragStartScreenPoint = Cursor.Position;
-
             this._widthOffset = mousePoint.X - this._currentTab.DrawArea.X;
             this._heightOffset = mousePoint.Y - this._currentTab.DrawArea.Y;
 
@@ -115,9 +111,11 @@ namespace SWF.UIComponent.TabOperation
                 throw new InvalidOperationException("ドラッグ操作が開始されていません。");
             }
 
-            this.IsBegin = false;
-            this._isMoving = false;
             this._currentTab = null;
+            this._widthOffset = 0;
+            this._heightOffset = 0;
+
+            this.IsBegin = false;
         }
 
         /// <summary>
@@ -128,23 +126,6 @@ namespace SWF.UIComponent.TabOperation
             if (!this.IsBegin)
             {
                 throw new InvalidOperationException("ドラッグ操作が開始されていません。");
-            }
-
-            var currentScreenPoint = Cursor.Position;
-            var moveWidth = currentScreenPoint.X - this._dragStartScreenPoint.X;
-            var moveHeight = currentScreenPoint.Y - this._dragStartScreenPoint.Y;
-
-            if (!this._isMoving)
-            {
-                if ((SystemInformation.DragSize.Width < Math.Abs(moveWidth) ||
-                     SystemInformation.DragSize.Height < Math.Abs(moveHeight)))
-                {
-                    this._isMoving = true;
-                }
-                else
-                {
-                    return;
-                }
             }
 
             var currentTab = this._currentTab;
@@ -244,12 +225,13 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 // タブが複数。
+                var screenPoint = Cursor.Position;
                 var tabsScreenRectangle = currentTab.Owner.GetTabsScreenRectangleWithOffset();
 
-                if (tabsScreenRectangle.Contains(currentScreenPoint))
+                if (tabsScreenRectangle.Contains(screenPoint))
                 {
                     // タブヘッダー内の移動。
-                    var currentPoint = currentTabSwitch.PointToClient(currentScreenPoint);
+                    var currentPoint = currentTabSwitch.PointToClient(screenPoint);
 
                     float toX;
                     if (currentTab.DrawArea.Width > this._widthOffset)
