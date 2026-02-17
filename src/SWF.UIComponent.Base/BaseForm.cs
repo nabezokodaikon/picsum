@@ -10,6 +10,9 @@ namespace SWF.UIComponent.Base
         public event EventHandler? Moving;
         public event EventHandler? Moved;
 
+        private FormWindowState _currentWindowState = FormWindowState.Normal;
+        private Rectangle _currentWindowBounds = Rectangle.Empty;
+
         public bool IsLoaded { get; private set; } = false;
 
         public new bool AutoSize
@@ -49,13 +52,19 @@ namespace SWF.UIComponent.Base
             }
         }
 
+        public Rectangle CurrentWindowBounds
+        {
+            get
+            {
+                return this._currentWindowBounds;
+            }
+        }
+
         public BaseForm()
         {
             this.DoubleBuffered = false;
             this.AutoScaleMode = AutoScaleMode.None;
             this.AutoSize = false;
-
-            this.Load += this.BaseForm_Load;
 
             this.SetStyle(
                 ControlStyles.OptimizedDoubleBuffer |
@@ -67,6 +76,28 @@ namespace SWF.UIComponent.Base
                 ControlStyles.Selectable,
                 false);
             this.UpdateStyles();
+
+            this.Load += this.BaseForm_Load;
+            this.LocationChanged += this.BaseForm_LocationChanged;
+            this.Resize += this.BaseForm_Resize;
+        }
+
+        public void MouseLeftDoubleClickProcess()
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+        public void RestoreWindowState()
+        {
+            this.Bounds = this._currentWindowBounds;
+            this.WindowState = this._currentWindowState;
         }
 
         protected override void WndProc(ref Message m)
@@ -98,6 +129,40 @@ namespace SWF.UIComponent.Base
         private void BaseForm_Load(object? sender, EventArgs e)
         {
             this.IsLoaded = true;
+        }
+
+        private void BaseForm_LocationChanged(object? sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+
+            }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                this._currentWindowState = FormWindowState.Maximized;
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                this._currentWindowState = FormWindowState.Normal;
+                this._currentWindowBounds = this.Bounds;
+            }
+        }
+
+        private void BaseForm_Resize(object? sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+
+            }
+            else if (this.WindowState == FormWindowState.Maximized)
+            {
+                this._currentWindowState = FormWindowState.Maximized;
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                this._currentWindowState = FormWindowState.Normal;
+                this._currentWindowBounds = this.Bounds;
+            }
         }
     }
 }

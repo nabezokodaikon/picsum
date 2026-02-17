@@ -282,7 +282,7 @@ namespace SWF.UIComponent.TabOperation
                         this._currentTab,
                         currentTabSwitch.GetTabsClientRectangle(),
                         mousePoint,
-                        currentForm.Size,
+                        currentForm.CurrentWindowBounds.Size,
                         FormWindowState.Normal));
 
                     currentTabSwitch.InvalidateHeaderWithAnimation();
