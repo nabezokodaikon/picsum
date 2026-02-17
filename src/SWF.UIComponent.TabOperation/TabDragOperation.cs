@@ -1,3 +1,4 @@
+using SWF.Core.Base;
 using SWF.UIComponent.Base;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ namespace SWF.UIComponent.TabOperation
     /// </summary>
     internal class TabDragOperation
     {
-        private const int DEFAULT_WIDTH_OFFSET = 8;
-
         public static bool IsCompletelyHidden(Form targetForm)
         {
             var formBounds = targetForm.Bounds;
@@ -50,11 +49,11 @@ namespace SWF.UIComponent.TabOperation
         }
 
         private readonly List<Form> _formList = [];
-        private Point _dragCursorPoint = Point.Empty;
+        private Point _dragStartScreenPoint = Point.Empty;
         private float _widthOffset = 0;
         private float _heightOffset = 0;
         private bool _isMoving = false;
-        private TabInfo _targetTab = null;
+        private TabInfo _currentTab = null;
 
         /// <summary>
         /// 操作中か確認します。
@@ -82,64 +81,59 @@ namespace SWF.UIComponent.TabOperation
         /// <summary>
         /// タブのドラッグ操作を試みます。
         /// </summary>
-        /// <param name="tab"></param>
-        public void BeginTabDragOperation(TabInfo tab)
+        /// <param name="currentTab"></param>
+        public void BeginTabDragOperation(TabInfo currentTab)
         {
-            ArgumentNullException.ThrowIfNull(tab, nameof(tab));
+            ArgumentNullException.ThrowIfNull(currentTab, nameof(currentTab));
 
             if (this.IsBegin)
             {
                 throw new InvalidOperationException("既にドラッグ操作が開始されています。");
             }
 
-            if (tab.Owner == null)
+            if (currentTab.Owner == null)
             {
-                throw new ArgumentException("タブはどこにも所有されていません。", nameof(tab));
+                throw new ArgumentException("タブはどこにも所有されていません。", nameof(currentTab));
             }
 
-            this._dragCursorPoint = Cursor.Position;
+            this._currentTab = currentTab;
+            this._dragStartScreenPoint = Cursor.Position;
 
-            var clientPoint = tab.Owner.PointToClient(this._dragCursorPoint);
-            this._widthOffset = clientPoint.X - tab.DrawArea.X;
-            this._heightOffset = clientPoint.Y - tab.DrawArea.Y;
+            var dragStartPoint = this._currentTab.Owner.PointToClient(this._dragStartScreenPoint);
+            this._widthOffset = dragStartPoint.X - this._currentTab.DrawArea.X;
+            this._heightOffset = dragStartPoint.Y - this._currentTab.DrawArea.Y;
 
-            this._targetTab = tab;
             this.IsBegin = true;
         }
 
         /// <summary>
         /// タブのドラッグ操作を終了します。
         /// </summary>
-        /// <returns>対象となったタブを返します。</returns>
-        public TabInfo EndTabDragOperation()
+        public void EndTabDragOperation()
         {
             if (!this.IsBegin)
             {
                 throw new InvalidOperationException("ドラッグ操作が開始されていません。");
             }
 
-            var targetTab = this._targetTab;
-
             this.IsBegin = false;
             this._isMoving = false;
-            this._targetTab = null;
-
-            return targetTab;
+            this._currentTab = null;
         }
 
         /// <summary>
         /// タブを移動します。
         /// </summary>
-        public void MoveTab(Point tabSwitchMouseLocation)
+        public void MoveTab(Point mousePoint)
         {
             if (!this.IsBegin)
             {
                 throw new InvalidOperationException("ドラッグ操作が開始されていません。");
             }
 
-            var cursorPosition = Cursor.Position;
-            var moveWidth = cursorPosition.X - this._dragCursorPoint.X;
-            var moveHeight = cursorPosition.Y - this._dragCursorPoint.Y;
+            var currentScreenPoint = Cursor.Position;
+            var moveWidth = currentScreenPoint.X - this._dragStartScreenPoint.X;
+            var moveHeight = currentScreenPoint.Y - this._dragStartScreenPoint.Y;
 
             if (!this._isMoving)
             {
@@ -154,67 +148,54 @@ namespace SWF.UIComponent.TabOperation
                 }
             }
 
-            if (this._targetTab == null)
+            var currentTab = this._currentTab;
+            var currentTabSwitch = currentTab.Owner;
+            var currentForm = (BaseForm)currentTabSwitch.GetForm();
+
+            if (currentTab == null)
             {
                 return;
             }
 
-            if (this._targetTab.Owner == null)
+            if (currentTabSwitch == null)
             {
                 return;
             }
 
-            if (this._targetTab.Owner.TabCount == 1)
+            if (currentTabSwitch.TabCount == 1)
             {
                 // タブが一つ。
-                var currentTab = this._targetTab;
-                var currentTabSwitch = currentTab.Owner;
-                var currentForm = (BaseForm)currentTabSwitch.GetForm();
-
                 void movingEvent(object sender, EventArgs e)
                 {
-                    if (currentTabSwitch.IsDisposed)
+                    if (!currentTabSwitch.Contains(currentTab))
                     {
                         return;
                     }
 
-                    var cursorPosition = Cursor.Position;
+                    var screenPoint = Cursor.Position;
 
-                    foreach (var form in this._formList)
+                    for (var i = 0; i < this._formList.Count; i++)
                     {
-                        if (form == currentForm)
+                        var otherForm = this._formList[i];
+
+                        if (otherForm == currentForm)
                         {
                             continue;
                         }
 
-                        if (IsCompletelyHidden(form))
+                        if (IsCompletelyHidden(otherForm))
                         {
                             continue;
                         }
 
-                        if (!form.Bounds.Contains(cursorPosition))
+                        if (!otherForm.Bounds.Contains(screenPoint))
                         {
                             continue;
                         }
 
-                        if (currentForm.IsDisposed)
-                        {
-                            continue;
-                        }
-
-                        if (!currentTabSwitch.Contains(currentTab))
-                        {
-                            continue;
-                        }
-
-                        var tabSwitch = this.GetTabSwitchControl(form);
-                        if (tabSwitch.Contains(currentTab))
-                        {
-                            continue;
-                        }
-
-                        var tabsScreenRectangle = tabSwitch.GetTabsScreenRectangle();
-                        if (!tabsScreenRectangle.Contains(cursorPosition))
+                        var otherTabSwitch = this.GetTabSwitchControl(otherForm);
+                        var otherTabsScreenRectangle = otherTabSwitch.GetTabsScreenRectangle();
+                        if (!otherTabsScreenRectangle.Contains(screenPoint))
                         {
                             continue;
                         }
@@ -223,16 +204,14 @@ namespace SWF.UIComponent.TabOperation
                         WinApiMembers.ReleaseCapture();
 
                         currentTabSwitch.RemoveTab(currentTab);
-                        tabSwitch.AddTab(currentTab);
+                        otherTabSwitch.AddTab(currentTab);
 
                         currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(currentTab));
 
-                        form.Activate();
-                        tabSwitch.Focus();
-                        tabSwitch.Capture = true;
-                        tabSwitch.InvalidateHeader(true);
-
-                        return;
+                        otherForm.Activate();
+                        otherTabSwitch.Focus();
+                        otherTabSwitch.Capture = true;
+                        otherTabSwitch.InvalidateHeader(true);
                     }
                 }
 
@@ -240,7 +219,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (this.IsBegin)
                     {
-                        _ = this.EndTabDragOperation();
+                        this.EndTabDragOperation();
                     }
 
                     currentTabSwitch.InvalidateHeaderWithAnimation();
@@ -263,53 +242,52 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 // タブが複数。
-                var tabsScreenRectangle = this._targetTab.Owner.GetTabsScreenRectangleWithOffset();
+                var tabsScreenRectangle = currentTab.Owner.GetTabsScreenRectangleWithOffset();
 
-                if (tabsScreenRectangle.Contains(cursorPosition))
+                if (tabsScreenRectangle.Contains(currentScreenPoint))
                 {
                     // タブヘッダー内の移動。
-                    var clientPoint = this._targetTab.Owner.PointToClient(cursorPosition);
+                    var currentPoint = currentTabSwitch.PointToClient(currentScreenPoint);
 
                     float toX;
-                    if (this._targetTab.DrawArea.Width > this._widthOffset)
+                    if (currentTab.DrawArea.Width > this._widthOffset)
                     {
-                        toX = clientPoint.X - this._widthOffset;
+                        toX = currentPoint.X - this._widthOffset;
                     }
                     else
                     {
-                        toX = clientPoint.X - DEFAULT_WIDTH_OFFSET;
+                        toX = currentPoint.X - this.GetWithOffset(currentForm);
                     }
 
-                    var rect = this._targetTab.Owner.GetTabsClientRectangle();
+                    var rect = currentTab.Owner.GetTabsClientRectangle();
                     if (toX < rect.X)
                     {
-                        this._targetTab.DrawArea.X = rect.X;
+                        currentTab.DrawArea.X = rect.X;
                     }
-                    else if (toX + this._targetTab.DrawArea.Width > rect.Right)
+                    else if (toX + currentTab.DrawArea.Width > rect.Right)
                     {
-                        this._targetTab.DrawArea.Right = rect.Right;
+                        currentTab.DrawArea.Right = rect.Right;
                     }
                     else
                     {
-                        this._targetTab.DrawArea.X = toX;
+                        currentTab.DrawArea.X = toX;
                     }
 
-                    this._targetTab.Owner.InvalidateHeaderWithAnimation();
+                    currentTabSwitch.InvalidateHeaderWithAnimation();
                     return;
                 }
                 else
                 {
                     // タブヘッダー外への移動。
-                    var ownerTabSwitch = this._targetTab.Owner;
-                    var tabsRectange = ownerTabSwitch.GetTabsScreenRectangleWithOffset();
-                    var tagSwitchPoint = ownerTabSwitch.PointToScreen(tabSwitchMouseLocation);
-                    var formSize = ownerTabSwitch.GetForm().Size;
+                    var tabsRectange = currentTabSwitch.GetTabsScreenRectangleWithOffset();
+                    var tagSwitchPoint = currentTabSwitch.PointToScreen(mousePoint);
+                    var formSize = currentForm.Size;
 
-                    ownerTabSwitch.RemoveTab(this._targetTab);
-                    ownerTabSwitch.InvalidateHeader(false);
+                    currentTabSwitch.RemoveTab(this._currentTab);
+                    currentTabSwitch.InvalidateHeader(false);
 
-                    ownerTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(
-                        this._targetTab,
+                    currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(
+                        this._currentTab,
                         tabsRectange,
                         tagSwitchPoint,
                         formSize,
@@ -329,7 +307,14 @@ namespace SWF.UIComponent.TabOperation
         {
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
-            return tab == this._targetTab;
+            return tab == this._currentTab;
+        }
+
+        private int GetWithOffset(Control control)
+        {
+            const int WIDTH_OFFSET = 8;
+            var scale = WindowUtil.GetCurrentWindowScale(control);
+            return (int)(WIDTH_OFFSET * scale);
         }
 
         private TabSwitch GetTabSwitchControl(Form form)

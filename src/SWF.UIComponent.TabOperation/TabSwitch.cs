@@ -540,9 +540,7 @@ namespace SWF.UIComponent.TabOperation
         {
             if (TAB_DRAG_OPERATION.IsBegin)
             {
-                var tab = TAB_DRAG_OPERATION.EndTabDragOperation();
-                this.InvalidateHeaderWithAnimation();
-                this.OnTabDropouted(new TabDropoutedEventArgs(tab));
+                TAB_DRAG_OPERATION.EndTabDragOperation();
             }
 
             this._mouseDownTab = null;
