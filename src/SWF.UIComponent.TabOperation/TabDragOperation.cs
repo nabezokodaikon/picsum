@@ -166,6 +166,11 @@ namespace SWF.UIComponent.TabOperation
                 // タブが一つ。
                 void movingEvent(object sender, EventArgs e)
                 {
+                    if (!this.IsBegin)
+                    {
+                        return;
+                    }
+
                     if (!currentTabSwitch.Contains(currentTab))
                     {
                         return;
