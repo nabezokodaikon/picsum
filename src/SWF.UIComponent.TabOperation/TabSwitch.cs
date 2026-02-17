@@ -544,6 +544,7 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._mouseDownTab = null;
+            this.InvalidateHeaderWithAnimation();
         }
 
         /// <summary>

@@ -207,11 +207,12 @@ namespace SWF.UIComponent.TabOperation
                         otherTabSwitch.AddTab(currentTab);
 
                         currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(currentTab));
+                        currentTabSwitch.InvalidateHeaderWithAnimation();
 
                         otherForm.Activate();
                         otherTabSwitch.Focus();
                         otherTabSwitch.Capture = true;
-                        otherTabSwitch.InvalidateHeader(true);
+                        otherTabSwitch.InvalidateHeaderWithAnimation();
                     }
                 }
 
