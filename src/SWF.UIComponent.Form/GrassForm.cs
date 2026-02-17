@@ -150,10 +150,17 @@ namespace SWF.UIComponent.Form
                 var scale = WindowUtil.GetCurrentWindowScale(this);
                 if (this._currentScale == 0 || this._currentScale != scale)
                 {
+                    var rate = scale / this._currentScale;
+                    var width = this.Width * rate;
+                    var height = this.Height * rate;
+                    this.Size = new((int)width, (int)height);
+
                     this._currentScale = scale;
                     var glassMargins = GetGrassMargins(this._currentScale);
                     WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
+
                     this.ScaleChanged?.Invoke(this, new ScaleChangedEventArgs(this._currentScale));
+
                     return;
                 }
             }
