@@ -43,34 +43,18 @@ namespace PicSum.Main.UIComponent
         public BrowseForm()
             : base()
         {
-            this.SuspendLayout();
-
             this.Icon = ResourceFiles.AppIcon.Value;
             this.Text = "PicSum";
             this.StartPosition = FormStartPosition.Manual;
             this.KeyPreview = true;
-            this.Size = BrowseConfig.INSTANCE.WindowSize;
-            this.WindowState = BrowseConfig.INSTANCE.WindowState;
+
             this.ScaleChanged += this.Form_ScaleChanged;
-
-            if (BrowseForm.isStartUp)
-            {
-                this.Location = BrowseConfig.INSTANCE.WindowLocaion;
-            }
-            else
-            {
-                this.Location = new Point(
-                    BrowseConfig.INSTANCE.WindowLocaion.X + 16,
-                    BrowseConfig.INSTANCE.WindowLocaion.Y + 16);
-            }
-
+            this.HandleCreated += this.BrowseForm_HandleCreated;
             this.Shown += this.BrowseForm_Shown;
             this.FormClosing += this.BrowseForm_FormClosing;
             this.KeyDown += this.BrowseForm_KeyDown;
             this.KeyUp += this.BrowseForm_KeyUp;
             this.Activated += this.BrowseForm_Activated;
-
-            this.ResumeLayout(false);
         }
 
         public void AddPageEventHandler(AbstractBrowsePage page)
@@ -126,13 +110,65 @@ namespace PicSum.Main.UIComponent
             return !this.BrowsePanel.IsBeginTabDragOperation;
         }
 
+        private void BrowseForm_HandleCreated(object sender, EventArgs e)
+        {
+            using (Measuring.Time(true, "BrowseForm.BrowseForm_HandleCreated"))
+            {
+                if (BrowseForm.isStartUp)
+                {
+                    this.SuspendLayout();
+
+                    var workingArea = Screen.GetWorkingArea(this);
+
+                    // ---- サイズの補正 ----
+                    var newWidth = Math.Min(BrowseConfig.INSTANCE.WindowSize.Width, workingArea.Width);
+                    var newHeight = Math.Min(BrowseConfig.INSTANCE.WindowSize.Height, workingArea.Height);
+
+                    // ---- 位置の補正 ----
+                    var newX = BrowseConfig.INSTANCE.WindowLocaion.X;
+                    var newY = BrowseConfig.INSTANCE.WindowLocaion.Y;
+
+                    // 右端はみ出し
+                    if (newX + newWidth > workingArea.Right)
+                    {
+                        newX = workingArea.Right - newWidth;
+                    }
+
+                    // 下端はみ出し
+                    if (newY + newHeight > workingArea.Bottom)
+                    {
+                        newY = workingArea.Bottom - newHeight;
+                    }
+
+                    // 左端はみ出し
+                    if (newX < workingArea.Left)
+                    {
+                        newX = workingArea.Left;
+                    }
+
+                    // 上端はみ出し
+                    if (newY < workingArea.Top)
+                    {
+                        newY = workingArea.Top;
+                    }
+
+                    this.Location = new Point(newX, newY);
+                    this.Size = new Size(newWidth, newHeight);
+                    this.WindowState = BrowseConfig.INSTANCE.WindowState;
+
+                    this.CreateBrowsePanel();
+
+                    this.ResumeLayout(false);
+                }
+            }
+        }
+
         private void BrowseForm_Shown(object sender, EventArgs e)
         {
             using (Measuring.Time(true, "BrowseForm.BrowseForm_Shown"))
             {
                 if (BrowseForm.isStartUp)
                 {
-                    this.CreateBrowsePanel();
                     BrowseForm.isStartUp = false;
                     BootTimeMeasurement.Stop();
                 }
