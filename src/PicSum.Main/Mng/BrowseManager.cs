@@ -93,23 +93,31 @@ namespace PicSum.Main.Mng
             var browse = this.CreateBrowse();
             browse.WindowState = e.WindowState;
             browse.StartPosition = FormStartPosition.Manual;
+            browse.Size = e.WindowSize;
 
             void setLocation(object s, EventArgs arg)
             {
                 var screenPoint = Cursor.Position;
 
-                if (e.TabsRectange.X <= screenPoint.X && screenPoint.X <= e.TabsRectange.Right)
+                float x;
+                float y;
+                if (e.TabSwitchMouseLocation.X < e.TabsRectange.Left)
                 {
-                    var x = screenPoint.X + (e.TabsRectange.X - e.TabSwitchMouseLocation.X);
-                    var y = screenPoint.Y - e.TabsRectange.Height / 2f;
-                    browse.Location = new((int)x, (int)y);
+                    x = screenPoint.X - e.TabsRectange.X - e.Tab.DrawArea.Width / 2f;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
+                }
+                else if (e.TabSwitchMouseLocation.X > e.TabsRectange.Right)
+                {
+                    x = screenPoint.X - e.TabsRectange.Width + e.Tab.DrawArea.Width / 2f;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
                 }
                 else
                 {
-                    var x = screenPoint.X - e.Tab.DrawArea.X - e.Tab.DrawArea.Width / 2f;
-                    var y = screenPoint.Y - e.Tab.DrawArea.Y - e.Tab.DrawArea.Height / 2f;
-                    browse.Location = new((int)x, (int)y);
+                    x = screenPoint.X - e.TabSwitchMouseLocation.X;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
                 }
+
+                browse.Location = new((int)x, (int)y);
 
                 browse.Shown -= setLocation;
             }

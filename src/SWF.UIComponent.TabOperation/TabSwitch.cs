@@ -1225,7 +1225,7 @@ namespace SWF.UIComponent.TabOperation
                             }
                             if (!TAB_DRAG_OPERATION.IsBegin)
                             {
-                                TAB_DRAG_OPERATION.BeginTabDragOperation(tab);
+                                TAB_DRAG_OPERATION.BeginTabDragOperation(tab, e.Location);
                             }
                             break;
                         case MouseButtons.Right:

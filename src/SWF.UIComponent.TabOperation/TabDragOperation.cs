@@ -82,7 +82,7 @@ namespace SWF.UIComponent.TabOperation
         /// タブのドラッグ操作を試みます。
         /// </summary>
         /// <param name="currentTab"></param>
-        public void BeginTabDragOperation(TabInfo currentTab)
+        public void BeginTabDragOperation(TabInfo currentTab, Point mousePoint)
         {
             ArgumentNullException.ThrowIfNull(currentTab, nameof(currentTab));
 
@@ -99,9 +99,8 @@ namespace SWF.UIComponent.TabOperation
             this._currentTab = currentTab;
             this._dragStartScreenPoint = Cursor.Position;
 
-            var dragStartPoint = this._currentTab.Owner.PointToClient(this._dragStartScreenPoint);
-            this._widthOffset = dragStartPoint.X - this._currentTab.DrawArea.X;
-            this._heightOffset = dragStartPoint.Y - this._currentTab.DrawArea.Y;
+            this._widthOffset = mousePoint.X - this._currentTab.DrawArea.X;
+            this._heightOffset = mousePoint.Y - this._currentTab.DrawArea.Y;
 
             this.IsBegin = true;
         }
@@ -280,19 +279,16 @@ namespace SWF.UIComponent.TabOperation
                 else
                 {
                     // タブヘッダー外への移動。
-                    var tabsRectange = currentTabSwitch.GetTabsScreenRectangleWithOffset();
-                    var tabSwitchPoint = currentTabSwitch.PointToScreen(mousePoint);
-                    var formSize = currentForm.Size;
-
                     currentTabSwitch.RemoveTab(this._currentTab);
-                    currentTabSwitch.InvalidateHeader(false);
 
                     currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(
                         this._currentTab,
-                        tabsRectange,
-                        tabSwitchPoint,
-                        formSize,
+                        currentTabSwitch.GetTabsClientRectangle(),
+                        mousePoint,
+                        currentForm.Size,
                         FormWindowState.Normal));
+
+                    currentTabSwitch.InvalidateHeaderWithAnimation();
 
                     return;
                 }
