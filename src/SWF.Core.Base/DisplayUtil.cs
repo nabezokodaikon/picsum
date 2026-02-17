@@ -3,13 +3,13 @@ using WinApi;
 
 namespace SWF.Core.Base
 {
-    public static class DisplayUitl
+    public static class DisplayUtil
     {
         public static int GetAnimationInterval(Control control)
         {
             ArgumentNullException.ThrowIfNull(control, nameof(control));
 
-            using (Measuring.Time(false, "DisplayUitl.GetAnimationInterval"))
+            using (Measuring.Time(false, "DisplayUtil.GetAnimationInterval"))
             {
                 var displaySize = GetDisplaySize(control);
                 var refreshRate = GetRefreshRate(control);
