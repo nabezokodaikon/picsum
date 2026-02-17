@@ -281,7 +281,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     // タブヘッダー外への移動。
                     var tabsRectange = currentTabSwitch.GetTabsScreenRectangleWithOffset();
-                    var tagSwitchPoint = currentTabSwitch.PointToScreen(mousePoint);
+                    var tabSwitchPoint = currentTabSwitch.PointToScreen(mousePoint);
                     var formSize = currentForm.Size;
 
                     currentTabSwitch.RemoveTab(this._currentTab);
@@ -290,7 +290,7 @@ namespace SWF.UIComponent.TabOperation
                     currentTabSwitch.OnTabDropouted(new TabDropoutedEventArgs(
                         this._currentTab,
                         tabsRectange,
-                        tagSwitchPoint,
+                        tabSwitchPoint,
                         formSize,
                         FormWindowState.Normal));
 

@@ -100,7 +100,7 @@ namespace PicSum.Main.Mng
 
                 if (e.TabsRectange.X <= screenPoint.X && screenPoint.X <= e.TabsRectange.Right)
                 {
-                    var x = screenPoint.X + (e.TabsRectange.X - e.TaSwitchMouseLocation.X);
+                    var x = screenPoint.X + (e.TabsRectange.X - e.TabSwitchMouseLocation.X);
                     var y = screenPoint.Y - e.TabsRectange.Height / 2f;
                     browse.Location = new((int)x, (int)y);
                 }

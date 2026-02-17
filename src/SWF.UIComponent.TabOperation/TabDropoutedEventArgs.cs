@@ -12,7 +12,7 @@ namespace SWF.UIComponent.TabOperation
     {
         public bool ToOtherOwner { get; private set; }
         public RectangleF TabsRectange { get; private set; }
-        public Point TaSwitchMouseLocation { get; private set; }
+        public Point TabSwitchMouseLocation { get; private set; }
         public Size WindowSize { get; private set; }
         public FormWindowState WindowState { get; private set; }
 
@@ -26,7 +26,7 @@ namespace SWF.UIComponent.TabOperation
         {
             this.ToOtherOwner = false;
             this.TabsRectange = tabsRectange;
-            this.TaSwitchMouseLocation = tabSwitchMouseLocation;
+            this.TabSwitchMouseLocation = tabSwitchMouseLocation;
             this.WindowSize = windowSize;
             this.WindowState = windowState;
         }
@@ -36,7 +36,7 @@ namespace SWF.UIComponent.TabOperation
         {
             this.ToOtherOwner = true;
             this.TabsRectange = Rectangle.Empty;
-            this.TaSwitchMouseLocation = Point.Empty;
+            this.TabSwitchMouseLocation = Point.Empty;
             this.WindowSize = Size.Empty;
             this.WindowState = FormWindowState.Normal;
         }
