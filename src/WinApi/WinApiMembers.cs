@@ -324,6 +324,8 @@ namespace WinApi
 
         public const uint GW_HWNDPREV = 3;
 
+        public const int WM_TIMER_TICK = WinApiMembers.WM_APP + 1;
+
         [Flags]
         public enum FileAttributesFlags : uint
         {
@@ -751,6 +753,23 @@ namespace WinApi
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("winmm.dll")]
+        public static extern int timeSetEvent(int delay, int resolution, TimerCallback callback, IntPtr user, int fuEvent);
+
+        [DllImport("winmm.dll")]
+        public static extern int timeKillEvent(int id);
+
+        [DllImport("winmm.dll")]
+        public static extern int timeBeginPeriod(int period);
+
+        [DllImport("winmm.dll")]
+        public static extern int timeEndPeriod(int period);
+
+        [DllImport("user32.dll")]
+        public static extern bool PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        public delegate void TimerCallback(int id, int msg, IntPtr user, IntPtr dw1, IntPtr dw2);
 
         public static int OpenFileWith(IntPtr hwndParent, string filePath)
         {

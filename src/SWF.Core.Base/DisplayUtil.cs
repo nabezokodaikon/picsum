@@ -9,7 +9,7 @@ namespace SWF.Core.Base
         {
             ArgumentNullException.ThrowIfNull(control, nameof(control));
 
-            using (Measuring.Time(false, "DisplayUtil.GetAnimationInterval"))
+            using (Measuring.Time(false, "DisplayUitl.GetAnimationInterval"))
             {
                 var displaySize = GetDisplaySize(control);
                 var refreshRate = GetRefreshRate(control);

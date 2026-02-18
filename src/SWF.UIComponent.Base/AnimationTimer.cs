@@ -1,110 +1,164 @@
 ﻿using SWF.Core.Base;
+using WinApi;
 
 namespace SWF.UIComponent.Base
 {
-    public sealed class AnimationTimer
+    public class AnimationTimer
         : IDisposable
     {
-        private volatile bool _disposed = false;  // volatile 追加
-        private System.Threading.Timer? _animationTimer = null;
-        private int _callbackId = 0; // ← コールバック世代管理
+        private const int WM_TIMER_TICK = WinApiMembers.WM_APP + 1;
 
-        public bool Enabled
-        {
-            get
-            {
-                return this._animationTimer != null && !this._disposed;
-            }
-        }
+        public Action? Tick = null;
 
-        public AnimationTimer()
-        {
-            AppConstants.ThrowIfNotUIThread();
-        }
+        private WinApiMembers.TimerCallback? _callback = null;
+        private int _timerId;
+        private int _intervalMs;
+        private bool _enabled;
+        private bool _disposed;
+        private volatile bool _tickPending = false;
+        private TimerNativeWindow? _nativeWindow = null;
 
-        private void Dispose(bool disposing)
-        {
-            if (this._disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                // UIスレッドチェックは public Dispose() 側のみで行う
-                this._animationTimer?.Dispose();
-                this._animationTimer = null;
-            }
-
-            this._disposed = true;
-        }
+        public bool Enabled => this._enabled;
 
         public void Dispose()
         {
-            AppConstants.ThrowIfNotUIThread();
-
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public void Start(Control control, Action animationTick)
-        {
-            ArgumentNullException.ThrowIfNull(control, nameof(control));
-            ArgumentNullException.ThrowIfNull(animationTick, nameof(animationTick));
-
-            AppConstants.ThrowIfNotUIThread();
-
             if (this._disposed)
             {
                 return;
             }
 
-            var uiContext = SynchronizationContext.Current
-                ?? throw new InvalidOperationException("UIコンテキストが取得できませんでした。");
+            this._disposed = true;
+            this.StopTimer();
 
-            this._animationTimer?.Dispose();
-            this._animationTimer = null;
+            GC.SuppressFinalize(this);
+        }
 
-            // ← 世代IDを更新し、古いコールバックを無視する
-            var capturedId = Interlocked.Increment(ref this._callbackId);
+        ~AnimationTimer()
+        {
+            this.Dispose();
+        }
 
-            this._animationTimer = new System.Threading.Timer(
-                _ =>
-                {
-                    // 世代が変わっていたら（Stop/Start/Dispose済み）無視
-                    if (capturedId != this._callbackId)
-                    {
-                        return;
-                    }
+        public void Start(int intervalMs)
+        {
+            AppConstants.ThrowIfNotUIThread();
 
-                    uiContext.Post(_ =>
-                    {
-                        if (capturedId != this._callbackId)
-                        {
-                            return;
-                        }
+            if (intervalMs <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(intervalMs), "1以上の値を指定してください。");
+            }
 
-                        if (!control.IsHandleCreated || control.IsDisposed)
-                        {
-                            return;
-                        }
+            this._intervalMs = intervalMs;
 
-                        animationTick();
-                    }, null);
-                },
-                null,
-                0,
-                DisplayUtil.GetAnimationInterval(control));
+            if (this._enabled)
+            {
+                this.StopTimer();
+            }
+
+            this.StartTimer();
         }
 
         public void Stop()
         {
             AppConstants.ThrowIfNotUIThread();
 
-            Interlocked.Increment(ref this._callbackId); // 古いコールバックを無効化
+            if (this._enabled)
+            {
+                this.StopTimer();
+            }
+        }
 
-            this._animationTimer?.Dispose();
-            this._animationTimer = null;
+        private void StartTimer()
+        {
+            ObjectDisposedException.ThrowIf(this._disposed, this);
+
+            this._nativeWindow = new TimerNativeWindow(this);
+            this._nativeWindow.CreateHandle(new CreateParams());
+
+            _ = WinApiMembers.timeBeginPeriod(1);
+            this._callback = this.OnTimerTick;
+            this._timerId = WinApiMembers.timeSetEvent(this._intervalMs, 0, this._callback, IntPtr.Zero, 1);
+            if (this._timerId == 0)
+            {
+                _ = WinApiMembers.timeEndPeriod(1);
+                this._nativeWindow.DestroyHandle();
+                this._nativeWindow = null;
+                throw new InvalidOperationException("Multimedia Timerの開始に失敗しました。");
+            }
+
+            this._enabled = true;
+        }
+
+        private void StopTimer()
+        {
+            if (this._timerId != 0)
+            {
+                _ = WinApiMembers.timeKillEvent(this._timerId);
+                _ = WinApiMembers.timeEndPeriod(1);
+                this._timerId = 0;
+                this._callback = null;
+            }
+
+            if (this._nativeWindow != null)
+            {
+                this._nativeWindow.DestroyHandle();
+                this._nativeWindow = null;
+            }
+
+            this._enabled = false;
+            this._tickPending = false;
+        }
+
+        private void OnTimerTick(int id, int msg, IntPtr user, IntPtr dw1, IntPtr dw2)
+        {
+            if (!this._enabled || this._disposed)
+            {
+                return;
+            }
+
+            if (this._tickPending)
+            {
+                return;
+            }
+
+            this._tickPending = true;
+
+            if (this._nativeWindow != null)
+            {
+                _ = WinApiMembers.PostMessage(this._nativeWindow.Handle, WM_TIMER_TICK, IntPtr.Zero, IntPtr.Zero);
+            }
+        }
+
+        private void OnWmTimerTick()
+        {
+            this._tickPending = false;
+
+            if (!this._enabled || this._disposed)
+            {
+                return;
+            }
+
+            this.Tick?.Invoke();
+        }
+
+        private sealed class TimerNativeWindow
+            : NativeWindow
+        {
+            private readonly AnimationTimer _owner;
+
+            public TimerNativeWindow(AnimationTimer owner)
+            {
+                this._owner = owner;
+            }
+
+            protected override void WndProc(ref Message m)
+            {
+                if (m.Msg == WM_TIMER_TICK)
+                {
+                    this._owner.OnWmTimerTick();
+                    return;
+                }
+                base.WndProc(ref m);
+            }
         }
     }
 }

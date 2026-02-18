@@ -166,6 +166,8 @@ namespace SWF.UIComponent.TabOperation
 
         public TabSwitch()
         {
+            this._animationTimer.Tick += this.AnimationTick;
+
             this._addTabButtonDrawArea = new(this);
             this._pageDrawArea = new(this);
 
@@ -530,7 +532,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (!this._animationTimer.Enabled)
             {
-                this._animationTimer.Start(this, this.AnimationTick);
+                this._animationTimer.Start(DisplayUtil.GetAnimationInterval(this));
             }
 
             base.Invalidate(this.GetHeaderRectangle());
