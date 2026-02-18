@@ -94,20 +94,35 @@ namespace PicSum.Job.Jobs
                 var transactionConnection = await Instance<IFileInfoDao>.Value.ConnectWithTransaction().False();
                 try
                 {
-                    var parentDir = FileUtil.GetParentDirectoryPath(
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
-
                     var addFileMaster = new FileMasterAddLogic(this);
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
 
-                    foreach (var dirPath in FileUtil.GetSubDirectoriesArray(parentDir, true))
+                    var picturesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    if (!string.IsNullOrEmpty(picturesDir) && FileUtil.IsExistsDirectory(picturesDir))
                     {
-                        this.ThrowIfJobCancellationRequested();
-
-                        if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
+                        foreach (var dirPath in FileUtil.GetSubDirectoriesArray(picturesDir, true).Append(picturesDir))
                         {
-                            await addFileMaster.Execute(transactionConnection, dirPath).False();
-                            await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
+                            this.ThrowIfJobCancellationRequested();
+
+                            if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
+                            {
+                                await addFileMaster.Execute(transactionConnection, dirPath).False();
+                                await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        foreach (var dirPath in FileUtil.GetSubDirectoriesArray(userDir, true))
+                        {
+                            this.ThrowIfJobCancellationRequested();
+
+                            if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
+                            {
+                                await addFileMaster.Execute(transactionConnection, dirPath).False();
+                                await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
+                            }
                         }
                     }
                 }
