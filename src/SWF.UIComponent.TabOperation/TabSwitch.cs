@@ -183,6 +183,7 @@ namespace SWF.UIComponent.TabOperation
             this.DragOver += this.TabSwitch_DragOver;
             this.DragLeave += this.TabSwitch_DragLeave;
             this.DragDrop += this.TabSwitch_DragDrop;
+            this.Resize += this.TabSwitch_Resize;
         }
 
         public Form GetForm()
@@ -507,14 +508,16 @@ namespace SWF.UIComponent.TabOperation
             }
         }
 
-        public void InvalidateHeader(bool isChanbeTargetTabWidth)
+        public void InvalidateHeader()
         {
+            ConsoleUtil.Write(true, "InvalidateHeader");
+
             if (this.IsDisposed)
             {
                 return;
             }
 
-            this.SetTabsDrawArea(isChanbeTargetTabWidth);
+            this.SetTabsDrawArea();
             this.SetAddTabButtonDrawArea();
 
             this.Invalidate(this.GetHeaderRectangle());
@@ -527,7 +530,7 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            this.SetTabsDrawArea(false);
+            this.SetTabsDrawArea();
             this.SetAddTabButtonDrawArea();
 
             if (!this._animationTimer.Enabled)
@@ -535,7 +538,7 @@ namespace SWF.UIComponent.TabOperation
                 this._animationTimer.Start(DisplayUtil.GetAnimationInterval(this));
             }
 
-            base.Invalidate(this.GetHeaderRectangle());
+            this.Invalidate(this.GetHeaderRectangle());
         }
 
         public void CallEndTabDragOperation()
@@ -823,7 +826,7 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        private void SetTabsDrawArea(bool isChanbeTargetTabWidth)
+        private void SetTabsDrawArea()
         {
             if (TAB_DRAG_OPERATION.IsBegin)
             {
@@ -837,10 +840,7 @@ namespace SWF.UIComponent.TabOperation
                 {
                     if (TAB_DRAG_OPERATION.IsTarget(tab))
                     {
-                        if (isChanbeTargetTabWidth)
-                        {
-                            tab.DrawArea.Width = w;
-                        }
+                        tab.DrawArea.Width = w;
 
                         if (this._tabList.Count == 1)
                         {
@@ -1417,6 +1417,16 @@ namespace SWF.UIComponent.TabOperation
             this._dropPoint = null;
         }
 
+        private void TabSwitch_Resize(object sender, EventArgs e)
+        {
+            if (this.FindForm() == null)
+            {
+                return;
+            }
+
+            this.InvalidateHeaderWithAnimation();
+        }
+
         private void AnimationTick()
         {
             if (this.IsDisposed)
@@ -1462,7 +1472,7 @@ namespace SWF.UIComponent.TabOperation
                 }
             }
 
-            this.InvalidateHeader(false);
+            this.InvalidateHeader();
         }
 
         private void OnActiveTabChanged(EventArgs e)
