@@ -451,7 +451,20 @@ namespace PicSum.Main.UIComponent
 
             if (disposing)
             {
-
+                this.pageContainer.Dispose();
+                this.infoPanel.Dispose();
+                this.tabSwitch.Dispose();
+                this.toolPanel.Dispose();
+                this.toolPanel2.Dispose();
+                this.showInfoToolButton.Dispose();
+                this.addressBar.Dispose();
+                this.nextPageHistoryButton.Dispose();
+                this.previewPageHistoryButton.Dispose();
+                this.homeToolButton.Dispose();
+                this.searchRatingToolButton.Dispose();
+                this.tagDropToolButton.Dispose();
+                this.reloadToolButton.Dispose();
+                this.searchBookmarkToolButton.Dispose();
             }
 
             this._disposed = true;
