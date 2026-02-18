@@ -4,7 +4,6 @@ using System.Threading.Channels;
 
 namespace SWF.Core.Job
 {
-
     public partial class TwoWayJob<TJob, TJobParameter, TJobResult>
         : IDisposable
         where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
@@ -31,17 +30,21 @@ namespace SWF.Core.Job
 
         public TwoWayJob()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             LOGGER.Trace($"{TASK_NAME} を開始します。");
 
             this._task = Task.Factory.StartNew(
                 this.DoWork,
                 this._cancellationTokenSource.Token,
                 TaskCreationOptions.LongRunning,
-                TaskScheduler.Default);
+                TaskScheduler.Default).Unwrap();
         }
 
         public void Dispose()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             if (this._disposed)
             {
                 return;
@@ -75,6 +78,8 @@ namespace SWF.Core.Job
 
         public void BeginCancel()
         {
+            AppConstants.ThrowIfNotUIThread();
+
             this._currentJobList.ForEach(static _ => _.BeginCancel());
             this._currentJobList.Clear();
         }
@@ -82,6 +87,8 @@ namespace SWF.Core.Job
         public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            AppConstants.ThrowIfNotUIThread();
 
             if (this._isShuttingDown || this._disposed)
             {
@@ -123,7 +130,7 @@ namespace SWF.Core.Job
 
             try
             {
-                this._jobsChannel.Writer.WriteAsync(job).AsTask().GetAwaiter().GetResult();
+                this._jobsChannel.Writer.TryWrite(job);
             }
             catch (Exception ex) when (
                 ex is TaskCanceledException ||
@@ -137,6 +144,8 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(callback, nameof(callback));
 
+            AppConstants.ThrowIfNotUIThread();
+
             this.StartJob(sender, null, callback);
         }
 
@@ -145,6 +154,8 @@ namespace SWF.Core.Job
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
+            AppConstants.ThrowIfNotUIThread();
+
             this.StartJob(sender, parameter, null);
         }
 
@@ -152,11 +163,13 @@ namespace SWF.Core.Job
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
+            AppConstants.ThrowIfNotUIThread();
+
             this.StartJob(sender, null, null);
         }
 
 #pragma warning disable CA1031
-        private async ValueTask DoWork()
+        private async Task DoWork()
         {
             LOGGER.Trace($"{TASK_NAME} が開始されました。");
 
