@@ -1424,7 +1424,12 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            this.InvalidateHeaderWithAnimation();
+            foreach (var tab in this._tabList)
+            {
+                tab.DrawArea.DoNotAnimation();
+            }
+
+            this.InvalidateHeader();
         }
 
         private void AnimationTick()
