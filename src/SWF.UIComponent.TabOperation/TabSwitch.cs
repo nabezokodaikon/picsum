@@ -510,8 +510,6 @@ namespace SWF.UIComponent.TabOperation
 
         public void InvalidateHeader()
         {
-            ConsoleUtil.Write(true, "InvalidateHeader");
-
             if (this.IsDisposed)
             {
                 return;
