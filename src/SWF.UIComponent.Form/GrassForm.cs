@@ -10,7 +10,6 @@ using WinApi;
 
 namespace SWF.UIComponent.Form
 {
-
     public partial class GrassForm
         : BaseForm
     {
@@ -58,8 +57,6 @@ namespace SWF.UIComponent.Form
         private bool _isInit = true;
         private Size _initSize = Size.Empty;
         private FormWindowState _initWindowState = FormWindowState.Normal;
-        private FormWindowState _currentWindowState = FormWindowState.Normal;
-        private Rectangle _currentWindowBounds = Rectangle.Empty;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new Size Size
@@ -132,26 +129,7 @@ namespace SWF.UIComponent.Form
             this.Activated += this.GrassForm_Activated;
             this.Deactivate += this.GrassForm_Deactivate;
             this.Resize += this.GrassForm_Resize;
-            this.LocationChanged += this.GrassForm_LocationChanged;
             this.Load += this.GrassForm_Load;
-        }
-
-        public void MouseLeftDoubleClickProcess()
-        {
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                this.WindowState = FormWindowState.Maximized;
-            }
-            else if (this.WindowState == FormWindowState.Maximized)
-            {
-                this.WindowState = FormWindowState.Normal;
-            }
-        }
-
-        public void RestoreWindowState()
-        {
-            this.Bounds = this._currentWindowBounds;
-            this.WindowState = this._currentWindowState;
         }
 
         protected override void WndProc(ref Message m)
@@ -213,70 +191,9 @@ namespace SWF.UIComponent.Form
             base.WndProc(ref m);
         }
 
-        private void GrassForm_Activated(object sender, EventArgs e)
-        {
-            this.SetWindowColor(WINDOW_COLOR);
-        }
-
-        private void GrassForm_Deactivate(object sender, EventArgs e)
-        {
-            //this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
-        }
-
-        private void GrassForm_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-
-            }
-            else if (this.WindowState == FormWindowState.Maximized)
-            {
-                this._currentWindowState = FormWindowState.Maximized;
-            }
-            else if (this.WindowState == FormWindowState.Normal)
-            {
-                this._currentWindowState = FormWindowState.Normal;
-                this._currentWindowBounds = this.Bounds;
-            }
-
-            this.SetControlRegion();
-        }
-
-        private void GrassForm_LocationChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-
-            }
-            else if (this.WindowState == FormWindowState.Maximized)
-            {
-                this._currentWindowState = FormWindowState.Maximized;
-            }
-            else if (this.WindowState == FormWindowState.Normal)
-            {
-                this._currentWindowState = FormWindowState.Normal;
-                this._currentWindowBounds = this.Bounds;
-            }
-        }
-
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             //base.OnPaintBackground(e);
-        }
-
-        private void GrassForm_Load(object sender, EventArgs e)
-        {
-            if (this._isInit)
-            {
-                base.Size = this._initSize;
-                base.WindowState = this._initWindowState;
-
-                this._currentScale = WindowUtil.GetCurrentWindowScale(this);
-                var glassMargins = GetGrassMargins(this._currentScale);
-                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
-
-                this._isInit = false;
-            }
         }
 
         protected void SetControlRegion()
@@ -359,6 +276,11 @@ namespace SWF.UIComponent.Form
         private void ChildMouseMoveHandler(object sender, MouseEventArgs e)
         {
             var control = sender as Control;
+            if (control is null || control.IsDisposed)
+            {
+                return;
+            }
+
             SetDefaultCrusor(this);
             SetDefaultCrusor(control);
 
@@ -491,6 +413,36 @@ namespace SWF.UIComponent.Form
                 WinApi.WinApiMembers.ReleaseCapture();
                 _ = WinApi.WinApiMembers.SendMessage(this.Handle, 0xA1, hitTest, 0);
             }
+        }
+
+        private void GrassForm_Load(object sender, EventArgs e)
+        {
+            if (this._isInit)
+            {
+                base.Size = this._initSize;
+                base.WindowState = this._initWindowState;
+
+                this._currentScale = WindowUtil.GetCurrentWindowScale(this);
+                var glassMargins = GetGrassMargins(this._currentScale);
+                WinApiMembers.DwmExtendFrameIntoClientArea(this.Handle, glassMargins);
+
+                this._isInit = false;
+            }
+        }
+
+        private void GrassForm_Activated(object sender, EventArgs e)
+        {
+            this.SetWindowColor(WINDOW_COLOR);
+        }
+
+        private void GrassForm_Deactivate(object sender, EventArgs e)
+        {
+            //this.SetWindowColor(DEACTIVATE_WINDOWCOLOR);
+        }
+
+        private void GrassForm_Resize(object sender, EventArgs e)
+        {
+            this.SetControlRegion();
         }
     }
 }

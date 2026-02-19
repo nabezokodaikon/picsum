@@ -3,7 +3,6 @@ using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -62,23 +61,6 @@ namespace PicSum.Main.Mng
             }
         }
 
-        private BrowseForm CreateBrowse(Point windowLocation, Size windowSize, FormWindowState windowState)
-        {
-            using (Measuring.Time(true, "BrowseManager.CreateBrowse"))
-            {
-                var browse = new BrowseForm()
-                {
-                    Location = windowLocation,
-                    Size = windowSize,
-                    WindowState = windowState
-                };
-
-                this.InitializeBrowseDelegate(browse);
-
-                return browse;
-            }
-        }
-
         private void InitializeBrowseDelegate(BrowseForm browse)
         {
             browse.FormClosed += new(this.Browse_FormClosed);
@@ -110,10 +92,46 @@ namespace PicSum.Main.Mng
 
         private void Browse_TabDropouted(object sender, TabDropoutedEventArgs e)
         {
-            var browse = this.CreateBrowse(e.WindowLocation, e.WindowSize, e.WindowState);
+            var browse = this.CreateBrowse();
+            browse.WindowState = e.WindowState;
+            browse.StartPosition = FormStartPosition.Manual;
+            browse.Size = e.WindowSize;
+
+            void setLocation(object s, EventArgs arg)
+            {
+                var screenPoint = Cursor.Position;
+
+                float x;
+                float y;
+                if (e.TabSwitchMouseLocation.X < e.TabsRectange.Left)
+                {
+                    x = screenPoint.X - e.TabsRectange.X - e.Tab.DrawArea.Width / 2f;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
+                }
+                else if (e.TabSwitchMouseLocation.X > e.TabsRectange.Right)
+                {
+                    x = screenPoint.X - e.TabsRectange.Width + e.Tab.DrawArea.Width / 2f;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
+                }
+                else
+                {
+                    x = screenPoint.X - e.TabSwitchMouseLocation.X;
+                    y = screenPoint.Y - e.TabsRectange.Height / 2f;
+                }
+
+                browse.Location = new((int)x, (int)y);
+
+                browse.Shown -= setLocation;
+            }
+
             this.browseList.Add(browse);
-            browse.Show();
             browse.AddTab(e.Tab);
+
+            browse.Shown += setLocation;
+
+            //browse.Opacity = 0;
+            browse.Show();
+            //browse.Opacity = 1;
         }
 
         private void Browse_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)

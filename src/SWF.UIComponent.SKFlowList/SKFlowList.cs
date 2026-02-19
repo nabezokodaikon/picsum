@@ -84,6 +84,8 @@ namespace SWF.UIComponent.SKFlowList
         {
             this.DoubleBuffered = true;
 
+            this._animationTimer.Tick += this.AnimationTick;
+
             this._scrollBar.Dock = DockStyle.Right;
             this._scrollBar.ValueChanged += new(this.ScrollBar_ValueChanged);
             this._scrollBar.Scroll += this.ScrollBar_Scroll;
@@ -1398,7 +1400,7 @@ namespace SWF.UIComponent.SKFlowList
 
             if (!this._animationTimer.Enabled)
             {
-                this._animationTimer.Start(this, this.AnimationTick);
+                this._animationTimer.Start(DisplayUtil.GetAnimationInterval(this));
             }
         }
 

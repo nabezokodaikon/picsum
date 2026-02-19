@@ -11,15 +11,22 @@ namespace SWF.UIComponent.TabOperation
         : TabEventArgs
     {
         public bool ToOtherOwner { get; private set; }
-        public Point WindowLocation { get; private set; }
+        public RectangleF TabsRectange { get; private set; }
+        public Point TabSwitchMouseLocation { get; private set; }
         public Size WindowSize { get; private set; }
         public FormWindowState WindowState { get; private set; }
 
-        public TabDropoutedEventArgs(TabInfo tab, Point windowLocation, Size windowSize, FormWindowState windowState)
+        public TabDropoutedEventArgs(
+            TabInfo tab,
+            RectangleF tabsRectange,
+            Point tabSwitchMouseLocation,
+            Size windowSize,
+            FormWindowState windowState)
             : base(tab)
         {
             this.ToOtherOwner = false;
-            this.WindowLocation = windowLocation;
+            this.TabsRectange = tabsRectange;
+            this.TabSwitchMouseLocation = tabSwitchMouseLocation;
             this.WindowSize = windowSize;
             this.WindowState = windowState;
         }
@@ -28,7 +35,8 @@ namespace SWF.UIComponent.TabOperation
             : base(tab)
         {
             this.ToOtherOwner = true;
-            this.WindowLocation = Point.Empty;
+            this.TabsRectange = Rectangle.Empty;
+            this.TabSwitchMouseLocation = Point.Empty;
             this.WindowSize = Size.Empty;
             this.WindowState = FormWindowState.Normal;
         }
