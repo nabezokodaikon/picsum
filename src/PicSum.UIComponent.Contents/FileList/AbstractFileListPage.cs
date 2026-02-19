@@ -809,7 +809,9 @@ namespace PicSum.UIComponent.Contents.FileList
                     this.flowList.TextPaint,
                     FontCacher.GetRegularSKFont(FontCacher.Size.Medium, this._scale),
                     item.FileName,
-                    textRect);
+                    textRect,
+                    SKTextAlign.Center,
+                    2);
 
                 item.FileNameImage = surface.Snapshot();
             }

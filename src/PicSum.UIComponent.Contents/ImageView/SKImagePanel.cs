@@ -352,7 +352,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                         MESSAGE_PAINT,
                         font,
                         ERROR_MESSAGE,
-                        bounds);
+                        bounds,
+                        SKTextAlign.Center,
+                        2);
                 }
                 else
                 {
@@ -723,7 +725,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                             MESSAGE_PAINT,
                             font,
                             FileUtil.GetFileName(this.FilePath),
-                            destRect);
+                            destRect,
+                            SKTextAlign.Center,
+                            2);
                     }
                     else if (image.IsThumbnailImage)
                     {
@@ -769,7 +773,9 @@ namespace PicSum.UIComponent.Contents.ImageView
                         MESSAGE_PAINT,
                         font,
                         ERROR_MESSAGE,
-                        bounds);
+                        bounds,
+                        SKTextAlign.Center,
+                        2);
                 }
             }
         }

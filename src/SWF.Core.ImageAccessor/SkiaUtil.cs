@@ -211,73 +211,108 @@ namespace SWF.Core.ImageAccessor
             SKPaint paint,
             SKFont font,
             string text,
-            SKRect bounds)
+            SKRect bounds,
+            SKTextAlign textAlign,
+            int maxLines)
         {
             ArgumentNullException.ThrowIfNull(canvas);
             ArgumentNullException.ThrowIfNull(paint);
             ArgumentNullException.ThrowIfNull(font);
             ArgumentNullException.ThrowIfNullOrEmpty(text);
 
+            if (maxLines < 1) maxLines = 1;
+            if (maxLines > 2) maxLines = 2;
+
             const int MaxChars = 255;
             if (text.Length > MaxChars)
-                text = text[..MaxChars];  // Range演算子で高速カット
+                text = text[..MaxChars];
 
             ReadOnlySpan<char> textSpan = text.AsSpan();
-
             font.GetFontMetrics(out var metrics);
-            float lineHeight = metrics.Descent - metrics.Ascent + metrics.Leading;  // 正確な行高（Leading含む）
+
+            float lineHeight = metrics.Descent - metrics.Ascent + metrics.Leading;
             float maxWidth = bounds.Width;
             float ellipsisWidth = GetEllipsisWidth(font, paint);
 
-            // 1行目折り返し（文字単位積算、キャッシュ活用）
+            string line1 = "";
+            string line2 = "";
+
+            // ── 1行目の処理 ────────────────────────────────────────
             float currentWidth = 0f;
             int breakPos1 = 0;
             for (int i = 0; i < textSpan.Length; i++)
             {
                 char c = textSpan[i];
-                float cw = GetCharWidthInline(font, paint, c);  // インラインでJIT最適化
-                if (currentWidth + cw > maxWidth) break;
+                float cw = GetCharWidthInline(font, paint, c);
+
+                bool isLastLine = (maxLines == 1) || (i == textSpan.Length - 1);
+                if (currentWidth + cw + (isLastLine ? ellipsisWidth : 0) > maxWidth)
+                    break;
+
                 currentWidth += cw;
                 breakPos1 = i + 1;
             }
 
             ReadOnlySpan<char> line1Span = textSpan[..breakPos1];
-            ReadOnlySpan<char> remainingSpan = breakPos1 < textSpan.Length ? textSpan[breakPos1..] : [];
+            line1 = line1Span.ToString();
 
-            string line2 = "";
-            if (!remainingSpan.IsEmpty)
+            ReadOnlySpan<char> remaining = breakPos1 < textSpan.Length
+                ? textSpan[breakPos1..]
+                : ReadOnlySpan<char>.Empty;
+
+            // ── 2行目が必要な場合のみ ───────────────────────────────
+            if (maxLines >= 2 && !remaining.IsEmpty)
             {
                 currentWidth = 0f;
                 int breakPos2 = 0;
-                for (int i = 0; i < remainingSpan.Length; i++)
+                for (int i = 0; i < remaining.Length; i++)
                 {
-                    char c = remainingSpan[i];
+                    char c = remaining[i];
                     float cw = GetCharWidthInline(font, paint, c);
-                    if (currentWidth + cw + ellipsisWidth > maxWidth) break;
+
+                    if (currentWidth + cw + ellipsisWidth > maxWidth)
+                        break;
+
                     currentWidth += cw;
                     breakPos2 = i + 1;
                 }
 
-                // 最低1文字保証
-                if (breakPos2 == 0) breakPos2 = 1;
+                if (breakPos2 == 0 && remaining.Length > 0)
+                    breakPos2 = 1;
 
-                // Spanで...連結（効率的）
-                ReadOnlySpan<char> line2Body = remainingSpan[..breakPos2];
-                line2 = breakPos2 < remainingSpan.Length
-                    ? string.Concat(line2Body, "...")
+                ReadOnlySpan<char> line2Body = remaining[..breakPos2];
+                line2 = (breakPos2 < remaining.Length)
+                    ? string.Concat(line2Body.ToString(), "...")
                     : line2Body.ToString();
             }
+            else if (maxLines == 1 && breakPos1 < textSpan.Length)
+            {
+                if (line1.Length > 0)
+                {
+                    // 1行モードでの簡易 ... 処理（より正確にしたい場合は breakPos1 を調整）
+                    line1 = line1.AsSpan()[..^1].ToString() + "...";
+                }
+            }
 
-            int lineCount = string.IsNullOrEmpty(line2) ? 1 : 2;
-            float totalHeight = lineHeight * lineCount;
-            float baselineY = bounds.MidY - (totalHeight / 2f) - metrics.Ascent;  // 垂直中央（サムネイル最適）
+            int actualLines = string.IsNullOrEmpty(line2) ? 1 : 2;
+            float totalHeight = lineHeight * actualLines;
+            float baselineY = bounds.MidY - (totalHeight / 2f) - metrics.Ascent;
 
-            // DrawText で SKTextAlign.Center を直接指定（非推奨回避）
-            canvas.DrawText(line1Span.ToString(), bounds.MidX, baselineY, SKTextAlign.Center, font, paint);
+            // ── 揃えに応じたX座標を決定 ───────────────────────────────
+            float x = textAlign switch
+            {
+                SKTextAlign.Center => bounds.MidX,
+                SKTextAlign.Left => bounds.Left,
+                SKTextAlign.Right => bounds.Right,   // 右寄せも使えるようにしておく（便利）
+                _ => bounds.MidX     // 不正値なら中央に戻す
+            };
+
+            // 描画
+            canvas.DrawText(line1, x, baselineY, textAlign, font, paint);
 
             if (!string.IsNullOrEmpty(line2))
             {
-                canvas.DrawText(line2, bounds.MidX, baselineY + lineHeight, SKTextAlign.Center, font, paint);
+                canvas.DrawText(line2, x, baselineY + lineHeight, textAlign, font, paint);
             }
         }
 
