@@ -52,6 +52,8 @@ namespace SWF.UIComponent.TabOperation
         private float _widthOffset = 0;
         private float _heightOffset = 0;
         private TabInfo _currentTab = null;
+        private Point _dragStartPoint = Point.Empty;
+        private bool _isMoving = false;
 
         /// <summary>
         /// 操作中か確認します。
@@ -80,7 +82,7 @@ namespace SWF.UIComponent.TabOperation
         /// タブのドラッグ操作を試みます。
         /// </summary>
         /// <param name="currentTab"></param>
-        public void BeginTabDragOperation(TabInfo currentTab, Point mousePoint)
+        public void BeginTabDragOperation(TabInfo currentTab, Point dragStartPoint)
         {
             ArgumentNullException.ThrowIfNull(currentTab, nameof(currentTab));
 
@@ -95,8 +97,9 @@ namespace SWF.UIComponent.TabOperation
             }
 
             this._currentTab = currentTab;
-            this._widthOffset = mousePoint.X - this._currentTab.DrawArea.X;
-            this._heightOffset = mousePoint.Y - this._currentTab.DrawArea.Y;
+            this._dragStartPoint = dragStartPoint;
+            this._widthOffset = this._dragStartPoint.X - this._currentTab.DrawArea.X;
+            this._heightOffset = this._dragStartPoint.Y - this._currentTab.DrawArea.Y;
 
             this.IsBegin = true;
         }
@@ -114,7 +117,7 @@ namespace SWF.UIComponent.TabOperation
             this._currentTab = null;
             this._widthOffset = 0;
             this._heightOffset = 0;
-
+            this._isMoving = false;
             this.IsBegin = false;
         }
 
@@ -126,6 +129,24 @@ namespace SWF.UIComponent.TabOperation
             if (!this.IsBegin)
             {
                 throw new InvalidOperationException("ドラッグ操作が開始されていません。");
+            }
+
+            var dragStartScreenPoint = this._currentTab.Owner.PointToScreen(this._dragStartPoint);
+            var screenPoint = Cursor.Position;
+            var moveX = screenPoint.X - dragStartScreenPoint.X;
+            var moveY = screenPoint.Y - dragStartScreenPoint.Y;
+
+            if (!this._isMoving)
+            {
+                if ((SystemInformation.DragSize.Width < Math.Abs(moveX) ||
+                     SystemInformation.DragSize.Height < Math.Abs(moveY)))
+                {
+                    this._isMoving = true;
+                }
+                else
+                {
+                    return;
+                }
             }
 
             var currentTab = this._currentTab;
@@ -225,7 +246,6 @@ namespace SWF.UIComponent.TabOperation
             else
             {
                 // タブが複数。
-                var screenPoint = Cursor.Position;
                 var tabsScreenRectangle = currentTab.Owner.GetTabsScreenRectangleWithOffset();
 
                 if (tabsScreenRectangle.Contains(screenPoint))
