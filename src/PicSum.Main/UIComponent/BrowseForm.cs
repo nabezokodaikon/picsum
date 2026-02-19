@@ -51,7 +51,7 @@ namespace PicSum.Main.UIComponent
             this.ScaleChanged += this.Form_ScaleChanged;
             this.HandleCreated += this.BrowseForm_HandleCreated;
             this.Shown += this.BrowseForm_Shown;
-            this.FormClosing += this.BrowseForm_FormClosing;
+            this.FormClosed += this.BrowseForm_FormClosed;
             this.KeyDown += this.BrowseForm_KeyDown;
             this.KeyUp += this.BrowseForm_KeyUp;
             this.Activated += this.BrowseForm_Activated;
@@ -175,7 +175,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void BrowseForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void BrowseForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal)
             {

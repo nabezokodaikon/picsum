@@ -81,14 +81,16 @@ namespace PicSum.Main.Mng
 
         private void InitializeBrowseDelegate(BrowseForm browse)
         {
-            browse.FormClosing += new(this.Browse_FormClosing);
+            browse.FormClosed += new(this.Browse_FormClosed);
             browse.Activated += new(this.Browse_Activated);
             browse.TabDropouted += new(this.Browse_TabDropouted);
             browse.NewWindowPageOpen += new(this.Browse_NewWindowPageOpen);
         }
 
-        private void Browse_FormClosing(object sender, FormClosingEventArgs e)
+        private void Browse_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Application.DoEvents();
+
             var browse = (BrowseForm)sender;
 
             this.browseList.Remove(browse);
