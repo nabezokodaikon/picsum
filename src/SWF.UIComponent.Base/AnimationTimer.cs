@@ -15,7 +15,7 @@ namespace SWF.UIComponent.Base
         private int _intervalMs;
         private bool _enabled;
         private bool _disposed;
-        private volatile bool _tickPending = false;
+        private int _tickPending = 0;
         private TimerNativeWindow? _nativeWindow = null;
 
         public bool Enabled => this._enabled;
@@ -35,7 +35,11 @@ namespace SWF.UIComponent.Base
 
         ~AnimationTimer()
         {
-            this.Dispose();
+            if (this._timerId != 0)
+            {
+                _ = WinApiMembers.timeKillEvent(this._timerId);
+                _ = WinApiMembers.timeEndPeriod(1);
+            }
         }
 
         public void Start(int intervalMs)
@@ -105,7 +109,7 @@ namespace SWF.UIComponent.Base
             }
 
             this._enabled = false;
-            this._tickPending = false;
+            Interlocked.Exchange(ref this._tickPending, 0); // ← ここだけ変更
         }
 
         private void OnTimerTick(int id, int msg, IntPtr user, IntPtr dw1, IntPtr dw2)
@@ -115,22 +119,18 @@ namespace SWF.UIComponent.Base
                 return;
             }
 
-            if (this._tickPending)
+            if (Interlocked.CompareExchange(ref this._tickPending, 1, 0) == 0)
             {
-                return;
-            }
-
-            this._tickPending = true;
-
-            if (this._nativeWindow != null)
-            {
-                _ = WinApiMembers.PostMessage(this._nativeWindow.Handle, WM_TIMER_TICK, IntPtr.Zero, IntPtr.Zero);
+                if (this._nativeWindow != null)
+                {
+                    _ = WinApiMembers.PostMessage(this._nativeWindow.Handle, WM_TIMER_TICK, IntPtr.Zero, IntPtr.Zero);
+                }
             }
         }
 
         private void OnWmTimerTick()
         {
-            this._tickPending = false;
+            Interlocked.Exchange(ref this._tickPending, 0);
 
             if (!this._enabled || this._disposed)
             {
