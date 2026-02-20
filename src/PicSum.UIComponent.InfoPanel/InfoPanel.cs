@@ -205,15 +205,15 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (filePathList.Length > 0)
             {
-                // コンピュータの場合は情報を表示しない。
-                if (FileUtil.IsSystemRoot(filePathList.First()))
-                {
-                    this.ClearInfo();
-                    this.fileInfoLabel.Invalidate();
-                    this.ratingBar.Invalidate();
-                    this.thumbnailPictureBox.Invalidate();
-                    return;
-                }
+                //// コンピュータの場合は情報を表示しない。
+                //if (FileUtil.IsSystemRoot(filePathList.First()))
+                //{
+                //    this.ClearInfo();
+                //    this.fileInfoLabel.Invalidate();
+                //    this.ratingBar.Invalidate();
+                //    this.thumbnailPictureBox.Invalidate();
+                //    return;
+                //}
 
                 this._isLoading = true;
 
@@ -418,7 +418,7 @@ namespace PicSum.UIComponent.InfoPanel
                             += $"  ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
                 }
-                else if (!this.FileInfo.FilesAndDirectoriesCount.IsEmpty)
+                else if (!FileUtil.IsSystemRoot(this.FileInfo.FilePath) && !this.FileInfo.FilesAndDirectoriesCount.IsEmpty)
                 {
                     this.fileInfoLabel.FilesAndDirectoriesCount
                         += $"Files {this.FileInfo.FilesAndDirectoriesCount.FilesCount}, Folders {this.FileInfo.FilesAndDirectoriesCount.DirectoriesCount}";
@@ -531,11 +531,12 @@ namespace PicSum.UIComponent.InfoPanel
             else if (this.FileInfo.FileIcon != null)
             {
                 const int margin = 32;
-                var rect = SKRectI.Create(
-                    margin,
-                    margin,
+                var size = Math.Min(
                     this.thumbnailPictureBox.Width - margin,
                     this.thumbnailPictureBox.Height - margin);
+                var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
+                var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
+                var rect = SKRectI.Create(x, y, size, size);
                 var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
                 icon.Draw(e.Surface.Canvas, InfoPanelResources.IMAGE_PAINT, rect);
             }
