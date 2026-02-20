@@ -14,7 +14,6 @@ using SWF.UIComponent.Base;
 using SWF.UIComponent.SKFlowList;
 using SWF.UIComponent.WideDropDown;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -50,33 +49,8 @@ namespace PicSum.UIComponent.InfoPanel
 #pragma warning restore CA2213
 
         private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
-        private readonly Dictionary<float, SKImage> _tagIconCache = [];
         private string _contextMenuOperationTag = string.Empty;
         private bool _isLoading = false;
-
-        // TODO: 静的リソースにし、終了時に破棄する。
-        public readonly SKPaint _backgroundPaint = new()
-        {
-            Color = new SKColor(250, 250, 250),
-            BlendMode = SKBlendMode.Src,
-        };
-
-        private readonly SKPaint _imagePaint = new()
-        {
-            IsAntialias = false,
-            BlendMode = SKBlendMode.SrcOver,
-        };
-
-        private readonly SKPaint _messagePaint = new()
-        {
-            Color = new(0, 0, 0),
-        };
-
-        private readonly SKPaint _iconPaint = new()
-        {
-            IsAntialias = false,
-            BlendMode = SKBlendMode.SrcOver,
-        };
 
         private string[] FilePathList
         {
@@ -219,7 +193,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
-            this._tagIcon = this.GetTagIcon(scale);
+            this._tagIcon = InfoPanelResources.GetTagIcon(scale);
             this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
 
             this.ResumeLayout(false);
@@ -299,43 +273,12 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
-                foreach (var icon in this._tagIconCache.Values)
-                {
-                    icon.Dispose();
-                }
-                this._tagIconCache.Clear();
-
                 this.wideComboBox.Icon.Dispose();
-
-                this._imagePaint.Dispose();
-                this._backgroundPaint.Dispose();
-                this._messagePaint.Dispose();
-                this._iconPaint.Dispose();
             }
 
             this.disposed = true;
 
             base.Dispose(disposing);
-        }
-
-        // TODO: 静的リソースにし、終了時に破棄する。
-        private SKImage GetTagIcon(float scale)
-        {
-            if (this._tagIconCache.TryGetValue(scale, out var icon))
-            {
-                return icon;
-            }
-
-            using var surface = SKSurface.Create(new SKImageInfo(
-                (int)(ResourceFiles.TagIcon.Value.Width * scale),
-                (int)(ResourceFiles.TagIcon.Value.Height * scale)));
-            using var canvas = surface.Canvas;
-            using var img = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
-            canvas.DrawImage(img, SKRect.Create(0, 0, img.Width, img.Height));
-            var newTagIcon = surface.Snapshot();
-            this._tagIconCache.Add(scale, newTagIcon);
-
-            return newTagIcon;
         }
 
         private void OnSelectedTag(SelectedTagEventArgs e)
@@ -520,7 +463,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void ThumbnailPictureBox_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
-            e.Surface.Canvas.DrawRect(e.Info.Rect, this._backgroundPaint);
+            e.Surface.Canvas.DrawRect(e.Info.Rect, InfoPanelResources.BACKGROUND_PAINT);
 
             if (this.FileInfo.IsError)
             {
@@ -533,7 +476,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
                     WindowUtil.GetCurrentWindowScale(this));
-                SkiaUtil.DrawText(e.Surface.Canvas, this._imagePaint, font, text, rect, SKTextAlign.Center, 2);
+                SkiaUtil.DrawText(e.Surface.Canvas, InfoPanelResources.IMAGE_PAINT, font, text, rect, SKTextAlign.Center, 2);
             }
             else if (!this.Thumbnail.IsEmpty
                 && !this.Thumbnail.ThumbnailImage.IsEmpry)
@@ -557,7 +500,7 @@ namespace PicSum.UIComponent.InfoPanel
                         scale);
                     ThumbnailUtil.DrawFileThumbnail(
                         e.Surface.Canvas,
-                        this._imagePaint,
+                        InfoPanelResources.IMAGE_PAINT,
                         this.Thumbnail.ThumbnailImage,
                         rect,
                         thumbSize,
@@ -577,7 +520,7 @@ namespace PicSum.UIComponent.InfoPanel
                     var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
                     ThumbnailUtil.DrawDirectoryThumbnail(
                         e.Surface.Canvas,
-                        this._imagePaint,
+                        InfoPanelResources.IMAGE_PAINT,
                         this.Thumbnail.ThumbnailImage,
                         rect,
                         new Size(this.Thumbnail.SourceWidth, this.Thumbnail.SourceHeight),
@@ -594,7 +537,7 @@ namespace PicSum.UIComponent.InfoPanel
                     this.thumbnailPictureBox.Width - margin,
                     this.thumbnailPictureBox.Height - margin);
                 var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
-                icon.Draw(e.Surface.Canvas, this._imagePaint, rect);
+                icon.Draw(e.Surface.Canvas, InfoPanelResources.IMAGE_PAINT, rect);
             }
             else if (this.FilePathList != null)
             {
@@ -607,7 +550,7 @@ namespace PicSum.UIComponent.InfoPanel
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
                     WindowUtil.GetCurrentWindowScale(this));
-                SkiaUtil.DrawText(e.Surface.Canvas, this._messagePaint, font, text, rect, SKTextAlign.Center, 2);
+                SkiaUtil.DrawText(e.Surface.Canvas, InfoPanelResources.MESSAGE_PAINT, font, text, rect, SKTextAlign.Center, 2);
             }
         }
 
