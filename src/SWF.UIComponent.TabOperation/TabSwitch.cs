@@ -1004,8 +1004,8 @@ namespace SWF.UIComponent.TabOperation
             {
                 Graphics = g,
                 Font = font,
-                TitleColor = TabPalette.TITLE_COLOR,
-                TitleFormatFlags = TabPalette.TITLE_FORMAT_FLAGS,
+                TitleColor = TabSwitchResources.TITLE_COLOR,
+                TitleFormatFlags = TabSwitchResources.TITLE_FORMAT_FLAGS,
                 TextRectangle = tab.DrawArea.GetPageRectangle(),
                 IconRectangle = tab.DrawArea.GetIconRectangle(scale),
                 CloseButtonRectangle = tab.DrawArea.GetCloseButtonRectangle(),
