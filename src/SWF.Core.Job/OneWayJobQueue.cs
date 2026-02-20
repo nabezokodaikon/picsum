@@ -89,15 +89,11 @@ namespace SWF.Core.Job
                 Parameter = parameter,
             };
 
-            try
+            if (!this._jobsChannel.Writer.TryWrite(job))
             {
-                this._jobsChannel.Writer.TryWrite(job);
+                ConsoleUtil.Write(true, $"{job} をキューに追加できませんでした。");
+                LOGGER.Warn($"{job} をキューに追加できませんでした。");
             }
-            catch (Exception ex) when (
-                ex is TaskCanceledException ||
-                ex is OperationCanceledException ||
-                ex is ChannelClosedException)
-            { }
         }
 
         public void Enqueue<TJob>(ISender sender)
@@ -117,15 +113,11 @@ namespace SWF.Core.Job
                 Sender = sender,
             };
 
-            try
+            if (!this._jobsChannel.Writer.TryWrite(job))
             {
-                this._jobsChannel.Writer.TryWrite(job);
+                ConsoleUtil.Write(true, $"{job} をキューに追加できませんでした。");
+                LOGGER.Warn($"{job} をキューに追加できませんでした。");
             }
-            catch (Exception ex) when (
-                ex is TaskCanceledException ||
-                ex is OperationCanceledException ||
-                ex is ChannelClosedException)
-            { }
         }
 
 #pragma warning disable CA1031

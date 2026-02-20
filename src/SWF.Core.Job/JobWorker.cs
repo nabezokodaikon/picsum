@@ -105,38 +105,29 @@ namespace SWF.Core.Job
 
             if (callback != null)
             {
-                var factory = AppConstants.GetUITaskFactory();
+                var context = AppConstants.GetUIContext();
                 job.CallbackAction = result =>
                 {
-                    if (factory.Scheduler == null)
+                    context.Post(s =>
                     {
-                        throw new InvalidOperationException("スケジューラがNullです。");
-                    }
-
-                    factory.StartNew(() =>
-                    {
-                        if (job.CanUIThreadAccess())
+                        var (cb, res, j) = (ValueTuple<Action<TJobResult>, TJobResult, TJob>)s!;
+                        if (!j.CanUIThreadAccess() || this._isShuttingDown || this._disposed)
                         {
-                            callback(result);
+                            return;
                         }
-                    },
-                    CancellationToken.None,
-                    TaskCreationOptions.None,
-                    factory.Scheduler);
+
+                        cb(res);
+                    }, (callback, result, job));
                 };
             }
 
             this._currentJobList.Add(job);
 
-            try
+            if (!this._jobsChannel.Writer.TryWrite(job))
             {
-                this._jobsChannel.Writer.TryWrite(job);
+                ConsoleUtil.Write(true, $"{job} をキューに追加できませんでした。");
+                LOGGER.Warn($"{job} をキューに追加できませんでした。");
             }
-            catch (Exception ex) when (
-                ex is TaskCanceledException ||
-                ex is OperationCanceledException ||
-                ex is ChannelClosedException)
-            { }
         }
 
         public void StartJob(ISender sender, Action<TJobResult> callback)

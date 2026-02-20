@@ -16,7 +16,6 @@ namespace SWF.Core.Base
             = Math.Min(4, Environment.ProcessorCount / 2);
 
         private static WindowsFormsSynchronizationContext? _uiContext = null;
-        private static TaskFactory? _uiFactory = null;
 
         public static void SetUIThreadName()
         {
@@ -36,26 +35,20 @@ namespace SWF.Core.Base
             }
         }
 
-        public static TaskFactory GetUITaskFactory()
+        public static WindowsFormsSynchronizationContext GetUIContext()
         {
             ThrowIfNotUIThread();
 
-            if (_uiContext == null || _uiFactory == null)
+            if (_uiContext == null)
             {
-                using (Measuring.Time(true, "AppConstants.GetUITaskFactory"))
+                using (Measuring.Time(true, "AppConstants.GetUIContext"))
                 {
                     _uiContext = new WindowsFormsSynchronizationContext();
                     SynchronizationContext.SetSynchronizationContext(_uiContext);
-
-                    _uiFactory = new TaskFactory(
-                        CancellationToken.None,
-                        TaskCreationOptions.None,
-                        TaskContinuationOptions.None,
-                        TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
 
-            return _uiFactory;
+            return _uiContext;
         }
 
         public static int GetHeavyMaxDegreeOfParallelism<T>(T[] collection)
