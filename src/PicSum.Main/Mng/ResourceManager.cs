@@ -10,7 +10,6 @@ using SWF.Core.Base;
 using SWF.Core.FileAccessor;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.FlowList;
 using SWF.UIComponent.SKFlowList;
 using SWF.UIComponent.TabOperation;
 using System;
@@ -106,7 +105,6 @@ namespace PicSum.Main.Mng
             SkiaUtil.Dispose();
             FontCacher.Dispose();
             ResourceFiles.Dispose();
-            FlowListResources.Dispose();
             FileListPageResources.Dispose();
             SKFlowListResources.Dispose();
             TabSwitchResources.Dispose();

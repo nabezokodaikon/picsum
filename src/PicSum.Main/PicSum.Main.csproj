@@ -157,7 +157,6 @@
 	<ProjectReference Include="..\SWF.Core.Job\SWF.Core.Job.csproj" />
 	<ProjectReference Include="..\SWF.Core.ResourceAccessor\SWF.Core.ResourceAccessor.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
-	<ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.Form\SWF.UIComponent.Form.csproj" />
 	<ProjectReference Include="..\SWF.UIComponent.TabOperation\SWF.UIComponent.TabOperation.csproj" />
 	<ProjectReference Include="..\PicSum.UIComponent.AddressBar\PicSum.UIComponent.AddressBar.csproj" />
