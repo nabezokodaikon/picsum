@@ -44,13 +44,6 @@ namespace PicSum.UIComponent.Contents.FileList
         private string[] _filterFilePathList = null;
         private int? _itemTextHeight = null;
 
-        // TODO: 静的リソースにする。
-        private readonly SKPaint _imagePaint = new()
-        {
-            IsAntialias = false,
-            BlendMode = SKBlendMode.SrcOver,
-        };
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override string SelectedFilePath { get; protected set; } = FileUtil.ROOT_DIRECTORY_PATH;
 
@@ -287,8 +280,6 @@ namespace PicSum.UIComponent.Contents.FileList
                         item.Value.FileNameImage?.Dispose();
                     }
                 }
-
-                this._imagePaint.Dispose();
             }
 
             this._disposed = true;
@@ -1131,7 +1122,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         var iconRect = this.GetIconRectangle(info, itemTextHeight);
                         ThumbnailUtil.DrawIcon(
                             e.Canvas,
-                            this._imagePaint,
+                            FileListPageResources.IMAGE_PAINT,
                             item.JumboIcon,
                             iconRect,
                             this._scale);
@@ -1149,7 +1140,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             ThumbnailUtil.DrawFileThumbnail(
                                 e.Canvas,
-                                this._imagePaint,
+                                FileListPageResources.IMAGE_PAINT,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),
@@ -1159,7 +1150,7 @@ namespace PicSum.UIComponent.Contents.FileList
                         {
                             ThumbnailUtil.DrawDirectoryThumbnail(
                                 e.Canvas,
-                                this._imagePaint,
+                                FileListPageResources.IMAGE_PAINT,
                                 item.ThumbnailImage,
                                 thumbRect,
                                 new Size(item.SourceImageWidth, item.SourceImageHeight),
