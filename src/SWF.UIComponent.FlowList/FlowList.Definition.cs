@@ -7,9 +7,7 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
 {
-    /// <summary>
-    /// フローリストコントロール
-    /// </summary>
+    // TODO: 終了時に破棄
     public sealed partial class FlowList
     {
         public static readonly Color LIGHT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);

@@ -5,6 +5,7 @@ using Windows.Globalization.Fonts;
 
 namespace SWF.Core.ResourceAccessor
 {
+    // TODO: 終了時に破棄
     public static class FontCacher
     {
         public enum Size

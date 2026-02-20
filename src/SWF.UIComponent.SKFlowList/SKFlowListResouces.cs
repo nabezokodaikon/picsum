@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.SKFlowList
 {
+    // TODO: 終了時に破棄
     public static class SKFlowListResouces
     {
         public static readonly SKSamplingOptions TextSamplingOptions

@@ -2,8 +2,7 @@ using System.Drawing;
 
 namespace PicSum.UIComponent.AddressBar
 {
-    // TODO: フォントキャッシュのDispose処理。
-
+    // TODO: 終了時に破棄
     internal static class Palette
     {
         public static readonly Color OUTLINE_COLOR = Color.LightGray;

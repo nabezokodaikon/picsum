@@ -316,6 +316,7 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
+        // TODO: 終了時に破棄
         /// <summary>
         /// キャッシュクリア（メモリ節約、フォントDispose後推奨）
         /// </summary>
