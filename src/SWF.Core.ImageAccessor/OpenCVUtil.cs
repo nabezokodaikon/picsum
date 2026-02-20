@@ -10,6 +10,8 @@ namespace SWF.Core.ImageAccessor
     {
         private static readonly ImageEncodingParam WEBP_QUALITY
             = new(ImwriteFlags.WebPQuality, 70);
+
+        // TODO: 終了時に破棄
         private static readonly ConcurrentDictionary<int, Mat> DEST_MAT_CACHE = new();
 
         private static Mat GetDestMat()
