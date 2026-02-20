@@ -97,32 +97,15 @@ namespace PicSum.Job.Jobs
                     var addFileMaster = new FileMasterAddLogic(this);
                     var incrementDirectoryViewCounter = new DirectoryViewCounterIncrementLogic(this);
 
-                    var picturesDir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                    if (!string.IsNullOrEmpty(picturesDir) && FileUtil.IsExistsDirectory(picturesDir))
+                    var targetDir = this.GetInitialTargetDirectory();
+                    foreach (var dirPath in FileUtil.GetSubDirectoriesArray(targetDir, true))
                     {
-                        foreach (var dirPath in FileUtil.GetSubDirectoriesArray(picturesDir, true).Append(picturesDir))
-                        {
-                            this.ThrowIfJobCancellationRequested();
+                        this.ThrowIfJobCancellationRequested();
 
-                            if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
-                            {
-                                await addFileMaster.Execute(transactionConnection, dirPath).False();
-                                await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        foreach (var dirPath in FileUtil.GetSubDirectoriesArray(userDir, true))
+                        if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
                         {
-                            this.ThrowIfJobCancellationRequested();
-
-                            if (!await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False())
-                            {
-                                await addFileMaster.Execute(transactionConnection, dirPath).False();
-                                await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
-                            }
+                            await addFileMaster.Execute(transactionConnection, dirPath).False();
+                            await incrementDirectoryViewCounter.Execute(transactionConnection, dirPath).False();
                         }
                     }
                 }
@@ -133,6 +116,33 @@ namespace PicSum.Job.Jobs
 
                 return await this.GetOrCreateFileList().False();
             }
+        }
+
+        private string GetInitialTargetDirectory()
+        {
+            var myPictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            if (!string.IsNullOrEmpty(myPictures) && FileUtil.IsExistsDirectory(myPictures))
+            {
+                // マイピクチャフォルダが存在する場合。
+                if (FileUtil.HasSubDirectory(myPictures))
+                {
+                    // マイピクチャフォルダ内にフォルダがある場合。
+                    return myPictures;
+                }
+            }
+
+            var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (!string.IsNullOrEmpty(myDocuments) && FileUtil.IsExistsDirectory(myDocuments))
+            {
+                // マイドキュメントフォルダが存在する場合。
+                if (FileUtil.HasSubDirectory(myDocuments))
+                {
+                    // マイドキュメントフォルダ内にフォルダがある場合。
+                    return myDocuments;
+                }
+            }
+
+            return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         }
     }
 }
