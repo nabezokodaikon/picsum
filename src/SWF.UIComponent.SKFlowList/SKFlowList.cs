@@ -16,9 +16,35 @@ namespace SWF.UIComponent.SKFlowList
     /// フローリストコントロール
     /// </summary>
 
-    public sealed partial class SKFlowList
+    public sealed class SKFlowList
         : SKControl
     {
+        public event EventHandler<SKDrawItemEventArgs> SKDrawItem;
+        public event EventHandler<SKDrawItemsEventArgs> SKDrawItems;
+        public event EventHandler<SKDrawItemChangedEventArgs> DrawItemChanged;
+        public event EventHandler SelectedItemChanged;
+        public event EventHandler<MouseEventArgs> ItemMouseClick;
+        public event EventHandler<MouseEventArgs> ItemMouseDoubleClick;
+        public event EventHandler<MouseEventArgs> BackgroundMouseClick;
+        public event EventHandler ItemExecute;
+        public event EventHandler ItemDelete;
+        public event EventHandler ItemCopy;
+        public event EventHandler ItemCut;
+        public event EventHandler DragStart;
+
+        public const int SCROLL_BAR_DEFAULT_WIDTH = 17;
+
+        // 項目最小サイズ
+        public const int MINIMUM_ITEM_SIZE = 16;
+
+        private static readonly Size DRAG_SIZE = GetDragSize();
+
+        private static Size GetDragSize()
+        {
+            var size = SystemInformation.DragSize.Width * 16;
+            return new Size(size, size);
+        }
+
         // 描画フラグ
         private bool _isDraw = true;
 
@@ -75,6 +101,220 @@ namespace SWF.UIComponent.SKFlowList
 
         private bool _isRunningPaintSurfaceEvent = false;
         private bool _needsRepaint = false;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool CanKeyDown { get; set; } = true;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsLight { get; set; } = true;
+
+
+        /// <summary>
+        /// スクロールバー表示フラグ
+        /// </summary>
+        public bool IsScrollBarVisible
+        {
+            get
+            {
+                return this._scrollBar.Visible;
+            }
+        }
+
+        public int ScrollValue
+        {
+            get
+            {
+                return this._scrollBar.Value;
+            }
+        }
+
+        /// <summary>
+        /// 項目数
+        /// </summary>
+        [Category("項目表示"), DefaultValue(0)]
+        public int ItemCount
+        {
+            get
+            {
+                return this._itemCount;
+            }
+            set
+            {
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
+
+                if (this._rectangleSelection.IsBegun)
+                {
+                    this._rectangleSelection.EndSelection();
+                }
+
+                this._selectedItemIndexs.Clear();
+
+                this._mousePointItemIndex = -1;
+
+                if (this._foucusItemIndex > value - 1)
+                {
+                    this._foucusItemIndex = -1;
+                }
+
+                this._itemCount = value;
+
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 項目幅
+        /// </summary>
+        [Category("項目表示"), DefaultValue(MINIMUM_ITEM_SIZE)]
+        public int ItemWidth
+        {
+            get
+            {
+                return this._itemWidth;
+            }
+            set
+            {
+                if (this._rectangleSelection.IsBegun)
+                {
+                    throw new InvalidOperationException("短形選択中は設定できません。");
+                }
+
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, MINIMUM_ITEM_SIZE);
+
+                this._itemWidth = value;
+
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 項目高さ
+        /// </summary>
+        [Category("項目表示"), DefaultValue(MINIMUM_ITEM_SIZE)]
+        public int ItemHeight
+        {
+            get
+            {
+                return this._itemHeight;
+            }
+            set
+            {
+                if (this._rectangleSelection.IsBegun)
+                {
+                    throw new InvalidOperationException("短形選択中は設定できません。");
+                }
+
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, MINIMUM_ITEM_SIZE);
+
+                this._itemHeight = value;
+
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 項目間余白
+        /// </summary>
+        [Category("項目表示"), DefaultValue(0)]
+        public int ItemSpace
+        {
+            get
+            {
+                return this._itemSpace;
+            }
+            set
+            {
+                if (this._rectangleSelection.IsBegun)
+                {
+                    throw new InvalidOperationException("短形選択中は設定できません。");
+                }
+
+                ArgumentOutOfRangeException.ThrowIfLessThan(value, 0, nameof(value));
+
+                this._itemSpace = value;
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 行リストフラグ
+        /// </summary>
+        [Category("項目表示"), DefaultValue(false)]
+        public bool IsLileList
+        {
+            get
+            {
+                return this._isLileList;
+            }
+            set
+            {
+                if (this._rectangleSelection.IsBegun)
+                {
+                    throw new InvalidOperationException("短形選択中は設定できません。");
+                }
+
+                this._isLileList = value;
+                this.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// 複数選択フラグ
+        /// </summary>
+        [Category("項目動作"), DefaultValue(false)]
+        public bool IsMultiSelect
+        {
+            get
+            {
+                return this._isMultiSelect;
+            }
+            set
+            {
+                if (this._rectangleSelection.IsBegun)
+                {
+                    throw new InvalidOperationException("短形選択中は設定できません。");
+                }
+
+                this._selectedItemIndexs.Clear();
+                this._isMultiSelect = value;
+                this._rectangleSelection.IsUse = value;
+                this.Invalidate();
+            }
+        }
+
+        public bool IsRunningScrollAnimation
+        {
+            get
+            {
+                return this._animationTimer.Enabled;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new ContextMenuStrip ContextMenuStrip
+        {
+            get
+            {
+                return base.ContextMenuStrip;
+            }
+            set
+            {
+                if (base.ContextMenuStrip != null)
+                {
+                    base.ContextMenuStrip.Opening -= this.ContextMenuStrip_Opening;
+                }
+
+                base.ContextMenuStrip = value;
+
+                if (base.ContextMenuStrip != null)
+                {
+                    base.ContextMenuStrip.Opening += this.ContextMenuStrip_Opening;
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public float MouseWheelRate { get; set; } = 1f;
 
         public SKFlowList()
         {
@@ -285,25 +525,6 @@ namespace SWF.UIComponent.SKFlowList
                 this._animationTimer.Stop();
                 this._animationTimer.Dispose();
                 this._scrollBar.Dispose();
-
-                foreach (var item in this._darkSelectedStrokePaintCache)
-                {
-                    item.Value.Dispose();
-                }
-
-                foreach (var item in this._darkRectangleSelectionStrokePaintCache)
-                {
-                    item.Value.Dispose();
-                }
-
-                this.DarkBackgroundPaint.Dispose();
-                this.DarkTextPaint.Dispose();
-                this.DarkSelectedFillPaint.Dispose();
-                this._darkSelectedStrokePaint.Dispose();
-                this._darkFocusStrokePaint.Dispose();
-                this.DarkMousePointFillPaint.Dispose();
-                this._darkRectangleSelectionFillPaint.Dispose();
-                this._darkRectangleSelectionStrokePaint.Dispose();
             }
 
             base.Dispose(disposing);
@@ -353,11 +574,11 @@ namespace SWF.UIComponent.SKFlowList
 
                 if (this.IsLight)
                 {
-                    canvas.Clear(this.LightBackgroundPaint.Color);
+                    canvas.Clear(SKFlowListResouces.LIGHT_BACKGROUND_PAINT.Color);
                 }
                 else
                 {
-                    canvas.Clear(this.DarkBackgroundPaint.Color);
+                    canvas.Clear(SKFlowListResouces.DARK_BACKGROUND_PAINT.Color);
                 }
 
                 if (!this._isDraw)
@@ -1232,8 +1453,8 @@ namespace SWF.UIComponent.SKFlowList
         {
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            canvas.DrawRect(rect, this._darkRectangleSelectionFillPaint);
-            canvas.DrawRect(rect, this.GetDarkRectangleSelectionStrokePatint());
+            canvas.DrawRect(rect, SKFlowListResouces.DARK_RECTANGLE_SELECTION_FILL_PAINT);
+            canvas.DrawRect(rect, SKFlowListResouces.GetDarkRectangleSelectionStrokePatint(this));
         }
 
         private int GetRowFromVirtualY(int y)
@@ -1709,6 +1930,66 @@ namespace SWF.UIComponent.SKFlowList
         private void SelectedItemIndexs_Change(object sender, EventArgs e)
         {
             this.OnSelectedItemChanged(EventArgs.Empty);
+        }
+
+        private void OnSKDrawItem(SKDrawItemEventArgs e)
+        {
+            this.SKDrawItem?.Invoke(this, e);
+        }
+
+        private void OnDrawItemChanged(SKDrawItemChangedEventArgs e)
+        {
+            this.DrawItemChanged?.Invoke(this, e);
+        }
+
+        private void OnSKDrawItems(SKDrawItemsEventArgs e)
+        {
+            this.SKDrawItems?.Invoke(this, e);
+        }
+
+        private void OnSelectedItemChanged(EventArgs e)
+        {
+            this.SelectedItemChanged?.Invoke(this, e);
+        }
+
+        private void OnItemMouseClick(MouseEventArgs e)
+        {
+            this.ItemMouseClick?.Invoke(this, e);
+        }
+
+        private void OnItemMouseDoubleClick(MouseEventArgs e)
+        {
+            this.ItemMouseDoubleClick?.Invoke(this, e);
+        }
+
+        private void OnBackgroundMouseClick(MouseEventArgs e)
+        {
+            this.BackgroundMouseClick?.Invoke(this, e);
+        }
+
+        private void OnItemExecute(EventArgs e)
+        {
+            this.ItemExecute?.Invoke(this, e);
+        }
+
+        private void OnItemDelete(EventArgs e)
+        {
+            this.ItemDelete?.Invoke(this, e);
+        }
+
+        private void OnItemCopy(EventArgs e)
+        {
+            this.ItemCopy?.Invoke(this, e);
+        }
+
+        private void OnItemCut(EventArgs e)
+        {
+            this.ItemCut?.Invoke(this, e);
+        }
+
+        private void OnDragStart(EventArgs e)
+        {
+            this.DragStart?.Invoke(this, e);
         }
     }
 }

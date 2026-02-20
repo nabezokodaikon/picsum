@@ -3,6 +3,7 @@ using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -278,15 +279,15 @@ namespace SWF.UIComponent.WideDropDown
 
             if (e.IsSelected && e.IsMousePoint)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightSelectedFillPaint);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_SELECTED_FILL_PAINT);
             }
             else if (e.IsSelected)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightSelectedFillPaint);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_SELECTED_FILL_PAINT);
             }
             else if (e.IsMousePoint)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightMousePointFillPaint);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_MOUSE_POINT_FILL_PAINT);
             }
 
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
@@ -303,7 +304,7 @@ namespace SWF.UIComponent.WideDropDown
 
             SkiaUtil.DrawText(
                 e.Canvas,
-                this._flowList.LightTextPaint,
+                SKFlowListResouces.LIGHT_TEXT_PAINT,
                 font,
                 this._itemList[e.ItemIndex],
                 textRect,
