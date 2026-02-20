@@ -1473,10 +1473,10 @@ namespace SWF.UIComponent.FlowList
 
         private void DrawRectangleSelection(Graphics g)
         {
-            g.FillRectangle(FlowListResouces.DARK_RECTANGLE_SELECTION_BRUSH, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
+            g.FillRectangle(FlowListResources.DARK_RECTANGLE_SELECTION_BRUSH, this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
 
             g.DrawRectangle(
-                FlowListResouces.GetDarkRectangleSelectionPen(this),
+                FlowListResources.GetDarkRectangleSelectionPen(this),
                 this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value));
         }
 

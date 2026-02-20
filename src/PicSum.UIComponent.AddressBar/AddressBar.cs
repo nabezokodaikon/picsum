@@ -165,8 +165,8 @@ namespace PicSum.UIComponent.AddressBar
             e.Graphics.CompositingQuality = CompositingQuality.Invalid;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
 
-            e.Graphics.FillRectangle(Palette.OUT_LINE_BRUSH, this.ClientRectangle);
-            e.Graphics.FillRectangle(Palette.INNER_BRUSH, this.GetInnerRectangle());
+            e.Graphics.FillRectangle(AddressBarResources.OUT_LINE_BRUSH, this.ClientRectangle);
+            e.Graphics.FillRectangle(AddressBarResources.INNER_BRUSH, this.GetInnerRectangle());
 
             this._directoryHistoryItem.Draw(e.Graphics);
 

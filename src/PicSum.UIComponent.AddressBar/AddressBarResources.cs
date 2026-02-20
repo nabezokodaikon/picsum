@@ -3,7 +3,7 @@ using System.Drawing;
 namespace PicSum.UIComponent.AddressBar
 {
     // TODO: 終了時に破棄
-    internal static class Palette
+    internal static class AddressBarResources
     {
         public static readonly Color OUTLINE_COLOR = Color.LightGray;
         public static readonly Color INNER_COLOR = Color.FromArgb(255, 255, 255, 255);

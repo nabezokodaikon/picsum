@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace SWF.UIComponent.FlowList
 {
     // TODO: 終了時に破棄
-    public static class FlowListResouces
+    public static class FlowListResources
     {
         public static readonly Color LIGHT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);
         public static readonly Color DARK_ITEM_TEXT_COLOR = Color.FromArgb(255, 255, 255);

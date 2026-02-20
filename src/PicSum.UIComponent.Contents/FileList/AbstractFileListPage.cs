@@ -806,7 +806,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 SkiaUtil.DrawText(
                     canvas,
-                    SKFlowListResouces.DARK_TEXT_PAINT,
+                    SKFlowListResources.DARK_TEXT_PAINT,
                     FontCacher.GetRegularSKFont(FontCacher.Size.Medium, this._scale),
                     item.FileName,
                     textRect,
@@ -832,8 +832,8 @@ namespace PicSum.UIComponent.Contents.FileList
             canvas.DrawImage(
                 item.FileNameImage,
                 textRect,
-                SKFlowListResouces.TextSamplingOptions,
-                SKFlowListResouces.DARK_TEXT_PAINT);
+                SKFlowListResources.TextSamplingOptions,
+                SKFlowListResources.DARK_TEXT_PAINT);
         }
 
         private SKRectI GetIconRectangle(SKDrawItemInfo info, int itemTextHeight)
@@ -1106,19 +1106,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     if (info.IsSelected)
                     {
-                        e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResouces.DARK_SELECTED_FILL_PAINT);
-                        e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResouces.GetDarkSelectedStrokePaint(this));
+                        e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResources.DARK_SELECTED_FILL_PAINT);
+                        e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResources.GetDarkSelectedStrokePaint(this));
                     }
                     else
                     {
                         if (info.IsFocus)
                         {
-                            e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResouces.GetDarkFocusStrokePaint(this));
+                            e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResources.GetDarkFocusStrokePaint(this));
                         }
 
                         if (info.IsMousePoint)
                         {
-                            e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResouces.DARK_MOUSE_POINT_FILL_PAINT);
+                            e.Canvas.DrawRect(info.ItemRectangle, SKFlowListResources.DARK_MOUSE_POINT_FILL_PAINT);
                         }
                     }
 

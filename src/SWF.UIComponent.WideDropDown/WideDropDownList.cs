@@ -279,15 +279,15 @@ namespace SWF.UIComponent.WideDropDown
 
             if (e.IsSelected && e.IsMousePoint)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_SELECTED_FILL_PAINT);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_SELECTED_FILL_PAINT);
             }
             else if (e.IsSelected)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_SELECTED_FILL_PAINT);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_SELECTED_FILL_PAINT);
             }
             else if (e.IsMousePoint)
             {
-                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResouces.LIGHT_MOUSE_POINT_FILL_PAINT);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_MOUSE_POINT_FILL_PAINT);
             }
 
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
@@ -304,7 +304,7 @@ namespace SWF.UIComponent.WideDropDown
 
             SkiaUtil.DrawText(
                 e.Canvas,
-                SKFlowListResouces.LIGHT_TEXT_PAINT,
+                SKFlowListResources.LIGHT_TEXT_PAINT,
                 font,
                 this._itemList[e.ItemIndex],
                 textRect,

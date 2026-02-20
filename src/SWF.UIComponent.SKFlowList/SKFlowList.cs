@@ -574,11 +574,11 @@ namespace SWF.UIComponent.SKFlowList
 
                 if (this.IsLight)
                 {
-                    canvas.Clear(SKFlowListResouces.LIGHT_BACKGROUND_PAINT.Color);
+                    canvas.Clear(SKFlowListResources.LIGHT_BACKGROUND_PAINT.Color);
                 }
                 else
                 {
-                    canvas.Clear(SKFlowListResouces.DARK_BACKGROUND_PAINT.Color);
+                    canvas.Clear(SKFlowListResources.DARK_BACKGROUND_PAINT.Color);
                 }
 
                 if (!this._isDraw)
@@ -1453,8 +1453,8 @@ namespace SWF.UIComponent.SKFlowList
         {
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            canvas.DrawRect(rect, SKFlowListResouces.DARK_RECTANGLE_SELECTION_FILL_PAINT);
-            canvas.DrawRect(rect, SKFlowListResouces.GetDarkRectangleSelectionStrokePatint(this));
+            canvas.DrawRect(rect, SKFlowListResources.DARK_RECTANGLE_SELECTION_FILL_PAINT);
+            canvas.DrawRect(rect, SKFlowListResources.GetDarkRectangleSelectionStrokePatint(this));
         }
 
         private int GetRowFromVirtualY(int y)
