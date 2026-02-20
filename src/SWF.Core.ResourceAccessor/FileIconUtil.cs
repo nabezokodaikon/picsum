@@ -3,9 +3,70 @@ using WinApi;
 
 namespace SWF.Core.ResourceAccessor
 {
-
     internal static class FileIconUtil
     {
+        public static Bitmap GetMyComputerJumboIcon(bool isJumbo)
+        {
+            while (true)
+            {
+                var pidl = IntPtr.Zero;
+                try
+                {
+                    // 1. マイコンピュータのPIDLを取得
+                    if (WinApiMembers.SHGetSpecialFolderLocation(IntPtr.Zero, WinApiMembers.CSIDL_DRIVES, out pidl) != 0)
+                    {
+                        Task.Delay(500).GetAwaiter().GetResult();
+                        continue;
+                    }
+
+                    // 2. PIDLからシステムイメージリスト内でのインデックスを取得
+                    var shfi = new WinApiMembers.SHFILEINFO();
+                    var flags = WinApiMembers.SHGFI_PIDL | WinApiMembers.SHGFI_SYSICONINDEX;
+                    WinApiMembers.SHGetFileInfo(pidl, 0, ref shfi, (int)Marshal.SizeOf(shfi), flags);
+
+                    // 3. IImageListを取得
+                    var iidImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+                    if (WinApiMembers.SHGetImageList(isJumbo ? WinApiMembers.SHIL_JUMBO : WinApiMembers.SHIL_EXTRALARGE, ref iidImageList, out var iml) == 0)
+                    {
+                        var hIcon = IntPtr.Zero;
+                        // 4. インデックスを指定してアイコンを抽出 (1 = ILD_TRANSPARENT)
+                        var hr = iml.GetIcon(shfi.iIcon, 1, out hIcon);
+
+                        if (hr == 0 && hIcon != IntPtr.Zero)
+                        {
+                            using (var icon = Icon.FromHandle(hIcon))
+                            {
+                                // 2. ToBitmap() を使用（これで多くの場合、透過が維持されます）
+                                var bmp = icon.ToBitmap();
+
+                                // 元のアイコンハンドルを解放
+                                WinApiMembers.DestroyIcon(hIcon);
+
+                                return bmp;
+                            }
+                        }
+                        else
+                        {
+                            Task.Delay(500).GetAwaiter().GetResult();
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Task.Delay(500).GetAwaiter().GetResult();
+                        continue;
+                    }
+                }
+                finally
+                {
+                    if (pidl != IntPtr.Zero)
+                    {
+                        Marshal.FreeCoTaskMem(pidl);
+                    }
+                }
+            }
+        }
+
         public static Bitmap GetSystemIcon(WinApiMembers.ShellSpecialFolder specialFolder, WinApiMembers.ShellFileInfoFlags shil)
         {
             while (true)

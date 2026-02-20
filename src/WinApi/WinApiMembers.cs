@@ -326,6 +326,12 @@ namespace WinApi
 
         public const int WM_TIMER_TICK = WinApiMembers.WM_APP + 1;
 
+        public const int SHGFI_PIDL = 0x000000008;
+        public const int SHGFI_SYSICONINDEX = 0x000004000;
+        public const int CSIDL_DRIVES = 0x0011; // マイコンピュータ (PC)
+        public const int SHIL_EXTRALARGE = 0x2; // 48x48
+        public const int SHIL_JUMBO = 0x4;      // 256x256
+
         [Flags]
         public enum FileAttributesFlags : uint
         {
@@ -625,6 +631,19 @@ namespace WinApi
                                             // 以降省略可
         }
 
+        [ComImport, Guid("46EB5926-582E-4017-9FDF-E8998DAA0950"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        public interface IImageList
+        {
+            int Add(IntPtr hbmImage, IntPtr hbmMask, ref int pi);
+            int ReplaceIcon(int i, IntPtr hicon, ref int pi);
+            int SetOverlayImage(int iImage, int iOverlay);
+            int Replace(int i, IntPtr hbmImage, IntPtr hbmMask);
+            int AddMasked(IntPtr hbmImage, uint crMask, ref int pi);
+            int Draw(IntPtr pimldp); // 本来は構造体ですがIntPtrでスキップ
+            int Remove(int i);
+            int GetIcon(int i, int flags, out IntPtr picon); // 8番目
+        }
+
         [DllImport("ntdll.dll", SetLastError = true)]
         public static extern int RtlGetVersion(ref OSVERSIONINFOEX versionInfo);
 
@@ -679,14 +698,23 @@ namespace WinApi
         [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SHGetFileInfo(string pszPath, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, int uFlags);
 
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SHGetFileInfo(IntPtr ppidl, int dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, int uFlags);
+
         [DllImport("shell32.dll", EntryPoint = "#727")]
         public static extern int SHGetImageList(SHIL iImageList, Guid riid, out IntPtr ppv);
+
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        public static extern int SHGetImageList(int iImageList, ref Guid riid, out IImageList ppv);
 
         [DllImport("Comctl32.dll")]
         public static extern bool ImageList_Destroy(IntPtr himl);
 
         [DllImport("Shell32.dll", CharSet = CharSet.Auto)]
         public static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, ShellSpecialFolder folder, out IntPtr idl);
+
+        [DllImport("shell32.dll")]
+        public static extern int SHGetSpecialFolderLocation(IntPtr hwndOwner, int nFolder, out IntPtr ppidl);
 
         [DllImport("comctl32.dll", SetLastError = true)]
         public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, int flags);

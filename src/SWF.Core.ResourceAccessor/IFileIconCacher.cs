@@ -5,6 +5,8 @@ namespace SWF.Core.ResourceAccessor
     {
         public Bitmap SmallPCIcon { get; }
         public Image LargePCIcon { get; }
+        public Bitmap ExtraLargePCIcon { get; }
+        public Bitmap JumboPCIcon { get; }
         public Bitmap SmallDirectoryIcon { get; }
         public Image ExtraLargeDirectoryIcon { get; }
         public Image JumboDirectoryIcon { get; }

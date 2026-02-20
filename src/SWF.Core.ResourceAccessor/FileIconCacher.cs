@@ -16,21 +16,35 @@ namespace SWF.Core.ResourceAccessor
         private readonly ConcurrentDictionary<string, Bitmap> _smallIconCash = [];
         private readonly ConcurrentDictionary<string, Bitmap> _extralargeIconCash = [];
         private readonly ConcurrentDictionary<string, Bitmap> _jumboIconCash = [];
+
         private readonly Lazy<Bitmap> _emptyFileIcon = new(
             static () => (Bitmap)ResourceFiles.EmptyIcon.Value,
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         private readonly Lazy<Bitmap> _smallPcIcon = new(
             static () => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_SMALLICON),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         private readonly Lazy<Bitmap> _largePcIcon = new(
             static () => FileIconUtil.GetSystemIcon(WinApiMembers.ShellSpecialFolder.CSIDL_DRIVES, WinApiMembers.ShellFileInfoFlags.SHGFI_LARGEICON),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
+        private readonly Lazy<Bitmap> _extralargePcIcon = new(
+            static () => FileIconUtil.GetMyComputerJumboIcon(false),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
+        private readonly Lazy<Bitmap> _jumboPcIcon = new(
+            static () => FileIconUtil.GetMyComputerJumboIcon(true),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
         private readonly Lazy<Bitmap> _smallDirectoryIcon = new(
             static () => FileIconUtil.GetSmallIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         private readonly Lazy<Bitmap> _extralargeDirectoryIcon = new(
             static () => FileIconUtil.GetLargeIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_EXTRALARGE),
             LazyThreadSafetyMode.ExecutionAndPublication);
+
         private readonly Lazy<Bitmap> _jumboDirectoryIcon = new(
             static () => FileIconUtil.GetLargeIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO),
             LazyThreadSafetyMode.ExecutionAndPublication);
@@ -48,6 +62,22 @@ namespace SWF.Core.ResourceAccessor
             get
             {
                 return this._largePcIcon.Value;
+            }
+        }
+
+        public Bitmap ExtraLargePCIcon
+        {
+            get
+            {
+                return this._extralargePcIcon.Value;
+            }
+        }
+
+        public Bitmap JumboPCIcon
+        {
+            get
+            {
+                return this._jumboPcIcon.Value;
             }
         }
 
@@ -97,6 +127,8 @@ namespace SWF.Core.ResourceAccessor
             {
                 this._smallPcIcon.Value.Dispose();
                 this._largePcIcon.Value.Dispose();
+                this._extralargePcIcon.Value.Dispose();
+                this._jumboPcIcon.Value.Dispose();
                 this._smallDirectoryIcon.Value.Dispose();
                 this._extralargeDirectoryIcon.Value.Dispose();
                 this._jumboDirectoryIcon.Value.Dispose();

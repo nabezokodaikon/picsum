@@ -182,8 +182,8 @@ namespace PicSum.Job.Logics
                 UpdateDate = DateTimeExtensions.EMPTY,
                 TakenDate = DateTimeExtensions.EMPTY,
                 SmallIcon = new IconImage(Instance<IFileIconCacher>.Value.SmallPCIcon),
-                ExtraLargeIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
-                JumboIcon = new IconImage((Bitmap)Instance<IFileIconCacher>.Value.LargePCIcon),
+                ExtraLargeIcon = Instance<IFileIconCacher>.Value.ExtraLargePCIcon,
+                JumboIcon = new IconImage((Bitmap)Instance<IFileIconCacher>.Value.JumboPCIcon),
             };
         }
     }
