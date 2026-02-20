@@ -101,6 +101,10 @@ namespace SWF.UIComponent.SKFlowList
         private bool _isRunningPaintSurfaceEvent = false;
         private bool _needsRepaint = false;
 
+        // キーに回押し関連
+        private static readonly TimeSpan DOUBLE_PRESS_THRESHOLD = TimeSpan.FromMilliseconds(400);
+        private DateTime _lastGKeyPressTime = DateTime.MinValue;
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
 
@@ -673,6 +677,31 @@ namespace SWF.UIComponent.SKFlowList
                 {
                     switch (e.KeyCode)
                     {
+                        case Keys.G:
+                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                            {
+                                this.ToBottom();
+                            }
+                            else
+                            {
+                                var now = DateTime.Now;
+
+                                // 前回のG押下から一定時間以内なら「ダブルプレス」と判定
+                                if ((now - this._lastGKeyPressTime) <= DOUBLE_PRESS_THRESHOLD)
+                                {
+                                    // gを2回続けて押した
+                                    this.ToTop();
+
+                                    // 連続3回目を防ぐためリセット
+                                    this._lastGKeyPressTime = DateTime.MinValue;
+                                }
+                                else
+                                {
+                                    // 普通の1回押し → 次回の判定用に時間を記録
+                                    this._lastGKeyPressTime = now;
+                                }
+                            }
+                            break;
                         case Keys.Left:
                             if (this.LeftKeyDown())
                             {
@@ -1707,6 +1736,30 @@ namespace SWF.UIComponent.SKFlowList
             this.EnsureVisible(newIndex, true);
 
             this._foucusItemIndex = newIndex;
+        }
+
+        private void ToTop()
+        {
+            if (this._itemCount == 0)
+            {
+                throw new InvalidOperationException("項目が存在しません。");
+            }
+
+            var index = 0;
+            this.EnsureVisible(index, true);
+            this._foucusItemIndex = 0;
+        }
+
+        private void ToBottom()
+        {
+            if (this._itemCount == 0)
+            {
+                throw new InvalidOperationException("項目が存在しません。");
+            }
+
+            var index = this._itemCount - 1;
+            this.EnsureVisible(index, true);
+            this._foucusItemIndex = 0;
         }
 
         private void HomeKeyDown()
