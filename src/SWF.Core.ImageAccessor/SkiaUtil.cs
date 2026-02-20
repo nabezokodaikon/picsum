@@ -316,11 +316,10 @@ namespace SWF.Core.ImageAccessor
             }
         }
 
-        // TODO: 終了時に破棄
         /// <summary>
         /// キャッシュクリア（メモリ節約、フォントDispose後推奨）
         /// </summary>
-        public static void ClearAll()
+        public static void Dispose()
         {
             _fontCharWidthCaches.Clear();
             _ellipsisWidthCache.Clear();

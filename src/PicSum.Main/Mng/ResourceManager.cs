@@ -1,10 +1,18 @@
 using NLog;
 using PicSum.Job.SyncJobs;
 using PicSum.Main.Conf;
+using PicSum.UIComponent.AddressBar;
 using PicSum.UIComponent.Contents.Conf;
+using PicSum.UIComponent.Contents.FileList;
+using PicSum.UIComponent.Contents.ImageView;
+using PicSum.UIComponent.InfoPanel;
 using SWF.Core.Base;
 using SWF.Core.FileAccessor;
+using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
+using SWF.UIComponent.TabOperation;
 using System;
 
 namespace PicSum.Main.Mng
@@ -90,6 +98,18 @@ namespace PicSum.Main.Mng
         {
             var closingJob = new ClosingSyncJob();
             closingJob.Execute();
+
+            AddressBarResources.Dispose();
+            SKImagePanelResources.Dispose();
+            InfoPanelResources.Dispose();
+            OpenCVUtil.Dispose();
+            SkiaUtil.Dispose();
+            FontCacher.Dispose();
+            ResourceFiles.Dispose();
+            FlowListResources.Dispose();
+            FileListPageResources.Dispose();
+            SKFlowListResources.Dispose();
+            TabSwitchResources.Dispose();
 
             Config.INSTANCE.WindowState = BrowseConfig.INSTANCE.WindowState;
             Config.INSTANCE.WindowLocaionX = BrowseConfig.INSTANCE.WindowLocaion.X;

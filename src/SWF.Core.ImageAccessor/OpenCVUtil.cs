@@ -5,14 +5,22 @@ using System.Collections.Concurrent;
 
 namespace SWF.Core.ImageAccessor
 {
-
     public static class OpenCVUtil
     {
         private static readonly ImageEncodingParam WEBP_QUALITY
             = new(ImwriteFlags.WebPQuality, 70);
 
-        // TODO: 終了時に破棄
         private static readonly ConcurrentDictionary<int, Mat> DEST_MAT_CACHE = new();
+
+        public static void Dispose()
+        {
+            foreach (var item in DEST_MAT_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            DEST_MAT_CACHE.Clear();
+        }
 
         private static Mat GetDestMat()
         {

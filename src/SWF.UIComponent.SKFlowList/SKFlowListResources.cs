@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.SKFlowList
 {
-    // TODO: 終了時に破棄
     public static class SKFlowListResources
     {
         public static readonly SKSamplingOptions TextSamplingOptions
@@ -321,6 +320,64 @@ namespace SWF.UIComponent.SKFlowList
                 _lightFocusStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
+        }
+
+        public static void Dispose()
+        {
+            DARK_BACKGROUND_PAINT.Dispose();
+            DARK_TEXT_PAINT.Dispose();
+            DARK_SELECTED_FILL_PAINT.Dispose();
+            DARK_MOUSE_POINT_FILL_PAINT.Dispose();
+            DARK_SELECTED_STROKE_PAINT.Dispose();
+            DARK_RECTANGLE_SELECTION_FILL_PAINT.Dispose();
+            DARK_RECTANGLE_SELECTION_STROKE_PAINT.Dispose();
+            DARK_FOCUS_STROKE_PAINT.Dispose();
+
+            LIGHT_BACKGROUND_PAINT.Dispose();
+            LIGHT_TEXT_PAINT.Dispose();
+            LIGHT_SELECTED_FILL_PAINT.Dispose();
+            LIGHT_MOUSE_POINT_FILL_PAINT.Dispose();
+            LIGHT_SELECTED_STROKE_PAINT.Dispose();
+            LIGHT_RECTANGLE_SELECTION_FILL_PAINT.Dispose();
+            LIGHT_RECTANGLE_SELECTION_STROKE_PAINT.Dispose();
+            LIGHT_FOCUS_STROKE_PAINT.Dispose();
+
+            foreach (var item in _darkSelectedStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in _darkRectangleSelectionStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in _darkFocusStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in _lightSelectedStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in _lightRectangleSelectionStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in _lightFocusStrokePaintCache)
+            {
+                item.Value.Dispose();
+            }
+
+            _darkSelectedStrokePaintCache.Clear();
+            _darkRectangleSelectionStrokePaintCache.Clear();
+            _darkFocusStrokePaintCache.Clear();
+            _lightSelectedStrokePaintCache.Clear();
+            _lightRectangleSelectionStrokePaintCache.Clear();
+            _lightFocusStrokePaintCache.Clear();
         }
     }
 }

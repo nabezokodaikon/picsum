@@ -5,7 +5,6 @@ using WinApi;
 
 namespace SWF.Core.ResourceAccessor
 {
-    // TODO: 終了時に破棄
     /// <summary>
     /// ファイルアイコンキャッシュクラス
     /// </summary>

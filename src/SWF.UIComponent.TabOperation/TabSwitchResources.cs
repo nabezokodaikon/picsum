@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.TabOperation
 {
-    // TODO: 終了時に破棄
     public static class TabSwitchResources
     {
         public static readonly Color TITLE_COLOR = Color.FromArgb(0, 64, 64, 64);
@@ -12,5 +11,10 @@ namespace SWF.UIComponent.TabOperation
               TextFormatFlags.VerticalCenter |
               TextFormatFlags.SingleLine |
               TextFormatFlags.EndEllipsis;
+
+        public static void Dispose()
+        {
+
+        }
     }
 }

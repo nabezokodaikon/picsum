@@ -2,7 +2,6 @@
 
 namespace PicSum.UIComponent.Contents.ImageView
 {
-    // TODO: 終了時に破棄
     public static class SKImagePanelResources
     {
         public static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
@@ -48,5 +47,17 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             Color = new(128, 128, 128),
         };
+
+        public static void Dispose()
+        {
+            IMAGE_PAINT.Dispose();
+            INACTIVE_THUMBNAIL_PAINT.Dispose();
+            ACTIVE_THUMBNAIL_PAINT.Dispose();
+            THUMBNAI_PANEL_PAINT.Dispose();
+            THUMBNAI_FILTER_PAINT.Dispose();
+            ACTIVE_THUMBNAI_STROKE_PAINT.Dispose();
+            MESSAGE_PAINT.Dispose();
+            LOADING_PAINT.Dispose();
+        }
     }
 }

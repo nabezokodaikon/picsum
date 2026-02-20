@@ -5,7 +5,6 @@ using Windows.Globalization.Fonts;
 
 namespace SWF.Core.ResourceAccessor
 {
-    // TODO: 終了時に破棄
     public static class FontCacher
     {
         public enum Size
@@ -25,6 +24,34 @@ namespace SWF.Core.ResourceAccessor
         private static readonly ConcurrentDictionary<float, Font> BOLD_GDI_FONT_CACHE = [];
         private static readonly ConcurrentDictionary<float, SKFont> REGULAR_SK_FONT_CACHE = [];
         private static readonly ConcurrentDictionary<float, SKFont> BOLD_SK_FONT_CACHE = [];
+
+        public static void Dispose()
+        {
+            foreach (var item in REGULAR_GDI_FONT_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in BOLD_GDI_FONT_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in REGULAR_SK_FONT_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in BOLD_SK_FONT_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            REGULAR_GDI_FONT_CACHE.Clear();
+            BOLD_GDI_FONT_CACHE.Clear();
+            REGULAR_SK_FONT_CACHE.Clear();
+            BOLD_SK_FONT_CACHE.Clear();
+        }
 
         public static Font GetRegularGdiFont(Size srcSize, float scale)
         {

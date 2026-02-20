@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace PicSum.UIComponent.InfoPanel
 {
-    // TODO: 終了時に破棄する。
     public static class InfoPanelResources
     {
         public static readonly SKPaint BACKGROUND_PAINT = new()
@@ -50,6 +49,21 @@ namespace PicSum.UIComponent.InfoPanel
             TAG_ICON_CACHE.Add(scale, newTagIcon);
 
             return newTagIcon;
+        }
+
+        public static void Dispose()
+        {
+            BACKGROUND_PAINT.Dispose();
+            IMAGE_PAINT.Dispose();
+            MESSAGE_PAINT.Dispose();
+            ICON_PAINT.Dispose();
+
+            foreach (var item in TAG_ICON_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            TAG_ICON_CACHE.Clear();
         }
     }
 }

@@ -3,7 +3,6 @@ using SWF.Core.ResourceAccessor.Properties;
 
 namespace SWF.Core.ResourceAccessor
 {
-    // TODO: 終了時に破棄
     public static class ResourceFiles
     {
         public static readonly Lazy<Icon> AppIcon = new(static () =>
@@ -79,6 +78,26 @@ namespace SWF.Core.ResourceAccessor
                     return (Bitmap)Bitmap.FromStream(memoryStream, false, true);
                 }
             }
+        }
+
+        public static void Dispose()
+        {
+            AppIcon.Value.Dispose();
+            ActiveRatingIcon.Value.Dispose();
+            BookmarkIcon.Value.Dispose();
+            DropArrowIcon.Value.Dispose();
+            EmptyIcon.Value.Dispose();
+            GoBackIcon.Value.Dispose();
+            GoNextIcon.Value.Dispose();
+            HomeIcon.Value.Dispose();
+            InactiveRatingIcon.Value.Dispose();
+            InfoIcon.Value.Dispose();
+            ReloadIcon.Value.Dispose();
+            SliderButtonIcon.Value.Dispose();
+            SmallArrowDownIcon.Value.Dispose();
+            SmallArrowLeftIcon.Value.Dispose();
+            SmallArrowRightIcon.Value.Dispose();
+            TagIcon.Value.Dispose();
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Windows.Forms;
 
 namespace SWF.UIComponent.FlowList
 {
-    // TODO: 終了時に破棄
     public static class FlowListResources
     {
         public static readonly Color LIGHT_ITEM_TEXT_COLOR = Color.FromArgb(255, 0, 0, 0);
@@ -202,6 +201,67 @@ namespace SWF.UIComponent.FlowList
                 DARK_RECTANGLE_SELECTION_PEN_CACHE.Add(scale, newPen);
                 return newPen;
             }
+        }
+
+        public static void Dispose()
+        {
+            LIGHT_ITEM_TEXT_BRUSH.Dispose();
+            LIGHT_SELECTED_ITEM_BRUSH.Dispose();
+            LIGHT_FOUCUS_ITEM_BRUSH.Dispose();
+            LIGHT_MOUSE_POINT_ITEM_BRUSH.Dispose();
+            LIGHT_RECTANGLE_SELECTION_BRUSH.Dispose();
+
+            DARK_ITEM_TEXT_BRUSH.Dispose();
+            DARK_SELECTED_ITEM_BRUSH.Dispose();
+            DARK_FOUCUS_ITEM_BRUSH.Dispose();
+            DARK_MOUSE_POINT_ITEM_BRUSH.Dispose();
+            DARK_RECTANGLE_SELECTION_BRUSH.Dispose();
+
+            LIGHT_SELECTED_ITEM_PEN.Dispose();
+            LIGHT_FOUCUS_ITEM_PEN.Dispose();
+            LIGHT_RECTANGLE_SELECTION_PEN.Dispose();
+
+            DARK_SELECTED_ITEM_PEN.Dispose();
+            DARK_FOUCUS_ITEM_PEN.Dispose();
+            DARK_RECTANGLE_SELECTION_PEN.Dispose();
+
+            foreach (var item in LIGHT_SELECTED_ITEM_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in LIGHT_FOUCUS_ITEM_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in LIGHT_RECTANGLE_SELECTION_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in DARK_SELECTED_ITEM_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in DARK_FOUCUS_ITEM_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            foreach (var item in DARK_RECTANGLE_SELECTION_PEN_CACHE)
+            {
+                item.Value.Dispose();
+            }
+
+            LIGHT_SELECTED_ITEM_PEN_CACHE.Clear();
+            LIGHT_FOUCUS_ITEM_PEN_CACHE.Clear();
+            LIGHT_RECTANGLE_SELECTION_PEN_CACHE.Clear();
+
+            DARK_SELECTED_ITEM_PEN_CACHE.Clear();
+            DARK_FOUCUS_ITEM_PEN_CACHE.Clear();
+            DARK_RECTANGLE_SELECTION_PEN_CACHE.Clear();
         }
     }
 }
