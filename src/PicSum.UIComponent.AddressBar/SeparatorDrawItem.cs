@@ -6,7 +6,6 @@ using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
-using SWF.UIComponent.FlowList;
 using SWF.UIComponent.SKFlowList;
 using System;
 using System.Drawing;
@@ -58,12 +57,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || base.IsDropDown)
             {
-                g.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(AddressBarResources.MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(AddressBarResources.MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else

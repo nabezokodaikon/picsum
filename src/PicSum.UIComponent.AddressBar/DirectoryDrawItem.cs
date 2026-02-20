@@ -1,6 +1,5 @@
 using SWF.Core.Base;
 using SWF.Core.ResourceAccessor;
-using SWF.UIComponent.FlowList;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -55,11 +54,11 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown)
             {
-                g.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(AddressBarResources.MOUSE_POINT_ITEM_BRUSH, rect);
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(AddressBarResources.MOUSE_POINT_ITEM_BRUSH, rect);
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
@@ -73,7 +72,7 @@ namespace PicSum.UIComponent.AddressBar
                 new Point(
                     (int)(rect.Location.X + (rect.Width - textSize.Width) / 2f),
                     (int)(rect.Location.Y + (rect.Height - textSize.Height) / 2f)),
-                FlowListResources.LIGHT_ITEM_TEXT_COLOR,
+                AddressBarResources.ITEM_TEXT_COLOR,
                 TextFormatFlags.Top);
         }
 
