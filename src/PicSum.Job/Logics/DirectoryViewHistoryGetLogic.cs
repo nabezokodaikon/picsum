@@ -3,7 +3,6 @@ using PicSum.DatabaseAccessor.Sql;
 using SWF.Core.Base;
 using SWF.Core.DatabaseAccessor;
 using SWF.Core.Job;
-using System.Data;
 using ZLinq;
 
 namespace PicSum.Job.Logics
@@ -15,15 +14,14 @@ namespace PicSum.Job.Logics
     internal sealed class DirectoryViewHistoryGetLogic(IJob job)
         : AbstractLogic(job)
     {
-        public async ValueTask<string[]> Execute(IConnection con)
+        public async ValueTask<DirectoryViewHistoryDto[]> Execute(IConnection con)
         {
             using (Measuring.Time(true, "DirectoryViewHistoryGetLogic.Execute"))
             {
                 var sql = new DirectoryViewHistoryReadSql(100);
                 var dtoList = await con.ReadList<DirectoryViewHistoryDto>(sql).False();
                 return [.. dtoList
-                    .AsValueEnumerable()
-                    .Select(static dto => dto.DirectoryPath)];
+                    .AsValueEnumerable()];
             }
         }
     }

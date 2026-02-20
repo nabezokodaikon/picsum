@@ -40,6 +40,9 @@
   <ItemGroup>
     <Compile Update="Common\AbstractBrowsePage.cs" />
     <Compile Update="ContextMenu\FileContextMenu.cs" />
+    <Compile Update="FileList\HisotryFileListPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="FileList\BookmarkFileListPage.cs" />
     <Compile Update="FileList\FavoriteDirectoryListPage.cs" />
     <Compile Update="FileList\AbstractFileListPage.cs" />

@@ -119,6 +119,7 @@ namespace PicSum.Main.UIComponent
             this.showInfoToolButton = new BaseIconButton();
             this.addressBar = new AddressBar();
             this.searchBookmarkToolButton = new BaseIconButton();
+            this.historyToolButton = new BaseIconButton();
             this.tagDropToolButton = new WideDropToolButton();
             this.homeToolButton = new BaseIconButton();
             this.searchRatingToolButton = new BaseIconButton();
@@ -140,6 +141,7 @@ namespace PicSum.Main.UIComponent
             this.tagDropToolButton.Icon = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
             this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
             this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
+            this.historyToolButton.Image = ResourceFiles.HistoryIcon.Value;
 
             this.infoPanel.Visible = false;
 
@@ -313,6 +315,15 @@ namespace PicSum.Main.UIComponent
                 this.searchBookmarkToolButton.SetBounds(
                     this.homeToolButton.Left,
                     this.homeToolButton.Top * 4 + this.homeToolButton.Height * 3,
+                    this.homeToolButton.Width,
+                    this.homeToolButton.Height);
+
+                this.historyToolButton.Anchor
+                    = AnchorStyles.Top
+                    | AnchorStyles.Left;
+                this.historyToolButton.SetBounds(
+                    this.homeToolButton.Left,
+                    this.homeToolButton.Top * 4 + this.homeToolButton.Height * 4,
                     this.homeToolButton.Width,
                     this.homeToolButton.Height);
 
@@ -935,6 +946,18 @@ namespace PicSum.Main.UIComponent
             else if (e.Button == MouseButtons.Middle)
             {
                 this.OpenPage(new BookmarkFileListPageParameter(), PageOpenMode.AddTab);
+            }
+        }
+
+        private void HistoryToolButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.OpenPage(new HistoryFileListPageParameter(), PageOpenMode.OverlapTab);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                this.OpenPage(new HistoryFileListPageParameter(), PageOpenMode.AddTab);
             }
         }
     }

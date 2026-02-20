@@ -142,6 +142,13 @@ namespace PicSum.Job.Common
                 sender, callback);
         }
 
+        public void EnqueueDirectoryViewHistoryDeleteJob(ISender sender, ListParameter<string> parameter)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+
+            this._oneWayJobQueue.Value.Enqueue<DirectoryViewHistoryDeleteJob, ListParameter<string>>(sender, parameter);
+        }
+
         public void EnqueueSubDirectoriesGetJob(
             ISender sender,
             ValueParameter<string> parameter,
@@ -212,6 +219,19 @@ namespace PicSum.Job.Common
             this._twoWayJobQueue.Value
                 .Enqueue<
                     BookmarksGetJob,
+                    ListResult<FileShallowInfoEntity>>(
+                sender, callback);
+        }
+
+        public void EnqueueHisotryDirectoriesGetJob(
+            ISender sender, Action<ListResult<FileShallowInfoEntity>> callback)
+        {
+            ArgumentNullException.ThrowIfNull(sender, nameof(sender));
+            ArgumentNullException.ThrowIfNull(sender, nameof(callback));
+
+            this._twoWayJobQueue.Value
+                .Enqueue<
+                    HisotryDirectoriesGetJob,
                     ListResult<FileShallowInfoEntity>>(
                 sender, callback);
         }

@@ -33,6 +33,10 @@ namespace SWF.Core.ResourceAccessor
             static () => CreateBitmapFromByteArray(Resources.GoNextIcon),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
+        public static readonly Lazy<Bitmap> HistoryIcon = new(
+            static () => CreateBitmapFromByteArray(Resources.HistoryIcon),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
         public static readonly Lazy<Bitmap> HomeIcon = new(
             static () => CreateBitmapFromByteArray(Resources.HomeIcon),
             LazyThreadSafetyMode.ExecutionAndPublication);
@@ -89,6 +93,7 @@ namespace SWF.Core.ResourceAccessor
             EmptyIcon.Value.Dispose();
             GoBackIcon.Value.Dispose();
             GoNextIcon.Value.Dispose();
+            HistoryIcon.Value.Dispose();
             HomeIcon.Value.Dispose();
             InactiveRatingIcon.Value.Dispose();
             InfoIcon.Value.Dispose();

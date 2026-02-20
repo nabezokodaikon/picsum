@@ -1,4 +1,5 @@
 using PicSum.DatabaseAccessor.Connection;
+using PicSum.DatabaseAccessor.Dto;
 using PicSum.Job.Entities;
 using PicSum.Job.Logics;
 using SWF.Core.Base;
@@ -19,13 +20,13 @@ namespace PicSum.Job.Jobs
             var logic = new FileShallowInfoGetLogic(this);
             var result = new ListResult<FileShallowInfoEntity>();
 
-            foreach (var directoryPath in await this.GetHistories().False())
+            foreach (var dto in await this.GetHistories().False())
             {
                 this.ThrowIfJobCancellationRequested();
 
                 try
                 {
-                    var info = await logic.Get(directoryPath, false).False();
+                    var info = await logic.Get(dto.DirectoryPath, false).False();
                     if (!info.IsEmpty)
                     {
                         result.Add(info);
@@ -41,7 +42,7 @@ namespace PicSum.Job.Jobs
             this.Callback(result);
         }
 
-        private async ValueTask<string[]> GetHistories()
+        private async ValueTask<DirectoryViewHistoryDto[]> GetHistories()
         {
             var con = await Instance<IFileInfoDao>.Value.Connect().False();
             try

@@ -13,9 +13,10 @@ namespace PicSum.DatabaseAccessor.Sql
         const string SQL_TEXT =
 @"
 SELECT mf.file_path
+      ,tfvh.view_date_ticks
   FROM m_file mf
        INNER JOIN (SELECT tfvh.file_id AS file_id
-                         ,MAX(tfvh.view_date_ticks)
+                         ,MAX(tfvh.view_date_ticks) AS view_date_ticks
                      FROM t_directory_view_history tfvh
                  GROUP BY tfvh.file_id
                  ORDER BY tfvh.view_date_ticks DESC

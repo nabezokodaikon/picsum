@@ -92,6 +92,10 @@ namespace PicSum.Main.UIComponent
             // 
             this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
             // 
+            // historyToolButton
+            // 
+            this.historyToolButton.MouseClick += this.HistoryToolButton_MouseClick;
+            // 
             // toolPanel2
             // 
             this.toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
@@ -99,7 +103,8 @@ namespace PicSum.Main.UIComponent
                 this.searchBookmarkToolButton,
                 this.homeToolButton,
                 this.tagDropToolButton,
-                this.searchRatingToolButton);
+                this.searchRatingToolButton,
+                this.historyToolButton);
             this.toolPanel2.IsDrawRightBorderLine = true;
             this.toolPanel2.VerticalTopMargin = 28;
             // 
@@ -122,6 +127,7 @@ namespace PicSum.Main.UIComponent
         private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
         private SWF.UIComponent.Base.BaseIconButton reloadToolButton;
         private SWF.UIComponent.Base.BaseIconButton searchBookmarkToolButton;
+        private SWF.UIComponent.Base.BaseIconButton historyToolButton;
 
         #endregion
     }
