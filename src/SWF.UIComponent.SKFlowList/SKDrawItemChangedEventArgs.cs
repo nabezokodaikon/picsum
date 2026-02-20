@@ -2,7 +2,7 @@ using System;
 
 namespace SWF.UIComponent.SKFlowList
 {
-    public sealed class DrawItemChangedEventArgs
+    public sealed class SKDrawItemChangedEventArgs
         : EventArgs
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace SWF.UIComponent.SKFlowList
         /// </summary>
         /// <param name="drawFirstItemIndex"></param>
         /// <param name="drawLastItemIndex"></param>
-        public DrawItemChangedEventArgs(int drawFirstItemIndex, int drawLastItemIndex)
+        public SKDrawItemChangedEventArgs(int drawFirstItemIndex, int drawLastItemIndex)
         {
             this.DrawFirstItemIndex = drawFirstItemIndex;
             this.DrawLastItemIndex = drawLastItemIndex;

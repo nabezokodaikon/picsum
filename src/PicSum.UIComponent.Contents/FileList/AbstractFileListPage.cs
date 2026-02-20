@@ -806,7 +806,7 @@ namespace PicSum.UIComponent.Contents.FileList
 
                 SkiaUtil.DrawText(
                     canvas,
-                    this.flowList.TextPaint,
+                    this.flowList.DarkTextPaint,
                     FontCacher.GetRegularSKFont(FontCacher.Size.Medium, this._scale),
                     item.FileName,
                     textRect,
@@ -833,7 +833,7 @@ namespace PicSum.UIComponent.Contents.FileList
                 item.FileNameImage,
                 textRect,
                 this.flowList.TextSamplingOptions,
-                this.flowList.TextPaint);
+                this.flowList.DarkTextPaint);
         }
 
         private SKRectI GetIconRectangle(SKDrawItemInfo info, int itemTextHeight)
@@ -1106,19 +1106,19 @@ namespace PicSum.UIComponent.Contents.FileList
                 {
                     if (info.IsSelected)
                     {
-                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.SelectedFillPaint);
-                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetSelectedStrokePaint());
+                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.DarkSelectedFillPaint);
+                        e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetDarkSelectedStrokePaint());
                     }
                     else
                     {
                         if (info.IsFocus)
                         {
-                            e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetFocusStrokePaint());
+                            e.Canvas.DrawRect(info.ItemRectangle, this.flowList.GetDarkFocusStrokePaint());
                         }
 
                         if (info.IsMousePoint)
                         {
-                            e.Canvas.DrawRect(info.ItemRectangle, this.flowList.MousePointFillPaint);
+                            e.Canvas.DrawRect(info.ItemRectangle, this.flowList.DarkMousePointFillPaint);
                         }
                     }
 
@@ -1179,7 +1179,7 @@ namespace PicSum.UIComponent.Contents.FileList
             }
         }
 
-        private void FlowList_DrawItemChanged(object sender, DrawItemChangedEventArgs e)
+        private void FlowList_DrawItemChanged(object sender, SKDrawItemChangedEventArgs e)
         {
             if (this.flowList.IsRunningScrollAnimation)
             {

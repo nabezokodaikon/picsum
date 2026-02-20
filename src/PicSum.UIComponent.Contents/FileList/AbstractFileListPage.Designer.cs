@@ -26,17 +26,14 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // flowList
             // 
-            this.flowList.BackColor = System.Drawing.Color.FromArgb(64, 68, 71);
+            this.flowList.IsLight = false;
             this.flowList.ContextMenuStrip = this.fileContextMenu;
             this.flowList.IsMultiSelect = true;
             this.flowList.ItemSpace = 4;
-            this.flowList.ItemTextAlignment = System.Drawing.StringAlignment.Center;
-            this.flowList.ItemTextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.flowList.ItemTextTrimming = System.Drawing.StringTrimming.EllipsisCharacter;
             this.flowList.MouseWheelRate = 0.4f;
             this.flowList.ItemDelete += new System.EventHandler(this.FlowList_ItemDelete);
             this.flowList.SKDrawItems += new System.EventHandler<SWF.UIComponent.SKFlowList.SKDrawItemsEventArgs>(this.FlowList_Drawitems);
-            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.SKFlowList.DrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
+            this.flowList.DrawItemChanged += new System.EventHandler<SWF.UIComponent.SKFlowList.SKDrawItemChangedEventArgs>(this.FlowList_DrawItemChanged);
             this.flowList.DragStart += new System.EventHandler(this.FlowList_DragStart);
             this.flowList.SelectedItemChanged += new System.EventHandler(this.FlowList_SelectedItemChange);
             this.flowList.ItemExecute += new System.EventHandler(this.FlowList_ItemExecute);

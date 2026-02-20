@@ -2,6 +2,7 @@ using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,11 +19,6 @@ namespace SWF.UIComponent.SKFlowList
     public sealed partial class SKFlowList
         : SKControl
     {
-        private StringTrimming _itemTextTrimming = StringTrimming.EllipsisCharacter;
-        private StringAlignment _itemTextAlignment = StringAlignment.Center;
-        private StringAlignment _itemTextLineAlignment = StringAlignment.Center;
-        private StringFormatFlags _itemTextFormatFlags = 0;
-
         // 描画フラグ
         private bool _isDraw = true;
 
@@ -290,24 +286,24 @@ namespace SWF.UIComponent.SKFlowList
                 this._animationTimer.Dispose();
                 this._scrollBar.Dispose();
 
-                foreach (var item in this._selectedStrokePaintCache)
+                foreach (var item in this._darkSelectedStrokePaintCache)
                 {
                     item.Value.Dispose();
                 }
 
-                foreach (var item in this._rectangleSelectionStrokePaintCache)
+                foreach (var item in this._darkRectangleSelectionStrokePaintCache)
                 {
                     item.Value.Dispose();
                 }
 
-                this.BackgroundPaint.Dispose();
-                this.TextPaint.Dispose();
-                this.SelectedFillPaint.Dispose();
-                this._selectedStrokePaint.Dispose();
-                this._focusStrokePaint.Dispose();
-                this.MousePointFillPaint.Dispose();
-                this._rectangleSelectionFillPaint.Dispose();
-                this._rectangleSelectionStrokePaint.Dispose();
+                this.DarkBackgroundPaint.Dispose();
+                this.DarkTextPaint.Dispose();
+                this.DarkSelectedFillPaint.Dispose();
+                this._darkSelectedStrokePaint.Dispose();
+                this._darkFocusStrokePaint.Dispose();
+                this.DarkMousePointFillPaint.Dispose();
+                this._darkRectangleSelectionFillPaint.Dispose();
+                this._darkRectangleSelectionStrokePaint.Dispose();
             }
 
             base.Dispose(disposing);
@@ -355,7 +351,14 @@ namespace SWF.UIComponent.SKFlowList
                 using var recorder = new SKPictureRecorder();
                 using var canvas = recorder.BeginRecording(e.Info.Rect);
 
-                canvas.Clear(this.BackgroundPaint.Color);
+                if (this.IsLight)
+                {
+                    canvas.Clear(this.LightBackgroundPaint.Color);
+                }
+                else
+                {
+                    canvas.Clear(this.DarkBackgroundPaint.Color);
+                }
 
                 if (!this._isDraw)
                 {
@@ -397,6 +400,15 @@ namespace SWF.UIComponent.SKFlowList
 
                             var isMousePoint = this._mousePointItemIndex == itemIndex;
                             var isFocus = this._foucusItemIndex == itemIndex;
+
+                            var arg = new SKDrawItemEventArgs(
+                                canvas,
+                                itemIndex,
+                                drawRect,
+                                isSelected,
+                                isMousePoint,
+                                isFocus);
+                            this.OnSKDrawItem(arg);
 
                             var info = new SKDrawItemInfo(
                                 itemIndex,
@@ -985,7 +997,7 @@ namespace SWF.UIComponent.SKFlowList
 
             if (isForced)
             {
-                this.OnDrawItemChanged(new DrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
+                this.OnDrawItemChanged(new SKDrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
             }
             else
             {
@@ -993,7 +1005,7 @@ namespace SWF.UIComponent.SKFlowList
                     beforeDrawParameter.DrawFirstItemIndex != this._drawParameter.DrawFirstItemIndex ||
                     beforeDrawParameter.DrawLastItemIndex != this._drawParameter.DrawLastItemIndex)
                 {
-                    this.OnDrawItemChanged(new DrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
+                    this.OnDrawItemChanged(new SKDrawItemChangedEventArgs(this._drawParameter.DrawFirstItemIndex, this._drawParameter.DrawLastItemIndex));
                 }
             }
         }
@@ -1220,8 +1232,8 @@ namespace SWF.UIComponent.SKFlowList
         {
             var rect = this._rectangleSelection.GetDrawRectangle(this._scrollBar.Value);
 
-            canvas.DrawRect(rect, this._rectangleSelectionFillPaint);
-            canvas.DrawRect(rect, this.GetRectangleSelectionStrokePatint());
+            canvas.DrawRect(rect, this._darkRectangleSelectionFillPaint);
+            canvas.DrawRect(rect, this.GetDarkRectangleSelectionStrokePatint());
         }
 
         private int GetRowFromVirtualY(int y)

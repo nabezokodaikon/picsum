@@ -1,5 +1,6 @@
 using SkiaSharp;
 using SWF.Core.Base;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,91 +27,197 @@ namespace SWF.UIComponent.SKFlowList
             return new Size(size, size);
         }
 
-        public static readonly Color ITEM_TEXT_COLOR = Color.FromArgb(255, 255, 255);
-        private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
-        private static readonly SKColor SELECTED_FILL_COLOR = new(255, 255, 255, 64);
-        private static readonly SKColor SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
-        private static readonly SKColor FOCUS_STROKE_COLOR = new(255, 255, 255, 64);
-        private static readonly SKColor MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
-        private static readonly SKColor RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
-        private static readonly SKColor RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
-
         public readonly SKSamplingOptions TextSamplingOptions
             = new(SKFilterMode.Nearest);
 
-        public readonly SKPaint BackgroundPaint = new()
+        private static readonly SKColor DARK_BACKGROUND_COLOR = new(64, 68, 71);
+        private static readonly SKColor DARK_SELECTED_FILL_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor DARK_SELECTED_STROKE_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor DARK_FOCUS_STROKE_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor DARK_MOUSE_POINT_FILL_COLOR = new(255, 255, 255, 32);
+        private static readonly SKColor DARK_RECTANGLE_SELECTION_FILL_COLOR = new(255, 255, 255, 64);
+        private static readonly SKColor DARK_RECTANGLE_SELECTION_STROKE_COLOR = new(255, 255, 255, 64);
+
+        private static readonly SKColor LIGHT_BACKGROUND_COLOR = new(255, 255, 255);
+
+        private static readonly SKColor LIGHT_SELECTED_FILL_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 4));
+        private static readonly SKColor LIGHT_SELECTED_STROKE_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 4));
+        private static readonly SKColor LIGHT_FOCUS_FILL_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 8));
+        private static readonly SKColor LIGHT_FOCUS_STROKE_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 8));
+        private static readonly SKColor LIGHT_MOUSE_POINT_FILL_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 8));
+        private static readonly SKColor LIGHT_RECTANGLE_SELECTION_FILL_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 4));
+        private static readonly SKColor LIGHT_RECTANGLE_SELECTION_STROKE_COLOR = new(
+            SystemColors.Highlight.R,
+            SystemColors.Highlight.G,
+            SystemColors.Highlight.B,
+            (byte)(SystemColors.Highlight.A / 4));
+
+        public readonly SKPaint DarkBackgroundPaint = new()
         {
             BlendMode = SKBlendMode.Src,
-            Color = BACKGROUND_COLOR,
+            Color = DARK_BACKGROUND_COLOR,
             IsAntialias = false,
         };
 
-        public readonly SKPaint TextPaint = new()
+        public readonly SKPaint DarkTextPaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
             Color = new(255, 255, 255, 255),
             IsAntialias = false,
         };
 
-        public readonly SKPaint SelectedFillPaint = new()
+        public readonly SKPaint DarkSelectedFillPaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = SELECTED_FILL_COLOR,
+            Color = DARK_SELECTED_FILL_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
-        public readonly SKPaint MousePointFillPaint = new()
+        public readonly SKPaint DarkMousePointFillPaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = MOUSE_POINT_FILL_COLOR,
+            Color = DARK_MOUSE_POINT_FILL_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
-        private readonly SKPaint _selectedStrokePaint = new()
+        private readonly SKPaint _darkSelectedStrokePaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = SELECTED_STROKE_COLOR,
+            Color = DARK_SELECTED_STROKE_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
-        private readonly SKPaint _rectangleSelectionFillPaint = new()
+        private readonly SKPaint _darkRectangleSelectionFillPaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = RECTANGLE_SELECTION_FILL_COLOR,
+            Color = DARK_RECTANGLE_SELECTION_FILL_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Fill,
         };
 
-        private readonly SKPaint _rectangleSelectionStrokePaint = new()
+        private readonly SKPaint _darkRectangleSelectionStrokePaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = RECTANGLE_SELECTION_STROKE_COLOR,
+            Color = DARK_RECTANGLE_SELECTION_STROKE_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
-        private readonly SKPaint _focusStrokePaint = new()
+        private readonly SKPaint _darkFocusStrokePaint = new()
         {
             BlendMode = SKBlendMode.SrcOver,
-            Color = FOCUS_STROKE_COLOR,
+            Color = DARK_FOCUS_STROKE_COLOR,
             IsAntialias = false,
             Style = SKPaintStyle.Stroke,
             StrokeWidth = 2,
         };
 
-        private readonly Dictionary<float, SKPaint> _selectedStrokePaintCache = [];
-        private readonly Dictionary<float, SKPaint> _rectangleSelectionStrokePaintCache = [];
-        private readonly Dictionary<float, SKPaint> _focusStrokePaintCache = [];
+        public readonly SKPaint LightBackgroundPaint = new()
+        {
+            BlendMode = SKBlendMode.Src,
+            Color = LIGHT_BACKGROUND_COLOR,
+            IsAntialias = false,
+        };
 
-        public SKPaint GetSelectedStrokePaint()
+        public readonly SKPaint LightTextPaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = new(0, 0, 0),
+            IsAntialias = false,
+        };
+
+        public readonly SKPaint LightSelectedFillPaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_SELECTED_FILL_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Fill,
+        };
+
+        public readonly SKPaint LightMousePointFillPaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_MOUSE_POINT_FILL_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Fill,
+        };
+
+        private readonly SKPaint _lightSelectedStrokePaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_SELECTED_STROKE_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        private readonly SKPaint _lightRectangleSelectionFillPaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_RECTANGLE_SELECTION_FILL_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Fill,
+        };
+
+        private readonly SKPaint _lightRectangleSelectionStrokePaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_RECTANGLE_SELECTION_STROKE_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        private readonly SKPaint _lightFocusStrokePaint = new()
+        {
+            BlendMode = SKBlendMode.SrcOver,
+            Color = LIGHT_FOCUS_FILL_COLOR,
+            IsAntialias = false,
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 2,
+        };
+
+        private readonly Dictionary<float, SKPaint> _darkSelectedStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _darkRectangleSelectionStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _darkFocusStrokePaintCache = [];
+
+        private readonly Dictionary<float, SKPaint> _lightSelectedStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _lightRectangleSelectionStrokePaintCache = [];
+        private readonly Dictionary<float, SKPaint> _lightFocusStrokePaintCache = [];
+
+        public SKPaint GetDarkSelectedStrokePaint()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            if (this._selectedStrokePaintCache.TryGetValue(scale, out var paint))
+            if (this._darkSelectedStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
             }
@@ -118,21 +225,21 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
-                    BlendMode = this._selectedStrokePaint.BlendMode,
-                    Color = this._selectedStrokePaint.Color,
-                    IsAntialias = this._selectedStrokePaint.IsAntialias,
-                    StrokeWidth = this._selectedStrokePaint.StrokeWidth * scale,
-                    Style = this._selectedStrokePaint.Style,
+                    BlendMode = this._darkSelectedStrokePaint.BlendMode,
+                    Color = this._darkSelectedStrokePaint.Color,
+                    IsAntialias = this._darkSelectedStrokePaint.IsAntialias,
+                    StrokeWidth = this._darkSelectedStrokePaint.StrokeWidth * scale,
+                    Style = this._darkSelectedStrokePaint.Style,
                 };
-                this._selectedStrokePaintCache.Add(scale, newPaint);
+                this._darkSelectedStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }
 
-        public SKPaint GetRectangleSelectionStrokePatint()
+        public SKPaint GetDarkRectangleSelectionStrokePatint()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            if (this._rectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
+            if (this._darkRectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
             }
@@ -140,21 +247,21 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
-                    BlendMode = this._rectangleSelectionStrokePaint.BlendMode,
-                    Color = this._rectangleSelectionStrokePaint.Color,
-                    IsAntialias = this._rectangleSelectionStrokePaint.IsAntialias,
-                    StrokeWidth = this._rectangleSelectionStrokePaint.StrokeWidth * scale,
-                    Style = this._rectangleSelectionStrokePaint.Style,
+                    BlendMode = this._darkRectangleSelectionStrokePaint.BlendMode,
+                    Color = this._darkRectangleSelectionStrokePaint.Color,
+                    IsAntialias = this._darkRectangleSelectionStrokePaint.IsAntialias,
+                    StrokeWidth = this._darkRectangleSelectionStrokePaint.StrokeWidth * scale,
+                    Style = this._darkRectangleSelectionStrokePaint.Style,
                 };
-                this._rectangleSelectionStrokePaintCache.Add(scale, newPaint);
+                this._darkRectangleSelectionStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }
 
-        public SKPaint GetFocusStrokePaint()
+        public SKPaint GetDarkFocusStrokePaint()
         {
             var scale = WindowUtil.GetCurrentWindowScale(this);
-            if (this._focusStrokePaintCache.TryGetValue(scale, out var paint))
+            if (this._darkFocusStrokePaintCache.TryGetValue(scale, out var paint))
             {
                 return paint;
             }
@@ -162,13 +269,79 @@ namespace SWF.UIComponent.SKFlowList
             {
                 var newPaint = new SKPaint
                 {
-                    BlendMode = this._focusStrokePaint.BlendMode,
-                    Color = this._focusStrokePaint.Color,
-                    IsAntialias = this._focusStrokePaint.IsAntialias,
-                    StrokeWidth = this._focusStrokePaint.StrokeWidth * scale,
-                    Style = this._focusStrokePaint.Style,
+                    BlendMode = this._darkFocusStrokePaint.BlendMode,
+                    Color = this._darkFocusStrokePaint.Color,
+                    IsAntialias = this._darkFocusStrokePaint.IsAntialias,
+                    StrokeWidth = this._darkFocusStrokePaint.StrokeWidth * scale,
+                    Style = this._darkFocusStrokePaint.Style,
                 };
-                this._focusStrokePaintCache.Add(scale, newPaint);
+                this._darkFocusStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
+
+        public SKPaint GetLightSelectedStrokePaint()
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            if (this._lightSelectedStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    BlendMode = this._lightSelectedStrokePaint.BlendMode,
+                    Color = this._lightSelectedStrokePaint.Color,
+                    IsAntialias = this._lightSelectedStrokePaint.IsAntialias,
+                    StrokeWidth = this._lightSelectedStrokePaint.StrokeWidth * scale,
+                    Style = this._lightSelectedStrokePaint.Style,
+                };
+                this._lightSelectedStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
+
+        public SKPaint GetLightRectangleSelectionStrokePatint()
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            if (this._lightRectangleSelectionStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    BlendMode = this._lightRectangleSelectionStrokePaint.BlendMode,
+                    Color = this._lightRectangleSelectionStrokePaint.Color,
+                    IsAntialias = this._lightRectangleSelectionStrokePaint.IsAntialias,
+                    StrokeWidth = this._lightRectangleSelectionStrokePaint.StrokeWidth * scale,
+                    Style = this._lightRectangleSelectionStrokePaint.Style,
+                };
+                this._lightRectangleSelectionStrokePaintCache.Add(scale, newPaint);
+                return newPaint;
+            }
+        }
+
+        public SKPaint GetLightFocusStrokePaint()
+        {
+            var scale = WindowUtil.GetCurrentWindowScale(this);
+            if (this._lightFocusStrokePaintCache.TryGetValue(scale, out var paint))
+            {
+                return paint;
+            }
+            else
+            {
+                var newPaint = new SKPaint
+                {
+                    BlendMode = this._lightFocusStrokePaint.BlendMode,
+                    Color = this._lightFocusStrokePaint.Color,
+                    IsAntialias = this._lightFocusStrokePaint.IsAntialias,
+                    StrokeWidth = this._lightFocusStrokePaint.StrokeWidth * scale,
+                    Style = this._lightFocusStrokePaint.Style,
+                };
+                this._lightFocusStrokePaintCache.Add(scale, newPaint);
                 return newPaint;
             }
         }
@@ -176,73 +349,8 @@ namespace SWF.UIComponent.SKFlowList
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool CanKeyDown { get; set; } = true;
 
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringTrimming ItemTextTrimming
-        {
-            get
-            {
-                return this._itemTextTrimming;
-            }
-            set
-            {
-                this._itemTextTrimming = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextAlignment
-        {
-            get
-            {
-                return this._itemTextAlignment;
-            }
-            set
-            {
-                this._itemTextAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextLineAlignment
-        {
-            get
-            {
-                return this._itemTextLineAlignment;
-            }
-            set
-            {
-                this._itemTextLineAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormatFlags ItemTextFormatFlags
-        {
-            get
-            {
-                return this._itemTextFormatFlags;
-            }
-            set
-            {
-                this._itemTextFormatFlags = value;
-            }
-        }
+        public bool IsLight { get; set; } = true;
 
         /// <summary>
         /// スクロールバー表示フラグ
@@ -451,9 +559,9 @@ namespace SWF.UIComponent.SKFlowList
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public float MouseWheelRate { get; set; } = 1f;
 
-        public event EventHandler<DrawItemEventArgs> DrawItem;
+        public event EventHandler<SKDrawItemEventArgs> SKDrawItem;
         public event EventHandler<SKDrawItemsEventArgs> SKDrawItems;
-        public event EventHandler<DrawItemChangedEventArgs> DrawItemChanged;
+        public event EventHandler<SKDrawItemChangedEventArgs> DrawItemChanged;
         public event EventHandler SelectedItemChanged;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler<MouseEventArgs> ItemMouseDoubleClick;
@@ -464,12 +572,12 @@ namespace SWF.UIComponent.SKFlowList
         public event EventHandler ItemCut;
         public event EventHandler DragStart;
 
-        private void OnDrawItem(DrawItemEventArgs e)
+        private void OnSKDrawItem(SKDrawItemEventArgs e)
         {
-            this.DrawItem?.Invoke(this, e);
+            this.SKDrawItem?.Invoke(this, e);
         }
 
-        private void OnDrawItemChanged(DrawItemChangedEventArgs e)
+        private void OnDrawItemChanged(SKDrawItemChangedEventArgs e)
         {
             this.DrawItemChanged?.Invoke(this, e);
         }

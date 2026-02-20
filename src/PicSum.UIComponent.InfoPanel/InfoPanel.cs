@@ -299,6 +299,8 @@ namespace PicSum.UIComponent.InfoPanel
                 }
                 this._tagIconCache.Clear();
 
+                this.wideComboBox.Icon.Dispose();
+
                 this._imagePaint.Dispose();
                 this._backgroundPaint.Dispose();
                 this._messagePaint.Dispose();

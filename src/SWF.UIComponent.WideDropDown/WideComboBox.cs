@@ -1,3 +1,4 @@
+using SkiaSharp;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.Base;
 using System;
@@ -25,7 +26,7 @@ namespace SWF.UIComponent.WideDropDown
         private readonly WideDropDownList _dropDownList;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Icon
+        public SKImage Icon
         {
             get
             {

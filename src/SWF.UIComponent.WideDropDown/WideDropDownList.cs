@@ -1,10 +1,12 @@
+using SkiaSharp;
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
+using SWF.UIComponent.FlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,7 +22,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private readonly Control _owner;
         private readonly List<string> _itemList = [];
-        private readonly FlowList.FlowList _flowList;
+        private readonly SKFlowList.SKFlowList _flowList;
 
         public new string Name
         {
@@ -74,83 +76,6 @@ namespace SWF.UIComponent.WideDropDown
         }
 
         /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringTrimming ItemTextTrimming
-        {
-            get
-            {
-                return this._flowList.ItemTextTrimming;
-            }
-            set
-            {
-                this._flowList.ItemTextTrimming = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextAlignment
-        {
-            get
-            {
-                return this._flowList.ItemTextAlignment;
-            }
-            set
-            {
-                this._flowList.ItemTextAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextLineAlignment
-        {
-            get
-            {
-                return this._flowList.ItemTextLineAlignment;
-            }
-            set
-            {
-                this._flowList.ItemTextLineAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormatFlags ItemTextFormatFlags
-        {
-            get
-            {
-                return this._flowList.ItemTextFormatFlags;
-            }
-            set
-            {
-                this._flowList.ItemTextFormatFlags = value;
-            }
-        }
-
-        [Browsable(false)]
-        public StringFormat ItemTextFormat
-        {
-            get
-            {
-                return this._flowList.ItemTextFormat;
-            }
-        }
-
-        /// <summary>
         /// 背景色
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -167,7 +92,6 @@ namespace SWF.UIComponent.WideDropDown
             {
                 base.BackColor = value;
                 this.ToolStripItem.BackColor = value;
-                this._flowList.BackColor = value;
             }
         }
 
@@ -183,7 +107,7 @@ namespace SWF.UIComponent.WideDropDown
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Image Icon { get; set; }
+        public SKImage Icon { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool IsClickAndClose { get; set; }
@@ -204,7 +128,7 @@ namespace SWF.UIComponent.WideDropDown
 
             this.DoubleBuffered = false;
 
-            this._flowList = new FlowList.FlowList();
+            this._flowList = new SKFlowList.SKFlowList();
             this.Items.Add(new ToolStripControlHost(this._flowList));
             this.Padding = new Padding(2, 1, 2, 0);
 
@@ -213,10 +137,6 @@ namespace SWF.UIComponent.WideDropDown
             this.ToolStripItem.Size = new Size(BACKGROUND_DEFAULT_SIZE.Width, BACKGROUND_DEFAULT_SIZE.Height);
 
             this._flowList.BackColor = Color.White;
-            this._flowList.ItemTextTrimming = StringTrimming.EllipsisCharacter;
-            this._flowList.ItemTextLineAlignment = StringAlignment.Center;
-            this._flowList.ItemTextAlignment = StringAlignment.Near;
-            this._flowList.ItemTextFormatFlags = StringFormatFlags.NoWrap;
             this._flowList.Dock = DockStyle.Fill;
             this._flowList.IsLileList = false;
             this._flowList.ItemSpace = 0;
@@ -226,7 +146,7 @@ namespace SWF.UIComponent.WideDropDown
             this._flowList.MouseWheelRate = 2.5f;
 
             this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
-            this._flowList.DrawItem += new(this.FlowList_DrawItem);
+            this._flowList.SKDrawItem += new(this.FlowList_DrawItem);
 
             this.Opening += this.WideDropDownList_Opening;
 
@@ -325,89 +245,70 @@ namespace SWF.UIComponent.WideDropDown
                 (int)(ITEM_DEFAULT_SIZE.Height * scale));
         }
 
-        private RectangleF GetIconRectangle(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private SKRect GetIconRectangle(SKDrawItemEventArgs e)
         {
             if (this.Icon != null)
             {
                 var scale = WindowUtil.GetCurrentWindowScale(this);
                 var margin = 8 * scale;
                 var size = Math.Min(this.Icon.Width, e.ItemRectangle.Height) - margin * 2;
-                return new RectangleF(e.ItemRectangle.X + margin,
-                                      e.ItemRectangle.Y + margin,
+                return SKRect.Create(e.ItemRectangle.Left + margin,
+                                      e.ItemRectangle.Top + margin,
                                       size,
                                       size);
             }
             else
             {
-                return new RectangleF(e.ItemRectangle.X, e.ItemRectangle.Y, 0, 0);
+                return SKRect.Create(e.ItemRectangle.Left, e.ItemRectangle.Top, 0, 0);
             }
         }
 
-        private void FlowList_DrawItem(object sender, UIComponent.FlowList.DrawItemEventArgs e)
+        private void FlowList_DrawItem(object sender, SKDrawItemEventArgs e)
         {
             if (this._itemList.Count < 1)
             {
                 return;
             }
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            e.Graphics.CompositingQuality = CompositingQuality.Invalid;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
             if (this.Icon != null)
             {
                 var rect = this.GetIconRectangle(e);
-                e.Graphics.DrawImage(this.Icon, rect);
+                e.Canvas.DrawImage(this.Icon, rect);
             }
 
             if (e.IsSelected && e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(
-                    SWF.UIComponent.FlowList.FlowList.LIGHT_SELECTED_ITEM_BRUSH,
-                    e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightSelectedFillPaint);
             }
             else if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(
-                    SWF.UIComponent.FlowList.FlowList.LIGHT_SELECTED_ITEM_BRUSH,
-                    e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightSelectedFillPaint);
             }
             else if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(
-                    SWF.UIComponent.FlowList.FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH,
-                    e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, this._flowList.LightMousePointFillPaint);
             }
 
-            var scale = WindowUtil.GetCurrentWindowScale(this);
-            var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
             var iconWidth = Math.Min(this.Icon.Width, e.ItemRectangle.Height);
-            var itemText = this._itemList[e.ItemIndex];
-            var itemTextSize = TextRenderer.MeasureText(itemText, font);
-            var destText = itemText;
-            var destTextSize = itemTextSize;
-            var itemWidth = e.ItemRectangle.Width - iconWidth;
-            while (destTextSize.Width > itemWidth)
-            {
-                destText = destText[..^1];
-                destTextSize = TextRenderer.MeasureText($"{destText}...", font);
-            }
-            destText = itemText == destText ? itemText : $"{destText}...";
 
-            var textRect = new Rectangle(e.ItemRectangle.X + iconWidth,
-                                         e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - destTextSize.Height) / 2f),
-                                         e.ItemRectangle.Width - iconWidth,
-                                         e.ItemRectangle.Height);
+            var textRect = SKRect.Create(
+                e.ItemRectangle.Left + iconWidth,
+                e.ItemRectangle.Top,
+                e.ItemRectangle.Width - iconWidth,
+                e.ItemRectangle.Height);
 
-            TextRenderer.DrawText(
-                e.Graphics,
-                destText,
+            var font = FontCacher.GetRegularSKFont(
+                FontCacher.Size.Medium,
+                WindowUtil.GetCurrentWindowScale(this));
+
+            SkiaUtil.DrawText(
+                e.Canvas,
+                this._flowList.LightTextPaint,
                 font,
-                textRect.Location,
-                FlowList.FlowList.LIGHT_ITEM_TEXT_COLOR,
-                TextFormatFlags.Top);
+                this._itemList[e.ItemIndex],
+                textRect,
+                SKTextAlign.Left,
+                1);
         }
 
         private void FlowList_ItemMouseClick(object sender, MouseEventArgs e)

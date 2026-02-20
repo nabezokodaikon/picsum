@@ -137,7 +137,7 @@ namespace PicSum.Main.UIComponent
 
             this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
             this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
-            this.tagDropToolButton.Icon = ResourceFiles.TagIcon.Value;
+            this.tagDropToolButton.Icon = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
             this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
             this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
 
@@ -465,6 +465,8 @@ namespace PicSum.Main.UIComponent
                 this.tagDropToolButton.Dispose();
                 this.reloadToolButton.Dispose();
                 this.searchBookmarkToolButton.Dispose();
+
+                this.tagDropToolButton.Icon.Dispose();
             }
 
             this._disposed = true;

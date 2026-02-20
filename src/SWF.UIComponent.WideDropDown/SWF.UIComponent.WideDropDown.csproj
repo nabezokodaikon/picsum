@@ -46,6 +46,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SWF.UIComponent.Base\SWF.UIComponent.Base.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.SKFlowList\SWF.UIComponent.SKFlowList.csproj" />
     <ProjectReference Include="..\WinApi\WinApi.csproj" />
   </ItemGroup>
 </Project>
