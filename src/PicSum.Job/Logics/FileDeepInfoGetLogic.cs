@@ -67,7 +67,7 @@ namespace PicSum.Job.Logics
                 IsImageFile = false,
                 FileSize = 0,
                 FilesAndDirectoriesCount = await Instance<IFilesAndDirectoriesCountCacher>.Value.GetOrCreate(FileUtil.ROOT_DIRECTORY_PATH).False(),
-                FileIcon = Instance<IFileIconCacher>.Value.LargePCIcon,
+                FileIcon = Instance<IFileIconCacher>.Value.JumboPCIcon,
                 ImageSize = ImageUtil.EMPTY_SIZE,
             };
         }
