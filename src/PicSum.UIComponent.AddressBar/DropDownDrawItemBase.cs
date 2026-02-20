@@ -1,4 +1,5 @@
 using SWF.Core.Base;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,7 +60,7 @@ namespace PicSum.UIComponent.AddressBar
             throw new NotImplementedException();
         }
 
-        protected abstract void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e);
+        protected abstract void DrawDropDownItem(SKDrawItemEventArgs e);
 
         public new void Dispose()
         {
@@ -80,10 +81,6 @@ namespace PicSum.UIComponent.AddressBar
             this._dropDownList = new()
             {
                 BackColor = AddressBarResources.INNER_COLOR,
-                ItemTextTrimming = StringTrimming.EllipsisCharacter,
-                ItemTextAlignment = StringAlignment.Near,
-                ItemTextLineAlignment = StringAlignment.Center,
-                ItemTextFormatFlags = StringFormatFlags.NoWrap
             };
 
             this._dropDownList.Opened += new(this.DropDownList_Opened);
@@ -114,7 +111,7 @@ namespace PicSum.UIComponent.AddressBar
             this.OnDropDownClosed(e);
         }
 
-        private void DropDownList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void DropDownList_Drawitem(object sender, SKDrawItemEventArgs e)
         {
             if (this._disposed)
             {

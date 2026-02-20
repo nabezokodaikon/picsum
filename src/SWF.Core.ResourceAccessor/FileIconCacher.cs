@@ -35,7 +35,7 @@ namespace SWF.Core.ResourceAccessor
             static () => FileIconUtil.GetLargeIconByFilePath(AppFiles.APPLICATION_DIRECTORY.Value, WinApiMembers.SHIL.SHIL_JUMBO),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
-        public Image SmallPCIcon
+        public Bitmap SmallPCIcon
         {
             get
             {
@@ -51,7 +51,7 @@ namespace SWF.Core.ResourceAccessor
             }
         }
 
-        public Image SmallDirectoryIcon
+        public Bitmap SmallDirectoryIcon
         {
             get
             {
@@ -120,7 +120,7 @@ namespace SWF.Core.ResourceAccessor
             this._disposed = true;
         }
 
-        public Image GetSmallDriveIcon(string filePath)
+        public Bitmap GetSmallDriveIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 
@@ -141,7 +141,7 @@ namespace SWF.Core.ResourceAccessor
             return FileIconUtil.GetLargeIconByFilePath(filePath, WinApiMembers.SHIL.SHIL_JUMBO);
         }
 
-        public Image GetSmallFileIcon(string filePath)
+        public Bitmap GetSmallFileIcon(string filePath)
         {
             ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
 

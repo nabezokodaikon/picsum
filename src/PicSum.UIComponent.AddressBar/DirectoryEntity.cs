@@ -1,4 +1,4 @@
-using System.Drawing;
+using SWF.Core.ImageAccessor;
 
 namespace PicSum.UIComponent.AddressBar
 {
@@ -6,6 +6,6 @@ namespace PicSum.UIComponent.AddressBar
     {
         public string DirectoryPath { get; set; }
         public string DirectoryName { get; set; }
-        public Image DirectoryIcon { get; set; }
+        public IconImage DirectoryIcon { get; set; }
     }
 }

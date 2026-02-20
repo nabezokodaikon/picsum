@@ -1,3 +1,4 @@
+using SkiaSharp;
 using System.Drawing;
 
 namespace PicSum.UIComponent.AddressBar
@@ -10,10 +11,17 @@ namespace PicSum.UIComponent.AddressBar
         public static readonly SolidBrush OUT_LINE_BRUSH = new(OUTLINE_COLOR);
         public static readonly SolidBrush INNER_BRUSH = new(INNER_COLOR);
 
+        public static readonly SKPaint ICON_PAINT = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
+        };
+
         public static void Dispose()
         {
             OUT_LINE_BRUSH.Dispose();
             INNER_BRUSH.Dispose();
+            ICON_PAINT.Dispose();
         }
     }
 }

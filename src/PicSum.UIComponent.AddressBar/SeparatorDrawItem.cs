@@ -1,10 +1,13 @@
 using PicSum.Job.Common;
 using PicSum.Job.Entities;
+using SkiaSharp;
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -105,21 +108,21 @@ namespace PicSum.UIComponent.AddressBar
             ArgumentNullException.ThrowIfNull(e, nameof(e));
         }
 
-        protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        protected override void DrawDropDownItem(SKDrawItemEventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
 
             if (e.IsMousePoint && e.IsSelected)
             {
-                e.Graphics.FillRectangle(FlowListResources.LIGHT_SELECTED_ITEM_BRUSH, e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_SELECTED_FILL_PAINT);
             }
             else if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_MOUSE_POINT_FILL_PAINT);
             }
             else if (e.IsSelected)
             {
-                e.Graphics.FillRectangle(FlowListResources.LIGHT_SELECTED_ITEM_BRUSH, e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_SELECTED_FILL_PAINT);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -132,34 +135,31 @@ namespace PicSum.UIComponent.AddressBar
 
                 var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
-                var iconRect = new RectangleF(
-                    e.ItemRectangle.X + iconPoint,
-                    e.ItemRectangle.Y + iconPoint,
-                    iconSize,
-                    iconSize);
+                var iconRect = SKRectI.Create(
+                    (int)(e.ItemRectangle.Left + iconPoint),
+                    (int)(e.ItemRectangle.Top + iconPoint),
+                    (int)iconSize,
+                    (int)iconSize);
 
-                e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
+                item.DirectoryIcon.Draw(e.Canvas, AddressBarResources.ICON_PAINT, iconRect);
             }
 
             var textFont = this.GetFont(item.DirectoryPath, scale);
             var text = item.DirectoryName;
-            var textRect = new Rectangle(
-                e.ItemRectangle.X + base.DropDownList.ItemHeight,
-                e.ItemRectangle.Y,
+            var textRect = SKRect.Create(
+                e.ItemRectangle.Left + base.DropDownList.ItemHeight,
+                e.ItemRectangle.Top,
                 e.ItemRectangle.Width - base.DropDownList.ItemHeight,
                 e.ItemRectangle.Height);
 
-            var flags = TextFormatFlags.Left |
-                        TextFormatFlags.VerticalCenter |
-                        TextFormatFlags.EndEllipsis;
-
-            TextRenderer.DrawText(
-                e.Graphics,
-                text,
+            SkiaUtil.DrawText(
+                e.Canvas,
+                SKFlowListResources.LIGHT_TEXT_PAINT,
                 textFont,
+                text,
                 textRect,
-                FlowListResources.LIGHT_ITEM_TEXT_COLOR,
-                flags);
+                SKTextAlign.Left,
+                1);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)
@@ -173,15 +173,15 @@ namespace PicSum.UIComponent.AddressBar
             return new RectangleF(x, y, w, h);
         }
 
-        private Font GetFont(string directoryPath, float scale)
+        private SKFont GetFont(string directoryPath, float scale)
         {
             if (StringUtil.CompareFilePath(directoryPath, this.SelectedSubDirectoryPath))
             {
-                return FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetBoldSKFont(FontCacher.Size.Medium, scale);
             }
             else
             {
-                return FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetRegularSKFont(FontCacher.Size.Medium, scale);
             }
         }
 

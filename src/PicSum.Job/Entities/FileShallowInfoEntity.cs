@@ -45,7 +45,7 @@ namespace PicSum.Job.Entities
         public DateTime TakenDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public DateTime RgistrationDate { get; internal set; } = DateTimeExtensions.EMPTY;
         public Image? ExtraLargeIcon { get; internal set; } = null;
-        public Image? SmallIcon { get; internal set; } = null;
+        public IconImage? SmallIcon { get; internal set; } = null;
         public IconImage? JumboIcon { get; internal set; } = null;
         public OpenCVImage? ThumbnailImage { get; internal set; } = null;
         public int ThumbnailWidth { get; internal set; } = 0;

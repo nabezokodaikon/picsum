@@ -15,7 +15,7 @@ namespace PicSum.UIComponent.Contents.FileList
         public Nullable<DateTime> RgistrationDate { get; set; }
         public bool IsFile { get; set; }
         public bool IsImageFile { get; set; }
-        public Image SmallIcon { get; set; }
+        public IconImage SmallIcon { get; set; }
         public Image ExtraLargeIcon { get; set; }
         public IconImage JumboIcon { get; set; }
         public OpenCVImage ThumbnailImage { get; set; }

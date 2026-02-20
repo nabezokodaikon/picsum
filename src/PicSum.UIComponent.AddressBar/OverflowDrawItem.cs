@@ -1,6 +1,9 @@
+using SkiaSharp;
 using SWF.Core.Base;
+using SWF.Core.ImageAccessor;
 using SWF.Core.ResourceAccessor;
 using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -111,14 +114,14 @@ namespace PicSum.UIComponent.AddressBar
 
         }
 
-        protected override void DrawDropDownItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        protected override void DrawDropDownItem(SKDrawItemEventArgs e)
         {
             var scale = WindowUtil.GetCurrentWindowScale(this.AddressBar);
-            var font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
+            var font = FontCacher.GetRegularSKFont(FontCacher.Size.Medium, scale);
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_MOUSE_POINT_FILL_PAINT);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -131,34 +134,31 @@ namespace PicSum.UIComponent.AddressBar
 
                 var iconPoint = (base.DropDownList.ItemHeight - iconSize) / 2f;
 
-                var iconRect = new RectangleF(
-                    e.ItemRectangle.X + iconPoint,
-                    e.ItemRectangle.Y + iconPoint,
-                    iconSize,
-                    iconSize);
+                var iconRect = SKRectI.Create(
+                    (int)(e.ItemRectangle.Left + iconPoint),
+                    (int)(e.ItemRectangle.Top + iconPoint),
+                    (int)iconSize,
+                    (int)iconSize);
 
-                e.Graphics.DrawImage(item.DirectoryIcon, iconRect);
+                item.DirectoryIcon.Draw(e.Canvas, AddressBarResources.ICON_PAINT, iconRect);
             }
 
             var text = item.DirectoryName;
 
-            var textRect = new Rectangle(
-                e.ItemRectangle.X + this.DropDownList.ItemHeight,
-                e.ItemRectangle.Y,
+            var textRect = SKRect.Create(
+                e.ItemRectangle.Left + this.DropDownList.ItemHeight,
+                e.ItemRectangle.Top,
                 e.ItemRectangle.Width - this.DropDownList.ItemHeight,
                 e.ItemRectangle.Height);
 
-            var flags = TextFormatFlags.Left |
-                        TextFormatFlags.VerticalCenter |
-                        TextFormatFlags.EndEllipsis;
-
-            TextRenderer.DrawText(
-                e.Graphics,
-                text,
+            SkiaUtil.DrawText(
+                e.Canvas,
+                SKFlowListResources.LIGHT_TEXT_PAINT,
                 font,
+                text,
                 textRect,
-                FlowListResources.LIGHT_ITEM_TEXT_COLOR,
-                flags);
+                SKTextAlign.Left,
+                1);
         }
 
         private RectangleF GetImageDrawRectangle(Image img)

@@ -1,4 +1,4 @@
-using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -13,11 +13,11 @@ namespace PicSum.UIComponent.AddressBar
     public sealed partial class DropDownList
         : ToolStripDropDown
     {
-        public event EventHandler<SWF.UIComponent.FlowList.DrawItemEventArgs> Drawitem;
+        public event EventHandler<SKDrawItemEventArgs> Drawitem;
         public event EventHandler<MouseEventArgs> ItemMouseClick;
         public event EventHandler ItemExecute;
 
-        private readonly FlowList _flowList;
+        private readonly SKFlowList _flowList;
 
         public new string Name
         {
@@ -104,74 +104,6 @@ namespace PicSum.UIComponent.AddressBar
         }
 
         /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringTrimming ItemTextTrimming
-        {
-            get
-            {
-                return this._flowList.ItemTextTrimming;
-            }
-            set
-            {
-                this._flowList.ItemTextTrimming = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextAlignment
-        {
-            get
-            {
-                return this._flowList.ItemTextAlignment;
-            }
-            set
-            {
-                this._flowList.ItemTextAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringAlignment ItemTextLineAlignment
-        {
-            get
-            {
-                return this._flowList.ItemTextLineAlignment;
-            }
-            set
-            {
-                this._flowList.ItemTextLineAlignment = value;
-            }
-        }
-
-        /// <summary>
-        /// 項目テキストフォーマット
-        /// </summary>
-        [Category("項目描画")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public StringFormatFlags ItemTextFormatFlags
-        {
-            get
-            {
-                return this._flowList.ItemTextFormatFlags;
-            }
-            set
-            {
-                this._flowList.ItemTextFormatFlags = value;
-            }
-        }
-
-        /// <summary>
         /// 背景色
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -249,7 +181,7 @@ namespace PicSum.UIComponent.AddressBar
             this._flowList.BackColor = this.BackColor;
             this._flowList.MouseWheelRate = 2.5f;
 
-            this._flowList.DrawItem += new(this.FlowList_Drawitem);
+            this._flowList.SKDrawItem += new(this.FlowList_Drawitem);
             this._flowList.ItemExecute += new(this.FlowList_ItemExecute);
             this._flowList.ItemMouseClick += new(this.FlowList_ItemMouseClick);
 
@@ -330,7 +262,7 @@ namespace PicSum.UIComponent.AddressBar
             return this._flowList.GetSelectedIndexs();
         }
 
-        private void OnDrawItem(SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void OnDrawItem(SKDrawItemEventArgs e)
         {
             this.Drawitem?.Invoke(this, e);
         }
@@ -345,7 +277,7 @@ namespace PicSum.UIComponent.AddressBar
             this.ItemExecute?.Invoke(this, e);
         }
 
-        private void FlowList_Drawitem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void FlowList_Drawitem(object sender, SKDrawItemEventArgs e)
         {
             this.OnDrawItem(e);
         }

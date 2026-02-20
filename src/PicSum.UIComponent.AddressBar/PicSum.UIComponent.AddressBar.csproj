@@ -47,5 +47,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PicSum.Job\PicSum.Job.csproj" />
     <ProjectReference Include="..\SWF.UIComponent.FlowList\SWF.UIComponent.FlowList.csproj" />
+    <ProjectReference Include="..\SWF.UIComponent.SKFlowList\SWF.UIComponent.SKFlowList.csproj" />
   </ItemGroup>
 </Project>
