@@ -314,14 +314,14 @@ namespace PicSum.UIComponent.Contents.ContextMenu
             {
                 var filePath = filePathList.First();
 
-                this._pathCopyMenuItem.Visible = true;
-                this._nameCopyMenuItem.Visible = true;
+                this._pathCopyMenuItem.Visible = !FileUtil.IsSystemRoot(filePath);
+                this._nameCopyMenuItem.Visible = !FileUtil.IsSystemRoot(filePath);
 
                 var isFile = FileUtil.IsExistsFile(filePath);
                 this._selectApplicationMenuItem.Visible = isFile;
                 this._saveDirectoryOpenMenuItem.Visible = isFile;
 
-                var isDirectory = FileUtil.IsExistsDirectory(filePath);
+                var isDirectory = FileUtil.IsExistsDirectory(filePath) | FileUtil.IsSystemRoot(filePath);
                 this._directoryActiveTabOpenMenuItem.Visible = isDirectory;
                 this._directoryNewTabOpenMenuItem.Visible = isDirectory;
                 this._directoryNewWindowOpenMenuItem.Visible = isDirectory;

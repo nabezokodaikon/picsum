@@ -1510,6 +1510,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
             foreach (var filePath in e.FilePathList)
             {
+                if (FileUtil.IsSystemRoot(filePath))
+                {
+                    continue;
+                }
+
                 sb.AppendLine(filePath);
             }
 
@@ -1522,6 +1527,11 @@ namespace PicSum.UIComponent.Contents.FileList
 
             foreach (var filePath in e.FilePathList)
             {
+                if (FileUtil.IsSystemRoot(filePath))
+                {
+                    continue;
+                }
+
                 sb.AppendLine(FileUtil.GetFileName(filePath));
             }
 
