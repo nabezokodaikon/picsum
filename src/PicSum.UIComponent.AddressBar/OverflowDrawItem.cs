@@ -40,12 +40,12 @@ namespace PicSum.UIComponent.AddressBar
 
             if (base.IsMouseDown || this.IsDropDown)
             {
-                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(FlowListResouces.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mouseDownImage, this.GetImageDrawRectangle(this._mouseDownImage));
             }
             else if (base.IsMousePoint)
             {
-                g.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
+                g.FillRectangle(FlowListResouces.LIGHT_MOUSE_POINT_ITEM_BRUSH, rect);
                 g.DrawImage(this._mousePointImage, this.GetImageDrawRectangle(this._mousePointImage));
             }
             else
@@ -118,7 +118,7 @@ namespace PicSum.UIComponent.AddressBar
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowListResouces.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = base.Items[e.ItemIndex];
@@ -157,7 +157,7 @@ namespace PicSum.UIComponent.AddressBar
                 text,
                 font,
                 textRect,
-                FlowList.LIGHT_ITEM_TEXT_COLOR,
+                FlowListResouces.LIGHT_ITEM_TEXT_COLOR,
                 flags);
         }
 

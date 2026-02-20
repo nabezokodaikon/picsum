@@ -47,6 +47,6 @@
     <Compile Update="FlowList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="FlowList.Definition.cs" />
+    <Compile Update="FlowListResouces.cs" />
   </ItemGroup>
 </Project>

@@ -624,7 +624,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(FlowList.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
+                e.Graphics.FillRectangle(FlowListResouces.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
             }
 
             var item = this.TagList[e.ItemIndex];
@@ -663,7 +663,7 @@ namespace PicSum.UIComponent.InfoPanel
                 itemText,
                 itemFont,
                 textRect.Location,
-                FlowList.LIGHT_ITEM_TEXT_COLOR,
+                FlowListResouces.LIGHT_ITEM_TEXT_COLOR,
                 flags);
         }
 
