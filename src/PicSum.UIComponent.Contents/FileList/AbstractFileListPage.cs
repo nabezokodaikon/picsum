@@ -44,6 +44,7 @@ namespace PicSum.UIComponent.Contents.FileList
         private string[] _filterFilePathList = null;
         private int? _itemTextHeight = null;
 
+        // TODO: 静的リソースにする。
         private readonly SKPaint _imagePaint = new()
         {
             IsAntialias = false,

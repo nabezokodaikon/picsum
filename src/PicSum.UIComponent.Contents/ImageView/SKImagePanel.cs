@@ -53,6 +53,7 @@ namespace PicSum.UIComponent.Contents.ImageView
         private Rectangle _dragJudgementRectangle = new();
         private bool _isWarmUpDone = false;
 
+        // TODO: 終了時に破棄する。
         private static readonly SKColor BACKGROUND_COLOR = new(64, 68, 71);
 
         private static readonly SKPaint IMAGE_PAINT = new()

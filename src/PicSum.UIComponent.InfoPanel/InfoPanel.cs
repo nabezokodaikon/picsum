@@ -54,6 +54,7 @@ namespace PicSum.UIComponent.InfoPanel
         private string _contextMenuOperationTag = string.Empty;
         private bool _isLoading = false;
 
+        // TODO: 静的リソースにし、終了時に破棄する。
         public readonly SKPaint _backgroundPaint = new()
         {
             Color = new SKColor(250, 250, 250),
