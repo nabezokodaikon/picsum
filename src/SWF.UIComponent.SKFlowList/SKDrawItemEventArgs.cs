@@ -1,7 +1,7 @@
 using SkiaSharp;
 using System;
 
-namespace SWF.UIComponent.FlowList
+namespace SWF.UIComponent.SKFlowList
 {
     /// <summary>
     /// 項目描画イベントクラス

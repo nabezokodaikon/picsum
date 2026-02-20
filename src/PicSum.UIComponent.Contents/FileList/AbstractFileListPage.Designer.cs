@@ -26,7 +26,7 @@ namespace PicSum.UIComponent.Contents.FileList
             // 
             // flowList
             // 
-            this.flowList.IsLight = false;
+            this.flowList.BackgroundColor = SKFlowListResources.DARK_BACKGROUND_PAINT.Color;
             this.flowList.ContextMenuStrip = this.fileContextMenu;
             this.flowList.IsMultiSelect = true;
             this.flowList.ItemSpace = 4;

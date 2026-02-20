@@ -1,3 +1,4 @@
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.Core.ImageAccessor;
@@ -22,7 +23,7 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ratingBar = new SWF.UIComponent.Base.RatingBar();
-            this.tagFlowList = new SWF.UIComponent.FlowList.FlowList();
+            this.tagFlowList = new SWF.UIComponent.SKFlowList.SKFlowList();
             this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
             this.fileInfoLabel = new InfoLabel();
             this.tagContextMenuStrip.SuspendLayout();
@@ -59,12 +60,12 @@ namespace PicSum.UIComponent.InfoPanel
             // 
             // tagFlowList
             // 
-            this.tagFlowList.BackColor = Color.FromArgb(250, 250, 250);
+            this.tagFlowList.BackgroundColor = new SKColor(250, 250, 250);
             this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
             this.tagFlowList.IsLileList = true;
             this.tagFlowList.ItemHeight = 32;
             this.tagFlowList.MouseWheelRate = 2.5f;
-            this.tagFlowList.DrawItem += this.TagFlowList_DrawItem;
+            this.tagFlowList.SKDrawItem += this.TagFlowList_DrawItem;
             this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
             this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
             // 
@@ -96,7 +97,7 @@ namespace PicSum.UIComponent.InfoPanel
 
         private SKControl thumbnailPictureBox;
         private SWF.UIComponent.Base.RatingBar ratingBar;
-        private SWF.UIComponent.FlowList.FlowList tagFlowList;
+        private SWF.UIComponent.SKFlowList.SKFlowList tagFlowList;
         private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;

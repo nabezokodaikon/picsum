@@ -2,7 +2,6 @@ using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using SWF.UIComponent.Base;
-using SWF.UIComponent.FlowList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -106,8 +105,8 @@ namespace SWF.UIComponent.SKFlowList
         public bool CanKeyDown { get; set; } = true;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsLight { get; set; } = true;
-
+        public SKColor BackgroundColor { get; set; }
+            = SKFlowListResources.LIGHT_BACKGROUND_PAINT.Color;
 
         /// <summary>
         /// スクロールバー表示フラグ
@@ -572,14 +571,7 @@ namespace SWF.UIComponent.SKFlowList
                 using var recorder = new SKPictureRecorder();
                 using var canvas = recorder.BeginRecording(e.Info.Rect);
 
-                if (this.IsLight)
-                {
-                    canvas.Clear(SKFlowListResources.LIGHT_BACKGROUND_PAINT.Color);
-                }
-                else
-                {
-                    canvas.Clear(SKFlowListResources.DARK_BACKGROUND_PAINT.Color);
-                }
+                canvas.Clear(this.BackgroundColor);
 
                 if (!this._isDraw)
                 {

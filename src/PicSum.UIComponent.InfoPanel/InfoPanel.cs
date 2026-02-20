@@ -11,13 +11,12 @@ using SWF.Core.Job;
 using SWF.Core.ResourceAccessor;
 using SWF.Core.StringAccessor;
 using SWF.UIComponent.Base;
-using SWF.UIComponent.FlowList;
+using SWF.UIComponent.SKFlowList;
 using SWF.UIComponent.WideDropDown;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -47,11 +46,11 @@ namespace PicSum.UIComponent.InfoPanel
         private bool disposed = false;
 
 #pragma warning disable CA2213 // キャッシュを保持する変数。
-        private Image _tagIcon = null;
+        private SKImage _tagIcon = null;
 #pragma warning restore CA2213
 
         private FileDeepInfoGetResult _fileInfoSource = FileDeepInfoGetResult.EMPTY;
-        private readonly Dictionary<float, Bitmap> _tagIconCache = [];
+        private readonly Dictionary<float, SKImage> _tagIconCache = [];
         private string _contextMenuOperationTag = string.Empty;
         private bool _isLoading = false;
 
@@ -70,6 +69,12 @@ namespace PicSum.UIComponent.InfoPanel
         private readonly SKPaint _messagePaint = new()
         {
             Color = new(0, 0, 0),
+        };
+
+        private readonly SKPaint _iconPaint = new()
+        {
+            IsAntialias = false,
+            BlendMode = SKBlendMode.SrcOver,
         };
 
         private string[] FilePathList
@@ -304,6 +309,7 @@ namespace PicSum.UIComponent.InfoPanel
                 this._imagePaint.Dispose();
                 this._backgroundPaint.Dispose();
                 this._messagePaint.Dispose();
+                this._iconPaint.Dispose();
             }
 
             this.disposed = true;
@@ -311,21 +317,21 @@ namespace PicSum.UIComponent.InfoPanel
             base.Dispose(disposing);
         }
 
-        private Bitmap GetTagIcon(float scale)
+        // TODO: 静的リソースにし、終了時に破棄する。
+        private SKImage GetTagIcon(float scale)
         {
             if (this._tagIconCache.TryGetValue(scale, out var icon))
             {
                 return icon;
             }
 
-            var newTagIcon = new Bitmap(
+            using var surface = SKSurface.Create(new SKImageInfo(
                 (int)(ResourceFiles.TagIcon.Value.Width * scale),
-                (int)(ResourceFiles.TagIcon.Value.Height * scale));
-            using (var g = Graphics.FromImage(newTagIcon))
-            {
-                g.DrawImage(ResourceFiles.TagIcon.Value, 0, 0, newTagIcon.Width, newTagIcon.Height);
-            }
-
+                (int)(ResourceFiles.TagIcon.Value.Height * scale)));
+            using var canvas = surface.Canvas;
+            using var img = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
+            canvas.DrawImage(img, SKRect.Create(0, 0, img.Width, img.Height));
+            var newTagIcon = surface.Snapshot();
             this._tagIconCache.Add(scale, newTagIcon);
 
             return newTagIcon;
@@ -361,15 +367,15 @@ namespace PicSum.UIComponent.InfoPanel
             this.tagContextMenuStrip.Close();
         }
 
-        private Font GetTagFont(FileTagInfoEntity tagInfo, float scale)
+        private SKFont GetTagFont(FileTagInfoEntity tagInfo, float scale)
         {
             if (tagInfo.IsAll)
             {
-                return FontCacher.GetBoldGdiFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetBoldSKFont(FontCacher.Size.Medium, scale);
             }
             else
             {
-                return FontCacher.GetRegularGdiFont(FontCacher.Size.Medium, scale);
+                return FontCacher.GetRegularSKFont(FontCacher.Size.Medium, scale);
             }
         }
 
@@ -604,7 +610,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
         }
 
-        private void TagFlowList_DrawItem(object sender, SWF.UIComponent.FlowList.DrawItemEventArgs e)
+        private void TagFlowList_DrawItem(object sender, SKDrawItemEventArgs e)
         {
             if (this.TagList == null)
             {
@@ -616,15 +622,9 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            e.Graphics.CompositingQuality = CompositingQuality.Invalid;
-            e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
             if (e.IsMousePoint)
             {
-                e.Graphics.FillRectangle(FlowListResources.LIGHT_MOUSE_POINT_ITEM_BRUSH, e.ItemRectangle);
+                e.Canvas.DrawRect(e.ItemRectangle, SKFlowListResources.LIGHT_MOUSE_POINT_FILL_PAINT);
             }
 
             var item = this.TagList[e.ItemIndex];
@@ -635,36 +635,31 @@ namespace PicSum.UIComponent.InfoPanel
 
             var iconPoint = (this.tagFlowList.ItemHeight - iconSize) / 2f;
 
-            var iconRect = new RectangleF(e.ItemRectangle.X + iconPoint,
-                                          e.ItemRectangle.Y + iconPoint,
+            var iconRect = SKRect.Create(e.ItemRectangle.Left + iconPoint,
+                                          e.ItemRectangle.Top + iconPoint,
                                           iconSize,
                                           iconSize);
 
-            e.Graphics.DrawImage(this._tagIcon, iconRect);
+            e.Canvas.DrawImage(this._tagIcon, iconRect);
 
             var iconWidth = (int)(iconSize * 1.75);
             var itemFont = this.GetTagFont(item, scale);
             var itemText = item.Tag;
-            var itemTextSize = TextRenderer.MeasureText(itemText, itemFont);
 
-            var textRect = new Rectangle(
-                e.ItemRectangle.X + iconWidth,
-                e.ItemRectangle.Y + (int)((e.ItemRectangle.Height - itemTextSize.Height) / 2f),
+            var textRect = SKRect.Create(
+                e.ItemRectangle.Left + iconWidth,
+                e.ItemRectangle.Top,
                 e.ItemRectangle.Width - iconWidth,
                 e.ItemRectangle.Height);
 
-            var flags = TextFormatFlags.Top |           // 垂直中央揃え（必要なら）
-                        TextFormatFlags.WordBreak |     // 単語単位での折り返し
-                        TextFormatFlags.EndEllipsis |   // はみ出す場合は末尾を「...」に
-                        TextFormatFlags.TextBoxControl; // 改行コードなどを考慮
-
-            TextRenderer.DrawText(
-                e.Graphics,
-                itemText,
+            SkiaUtil.DrawText(
+                e.Canvas,
+                SKFlowListResources.LIGHT_TEXT_PAINT,
                 itemFont,
-                textRect.Location,
-                FlowListResources.LIGHT_ITEM_TEXT_COLOR,
-                flags);
+                itemText,
+                textRect,
+                SKTextAlign.Left,
+                1);
         }
 
         private void RatingBar_RatingButtonMouseClick(object sender, MouseEventArgs e)
