@@ -116,19 +116,14 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Length < 1)
             {
-                if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
-                {
-                    base.OnSelectedFileChanged(
-                        new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
-                    return;
-                }
+                base.OnSelectedFileChanged(
+                    new SelectedFileChangeEventArgs(this._parameter.DirectoryPath));
             }
             else
             {
                 this.SelectedFilePath = filePathList.First();
+                this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
             }
-
-            this.OnSelectedFileChanged(new SelectedFileChangeEventArgs(filePathList));
         }
 
         protected override void OnRemoveFile(string[] filePathList)
