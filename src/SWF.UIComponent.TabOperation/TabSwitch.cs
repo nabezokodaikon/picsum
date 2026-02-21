@@ -878,30 +878,8 @@ namespace SWF.UIComponent.TabOperation
 
             if (this._tabList.Count > 0)
             {
-                var tab = this._tabList.Last();
-                if (TAB_DRAG_OPERATION.IsTarget(tab))
-                {
-                    if (this._tabList.Count > 1)
-                    {
-                        var index = this._tabList.IndexOf(tab) - 1;
-                        this._addTabButtonDrawArea.X = this._tabList[index].DrawArea.Right + tabsMargin;
-                    }
-                    else
-                    {
-                        this._addTabButtonDrawArea.X = tab.DrawArea.Right + tabsMargin;
-                    }
-                }
-                else
-                {
-                    this._addTabButtonDrawArea.X = tab.DrawArea.Right + tabsMargin;
-                }
-
-                var rect = this.GetTabsRectangle();
-                if (this._addTabButtonDrawArea.Right > rect.Right)
-                {
-                    var tabMargin = this.GetTabMargin();
-                    this._addTabButtonDrawArea.X = rect.Right + tabMargin;
-                }
+                var rightEnd = this._tabList.Max(tab => tab.DrawArea.Right);
+                this._addTabButtonDrawArea.X = rightEnd + tabsMargin;
             }
             else
             {
@@ -1457,29 +1435,33 @@ namespace SWF.UIComponent.TabOperation
             }
             else
             {
-                var stopAnimationCount = 0;
-                foreach (var tab in this._tabList)
+                var dragTab = this._tabList.Where(tab => TAB_DRAG_OPERATION.IsTarget(tab)).FirstOrDefault();
+                if (dragTab != null)
                 {
-                    if (TAB_DRAG_OPERATION.IsTarget(tab))
+                    dragTab.DrawArea.DoNotAnimation();
+
+                    var rightEnd = this._tabList.Where(tab => dragTab != tab).Max(tab => tab.DrawArea.Right);
+                    if (dragTab.DrawArea.Right > rightEnd)
                     {
-                        tab.DrawArea.DoNotAnimation();
-                        stopAnimationCount++;
+                        this._addTabButtonDrawArea.DoNotAnimation();
                     }
-                    else if (!TAB_DRAG_OPERATION.IsTarget(tab))
+                    else
                     {
-                        if (tab.DrawArea.DoAnimation())
-                        {
-                            stopAnimationCount++;
-                        }
+                        this._addTabButtonDrawArea.DoAnimation();
                     }
                 }
-
-                if (this._addTabButtonDrawArea.DoAnimation())
+                else
                 {
-                    stopAnimationCount++;
+                    this._addTabButtonDrawArea.DoAnimation();
                 }
 
-                if (stopAnimationCount == this._tabList.Count + 1)
+                foreach (var tab in this._tabList.Where(tab => !TAB_DRAG_OPERATION.IsTarget(tab)))
+                {
+                    tab.DrawArea.DoAnimation();
+                }
+
+                if (this._tabList.All(tab => tab.DrawArea.IsCompleteAnimation())
+                    && this._addTabButtonDrawArea.IsCompleteAnimation())
                 {
                     this._animationTimer.Stop();
                 }

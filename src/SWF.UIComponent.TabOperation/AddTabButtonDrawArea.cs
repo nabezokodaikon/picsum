@@ -161,6 +161,11 @@ namespace SWF.UIComponent.TabOperation
             this.Draw(g, true);
         }
 
+        public bool IsCompleteAnimation()
+        {
+            return this._targetPoint.X == this._currentX;
+        }
+
         public void DoNotAnimation()
         {
             this._currentX = this._targetPoint.X;
