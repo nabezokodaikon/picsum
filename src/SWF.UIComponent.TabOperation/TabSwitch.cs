@@ -875,15 +875,26 @@ namespace SWF.UIComponent.TabOperation
         private void SetAddTabButtonDrawArea()
         {
             var tabsMargin = this.GetTabsMargin();
+            var rect = this.GetTabsRectangle();
 
             if (this._tabList.Count > 0)
             {
-                var rightEnd = this._tabList.Max(tab => tab.DrawArea.Right);
-                this._addTabButtonDrawArea.X = rightEnd + tabsMargin;
+                var tabMargin = this.GetTabMargin();
+                var rightEnd = this._tabList.Max(tab => tab.DrawArea.Right) + tabsMargin;
+                var sum = this._tabList.Sum(tab => tab.DrawArea.Width + tabMargin) + rect.Left + tabsMargin;
+
+                if (rightEnd > sum)
+                {
+                    this._addTabButtonDrawArea.X = rightEnd;
+                }
+                else
+                {
+                    this._addTabButtonDrawArea.X = sum;
+                }
             }
             else
             {
-                this._addTabButtonDrawArea.X = this.ClientRectangle.X + tabsMargin;
+                this._addTabButtonDrawArea.X = rect.X;
             }
         }
 
@@ -1440,14 +1451,22 @@ namespace SWF.UIComponent.TabOperation
                 {
                     dragTab.DrawArea.DoNotAnimation();
 
-                    var rightEnd = this._tabList.Where(tab => dragTab != tab).Max(tab => tab.DrawArea.Right);
-                    if (dragTab.DrawArea.Right > rightEnd)
+                    var targetTabs = this._tabList.Where(tab => dragTab != tab);
+                    if (targetTabs.Any())
                     {
-                        this._addTabButtonDrawArea.DoNotAnimation();
+                        var rightEnd = this._tabList.Where(tab => dragTab != tab).Max(tab => tab.DrawArea.Right);
+                        if (dragTab.DrawArea.Right > rightEnd)
+                        {
+                            this._addTabButtonDrawArea.DoNotAnimation();
+                        }
+                        else
+                        {
+                            this._addTabButtonDrawArea.DoAnimation();
+                        }
                     }
                     else
                     {
-                        this._addTabButtonDrawArea.DoAnimation();
+                        this._addTabButtonDrawArea.DoNotAnimation();
                     }
                 }
                 else
