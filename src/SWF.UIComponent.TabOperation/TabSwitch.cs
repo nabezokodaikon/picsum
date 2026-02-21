@@ -1174,6 +1174,14 @@ namespace SWF.UIComponent.TabOperation
             {
                 this.InvalidateHeaderWithAnimation();
             }
+            else if (tab != null && tab.DrawArea.GetCloseButtonRectangle().Contains(e.X, e.Y))
+            {
+                this.InvalidateHeaderWithAnimation();
+            }
+            else if (this._addTabButtonDrawArea.Page(e.X, e.Y))
+            {
+                this.InvalidateHeaderWithAnimation();
+            }
 
             if (e.Button != MouseButtons.Left)
             {
