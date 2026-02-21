@@ -263,7 +263,7 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            const float lerpFactor = 0.25f;
+            const float lerpFactor = 0.2f;
 
             var nextLeft = currentLeft + (distanceLeft * lerpFactor);
             if (distanceLeft > 0)
