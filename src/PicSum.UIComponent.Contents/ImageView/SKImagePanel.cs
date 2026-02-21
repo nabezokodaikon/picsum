@@ -146,6 +146,7 @@ namespace PicSum.UIComponent.Contents.ImageView
             this.VSync = true;
             this.DoubleBuffered = false;
 
+            this.Load += this.ImagePanel_Load;
             this.MouseDown += this.ImagePanel_MouseDown;
             this.MouseUp += this.ImagePanel_MouseUp;
             this.MouseClick += this.ImagePanel_MouseClick;
@@ -325,6 +326,12 @@ namespace PicSum.UIComponent.Contents.ImageView
                     }
                 }
             }
+        }
+
+        private void ImagePanel_Load(object sender, EventArgs e)
+        {
+            // ウォームアップ描画。
+            this.Invalidate();
         }
 
         private void ImagePanel_MouseDown(object sender, MouseEventArgs e)
