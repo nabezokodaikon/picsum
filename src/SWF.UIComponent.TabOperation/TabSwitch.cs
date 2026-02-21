@@ -1435,6 +1435,8 @@ namespace SWF.UIComponent.TabOperation
                 tab.DrawArea.DoNotAnimation();
             }
 
+            this._addTabButtonDrawArea.DoNotAnimation();
+
             this.InvalidateHeader();
         }
 
