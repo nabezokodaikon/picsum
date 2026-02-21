@@ -246,7 +246,7 @@ namespace SWF.UIComponent.TabOperation
             this._currentWidth = this._targetWidth;
         }
 
-        public bool DoAnimation()
+        public void DoAnimation()
         {
             var currentLeft = this._currentX;
             var targetLeft = this._targetPoint.X;
@@ -260,7 +260,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 this._currentX = targetLeft;
                 this._currentWidth = targetWidth;
-                return true;
+                return;
             }
 
             const float lerpFactor = 0.25f;
@@ -285,7 +285,7 @@ namespace SWF.UIComponent.TabOperation
                 this._currentWidth = (int)Math.Floor(nextWidth);
             }
 
-            return false;
+            return;
         }
 
         private RectangleF GetIconRectangle()

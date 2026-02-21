@@ -171,7 +171,7 @@ namespace SWF.UIComponent.TabOperation
             this._currentX = this._targetPoint.X;
         }
 
-        public bool DoAnimation()
+        public void DoAnimation()
         {
             var currentLeft = this._currentX;
             var targetLeft = this._targetPoint.X;
@@ -180,7 +180,7 @@ namespace SWF.UIComponent.TabOperation
             if (Math.Abs(distanceLeft) < 1.0f)
             {
                 this._currentX = targetLeft;
-                return true;
+                return;
             }
 
             const float lerpFactor = 0.25f;
@@ -195,7 +195,7 @@ namespace SWF.UIComponent.TabOperation
                 this._currentX = (int)Math.Floor(nextLeft);
             }
 
-            return false;
+            return;
         }
 
         private void Draw(Graphics g, bool isMousePoint)
