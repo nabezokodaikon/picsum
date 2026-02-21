@@ -3,6 +3,7 @@ using SWF.Core.Base;
 using SWF.UIComponent.TabOperation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -136,7 +137,15 @@ namespace PicSum.Main.Mng
 
         private void Browse_NewWindowPageOpen(object sender, BrowsePageOpenEventArgs e)
         {
+            var activeBrowse = this.GetActiveBrowse();
+            var scale = WindowUtil.GetCurrentWindowScale(activeBrowse);
+            var offset = 16 * scale;
             var browse = this.CreateBrowse();
+            browse.Location = new Point(
+                (int)(activeBrowse.Location.X + offset),
+                (int)(activeBrowse.Location.Y + offset));
+            browse.Size = activeBrowse.Size;
+
             this.browseList.Add(browse);
             browse.Show();
             browse.AddTab(e.PageParameter);
