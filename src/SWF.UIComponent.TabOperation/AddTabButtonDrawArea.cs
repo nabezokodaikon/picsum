@@ -27,11 +27,6 @@ namespace SWF.UIComponent.TabOperation
             return new RectangleF(x, y, w, h);
         }
 
-        private static readonly SolidBrush MOUSE_POINT_BRUSH = new(Color.FromArgb(128, 255, 255, 255));
-        private static readonly SolidBrush NORMAL_BRUSH = new(Color.FromArgb(0, 0, 0, 0));
-        private static readonly Pen MOUSE_POINT_PEN = new(Color.Black, 2f);
-        private static readonly Pen NORMAL_PEN = new(Color.LightGray, 2f);
-
         private float _width;
         private float _height;
         private PointF _targetPoint;
@@ -212,15 +207,15 @@ namespace SWF.UIComponent.TabOperation
 
             if (isMousePoint)
             {
-                g.FillEllipse(MOUSE_POINT_BRUSH, bgRect);
-                g.DrawLine(MOUSE_POINT_PEN, vp1, vp2);
-                g.DrawLine(MOUSE_POINT_PEN, hp1, hp2);
+                g.FillEllipse(TabSwitchResources.TAB_ADD_BUTTON_MOUSE_POINT_BRUSH, bgRect);
+                g.DrawLine(TabSwitchResources.TAB_ADD_BUTTON_MOUSE_POINT_PEN, vp1, vp2);
+                g.DrawLine(TabSwitchResources.TAB_ADD_BUTTON_MOUSE_POINT_PEN, hp1, hp2);
             }
             else
             {
-                g.FillEllipse(NORMAL_BRUSH, bgRect);
-                g.DrawLine(NORMAL_PEN, vp1, vp2);
-                g.DrawLine(NORMAL_PEN, hp1, hp2);
+                g.FillEllipse(TabSwitchResources.TAB_ADD_BUTTON_NORMAL_BRUSH, bgRect);
+                g.DrawLine(TabSwitchResources.TAB_ADD_BUTTON_NORMAL_PEN, vp1, vp2);
+                g.DrawLine(TabSwitchResources.TAB_ADD_BUTTON_NORMAL_PEN, hp1, hp2);
             }
         }
 

@@ -10,27 +10,6 @@ namespace SWF.UIComponent.TabOperation
 
     public sealed class TabDrawArea
     {
-        private static readonly SolidBrush TAB_CLOSE_ACTIVE_BUTTON_BRUSH
-            = new(Color.FromArgb(64, 0, 0, 0));
-
-        private static readonly SolidBrush TAB_CLOSE_INACTIVE_BUTTON_BRUSH
-            = new(Color.FromArgb(64, 0, 0, 0));
-
-        private static readonly Pen TAB_CLOSE_BUTTON_SLASH_PEN
-            = new(Color.Black, 2f);
-
-        private static readonly SolidBrush ACTIVE_TAB_BRUSH
-            = new(Color.FromArgb(250, 250, 250));
-
-        private static readonly SolidBrush INACTIVE_TAB_BRUSH
-            = new(Color.FromArgb(200, 200, 200));
-
-        private static readonly SolidBrush MOUSE_POINT_TAB_BRUSH
-            = new(Color.FromArgb(220, 220, 220));
-
-        private static readonly Pen TAB_OUTLINE_PEN
-            = new(Color.FromArgb(32, 32, 32), 0.1f);
-
         private readonly TabDrawAreaParameter _parameter;
 
         private PointF _targetPoint = new(0, 0);
@@ -123,7 +102,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this._parameter.Update(scale);
-            this.DrawTab(ACTIVE_TAB_BRUSH, g, scale, true);
+            this.DrawTab(TabSwitchResources.TAB_ACTIVE_BRUSH, g, scale, true);
         }
 
         public void DrawActiveTab(TabSwitch tabSwitch, Graphics g)
@@ -132,7 +111,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this._parameter.Update(tabSwitch);
-            this.DrawTab(ACTIVE_TAB_BRUSH, g, false);
+            this.DrawTab(TabSwitchResources.TAB_ACTIVE_BRUSH, g, false);
         }
 
         public void DrawInactiveTab(TabSwitch tabSwitch, Graphics g)
@@ -141,7 +120,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(tabSwitch, nameof(tabSwitch));
 
             this._parameter.Update(tabSwitch);
-            this.DrawTab(INACTIVE_TAB_BRUSH, g, false);
+            this.DrawTab(TabSwitchResources.TAB_INACTIVE_BRUSH, g, false);
         }
 
         public void DrawMousePointTab(TabSwitch tabSwitch, Graphics g)
@@ -150,7 +129,7 @@ namespace SWF.UIComponent.TabOperation
             ArgumentNullException.ThrowIfNull(g, nameof(g));
 
             this._parameter.Update(tabSwitch);
-            this.DrawTab(MOUSE_POINT_TAB_BRUSH, g, false);
+            this.DrawTab(TabSwitchResources.TAB_MOUSE_POINT_BRUSH, g, false);
         }
 
         public void DrawNothingTabCloseButton(Graphics g)
@@ -325,7 +304,7 @@ namespace SWF.UIComponent.TabOperation
 
             if (isDrawOutline)
             {
-                g.DrawLines(TAB_OUTLINE_PEN, [
+                g.DrawLines(TabSwitchResources.TAB_OUTLINE_PEN, [
                     new PointF(destRect.Left, destRect.Bottom - 1f),
                 new PointF(destRect.Left, destRect.Top + 0.5f),
                 new PointF(destRect.Right, destRect.Top + 0.5f),
@@ -348,23 +327,23 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (isActiveTab)
                 {
-                    g.FillEllipse(TAB_CLOSE_ACTIVE_BUTTON_BRUSH, bgRect);
+                    g.FillEllipse(TabSwitchResources.TAB_CLOSE_BUTTON_ACTIVE_BRUSH, bgRect);
                 }
                 else
                 {
-                    g.FillEllipse(TAB_CLOSE_INACTIVE_BUTTON_BRUSH, bgRect);
+                    g.FillEllipse(TabSwitchResources.TAB_CLOSE_BUTTON_INACTIVE_BRUSH, bgRect);
                 }
             }
 
             if (isActiveTab)
             {
-                g.DrawLine(TAB_CLOSE_BUTTON_SLASH_PEN, slashP1, backSlashP1);
-                g.DrawLine(TAB_CLOSE_BUTTON_SLASH_PEN, slashP2, backSlashP2);
+                g.DrawLine(TabSwitchResources.TAB_CLOSE_BUTTON_SLASH_PEN, slashP1, backSlashP1);
+                g.DrawLine(TabSwitchResources.TAB_CLOSE_BUTTON_SLASH_PEN, slashP2, backSlashP2);
             }
             else
             {
-                g.DrawLine(TAB_CLOSE_BUTTON_SLASH_PEN, slashP1, backSlashP1);
-                g.DrawLine(TAB_CLOSE_BUTTON_SLASH_PEN, slashP2, backSlashP2);
+                g.DrawLine(TabSwitchResources.TAB_CLOSE_BUTTON_SLASH_PEN, slashP1, backSlashP1);
+                g.DrawLine(TabSwitchResources.TAB_CLOSE_BUTTON_SLASH_PEN, slashP2, backSlashP2);
             }
         }
 
