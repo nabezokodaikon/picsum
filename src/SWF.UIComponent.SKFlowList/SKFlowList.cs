@@ -832,7 +832,6 @@ namespace SWF.UIComponent.SKFlowList
                 this._rectangleSelection.EndSelection();
             }
 
-            this._mousePointItemIndex = -1;
             this._isDrag = false;
             this._mouseDownHitTestInfo = new HitTestInfo();
 
