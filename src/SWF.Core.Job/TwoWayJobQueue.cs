@@ -76,7 +76,7 @@ namespace SWF.Core.Job
         }
 
         public void Enqueue<TJob, TJobParameter, TJobResult>(
-            ISender sender, TJobParameter parameter, Action<TJobResult> callback)
+            ISender sender, TJobParameter parameter, Action<TJobResult> callback, bool isCheckCancel = true)
             where TJob : AbstractTwoWayJob<TJobParameter, TJobResult>, new()
             where TJobParameter : class, IJobParameter
             where TJobResult : class, IJobResult
@@ -112,14 +112,19 @@ namespace SWF.Core.Job
             {
                 context.Post(s =>
                 {
-                    var (cb, res, j) = (ValueTuple<Action<TJobResult>, TJobResult, TJob>)s!;
+                    var (cb, res, j, check) = (ValueTuple<Action<TJobResult>, TJobResult, TJob, bool>)s!;
                     if (!j.CanUIThreadAccess() || this._isShuttingDown || this._disposed)
                     {
                         return;
                     }
 
+                    if (check && j.IsJobCancel)
+                    {
+                        return;
+                    }
+
                     cb(res);
-                }, (callback, result, job));
+                }, (callback, result, job, isCheckCancel));
             };
 
             this._currentJobDictionary.Add(type, job);
@@ -132,7 +137,7 @@ namespace SWF.Core.Job
         }
 
         public void Enqueue<TJob, TJobResult>(
-            ISender sender, Action<TJobResult> callback)
+            ISender sender, Action<TJobResult> callback, bool isCheckCancel = true)
             where TJob : AbstractTwoWayJob<TJobResult>, new()
             where TJobResult : class, IJobResult
         {
@@ -165,14 +170,19 @@ namespace SWF.Core.Job
             {
                 context.Post(s =>
                 {
-                    var (cb, res, j) = (ValueTuple<Action<TJobResult>, TJobResult, TJob>)s!;
+                    var (cb, res, j, check) = (ValueTuple<Action<TJobResult>, TJobResult, TJob, bool>)s!;
                     if (!j.CanUIThreadAccess() || this._isShuttingDown || this._disposed)
                     {
                         return;
                     }
 
+                    if (check && j.IsJobCancel)
+                    {
+                        return;
+                    }
+
                     cb(res);
-                }, (callback, result, job));
+                }, (callback, result, job, isCheckCancel));
             };
 
             this._currentJobDictionary.Add(type, job);

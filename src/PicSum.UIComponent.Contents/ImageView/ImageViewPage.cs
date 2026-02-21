@@ -640,7 +640,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             this.ImageFileReadJob_Callback(result);
                         }
-                    });
+                    }, false);
 
                 Instance<JobCaller>.Value.ImageFileReadJob.Value
                     .StartJob(this, imageFileReadParameter, result =>
@@ -677,7 +677,7 @@ namespace PicSum.UIComponent.Contents.ImageView
                         {
                             this.ImageFileReadJob_Callback(result);
                         }
-                    });
+                    }, false);
             }
 
             this.leftImagePanel.Focus();

@@ -84,7 +84,11 @@ namespace SWF.Core.Job
             this._currentJobList.Clear();
         }
 
-        public void StartJob(ISender sender, TJobParameter? parameter, Action<TJobResult>? callback)
+        public void StartJob(
+            ISender sender,
+            TJobParameter? parameter,
+            Action<TJobResult>? callback,
+            bool isCheckCancel = true)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
@@ -110,14 +114,19 @@ namespace SWF.Core.Job
                 {
                     context.Post(s =>
                     {
-                        var (cb, res, j) = (ValueTuple<Action<TJobResult>, TJobResult, TJob>)s!;
+                        var (cb, res, j, check) = (ValueTuple<Action<TJobResult>, TJobResult, TJob, bool>)s!;
                         if (!j.CanUIThreadAccess() || this._isShuttingDown || this._disposed)
                         {
                             return;
                         }
 
+                        if (check && j.IsJobCancel)
+                        {
+                            return;
+                        }
+
                         cb(res);
-                    }, (callback, result, job));
+                    }, (callback, result, job, isCheckCancel));
                 };
             }
 
@@ -130,33 +139,39 @@ namespace SWF.Core.Job
             }
         }
 
-        public void StartJob(ISender sender, Action<TJobResult> callback)
+        public void StartJob(
+            ISender sender,
+            Action<TJobResult> callback,
+            bool isCheckCancel = true)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(callback, nameof(callback));
 
             AppConstants.ThrowIfNotUIThread();
 
-            this.StartJob(sender, null, callback);
+            this.StartJob(sender, null, callback, isCheckCancel);
         }
 
-        public void StartJob(ISender sender, TJobParameter parameter)
+        public void StartJob(
+            ISender sender,
+            TJobParameter parameter,
+            bool isCheckCancel = true)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
             ArgumentNullException.ThrowIfNull(parameter, nameof(parameter));
 
             AppConstants.ThrowIfNotUIThread();
 
-            this.StartJob(sender, parameter, null);
+            this.StartJob(sender, parameter, null, isCheckCancel);
         }
 
-        public void StartJob(ISender sender)
+        public void StartJob(ISender sender, bool isCheckCancel = true)
         {
             ArgumentNullException.ThrowIfNull(sender, nameof(sender));
 
             AppConstants.ThrowIfNotUIThread();
 
-            this.StartJob(sender, null, null);
+            this.StartJob(sender, null, null, isCheckCancel);
         }
 
 #pragma warning disable CA1031
