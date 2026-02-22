@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using SkiaSharp.Views.Desktop;
 using SWF.Core.Base;
 using System.Collections.Concurrent;
 using System.Drawing.Imaging;
@@ -8,6 +9,22 @@ namespace SWF.Core.ImageAccessor
 {
     public static class SkiaUtil
     {
+        public static void WarmUpSKGLControl()
+        {
+            using var control = new SKGLControl();
+            _ = control.Handle;
+
+            control.PaintSurface += (sender, e) =>
+            {
+                using var canvas = e.Surface.Canvas;
+                canvas.Clear(SKColors.Transparent);
+                canvas.DrawRect(0, 0, 10, 10, new SKPaint { Color = SKColors.Red });
+            };
+
+            control.Invalidate();
+            control.Update();
+        }
+
         public static Bitmap ToBitmap(SKImage src)
         {
             ArgumentNullException.ThrowIfNull(src, nameof(src));

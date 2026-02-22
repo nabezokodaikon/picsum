@@ -77,6 +77,8 @@ namespace PicSum.Main
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
+                    //SkiaUtil.WarmUpSKGLControl();
+
                     using (var context = new Context())
                     {
                         Application.Run(context);
