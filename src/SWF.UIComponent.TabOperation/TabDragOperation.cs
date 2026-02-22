@@ -151,7 +151,7 @@ namespace SWF.UIComponent.TabOperation
 
             var currentTab = this._currentTab;
             var currentTabSwitch = currentTab.Owner;
-            var currentForm = (BaseForm)currentTabSwitch.GetForm();
+            var currentForm = (BaseForm)currentTabSwitch.GetWindow();
 
             if (currentTab == null)
             {

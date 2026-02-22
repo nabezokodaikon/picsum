@@ -186,7 +186,7 @@ namespace SWF.UIComponent.TabOperation
             this.Resize += this.TabSwitch_Resize;
         }
 
-        public Form GetForm()
+        public Form GetWindow()
         {
             Control ctl = this;
             while (ctl.Parent != null)
@@ -194,9 +194,9 @@ namespace SWF.UIComponent.TabOperation
                 ctl = ctl.Parent;
             }
 
-            if (ctl is Form form)
+            if (ctl is Form window)
             {
-                return form;
+                return window;
             }
             else
             {
@@ -217,9 +217,9 @@ namespace SWF.UIComponent.TabOperation
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetForm<T>() where T : Form
+        public T GetWindow<T>() where T : Form
         {
-            return (T)this.GetForm();
+            return (T)this.GetWindow();
         }
 
         /// <summary>
@@ -614,7 +614,7 @@ namespace SWF.UIComponent.TabOperation
 
         private int GetTabsRightOffset()
         {
-            var size = WindowUtil.GetControlBoxSize(this.GetForm().Handle);
+            var size = WindowUtil.GetControlBoxSize(this.GetWindow().Handle);
             var margin = this.GetTabRightMargin();
             return size.Width + margin;
         }
@@ -623,7 +623,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabHeight()
         {
             const int TAB_DEFAULT_HEIGHT = 29;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_DEFAULT_HEIGHT * scale);
         }
@@ -632,7 +632,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabMargin()
         {
             const float TAB_MARGIN = 2;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MARGIN * scale);
         }
@@ -641,7 +641,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabMaximumWidth()
         {
             const float TAB_MAXIMUM_WIDTH = 256;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MAXIMUM_WIDTH * scale);
         }
@@ -650,7 +650,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabMinimumWidth()
         {
             const float TAB_MINIMUM_WIDTH = 1;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_MINIMUM_WIDTH * scale);
         }
@@ -659,7 +659,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabsMargin()
         {
             const float TABS_MARGIN = 8;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TABS_MARGIN * scale);
         }
@@ -667,7 +667,7 @@ namespace SWF.UIComponent.TabOperation
         private int GetTabRightMargin()
         {
             const int TAB_RIGHT_DEFAULT_MARGIN = 32;
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var scale = WindowUtil.GetCurrentWindowScale(form);
             return (int)(TAB_RIGHT_DEFAULT_MARGIN * scale);
         }
@@ -768,7 +768,7 @@ namespace SWF.UIComponent.TabOperation
 
         private PageContainer GetContainer()
         {
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var container = this.GetContainer(form);
             if (container != null)
             {
@@ -980,7 +980,7 @@ namespace SWF.UIComponent.TabOperation
                 return;
             }
 
-            var form = this.GetForm();
+            var form = this.GetWindow();
             var tabCloseButtonCanDrawWidth = GetTabCloseButtonCanDrawWidth(form);
             if (tab.DrawArea.Width <= tabCloseButtonCanDrawWidth)
             {
@@ -1116,7 +1116,7 @@ namespace SWF.UIComponent.TabOperation
 
         private void TabSwitch_Loaded(object sender, EventArgs e)
         {
-            var form = this.GetForm();
+            var form = this.GetWindow();
             TAB_DRAG_OPERATION.AddForm(form);
         }
 
@@ -1185,7 +1185,7 @@ namespace SWF.UIComponent.TabOperation
             {
                 if (tab == null && !this._addTabButtonDrawArea.Page(e.X, e.Y))
                 {
-                    var form = this.GetForm();
+                    var form = this.GetWindow();
                     WinApiMembers.ReleaseCapture();
                     _ = WinApiMembers.SendMessage(
                         form.Handle,

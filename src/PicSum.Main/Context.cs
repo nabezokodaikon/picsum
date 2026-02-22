@@ -17,7 +17,7 @@ namespace PicSum.Main
         : ApplicationContext, ISender
     {
         private readonly ResourceManager _resourceManager;
-        private readonly BrowseManager _browseManager;
+        private readonly WindowManager _windowManager;
 
         public bool IsHandleCreated { get; private set; } = true;
         public bool IsLoaded { get; private set; } = true;
@@ -28,9 +28,9 @@ namespace PicSum.Main
             AppConstants.ThrowIfNotUIThread();
 
             this._resourceManager = new();
-            this._browseManager = new();
+            this._windowManager = new();
 
-            this._browseManager.BrowseNothing += this.BrowseManager_BrowseNothing;
+            this._windowManager.WindowNothing += this.WindowManager_BrowseNothing;
 
             Instance<JobCaller>.Value.GCCollectRunJob.Value
                 .StartJob(this);
@@ -48,7 +48,7 @@ namespace PicSum.Main
                         return;
                     }
 
-                    var form = this._browseManager.GetActiveBrowse();
+                    var window = this._windowManager.GetActiveWindow();
                     var directoryPath = FileUtil.GetParentDirectoryPath(_.Value);
 
                     var sortInfo = new SortParameter();
@@ -64,22 +64,22 @@ namespace PicSum.Main
                         Instance<IFileIconCacher>.Value.SmallDirectoryIcon,
                         true);
 
-                    form.AddImageViewPageTab(parameter);
-                    if (form.WindowState == FormWindowState.Minimized)
+                    window.AddImageViewPageTab(parameter);
+                    if (window.WindowState == FormWindowState.Minimized)
                     {
-                        form.RestoreWindowState();
+                        window.RestoreWindowState();
                     }
 
-                    form.Show();
-                    form.TopMost = true;
-                    form.TopMost = false;
-                    form.BringToFront();
-                    form.Activate();
-                    form.Focus();
+                    window.Show();
+                    window.TopMost = true;
+                    window.TopMost = false;
+                    window.BringToFront();
+                    window.Activate();
+                    window.Focus();
                 });
 
-            var form = this._browseManager.GetActiveBrowse();
-            form.Show();
+            var window = this._windowManager.GetActiveWindow();
+            window.Show();
         }
 
         protected override void Dispose(bool disposing)
@@ -94,7 +94,7 @@ namespace PicSum.Main
             base.Dispose(disposing);
         }
 
-        private void BrowseManager_BrowseNothing(object sender, EventArgs e)
+        private void WindowManager_BrowseNothing(object sender, EventArgs e)
         {
             this.ExitThread();
         }

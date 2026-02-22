@@ -757,8 +757,8 @@ namespace PicSum.Main.UIComponent
 
             if (e.ToOtherOwner)
             {
-                var browse = e.Tab.Owner.GetForm<BrowseForm>();
-                browse.AddPageEventHandler(e.Tab.GetPage<AbstractBrowsePage>());
+                var window = e.Tab.Owner.GetWindow<BrowseWindow>();
+                window.AddPageEventHandler(e.Tab.GetPage<AbstractBrowsePage>());
             }
             else
             {

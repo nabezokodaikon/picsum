@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace PicSum.Main.UIComponent
 {
-    internal sealed partial class BrowseForm
+    internal sealed partial class BrowseWindow
         : GrassForm, ISender
     {
         private const float PADDING_TOP = 8f;
@@ -40,7 +40,7 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        public BrowseForm()
+        public BrowseWindow()
             : base()
         {
             this.Icon = ResourceFiles.AppIcon.Value;
@@ -48,13 +48,13 @@ namespace PicSum.Main.UIComponent
             this.StartPosition = FormStartPosition.Manual;
             this.KeyPreview = true;
 
-            this.ScaleChanged += this.Form_ScaleChanged;
-            this.HandleCreated += this.BrowseForm_HandleCreated;
-            this.Shown += this.BrowseForm_Shown;
-            this.FormClosed += this.BrowseForm_FormClosed;
-            this.KeyDown += this.BrowseForm_KeyDown;
-            this.KeyUp += this.BrowseForm_KeyUp;
-            this.Activated += this.BrowseForm_Activated;
+            this.ScaleChanged += this.BrowseWindow_ScaleChanged;
+            this.HandleCreated += this.BrowseWindow_HandleCreated;
+            this.Shown += this.BrowseWindow_Shown;
+            this.FormClosed += this.BrowseWindow_FormClosed;
+            this.KeyDown += this.BrowseWindow_KeyDown;
+            this.KeyUp += this.BrowseWindow_KeyUp;
+            this.Activated += this.BrowseWindow_Activated;
         }
 
         public void AddPageEventHandler(AbstractBrowsePage page)
@@ -110,23 +110,23 @@ namespace PicSum.Main.UIComponent
             return this.BrowsePanel.IsBeginTabDragOperation;
         }
 
-        private void BrowseForm_HandleCreated(object sender, EventArgs e)
+        private void BrowseWindow_HandleCreated(object sender, EventArgs e)
         {
-            using (Measuring.Time(true, "BrowseForm.BrowseForm_HandleCreated"))
+            using (Measuring.Time(true, "BrowseForm.BrowseWindow_HandleCreated"))
             {
-                if (BrowseForm.isStartUp)
+                if (BrowseWindow.isStartUp)
                 {
                     this.SuspendLayout();
 
                     var workingArea = Screen.GetWorkingArea(this);
 
                     // ---- サイズの補正 ----
-                    var newWidth = Math.Min(BrowseConfig.INSTANCE.WindowSize.Width, workingArea.Width);
-                    var newHeight = Math.Min(BrowseConfig.INSTANCE.WindowSize.Height, workingArea.Height);
+                    var newWidth = Math.Min(WindowConfig.INSTANCE.WindowSize.Width, workingArea.Width);
+                    var newHeight = Math.Min(WindowConfig.INSTANCE.WindowSize.Height, workingArea.Height);
 
                     // ---- 位置の補正 ----
-                    var newX = BrowseConfig.INSTANCE.WindowLocaion.X;
-                    var newY = BrowseConfig.INSTANCE.WindowLocaion.Y;
+                    var newX = WindowConfig.INSTANCE.WindowLocaion.X;
+                    var newY = WindowConfig.INSTANCE.WindowLocaion.Y;
 
                     // 右端はみ出し
                     if (newX + newWidth > workingArea.Right)
@@ -154,7 +154,7 @@ namespace PicSum.Main.UIComponent
 
                     this.Location = new Point(newX, newY);
                     this.Size = new Size(newWidth, newHeight);
-                    this.WindowState = BrowseConfig.INSTANCE.WindowState;
+                    this.WindowState = WindowConfig.INSTANCE.WindowState;
 
                     this.CreateBrowsePanel();
 
@@ -163,29 +163,29 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void BrowseForm_Shown(object sender, EventArgs e)
+        private void BrowseWindow_Shown(object sender, EventArgs e)
         {
-            using (Measuring.Time(true, "BrowseForm.BrowseForm_Shown"))
+            using (Measuring.Time(true, "BrowseForm.BrowseWindow_Shown"))
             {
-                if (BrowseForm.isStartUp)
+                if (BrowseWindow.isStartUp)
                 {
-                    BrowseForm.isStartUp = false;
+                    BrowseWindow.isStartUp = false;
                     BootTimeMeasurement.Stop();
                 }
             }
         }
 
-        private void BrowseForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void BrowseWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (this.WindowState == FormWindowState.Normal)
             {
-                BrowseConfig.INSTANCE.WindowState = this.WindowState;
-                BrowseConfig.INSTANCE.WindowLocaion = this.Location;
-                BrowseConfig.INSTANCE.WindowSize = this.Size;
+                WindowConfig.INSTANCE.WindowState = this.WindowState;
+                WindowConfig.INSTANCE.WindowLocaion = this.Location;
+                WindowConfig.INSTANCE.WindowSize = this.Size;
             }
             else if (this.WindowState == FormWindowState.Maximized)
             {
-                BrowseConfig.INSTANCE.WindowState = this.WindowState;
+                WindowConfig.INSTANCE.WindowState = this.WindowState;
             }
         }
 
@@ -201,7 +201,7 @@ namespace PicSum.Main.UIComponent
             base.Dispose(disposing);
         }
 
-        private void BrowseForm_KeyDown(object sender, KeyEventArgs e)
+        private void BrowseWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (this.IsBeginTabDragOperation())
             {
@@ -262,12 +262,12 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        private void BrowseForm_KeyUp(object sender, KeyEventArgs e)
+        private void BrowseWindow_KeyUp(object sender, KeyEventArgs e)
         {
             this._isKeyDown = false;
         }
 
-        private void BrowseForm_Activated(object sender, EventArgs e)
+        private void BrowseWindow_Activated(object sender, EventArgs e)
         {
             if (this._browsePanel != null)
             {
@@ -309,7 +309,7 @@ namespace PicSum.Main.UIComponent
 
                 this.AttachResizeEvents(this);
 
-                if (BrowseForm.isStartUp)
+                if (BrowseWindow.isStartUp)
                 {
                     if (CommandLineArgs.IsNone() || CommandLineArgs.IsCleanup())
                     {
@@ -370,7 +370,7 @@ namespace PicSum.Main.UIComponent
             return new Rectangle(x, y, w, h);
         }
 
-        private void Form_ScaleChanged(object sender, ScaleChangedEventArgs e)
+        private void BrowseWindow_ScaleChanged(object sender, ScaleChangedEventArgs e)
         {
             if (this._browsePanel == null)
             {

@@ -30,12 +30,12 @@ namespace PicSum.Main.Mng
         /// </summary>
         public ResourceManager()
         {
-            BrowseConfig.INSTANCE.WindowState = Config.INSTANCE.WindowState;
+            WindowConfig.INSTANCE.WindowState = Config.INSTANCE.WindowState;
 
-            BrowseConfig.INSTANCE.WindowLocaion
+            WindowConfig.INSTANCE.WindowLocaion
                 = new(Config.INSTANCE.WindowLocaionX, Config.INSTANCE.WindowLocaionY);
 
-            BrowseConfig.INSTANCE.WindowSize
+            WindowConfig.INSTANCE.WindowSize
                 = new(Config.INSTANCE.WindowSizeWidth, Config.INSTANCE.WindowSizeHeight);
 
             FileListPageConfig.INSTANCE.ThumbnailSize = Config.INSTANCE.ThumbnailSize;
@@ -109,11 +109,11 @@ namespace PicSum.Main.Mng
             SKFlowListResources.Dispose();
             TabSwitchResources.Dispose();
 
-            Config.INSTANCE.WindowState = BrowseConfig.INSTANCE.WindowState;
-            Config.INSTANCE.WindowLocaionX = BrowseConfig.INSTANCE.WindowLocaion.X;
-            Config.INSTANCE.WindowLocaionY = BrowseConfig.INSTANCE.WindowLocaion.Y;
-            Config.INSTANCE.WindowSizeWidth = BrowseConfig.INSTANCE.WindowSize.Width;
-            Config.INSTANCE.WindowSizeHeight = BrowseConfig.INSTANCE.WindowSize.Height;
+            Config.INSTANCE.WindowState = WindowConfig.INSTANCE.WindowState;
+            Config.INSTANCE.WindowLocaionX = WindowConfig.INSTANCE.WindowLocaion.X;
+            Config.INSTANCE.WindowLocaionY = WindowConfig.INSTANCE.WindowLocaion.Y;
+            Config.INSTANCE.WindowSizeWidth = WindowConfig.INSTANCE.WindowSize.Width;
+            Config.INSTANCE.WindowSizeHeight = WindowConfig.INSTANCE.WindowSize.Height;
             Config.INSTANCE.ThumbnailSize = FileListPageConfig.INSTANCE.ThumbnailSize;
             Config.INSTANCE.IsShowFileName = FileListPageConfig.INSTANCE.IsShowFileName;
             Config.INSTANCE.IsShowDirectory = FileListPageConfig.INSTANCE.IsShowDirectory;
