@@ -20,114 +20,114 @@ namespace PicSum.Main.UIComponent
             // 
             // pageContainer
             // 
-            this.pageContainer.AllowDrop = true;
-            this.pageContainer.BackColor = Color.FromArgb(255, 64, 68, 71);
-            this.pageContainer.DragDrop += this.PageContainer_DragDrop;
-            this.pageContainer.DragEnter += this.PageContainer_DragEnter;
+            this._pageContainer.AllowDrop = true;
+            this._pageContainer.BackColor = Color.FromArgb(255, 64, 68, 71);
+            this._pageContainer.DragDrop += this.PageContainer_DragDrop;
+            this._pageContainer.DragEnter += this.PageContainer_DragEnter;
             // 
             // infoPanel
             // 
-            this.infoPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
+            this._infoPanel.BackColor = Color.FromArgb(250, 250, 250);
+            this._infoPanel.SelectedTag += this.InfoPanel_SelectedTag;
             // 
             // tabSwitch
             // 
-            this.tabSwitch.AllowDrop = true;
-            this.tabSwitch.BackColor = Color.Black;
-            this.tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
-            this.tabSwitch.TabCloseButtonClick += this.TabSwitch_TabCloseButtonClick;
-            this.tabSwitch.TabDropouted += this.TabSwitch_TabDropouted;
-            this.tabSwitch.BackgroundMouseDoubleLeftClick += this.TabSwitch_BackgroundMouseDoubleLeftClick;
-            this.tabSwitch.TabAreaDragOver += this.TabSwitch_TabAreaDragOver;
-            this.tabSwitch.TabAreaDragDrop += this.TabSwitch_TabAreaDragDrop;
-            this.tabSwitch.AddTabButtonMouseClick += this.TabSwitch_AddTabButtonMouseClick;
+            this._tabSwitch.AllowDrop = true;
+            this._tabSwitch.BackColor = Color.Black;
+            this._tabSwitch.ActiveTabChanged += this.TabSwitch_ActiveTabChanged;
+            this._tabSwitch.TabCloseButtonClick += this.TabSwitch_TabCloseButtonClick;
+            this._tabSwitch.TabDropouted += this.TabSwitch_TabDropouted;
+            this._tabSwitch.BackgroundMouseDoubleLeftClick += this.TabSwitch_BackgroundMouseDoubleLeftClick;
+            this._tabSwitch.TabAreaDragOver += this.TabSwitch_TabAreaDragOver;
+            this._tabSwitch.TabAreaDragDrop += this.TabSwitch_TabAreaDragDrop;
+            this._tabSwitch.AddTabButtonMouseClick += this.TabSwitch_AddTabButtonMouseClick;
             // 
             // toolPanel
             // 
-            this.toolPanel.BackColor = Color.FromArgb(250, 250, 250);
-            this.toolPanel.Controls.AddRange(
-                this.reloadToolButton,
-                this.nextPageHistoryButton,
-                this.previewPageHistoryButton,
-                this.showInfoToolButton,
-                this.addressBar);
+            this._toolPanel.BackColor = Color.FromArgb(250, 250, 250);
+            this._toolPanel.Controls.AddRange(
+                this._reloadToolButton,
+                this._nextPageHistoryButton,
+                this._previewPageHistoryButton,
+                this._showInfoToolButton,
+                this._addressBar);
             // 
             // reloadToolButton
             // 
-            this.reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
+            this._reloadToolButton.MouseClick += this.ReloadToolButton_MouseClick;
             // 
             // nextPageHistoryButton
             // 
-            this.nextPageHistoryButton.Enabled = false;
-            this.nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
+            this._nextPageHistoryButton.Enabled = false;
+            this._nextPageHistoryButton.MouseClick += this.NextPageHistoryButton_MouseClick;
             // 
             // previewPageHistoryButton
             // 
-            this.previewPageHistoryButton.Enabled = false;
-            this.previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
+            this._previewPageHistoryButton.Enabled = false;
+            this._previewPageHistoryButton.MouseClick += this.PreviewPageHistoryButton_MouseClick;
             // 
             // showInfoToolButton
             // 
-            this.showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
+            this._showInfoToolButton.MouseClick += this.ShowInfoToolButton_MouseClick;
             // 
             // addressBar
             //
-            this.addressBar.BackColor = Color.FromArgb(124, 138, 153);
-            this.addressBar.SelectedDirectory += this.AddressBar_SelectedDirectory;
+            this._addressBar.BackColor = Color.FromArgb(124, 138, 153);
+            this._addressBar.SelectedDirectory += this.AddressBar_SelectedDirectory;
             // 
             // searchBookmarkToolButton
             // 
-            this.searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
+            this._searchBookmarkToolButton.MouseClick += this.SearchBookmarkToolButton_MouseClick;
             // 
             // tagDropToolButton
             //
-            this.tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
-            this.tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
+            this._tagDropToolButton.ItemMouseClick += this.TagDropToolButton_ItemMouseClick;
+            this._tagDropToolButton.DropDownOpening += this.TagDropToolButton_DropDownOpening;
             // 
             // homeToolButton
             // 
-            this.homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
+            this._homeToolButton.MouseClick += this.HomeToolButton_MouseClick;
             // 
             // searchRatingToolButton
             // 
-            this.searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
+            this._searchRatingToolButton.MouseClick += this.SearchRatingToolButton_MouseClick;
             // 
             // historyToolButton
             // 
-            this.historyToolButton.MouseClick += this.HistoryToolButton_MouseClick;
+            this._historyToolButton.MouseClick += this.HistoryToolButton_MouseClick;
             // 
             // toolPanel2
             // 
-            this.toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
-            this.toolPanel2.Controls.AddRange(
-                this.searchBookmarkToolButton,
-                this.homeToolButton,
-                this.tagDropToolButton,
-                this.searchRatingToolButton,
-                this.historyToolButton);
-            this.toolPanel2.IsDrawRightBorderLine = true;
-            this.toolPanel2.VerticalTopMargin = 28;
+            this._toolPanel2.BackColor = Color.FromArgb(250, 250, 250);
+            this._toolPanel2.Controls.AddRange(
+                this._searchBookmarkToolButton,
+                this._homeToolButton,
+                this._tagDropToolButton,
+                this._searchRatingToolButton,
+                this._historyToolButton);
+            this._toolPanel2.IsDrawRightBorderLine = true;
+            this._toolPanel2.VerticalTopMargin = 28;
             // 
             // BrowsePanel
             // 
             this.Loaded += this.BrowsePanel_Loaded;
         }
 
-        private SWF.UIComponent.TabOperation.PageContainer pageContainer;
-        private PicSum.UIComponent.InfoPanel.InfoPanel infoPanel;
-        private SWF.UIComponent.TabOperation.TabSwitch tabSwitch;
-        private System.Windows.Forms.Control toolPanel;
-        private SWF.UIComponent.Base.ToolPanel toolPanel2;
-        private SWF.UIComponent.Base.BaseIconButton showInfoToolButton;
-        private PicSum.UIComponent.AddressBar.AddressBar addressBar;
-        private SWF.UIComponent.Base.BaseIconButton nextPageHistoryButton;
-        private SWF.UIComponent.Base.BaseIconButton previewPageHistoryButton;
-        private SWF.UIComponent.Base.BaseIconButton homeToolButton;
-        private SWF.UIComponent.Base.BaseIconButton searchRatingToolButton;
-        private SWF.UIComponent.WideDropDown.WideDropToolButton tagDropToolButton;
-        private SWF.UIComponent.Base.BaseIconButton reloadToolButton;
-        private SWF.UIComponent.Base.BaseIconButton searchBookmarkToolButton;
-        private SWF.UIComponent.Base.BaseIconButton historyToolButton;
+        private SWF.UIComponent.TabOperation.PageContainer _pageContainer;
+        private PicSum.UIComponent.InfoPanel.InfoPanel _infoPanel;
+        private SWF.UIComponent.TabOperation.TabSwitch _tabSwitch;
+        private System.Windows.Forms.Control _toolPanel;
+        private SWF.UIComponent.Base.ToolPanel _toolPanel2;
+        private SWF.UIComponent.Base.BaseIconButton _showInfoToolButton;
+        private PicSum.UIComponent.AddressBar.AddressBar _addressBar;
+        private SWF.UIComponent.Base.BaseIconButton _nextPageHistoryButton;
+        private SWF.UIComponent.Base.BaseIconButton _previewPageHistoryButton;
+        private SWF.UIComponent.Base.BaseIconButton _homeToolButton;
+        private SWF.UIComponent.Base.BaseIconButton _searchRatingToolButton;
+        private SWF.UIComponent.WideDropDown.WideDropToolButton _tagDropToolButton;
+        private SWF.UIComponent.Base.BaseIconButton _reloadToolButton;
+        private SWF.UIComponent.Base.BaseIconButton _searchBookmarkToolButton;
+        private SWF.UIComponent.Base.BaseIconButton _historyToolButton;
 
         #endregion
     }

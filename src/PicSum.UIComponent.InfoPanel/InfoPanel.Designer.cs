@@ -18,91 +18,91 @@ namespace PicSum.UIComponent.InfoPanel
         /// </summary>
         private void InitializeComponent()
         {
-            this.thumbnailPictureBox = new SKControl();
-            this.tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            this.tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ratingBar = new SWF.UIComponent.Base.RatingBar();
-            this.tagFlowList = new SWF.UIComponent.SKFlowList.SKFlowList();
-            this.wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
-            this.fileInfoLabel = new InfoLabel();
-            this.tagContextMenuStrip.SuspendLayout();
+            this._thumbnailPictureBox = new SKControl();
+            this._tagContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            this._tagDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._tagToAllEntryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._ratingBar = new SWF.UIComponent.Base.RatingBar();
+            this._tagFlowList = new SWF.UIComponent.SKFlowList.SKFlowList();
+            this._wideComboBox = new SWF.UIComponent.WideDropDown.WideComboBox();
+            this._fileInfoLabel = new InfoLabel();
+            this._tagContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // thumbnailPictureBox
             // 
-            this.thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.thumbnailPictureBox.PaintSurface += this.ThumbnailPictureBox_PaintSurface;
+            this._thumbnailPictureBox.BackColor = Color.FromArgb(250, 250, 250);
+            this._thumbnailPictureBox.PaintSurface += this.ThumbnailPictureBox_PaintSurface;
             // 
             // tagContextMenuStrip
             //
-            this.tagContextMenuStrip.ShowImageMargin = false;
-            this.tagContextMenuStrip.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
-            this.tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
-            this.tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.tagDeleteMenuItem, this.tagToAllEntryMenuItem });
-            this.tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
+            this._tagContextMenuStrip.ShowImageMargin = false;
+            this._tagContextMenuStrip.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
+            this._tagContextMenuStrip.ImageScalingSize = new Size(20, 20);
+            this._tagContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this._tagDeleteMenuItem, this._tagToAllEntryMenuItem });
+            this._tagContextMenuStrip.Opening += this.TagContextMenuStrip_Opening;
             // 
             // tagDeleteMenuItem
             // 
-            this.tagDeleteMenuItem.Text = "Remove Tag";
-            this.tagDeleteMenuItem.Click += this.TagDeleteMenuItem_Click;
+            this._tagDeleteMenuItem.Text = "Remove Tag";
+            this._tagDeleteMenuItem.Click += this.TagDeleteMenuItem_Click;
             // 
             // tagToAllEntryMenuItem
             // 
-            this.tagToAllEntryMenuItem.Text = "Apply Tag to All";
-            this.tagToAllEntryMenuItem.Click += this.TagToAllEntryMenuItem_Click;
+            this._tagToAllEntryMenuItem.Text = "Apply Tag to All";
+            this._tagToAllEntryMenuItem.Click += this.TagToAllEntryMenuItem_Click;
             // 
             // ratingBar
             // 
-            this.ratingBar.BackColor = Color.FromArgb(250, 250, 250);
-            this.ratingBar.MaximumValue = 1;
-            this.ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
+            this._ratingBar.BackColor = Color.FromArgb(250, 250, 250);
+            this._ratingBar.MaximumValue = 1;
+            this._ratingBar.RatingButtonMouseClick += this.RatingBar_RatingButtonMouseClick;
             // 
             // tagFlowList
             // 
-            this.tagFlowList.BackgroundColor = new SKColor(250, 250, 250);
-            this.tagFlowList.ContextMenuStrip = this.tagContextMenuStrip;
-            this.tagFlowList.IsLileList = true;
-            this.tagFlowList.ItemHeight = 32;
-            this.tagFlowList.MouseWheelRate = 2.5f;
-            this.tagFlowList.SKDrawItem += this.TagFlowList_DrawItem;
-            this.tagFlowList.MouseClick += this.TagFlowList_MouseClick;
-            this.tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
+            this._tagFlowList.BackgroundColor = new SKColor(250, 250, 250);
+            this._tagFlowList.ContextMenuStrip = this._tagContextMenuStrip;
+            this._tagFlowList.IsLileList = true;
+            this._tagFlowList.ItemHeight = 32;
+            this._tagFlowList.MouseWheelRate = 2.5f;
+            this._tagFlowList.SKDrawItem += this.TagFlowList_DrawItem;
+            this._tagFlowList.MouseClick += this.TagFlowList_MouseClick;
+            this._tagFlowList.MouseDoubleClick += this.TagFlowList_MouseDoubleClick;
             // 
             // wideComboBox
             // 
-            this.wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
-            this.wideComboBox.Icon = SkiaUtil.ToSKImage(SWF.Core.ResourceAccessor.ResourceFiles.TagIcon.Value);
-            this.wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
-            this.wideComboBox.AddItem += this.WideComboBox_AddItem;
+            this._wideComboBox.BackColor = Color.FromArgb(250, 250, 250);
+            this._wideComboBox.Icon = SkiaUtil.ToSKImage(SWF.Core.ResourceAccessor.ResourceFiles.TagIcon.Value);
+            this._wideComboBox.DropDownOpening += this.WideComboBox_DropDownOpening;
+            this._wideComboBox.AddItem += this.WideComboBox_AddItem;
             // 
             // fileInfoLabel
             // 
-            this.fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
+            this._fileInfoLabel.BackColor = Color.FromArgb(250, 250, 250);
             // 
             // InfoPanel
             // 
             this.BackColor = Color.FromArgb(250, 250, 250);
             this.Controls.AddRange(
-                this.wideComboBox,
-                this.thumbnailPictureBox,
-                this.ratingBar,
-                this.tagFlowList,
-                this.fileInfoLabel);
+                this._wideComboBox,
+                this._thumbnailPictureBox,
+                this._ratingBar,
+                this._tagFlowList,
+                this._fileInfoLabel);
             this.IsDrawLeftBorderLine = true;
             this.VerticalTopMargin = 28;
-            this.tagContextMenuStrip.ResumeLayout(false);
+            this._tagContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
-        private SKControl thumbnailPictureBox;
-        private SWF.UIComponent.Base.RatingBar ratingBar;
-        private SWF.UIComponent.SKFlowList.SKFlowList tagFlowList;
-        private System.Windows.Forms.ContextMenuStrip tagContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem tagDeleteMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tagToAllEntryMenuItem;
-        private SWF.UIComponent.WideDropDown.WideComboBox wideComboBox;
-        private InfoLabel fileInfoLabel;
+        private SKControl _thumbnailPictureBox;
+        private SWF.UIComponent.Base.RatingBar _ratingBar;
+        private SWF.UIComponent.SKFlowList.SKFlowList _tagFlowList;
+        private System.Windows.Forms.ContextMenuStrip _tagContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem _tagDeleteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _tagToAllEntryMenuItem;
+        private SWF.UIComponent.WideDropDown.WideComboBox _wideComboBox;
+        private InfoLabel _fileInfoLabel;
 
         #endregion
     }

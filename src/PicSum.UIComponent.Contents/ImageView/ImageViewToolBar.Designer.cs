@@ -17,159 +17,159 @@ namespace PicSum.UIComponent.Contents.ImageView
         /// </summary>
         private void InitializeComponent()
         {
-            this.viewMenu = new System.Windows.Forms.ContextMenuStrip();
-            this.singleViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.spreadLeftFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.spreadRightFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.doublePreviewButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.singlePreviewButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.doubleNextButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.singleNextButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.indexSlider = new SWF.UIComponent.Base.Slider();
-            this.viewButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.sizeButton = new SWF.UIComponent.Base.BaseTextButton();
-            this.sizeMenu = new System.Windows.Forms.ContextMenuStrip();
-            this.originalSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fitWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fitWindowLargeOnlyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._viewMenu = new System.Windows.Forms.ContextMenuStrip();
+            this._singleViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._spreadLeftFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._spreadRightFeedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._doublePreviewButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._singlePreviewButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._doubleNextButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._singleNextButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._indexSlider = new SWF.UIComponent.Base.Slider();
+            this._viewButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._sizeButton = new SWF.UIComponent.Base.BaseTextButton();
+            this._sizeMenu = new System.Windows.Forms.ContextMenuStrip();
+            this._originalSizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._fitWindowMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._fitWindowLargeOnlyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
-            this.sizeMenuSeparator = new ToolStripSeparator();
-            this.zoomMenuItem01 = new ZoomMenuItem(0.1f, "10%");
-            this.zoomMenuItem02 = new ZoomMenuItem(0.25f, "25%");
-            this.zoomMenuItem03 = new ZoomMenuItem(0.33f, "33%");
-            this.zoomMenuItem04 = new ZoomMenuItem(0.5f, "50%");
-            this.zoomMenuItem05 = new ZoomMenuItem(0.66f, "66%");
-            this.zoomMenuItem06 = new ZoomMenuItem(0.75f, "75%");
-            this.zoomMenuItem07 = new ZoomMenuItem(AppConstants.DEFAULT_ZOOM_VALUE, "100%");
-            this.zoomMenuItem08 = new ZoomMenuItem(1.25f, "125%");
-            this.zoomMenuItem09 = new ZoomMenuItem(1.5f, "150%");
-            this.zoomMenuItem10 = new ZoomMenuItem(2f, "200%");
-            this.zoomMenuItem11 = new ZoomMenuItem(3f, "300%");
-            this.zoomMenuItem12 = new ZoomMenuItem(5f, "500%");
-            this.zoomMenuItem13 = new ZoomMenuItem(10f, "1000%");
-            this.zoomMenuItem14 = new ZoomMenuItem(20f, "2000%");
-            this.zoomMenuItem15 = new ZoomMenuItem(30f, "3000%");
+            this._sizeMenuSeparator = new ToolStripSeparator();
+            this._zoomMenuItem01 = new ZoomMenuItem(0.1f, "10%");
+            this._zoomMenuItem02 = new ZoomMenuItem(0.25f, "25%");
+            this._zoomMenuItem03 = new ZoomMenuItem(0.33f, "33%");
+            this._zoomMenuItem04 = new ZoomMenuItem(0.5f, "50%");
+            this._zoomMenuItem05 = new ZoomMenuItem(0.66f, "66%");
+            this._zoomMenuItem06 = new ZoomMenuItem(0.75f, "75%");
+            this._zoomMenuItem07 = new ZoomMenuItem(AppConstants.DEFAULT_ZOOM_VALUE, "100%");
+            this._zoomMenuItem08 = new ZoomMenuItem(1.25f, "125%");
+            this._zoomMenuItem09 = new ZoomMenuItem(1.5f, "150%");
+            this._zoomMenuItem10 = new ZoomMenuItem(2f, "200%");
+            this._zoomMenuItem11 = new ZoomMenuItem(3f, "300%");
+            this._zoomMenuItem12 = new ZoomMenuItem(5f, "500%");
+            this._zoomMenuItem13 = new ZoomMenuItem(10f, "1000%");
+            this._zoomMenuItem14 = new ZoomMenuItem(20f, "2000%");
+            this._zoomMenuItem15 = new ZoomMenuItem(30f, "3000%");
 
             this.filePathToolTip = new System.Windows.Forms.ToolTip();
-            this.viewMenu.SuspendLayout();
-            this.sizeMenu.SuspendLayout();
+            this._viewMenu.SuspendLayout();
+            this._sizeMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // viewMenu
             //
-            this.viewMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
-            this.viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.singleViewMenuItem, this.spreadLeftFeedMenuItem, this.spreadRightFeedMenuItem });
+            this._viewMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
+            this._viewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this._singleViewMenuItem, this._spreadLeftFeedMenuItem, this._spreadRightFeedMenuItem });
             // 
             // singleViewMenuItem
             // 
-            this.singleViewMenuItem.Text = "Single View";
-            this.singleViewMenuItem.Click += this.SingleViewMenuItem_Click;
+            this._singleViewMenuItem.Text = "Single View";
+            this._singleViewMenuItem.Click += this.SingleViewMenuItem_Click;
             // 
             // spreadLeftFeedMenuItem
             // 
-            this.spreadLeftFeedMenuItem.Text = "Spread (Left Feed)";
-            this.spreadLeftFeedMenuItem.Click += this.SpreadLeftFeedMenuItem_Click;
+            this._spreadLeftFeedMenuItem.Text = "Spread (Left Feed)";
+            this._spreadLeftFeedMenuItem.Click += this.SpreadLeftFeedMenuItem_Click;
             // 
             // spreadRightFeedMenuItem
             // 
-            this.spreadRightFeedMenuItem.Text = "Spread (Right Feed)";
-            this.spreadRightFeedMenuItem.Click += this.SpreadRightFeedMenuItem_Click;
+            this._spreadRightFeedMenuItem.Text = "Spread (Right Feed)";
+            this._spreadRightFeedMenuItem.Click += this.SpreadRightFeedMenuItem_Click;
             // 
             // doublePreviewButton
             //
-            this.doublePreviewButton.Text = "<<-";
-            this.doublePreviewButton.MouseClick += this.DoublePreviewButton_MouseClick;
+            this._doublePreviewButton.Text = "<<-";
+            this._doublePreviewButton.MouseClick += this.DoublePreviewButton_MouseClick;
             // 
             // singlePreviewButton
             //
-            this.singlePreviewButton.Text = "<-";
-            this.singlePreviewButton.MouseClick += this.SinglePreviewButton_MouseClick;
+            this._singlePreviewButton.Text = "<-";
+            this._singlePreviewButton.MouseClick += this.SinglePreviewButton_MouseClick;
             // 
             // doubleNextButton
             //
-            this.doubleNextButton.Text = "->>";
-            this.doubleNextButton.MouseClick += this.DoubleNextButton_MouseClick;
+            this._doubleNextButton.Text = "->>";
+            this._doubleNextButton.MouseClick += this.DoubleNextButton_MouseClick;
             // 
             // singleNextButton
             //
-            this.singleNextButton.Text = "->";
-            this.singleNextButton.MouseClick += this.SingleNextButton_MouseClick;
+            this._singleNextButton.Text = "->";
+            this._singleNextButton.MouseClick += this.SingleNextButton_MouseClick;
             // 
             // indexSlider
             // 
-            this.indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
-            this.indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
-            this.indexSlider.ValueChanged += this.IndexSlider_ValueChanged;
-            this.indexSlider.MouseUp += this.IndexSlider_MouseUp;
+            this._indexSlider.BeginValueChange += this.IndexSlider_BeginValueChange;
+            this._indexSlider.ValueChanging += this.IndexSlider_ValueChanging;
+            this._indexSlider.ValueChanged += this.IndexSlider_ValueChanged;
+            this._indexSlider.MouseUp += this.IndexSlider_MouseUp;
             // 
             // viewButton
             //
-            this.viewButton.Text = "View";
-            this.viewButton.MouseClick += this.ViewButton_MouseClick;
+            this._viewButton.Text = "View";
+            this._viewButton.MouseClick += this.ViewButton_MouseClick;
             // 
             // sizeButton
             //
-            this.sizeButton.Text = "Size";
-            this.sizeButton.MouseClick += this.SizeButton_MouseClick;
+            this._sizeButton.Text = "Size";
+            this._sizeButton.MouseClick += this.SizeButton_MouseClick;
             // 
             // sizeMenu
             //
-            this.sizeMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
-            this.sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+            this._sizeMenu.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
+            this._sizeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
             {
-                this.fitWindowMenuItem,
-                this.fitWindowLargeOnlyMenuItem,
-                this.sizeMenuSeparator,
-                this.zoomMenuItem01,
-                this.zoomMenuItem02,
-                this.zoomMenuItem03,
-                this.zoomMenuItem04,
-                this.zoomMenuItem05,
-                this.zoomMenuItem06,
+                this._fitWindowMenuItem,
+                this._fitWindowLargeOnlyMenuItem,
+                this._sizeMenuSeparator,
+                this._zoomMenuItem01,
+                this._zoomMenuItem02,
+                this._zoomMenuItem03,
+                this._zoomMenuItem04,
+                this._zoomMenuItem05,
+                this._zoomMenuItem06,
                 //this.zoomMenuItem07,
-                this.originalSizeMenuItem,
-                this.zoomMenuItem08,
-                this.zoomMenuItem09,
-                this.zoomMenuItem10,
-                this.zoomMenuItem11,
-                this.zoomMenuItem12,
-                this.zoomMenuItem13,
-                this.zoomMenuItem14,
-                this.zoomMenuItem15,
+                this._originalSizeMenuItem,
+                this._zoomMenuItem08,
+                this._zoomMenuItem09,
+                this._zoomMenuItem10,
+                this._zoomMenuItem11,
+                this._zoomMenuItem12,
+                this._zoomMenuItem13,
+                this._zoomMenuItem14,
+                this._zoomMenuItem15,
             });
             // 
             // originalSizeMenuItem
             // 
-            this.originalSizeMenuItem.Text = "100%";
-            this.originalSizeMenuItem.Click += this.OriginalSizeMenuItem_Click;
+            this._originalSizeMenuItem.Text = "100%";
+            this._originalSizeMenuItem.Click += this.OriginalSizeMenuItem_Click;
             // 
             // fitWindowMenuItem
             // 
-            this.fitWindowMenuItem.Text = "Fit To Window";
-            this.fitWindowMenuItem.Click += this.FitWindowMenuItem_Click;
+            this._fitWindowMenuItem.Text = "Fit To Window";
+            this._fitWindowMenuItem.Click += this.FitWindowMenuItem_Click;
             // 
             // fitWindowLargeOnlyMenuItem
             // 
-            this.fitWindowLargeOnlyMenuItem.Text = "Fit To Window (Large Image Only)";
-            this.fitWindowLargeOnlyMenuItem.Click += this.FitWindowLargeOnlyMenuItem_Click;
+            this._fitWindowLargeOnlyMenuItem.Text = "Fit To Window (Large Image Only)";
+            this._fitWindowLargeOnlyMenuItem.Click += this.FitWindowLargeOnlyMenuItem_Click;
             // 
             // zoomMenuItem
             // 
-            this.zoomMenuItem01.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem02.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem03.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem04.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem05.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem06.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem07.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem08.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem09.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem10.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem11.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem12.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem13.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem14.Click += this.ZoomMenuItem_Click;
-            this.zoomMenuItem15.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem01.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem02.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem03.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem04.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem05.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem06.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem07.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem08.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem09.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem10.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem11.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem12.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem13.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem14.Click += this.ZoomMenuItem_Click;
+            this._zoomMenuItem15.Click += this.ZoomMenuItem_Click;
             // 
             // filePathToolTip
             // 
@@ -181,52 +181,52 @@ namespace PicSum.UIComponent.Contents.ImageView
             // ImageViewToolBar
             //
             this.Controls.AddRange(
-                this.sizeButton,
-                this.viewButton,
-                this.indexSlider,
-                this.singleNextButton,
-                this.doubleNextButton,
-                this.singlePreviewButton,
-                this.doublePreviewButton);
-            this.viewMenu.ResumeLayout(false);
-            this.sizeMenu.ResumeLayout(false);
+                this._sizeButton,
+                this._viewButton,
+                this._indexSlider,
+                this._singleNextButton,
+                this._doubleNextButton,
+                this._singlePreviewButton,
+                this._doublePreviewButton);
+            this._viewMenu.ResumeLayout(false);
+            this._sizeMenu.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolStripDropDown viewMenu;
-        private SWF.UIComponent.Base.BaseTextButton doublePreviewButton;
-        private SWF.UIComponent.Base.BaseTextButton singlePreviewButton;
-        private SWF.UIComponent.Base.BaseTextButton doubleNextButton;
-        private SWF.UIComponent.Base.BaseTextButton singleNextButton;
-        private SWF.UIComponent.Base.Slider indexSlider;
-        private SWF.UIComponent.Base.BaseTextButton viewButton;
-        private System.Windows.Forms.ToolStripMenuItem singleViewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem spreadLeftFeedMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem spreadRightFeedMenuItem;
-        private SWF.UIComponent.Base.BaseTextButton sizeButton;
-        private System.Windows.Forms.ToolStripDropDown sizeMenu;
-        private System.Windows.Forms.ToolStripMenuItem originalSizeMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fitWindowMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fitWindowLargeOnlyMenuItem;
+        private System.Windows.Forms.ToolStripDropDown _viewMenu;
+        private SWF.UIComponent.Base.BaseTextButton _doublePreviewButton;
+        private SWF.UIComponent.Base.BaseTextButton _singlePreviewButton;
+        private SWF.UIComponent.Base.BaseTextButton _doubleNextButton;
+        private SWF.UIComponent.Base.BaseTextButton _singleNextButton;
+        private SWF.UIComponent.Base.Slider _indexSlider;
+        private SWF.UIComponent.Base.BaseTextButton _viewButton;
+        private System.Windows.Forms.ToolStripMenuItem _singleViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _spreadLeftFeedMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _spreadRightFeedMenuItem;
+        private SWF.UIComponent.Base.BaseTextButton _sizeButton;
+        private System.Windows.Forms.ToolStripDropDown _sizeMenu;
+        private System.Windows.Forms.ToolStripMenuItem _originalSizeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _fitWindowMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _fitWindowLargeOnlyMenuItem;
 
-        private System.Windows.Forms.ToolStripSeparator sizeMenuSeparator;
-        private ZoomMenuItem zoomMenuItem01;
-        private ZoomMenuItem zoomMenuItem02;
-        private ZoomMenuItem zoomMenuItem03;
-        private ZoomMenuItem zoomMenuItem04;
-        private ZoomMenuItem zoomMenuItem05;
-        private ZoomMenuItem zoomMenuItem06;
-        private ZoomMenuItem zoomMenuItem07;
-        private ZoomMenuItem zoomMenuItem08;
-        private ZoomMenuItem zoomMenuItem09;
-        private ZoomMenuItem zoomMenuItem10;
-        private ZoomMenuItem zoomMenuItem11;
-        private ZoomMenuItem zoomMenuItem12;
-        private ZoomMenuItem zoomMenuItem13;
-        private ZoomMenuItem zoomMenuItem14;
-        private ZoomMenuItem zoomMenuItem15;
+        private System.Windows.Forms.ToolStripSeparator _sizeMenuSeparator;
+        private ZoomMenuItem _zoomMenuItem01;
+        private ZoomMenuItem _zoomMenuItem02;
+        private ZoomMenuItem _zoomMenuItem03;
+        private ZoomMenuItem _zoomMenuItem04;
+        private ZoomMenuItem _zoomMenuItem05;
+        private ZoomMenuItem _zoomMenuItem06;
+        private ZoomMenuItem _zoomMenuItem07;
+        private ZoomMenuItem _zoomMenuItem08;
+        private ZoomMenuItem _zoomMenuItem09;
+        private ZoomMenuItem _zoomMenuItem10;
+        private ZoomMenuItem _zoomMenuItem11;
+        private ZoomMenuItem _zoomMenuItem12;
+        private ZoomMenuItem _zoomMenuItem13;
+        private ZoomMenuItem _zoomMenuItem14;
+        private ZoomMenuItem _zoomMenuItem15;
 
         private System.Windows.Forms.ToolTip filePathToolTip;
     }

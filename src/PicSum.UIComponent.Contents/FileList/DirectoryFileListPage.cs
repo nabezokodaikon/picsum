@@ -47,8 +47,8 @@ namespace PicSum.UIComponent.Contents.FileList
             }
 
             this.IsMoveControlVisible = !string.IsNullOrEmpty(this._parameter.DirectoryPath);
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            base.toolBar.AddDateSortButtonEnabled = false;
+            this._fileContextMenu.VisibleRemoveFromListMenuItem = false;
+            base._toolBar.AddDateSortButtonEnabled = false;
 
             this.Loaded += this.DirectoryFileListPage_Loaded;
             this.DrawTabPage += this.DirectoryFileListPage_DrawTabPage;
@@ -194,7 +194,7 @@ namespace PicSum.UIComponent.Contents.FileList
             else if (!FileUtil.IsSystemRoot(this._parameter.DirectoryPath))
             {
                 this.SetContextMenuFiles(this._parameter.DirectoryPath);
-                this.fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = false;
+                this._fileContextMenu.VisibleDirectoryActiveTabOpenMenuItem = false;
             }
             else
             {

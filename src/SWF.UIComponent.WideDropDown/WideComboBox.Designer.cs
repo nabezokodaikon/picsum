@@ -17,33 +17,33 @@ namespace SWF.UIComponent.WideDropDown
         /// </summary>
         private void InitializeComponent()
         {
-            this.addButton = new SWF.UIComponent.Base.BaseIconButton();
-            this.inputTextBox = new InputTextBox();
-            this.arrowPictureBox = new BaseIconButton();
+            this._addButton = new SWF.UIComponent.Base.BaseIconButton();
+            this._inputTextBox = new InputTextBox();
+            this._arrowPictureBox = new BaseIconButton();
             this.SuspendLayout();
             // 
             // addButton
             // 
-            this.addButton.MouseClick += this.AddButton_MouseClick;
+            this._addButton.MouseClick += this.AddButton_MouseClick;
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
-            this.inputTextBox.KeyDown += this.InputTextBox_KeyDown;
+            this._inputTextBox.Font = FontCacher.GetRegularGdiFont(FontCacher.Size.Medium);
+            this._inputTextBox.KeyDown += this.InputTextBox_KeyDown;
             // 
             // WideComboBox
             //
             this.Controls.AddRange(
-                this.inputTextBox,
-                this.arrowPictureBox,
-                this.addButton);
+                this._inputTextBox,
+                this._arrowPictureBox,
+                this._addButton);
             this.Paint += this.WideComboBox_Paint;
             this.ResumeLayout(false);
         }
 
-        private SWF.UIComponent.Base.BaseIconButton addButton;
-        private BaseIconButton arrowPictureBox;
-        private InputTextBox inputTextBox;
+        private SWF.UIComponent.Base.BaseIconButton _addButton;
+        private BaseIconButton _arrowPictureBox;
+        private InputTextBox _inputTextBox;
 
         #endregion
     }

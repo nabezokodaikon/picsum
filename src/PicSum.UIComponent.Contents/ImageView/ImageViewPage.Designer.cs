@@ -18,94 +18,94 @@ namespace PicSum.UIComponent.Contents.ImageView
         /// </summary>
         private void InitializeComponent()
         {
-            this.leftImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
-            this.fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
-            this.rightImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
-            this.checkPatternPanel = new SWF.UIComponent.Base.CheckPatternPanel();
-            this.toolBar = new PicSum.UIComponent.Contents.ImageView.ImageViewToolBar();
-            this.checkPatternPanel.SuspendLayout();
-            this.toolBar.SuspendLayout();
+            this._leftImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
+            this._fileContextMenu = new PicSum.UIComponent.Contents.ContextMenu.FileContextMenu();
+            this._rightImagePanel = new PicSum.UIComponent.Contents.ImageView.SKImagePanel();
+            this._checkPatternPanel = new SWF.UIComponent.Base.CheckPatternPanel();
+            this._toolBar = new PicSum.UIComponent.Contents.ImageView.ImageViewToolBar();
+            this._checkPatternPanel.SuspendLayout();
+            this._toolBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // leftImagePanel
             // 
-            this.leftImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.leftImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.leftImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
-            this.leftImagePanel.IsShowThumbnailPanel = true;
-            this.leftImagePanel.Hide();
-            this.leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
-            this.leftImagePanel.DragStart += new System.EventHandler(this.LeftImagePanel_DragStart);
-            this.leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseUp);
+            this._leftImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this._leftImagePanel.ContextMenuStrip = this._fileContextMenu;
+            this._leftImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
+            this._leftImagePanel.IsShowThumbnailPanel = true;
+            this._leftImagePanel.Hide();
+            this._leftImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.LeftImagePanel_ImageMouseClick);
+            this._leftImagePanel.DragStart += new System.EventHandler(this.LeftImagePanel_DragStart);
+            this._leftImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LeftImagePanel_MouseUp);
             // 
             // fileContextMenu
             // 
-            this.fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = false;
-            this.fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
-            this.fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
-            this.fileContextMenu.SelectApplication += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SelectApplication);
-            this.fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
-            this.fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
-            this.fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
-            this.fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
-            this.fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
+            this._fileContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this._fileContextMenu.VisibleRemoveFromListMenuItem = false;
+            this._fileContextMenu.FileNewTabOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewTabOpen);
+            this._fileContextMenu.FileNewWindowOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_FileNewWindowOpen);
+            this._fileContextMenu.SelectApplication += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SelectApplication);
+            this._fileContextMenu.SaveDirectoryOpen += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_SaveDirectoryOpen);
+            this._fileContextMenu.PathCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_PathCopy);
+            this._fileContextMenu.NameCopy += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileListEventArgs>(this.FileContextMenu_NameCopy);
+            this._fileContextMenu.Bookmark += new System.EventHandler<PicSum.UIComponent.Contents.ContextMenu.ExecuteFileEventArgs>(this.FileContextMenu_Bookmark);
+            this._fileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.FileContextMenu_Opening);
             // 
             // rightImagePanel
             // 
-            this.rightImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.rightImagePanel.ContextMenuStrip = this.fileContextMenu;
-            this.rightImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
-            this.rightImagePanel.IsShowThumbnailPanel = true;
-            this.rightImagePanel.Hide();
-            this.rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);
-            this.rightImagePanel.DragStart += new System.EventHandler(this.RightImagePanel_DragStart);
-            this.rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseUp);
+            this._rightImagePanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this._rightImagePanel.ContextMenuStrip = this._fileContextMenu;
+            this._rightImagePanel.Align = SWF.Core.Base.ImageAlign.Center;
+            this._rightImagePanel.IsShowThumbnailPanel = true;
+            this._rightImagePanel.Hide();
+            this._rightImagePanel.ImageMouseClick += new System.EventHandler<System.Windows.Forms.MouseEventArgs>(this.RightImagePanel_ImageMouseClick);
+            this._rightImagePanel.DragStart += new System.EventHandler(this.RightImagePanel_DragStart);
+            this._rightImagePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightImagePanel_MouseUp);
             // 
             // checkPatternPanel
             // 
-            this.checkPatternPanel.Controls.AddRange(
-                this.leftImagePanel,
-                this.rightImagePanel);
+            this._checkPatternPanel.Controls.AddRange(
+                this._leftImagePanel,
+                this._rightImagePanel);
             // 
             // toolBar
             // 
-            this.toolBar.IsDrawBottomBorderLine = true;
-            this.toolBar.Visible = true;
-            this.toolBar.DoublePreviewButtonClick += new System.EventHandler(this.ToolBar_DoublePreviewButtonClick);
-            this.toolBar.DoubleNextButtonClick += new System.EventHandler(this.ToolBar_DoubleNextButtonClick);
-            this.toolBar.SinglePreviewButtonClick += new System.EventHandler(this.ToolBar_SinglePreviewButtonClick);
-            this.toolBar.SingleNextButtonClick += new System.EventHandler(this.ToolBar_SingleNextButtonClick);
-            this.toolBar.SingleViewMenuItemClick += new System.EventHandler(this.ToolBar_SingleViewMenuItemClick);
-            this.toolBar.SpreadLeftFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadLeftFeedMenuItemClick);
-            this.toolBar.SpreadRightFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadRightFeedMenuItemClick);
-            this.toolBar.OriginalSizeMenuItemClick += new System.EventHandler(this.ToolBar_OriginalSizeMenuItemClick);
-            this.toolBar.FitWindowMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowMenuItemClick);
-            this.toolBar.FitWindowLargeOnlyMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowLargeOnlyMenuItemClick);
-            this.toolBar.ZoomMenuItemClick += new EventHandler<ZoomMenuItemClickEventArgs>(this.ToolBar_ZoomMenuItemClick);
-            this.toolBar.IndexSliderValueChanging += new System.EventHandler(this.ToolBar_IndexSliderValueChanging);
-            this.toolBar.IndexSliderValueChanged += new System.EventHandler(this.ToolBar_IndexSliderValueChanged);
+            this._toolBar.IsDrawBottomBorderLine = true;
+            this._toolBar.Visible = true;
+            this._toolBar.DoublePreviewButtonClick += new System.EventHandler(this.ToolBar_DoublePreviewButtonClick);
+            this._toolBar.DoubleNextButtonClick += new System.EventHandler(this.ToolBar_DoubleNextButtonClick);
+            this._toolBar.SinglePreviewButtonClick += new System.EventHandler(this.ToolBar_SinglePreviewButtonClick);
+            this._toolBar.SingleNextButtonClick += new System.EventHandler(this.ToolBar_SingleNextButtonClick);
+            this._toolBar.SingleViewMenuItemClick += new System.EventHandler(this.ToolBar_SingleViewMenuItemClick);
+            this._toolBar.SpreadLeftFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadLeftFeedMenuItemClick);
+            this._toolBar.SpreadRightFeedMenuItemClick += new System.EventHandler(this.ToolBar_SpreadRightFeedMenuItemClick);
+            this._toolBar.OriginalSizeMenuItemClick += new System.EventHandler(this.ToolBar_OriginalSizeMenuItemClick);
+            this._toolBar.FitWindowMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowMenuItemClick);
+            this._toolBar.FitWindowLargeOnlyMenuItemClick += new System.EventHandler(this.ToolBar_FitWindowLargeOnlyMenuItemClick);
+            this._toolBar.ZoomMenuItemClick += new EventHandler<ZoomMenuItemClickEventArgs>(this.ToolBar_ZoomMenuItemClick);
+            this._toolBar.IndexSliderValueChanging += new System.EventHandler(this.ToolBar_IndexSliderValueChanging);
+            this._toolBar.IndexSliderValueChanged += new System.EventHandler(this.ToolBar_IndexSliderValueChanged);
             // 
             // ImageViewPage
             //
             this.Size = new System.Drawing.Size(short.MaxValue, short.MaxValue);
             this.BackColor = System.Drawing.Color.FromArgb(250, 250, 250);
             this.Controls.AddRange(
-                this.checkPatternPanel,
-                this.toolBar);
+                this._checkPatternPanel,
+                this._toolBar);
             this.Loaded += this.ImageViewPage_Loaded;
             this.MouseWheel += this.ImageViewPage_MouseWheel;
             this.DrawTabPage += this.ImageViewPage_DrawTabPage;
-            this.checkPatternPanel.ResumeLayout(false);
-            this.toolBar.ResumeLayout(false);
+            this._checkPatternPanel.ResumeLayout(false);
+            this._toolBar.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
-        private PicSum.UIComponent.Contents.ImageView.SKImagePanel leftImagePanel;
-        private PicSum.UIComponent.Contents.ImageView.SKImagePanel rightImagePanel;
-        private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu fileContextMenu;
-        private SWF.UIComponent.Base.CheckPatternPanel checkPatternPanel;
-        private PicSum.UIComponent.Contents.ImageView.ImageViewToolBar toolBar;
+        private PicSum.UIComponent.Contents.ImageView.SKImagePanel _leftImagePanel;
+        private PicSum.UIComponent.Contents.ImageView.SKImagePanel _rightImagePanel;
+        private PicSum.UIComponent.Contents.ContextMenu.FileContextMenu _fileContextMenu;
+        private SWF.UIComponent.Base.CheckPatternPanel _checkPatternPanel;
+        private PicSum.UIComponent.Contents.ImageView.ImageViewToolBar _toolBar;
 
         #endregion
     }

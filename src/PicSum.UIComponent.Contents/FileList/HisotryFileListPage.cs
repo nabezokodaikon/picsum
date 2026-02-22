@@ -28,8 +28,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Title = "History";
             this.Icon = ResourceFiles.HistoryIcon.Value;
             this.IsMoveControlVisible = false;
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.AddDateSortButtonEnabled = true;
+            this._fileContextMenu.VisibleRemoveFromListMenuItem = true;
+            base._toolBar.AddDateSortButtonEnabled = true;
 
             this.Loaded += this.HisotryFileListPage_Loaded;
             this.DrawTabPage += this.HisotryFileListPage_DrawTabPage;
@@ -98,8 +98,8 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Length > 0)
             {
-                this.fileContextMenu.SetFile(filePathList);
-                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+                this._fileContextMenu.SetFile(filePathList);
+                this._fileContextMenu.VisibleBookmarkMenuItem = false;
             }
             else
             {

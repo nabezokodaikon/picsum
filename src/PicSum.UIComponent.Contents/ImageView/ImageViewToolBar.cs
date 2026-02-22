@@ -40,11 +40,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.indexSlider.Value;
+                return this._indexSlider.Value;
             }
             set
             {
-                this.indexSlider.Value = value;
+                this._indexSlider.Value = value;
             }
         }
 
@@ -53,11 +53,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.indexSlider.MaximumValue;
+                return this._indexSlider.MaximumValue;
             }
             set
             {
-                this.indexSlider.MaximumValue = value;
+                this._indexSlider.MaximumValue = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.indexSlider.MinimumValue;
+                return this._indexSlider.MinimumValue;
             }
             set
             {
-                this.indexSlider.MinimumValue = value;
+                this._indexSlider.MinimumValue = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.singleViewMenuItem.Checked;
+                return this._singleViewMenuItem.Checked;
             }
             set
             {
-                this.singleViewMenuItem.Checked = value;
+                this._singleViewMenuItem.Checked = value;
             }
         }
 
@@ -92,11 +92,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.spreadLeftFeedMenuItem.Checked;
+                return this._spreadLeftFeedMenuItem.Checked;
             }
             set
             {
-                this.spreadLeftFeedMenuItem.Checked = value;
+                this._spreadLeftFeedMenuItem.Checked = value;
             }
         }
 
@@ -105,11 +105,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.spreadRightFeedMenuItem.Checked;
+                return this._spreadRightFeedMenuItem.Checked;
             }
             set
             {
-                this.spreadRightFeedMenuItem.Checked = value;
+                this._spreadRightFeedMenuItem.Checked = value;
             }
         }
 
@@ -118,11 +118,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.originalSizeMenuItem.Checked;
+                return this._originalSizeMenuItem.Checked;
             }
             set
             {
-                this.originalSizeMenuItem.Checked = value;
+                this._originalSizeMenuItem.Checked = value;
             }
         }
 
@@ -131,11 +131,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.fitWindowMenuItem.Checked;
+                return this._fitWindowMenuItem.Checked;
             }
             set
             {
-                this.fitWindowMenuItem.Checked = value;
+                this._fitWindowMenuItem.Checked = value;
             }
         }
 
@@ -144,11 +144,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.fitWindowLargeOnlyMenuItem.Checked;
+                return this._fitWindowLargeOnlyMenuItem.Checked;
             }
             set
             {
-                this.fitWindowLargeOnlyMenuItem.Checked = value;
+                this._fitWindowLargeOnlyMenuItem.Checked = value;
             }
         }
 
@@ -157,11 +157,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.doubleNextButton.Enabled;
+                return this._doubleNextButton.Enabled;
             }
             set
             {
-                this.doubleNextButton.Enabled = value;
+                this._doubleNextButton.Enabled = value;
             }
         }
 
@@ -170,11 +170,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.doublePreviewButton.Enabled;
+                return this._doublePreviewButton.Enabled;
             }
             set
             {
-                this.doublePreviewButton.Enabled = value;
+                this._doublePreviewButton.Enabled = value;
             }
         }
 
@@ -183,11 +183,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.singleNextButton.Enabled;
+                return this._singleNextButton.Enabled;
             }
             set
             {
-                this.singleNextButton.Enabled = value;
+                this._singleNextButton.Enabled = value;
             }
         }
 
@@ -196,11 +196,11 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             get
             {
-                return this.singlePreviewButton.Enabled;
+                return this._singlePreviewButton.Enabled;
             }
             set
             {
-                this.singlePreviewButton.Enabled = value;
+                this._singlePreviewButton.Enabled = value;
             }
         }
 
@@ -208,55 +208,55 @@ namespace PicSum.UIComponent.Contents.ImageView
         {
             this.InitializeComponent();
 
-            this.viewButton.LostFocus += this.MenuButton_LostFocus;
-            this.sizeButton.LostFocus += this.MenuButton_LostFocus;
+            this._viewButton.LostFocus += this.MenuButton_LostFocus;
+            this._sizeButton.LostFocus += this.MenuButton_LostFocus;
         }
 
         public void SetControlsBounds(float scale)
         {
-            this.viewButton.SetBounds(
+            this._viewButton.SetBounds(
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.sizeButton.SetBounds(
-                this.viewButton.Location.X * 2 + this.viewButton.Width,
-                this.viewButton.Location.Y,
+            this._sizeButton.SetBounds(
+                this._viewButton.Location.X * 2 + this._viewButton.Width,
+                this._viewButton.Location.Y,
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.doublePreviewButton.SetBounds(
-                this.viewButton.Location.X * 3 + this.viewButton.Width * 2,
-                this.viewButton.Location.Y,
+            this._doublePreviewButton.SetBounds(
+                this._viewButton.Location.X * 3 + this._viewButton.Width * 2,
+                this._viewButton.Location.Y,
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.singlePreviewButton.SetBounds(
-                this.viewButton.Location.X * 4 + this.viewButton.Width * 3,
-                this.viewButton.Location.Y,
+            this._singlePreviewButton.SetBounds(
+                this._viewButton.Location.X * 4 + this._viewButton.Width * 3,
+                this._viewButton.Location.Y,
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.singleNextButton.SetBounds(
-                this.viewButton.Location.X * 5 + this.viewButton.Width * 4,
-                this.viewButton.Location.Y,
+            this._singleNextButton.SetBounds(
+                this._viewButton.Location.X * 5 + this._viewButton.Width * 4,
+                this._viewButton.Location.Y,
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.doubleNextButton.SetBounds(
-                this.viewButton.Location.X * 6 + this.viewButton.Width * 5,
-                this.viewButton.Location.Y,
+            this._doubleNextButton.SetBounds(
+                this._viewButton.Location.X * 6 + this._viewButton.Width * 5,
+                this._viewButton.Location.Y,
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.indexSlider.SetBounds(
-                this.viewButton.Location.X * 7 + this.viewButton.Width * 6,
-                this.viewButton.Location.Y,
-                (int)(this.Width - (this.viewButton.Location.X * 7 + this.viewButton.Width * 6 + 16 * scale)),
+            this._indexSlider.SetBounds(
+                this._viewButton.Location.X * 7 + this._viewButton.Width * 6,
+                this._viewButton.Location.Y,
+                (int)(this.Width - (this._viewButton.Location.X * 7 + this._viewButton.Width * 6 + 16 * scale)),
                 (int)(INDEX_SLIDER_DEFAULT_BOUNDS.Height * scale));
 
-            this.indexSlider.Anchor
+            this._indexSlider.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
@@ -271,38 +271,38 @@ namespace PicSum.UIComponent.Contents.ImageView
 
             if (disposing)
             {
-                this.viewMenu.Dispose();
-                this.doublePreviewButton.Dispose();
-                this.singlePreviewButton.Dispose();
-                this.doubleNextButton.Dispose();
-                this.singleNextButton.Dispose();
-                this.indexSlider.Dispose();
-                this.viewButton.Dispose();
-                this.singleViewMenuItem.Dispose();
-                this.spreadLeftFeedMenuItem.Dispose();
-                this.spreadRightFeedMenuItem.Dispose();
-                this.sizeButton.Dispose();
-                this.sizeMenu.Dispose();
-                this.originalSizeMenuItem.Dispose();
-                this.fitWindowMenuItem.Dispose();
-                this.fitWindowLargeOnlyMenuItem.Dispose();
-                this.sizeMenuSeparator.Dispose();
+                this._viewMenu.Dispose();
+                this._doublePreviewButton.Dispose();
+                this._singlePreviewButton.Dispose();
+                this._doubleNextButton.Dispose();
+                this._singleNextButton.Dispose();
+                this._indexSlider.Dispose();
+                this._viewButton.Dispose();
+                this._singleViewMenuItem.Dispose();
+                this._spreadLeftFeedMenuItem.Dispose();
+                this._spreadRightFeedMenuItem.Dispose();
+                this._sizeButton.Dispose();
+                this._sizeMenu.Dispose();
+                this._originalSizeMenuItem.Dispose();
+                this._fitWindowMenuItem.Dispose();
+                this._fitWindowLargeOnlyMenuItem.Dispose();
+                this._sizeMenuSeparator.Dispose();
                 this.filePathToolTip.Dispose();
-                this.zoomMenuItem01.Dispose();
-                this.zoomMenuItem02.Dispose();
-                this.zoomMenuItem03.Dispose();
-                this.zoomMenuItem04.Dispose();
-                this.zoomMenuItem05.Dispose();
-                this.zoomMenuItem06.Dispose();
-                this.zoomMenuItem07.Dispose();
-                this.zoomMenuItem08.Dispose();
-                this.zoomMenuItem09.Dispose();
-                this.zoomMenuItem10.Dispose();
-                this.zoomMenuItem11.Dispose();
-                this.zoomMenuItem12.Dispose();
-                this.zoomMenuItem13.Dispose();
-                this.zoomMenuItem14.Dispose();
-                this.zoomMenuItem15.Dispose();
+                this._zoomMenuItem01.Dispose();
+                this._zoomMenuItem02.Dispose();
+                this._zoomMenuItem03.Dispose();
+                this._zoomMenuItem04.Dispose();
+                this._zoomMenuItem05.Dispose();
+                this._zoomMenuItem06.Dispose();
+                this._zoomMenuItem07.Dispose();
+                this._zoomMenuItem08.Dispose();
+                this._zoomMenuItem09.Dispose();
+                this._zoomMenuItem10.Dispose();
+                this._zoomMenuItem11.Dispose();
+                this._zoomMenuItem12.Dispose();
+                this._zoomMenuItem13.Dispose();
+                this._zoomMenuItem14.Dispose();
+                this._zoomMenuItem15.Dispose();
             }
 
             this._disposed = true;
@@ -321,21 +321,21 @@ namespace PicSum.UIComponent.Contents.ImageView
         public ZoomMenuItem[] GetZoomMenuItems()
         {
             return [
-                this.zoomMenuItem01,
-                this.zoomMenuItem02,
-                this.zoomMenuItem03,
-                this.zoomMenuItem04,
-                this.zoomMenuItem05,
-                this.zoomMenuItem06,
-                this.zoomMenuItem07,
-                this.zoomMenuItem08,
-                this.zoomMenuItem09,
-                this.zoomMenuItem10,
-                this.zoomMenuItem11,
-                this.zoomMenuItem12,
-                this.zoomMenuItem13,
-                this.zoomMenuItem14,
-                this.zoomMenuItem15,
+                this._zoomMenuItem01,
+                this._zoomMenuItem02,
+                this._zoomMenuItem03,
+                this._zoomMenuItem04,
+                this._zoomMenuItem05,
+                this._zoomMenuItem06,
+                this._zoomMenuItem07,
+                this._zoomMenuItem08,
+                this._zoomMenuItem09,
+                this._zoomMenuItem10,
+                this._zoomMenuItem11,
+                this._zoomMenuItem12,
+                this._zoomMenuItem13,
+                this._zoomMenuItem14,
+                this._zoomMenuItem15,
             ];
         }
 
@@ -362,13 +362,13 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (this._isShowingMenuButtonDropDown)
             {
                 this._isShowingMenuButtonDropDown = false;
-                this.viewMenu.Close();
+                this._viewMenu.Close();
             }
             else
             {
                 this._isShowingMenuButtonDropDown = true;
-                this.viewMenu.Show(
-                    this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+                this._viewMenu.Show(
+                    this, new Point(this._viewButton.Left, this._viewButton.Bottom));
             }
         }
 
@@ -377,13 +377,13 @@ namespace PicSum.UIComponent.Contents.ImageView
             if (this._isShowingMenuButtonDropDown)
             {
                 this._isShowingMenuButtonDropDown = false;
-                this.sizeMenu.Close();
+                this._sizeMenu.Close();
             }
             else
             {
                 this._isShowingMenuButtonDropDown = true;
-                this.sizeMenu.Show(
-                    this, new Point(this.sizeButton.Left, this.sizeButton.Bottom));
+                this._sizeMenu.Show(
+                    this, new Point(this._sizeButton.Left, this._sizeButton.Bottom));
             }
         }
 

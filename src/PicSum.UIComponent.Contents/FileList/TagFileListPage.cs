@@ -31,8 +31,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Title = this._parameter.Tag;
             this.Icon = ResourceFiles.TagIcon.Value;
             this.IsMoveControlVisible = false;
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.AddDateSortButtonEnabled = true;
+            this._fileContextMenu.VisibleRemoveFromListMenuItem = true;
+            base._toolBar.AddDateSortButtonEnabled = true;
 
             this.Loaded += this.TagFileListPage_Loaded;
             this.DrawTabPage += this.TagFileListPage_DrawTabPage;
@@ -144,8 +144,8 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Length > 0)
             {
-                this.fileContextMenu.SetFile(filePathList);
-                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+                this._fileContextMenu.SetFile(filePathList);
+                this._fileContextMenu.VisibleBookmarkMenuItem = false;
             }
             else
             {

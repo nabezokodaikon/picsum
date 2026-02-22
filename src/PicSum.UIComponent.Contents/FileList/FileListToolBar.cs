@@ -43,11 +43,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.directoryMenuItem.Checked;
+                return this._directoryMenuItem.Checked;
             }
             set
             {
-                this.directoryMenuItem.Checked = value;
+                this._directoryMenuItem.Checked = value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.imageFileMenuItem.Checked;
+                return this._imageFileMenuItem.Checked;
             }
             set
             {
-                this.imageFileMenuItem.Checked = value;
+                this._imageFileMenuItem.Checked = value;
             }
         }
 
@@ -69,11 +69,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.otherFileMenuItem.Checked;
+                return this._otherFileMenuItem.Checked;
             }
             set
             {
-                this.otherFileMenuItem.Checked = value;
+                this._otherFileMenuItem.Checked = value;
             }
         }
 
@@ -82,11 +82,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.fileNameMenuItem.Checked;
+                return this._fileNameMenuItem.Checked;
             }
             set
             {
-                this.fileNameMenuItem.Checked = value;
+                this._fileNameMenuItem.Checked = value;
             }
         }
 
@@ -95,11 +95,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.nameSortButton.Enabled;
+                return this._nameSortButton.Enabled;
             }
             set
             {
-                this.nameSortButton.Enabled = value;
+                this._nameSortButton.Enabled = value;
             }
         }
 
@@ -108,11 +108,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.pathSortButton.Enabled;
+                return this._pathSortButton.Enabled;
             }
             set
             {
-                this.pathSortButton.Enabled = value;
+                this._pathSortButton.Enabled = value;
             }
         }
 
@@ -121,11 +121,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.updateDateSortButton.Enabled;
+                return this._updateDateSortButton.Enabled;
             }
             set
             {
-                this.updateDateSortButton.Enabled = value;
+                this._updateDateSortButton.Enabled = value;
             }
         }
 
@@ -134,11 +134,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.takenDateSortButton.Enabled;
+                return this._takenDateSortButton.Enabled;
             }
             set
             {
-                this.takenDateSortButton.Enabled = value;
+                this._takenDateSortButton.Enabled = value;
             }
         }
 
@@ -147,11 +147,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.addDateSortButton.Enabled;
+                return this._addDateSortButton.Enabled;
             }
             set
             {
-                this.addDateSortButton.Enabled = value;
+                this._addDateSortButton.Enabled = value;
             }
         }
 
@@ -160,11 +160,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.thumbnailSizeSlider.Value;
+                return this._thumbnailSizeSlider.Value;
             }
             set
             {
-                this.thumbnailSizeSlider.Value = value;
+                this._thumbnailSizeSlider.Value = value;
             }
         }
 
@@ -173,11 +173,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.thumbnailSizeSlider.MaximumValue;
+                return this._thumbnailSizeSlider.MaximumValue;
             }
             set
             {
-                this.thumbnailSizeSlider.MaximumValue = value;
+                this._thumbnailSizeSlider.MaximumValue = value;
             }
         }
 
@@ -186,11 +186,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.thumbnailSizeSlider.MinimumValue;
+                return this._thumbnailSizeSlider.MinimumValue;
             }
             set
             {
-                this.thumbnailSizeSlider.MinimumValue = value;
+                this._thumbnailSizeSlider.MinimumValue = value;
             }
         }
 
@@ -199,11 +199,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.movePreviewButton.Visible;
+                return this._movePreviewButton.Visible;
             }
             set
             {
-                this.movePreviewButton.Visible = value;
+                this._movePreviewButton.Visible = value;
             }
         }
 
@@ -212,11 +212,11 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             get
             {
-                return this.moveNextButton.Visible;
+                return this._moveNextButton.Visible;
             }
             set
             {
-                this.moveNextButton.Visible = value;
+                this._moveNextButton.Visible = value;
             }
         }
 
@@ -224,68 +224,68 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             this.InitializeComponent();
 
-            this.viewButton.LostFocus += this.ViewButton_LostFocus;
+            this._viewButton.LostFocus += this.ViewButton_LostFocus;
         }
 
         public void SetControlsBounds(float scale)
         {
-            this.viewButton.SetBounds(
+            this._viewButton.SetBounds(
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(VIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.nameSortButton.SetBounds(
-                this.viewButton.Location.X * 2 + this.viewButton.Width,
-                this.viewButton.Location.Y,
+            this._nameSortButton.SetBounds(
+                this._viewButton.Location.X * 2 + this._viewButton.Width,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.pathSortButton.SetBounds(
-                this.viewButton.Location.X * 3 + this.viewButton.Width + this.nameSortButton.Width,
-                this.viewButton.Location.Y,
+            this._pathSortButton.SetBounds(
+                this._viewButton.Location.X * 3 + this._viewButton.Width + this._nameSortButton.Width,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.createDateSortButton.SetBounds(
-                this.viewButton.Location.X * 4 + this.viewButton.Width + this.nameSortButton.Width * 2,
-                this.viewButton.Location.Y,
+            this._createDateSortButton.SetBounds(
+                this._viewButton.Location.X * 4 + this._viewButton.Width + this._nameSortButton.Width * 2,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.updateDateSortButton.SetBounds(
-                this.viewButton.Location.X * 5 + this.viewButton.Width + this.nameSortButton.Width * 3,
-                this.viewButton.Location.Y,
+            this._updateDateSortButton.SetBounds(
+                this._viewButton.Location.X * 5 + this._viewButton.Width + this._nameSortButton.Width * 3,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.takenDateSortButton.SetBounds(
-                this.viewButton.Location.X * 6 + this.viewButton.Width + this.nameSortButton.Width * 4,
-                this.viewButton.Location.Y,
+            this._takenDateSortButton.SetBounds(
+                this._viewButton.Location.X * 6 + this._viewButton.Width + this._nameSortButton.Width * 4,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.addDateSortButton.SetBounds(
-                this.viewButton.Location.X * 7 + this.viewButton.Width + this.nameSortButton.Width * 5,
-                this.viewButton.Location.Y,
+            this._addDateSortButton.SetBounds(
+                this._viewButton.Location.X * 7 + this._viewButton.Width + this._nameSortButton.Width * 5,
+                this._viewButton.Location.Y,
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(NAME_SORT_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.thumbnailSizeSlider.SetBounds(
-                this.viewButton.Location.X * 8 + this.viewButton.Width + this.nameSortButton.Width * 6,
-                this.viewButton.Location.Y,
+            this._thumbnailSizeSlider.SetBounds(
+                this._viewButton.Location.X * 8 + this._viewButton.Width + this._nameSortButton.Width * 6,
+                this._viewButton.Location.Y,
                 (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Width * scale),
                 (int)(THUMBNAIL_SIZE_SLIDER_DEFAULT_BOUNDS.Height * scale));
 
-            this.movePreviewButton.SetBounds(
-                this.viewButton.Location.X * 9 + this.viewButton.Width + this.nameSortButton.Width * 6 + this.thumbnailSizeSlider.Width,
-                this.viewButton.Location.Y,
+            this._movePreviewButton.SetBounds(
+                this._viewButton.Location.X * 9 + this._viewButton.Width + this._nameSortButton.Width * 6 + this._thumbnailSizeSlider.Width,
+                this._viewButton.Location.Y,
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-            this.moveNextButton.SetBounds(
-                this.viewButton.Location.X * 10 + this.viewButton.Width + this.nameSortButton.Width * 6 + this.thumbnailSizeSlider.Width + this.movePreviewButton.Width,
-                this.viewButton.Location.Y,
+            this._moveNextButton.SetBounds(
+                this._viewButton.Location.X * 10 + this._viewButton.Width + this._nameSortButton.Width * 6 + this._thumbnailSizeSlider.Width + this._movePreviewButton.Width,
+                this._viewButton.Location.Y,
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 (int)(MOVE_PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
         }
@@ -294,24 +294,24 @@ namespace PicSum.UIComponent.Contents.FileList
         {
             return sortMode switch
             {
-                FileSortMode.FileName => this.nameSortButton,
-                FileSortMode.FilePath => this.pathSortButton,
-                FileSortMode.CreateDate => this.createDateSortButton,
-                FileSortMode.UpdateDate => this.updateDateSortButton,
-                FileSortMode.TakenDate => this.takenDateSortButton,
-                FileSortMode.AddDate => this.addDateSortButton,
+                FileSortMode.FileName => this._nameSortButton,
+                FileSortMode.FilePath => this._pathSortButton,
+                FileSortMode.CreateDate => this._createDateSortButton,
+                FileSortMode.UpdateDate => this._updateDateSortButton,
+                FileSortMode.TakenDate => this._takenDateSortButton,
+                FileSortMode.AddDate => this._addDateSortButton,
                 _ => null,
             };
         }
 
         public void ClearSortImage()
         {
-            this.nameSortButton.Text = "Name";
-            this.pathSortButton.Text = "Path";
-            this.createDateSortButton.Text = "Created";
-            this.updateDateSortButton.Text = "Updated";
-            this.takenDateSortButton.Text = "Taken";
-            this.addDateSortButton.Text = "Added";
+            this._nameSortButton.Text = "Name";
+            this._pathSortButton.Text = "Path";
+            this._createDateSortButton.Text = "Created";
+            this._updateDateSortButton.Text = "Updated";
+            this._takenDateSortButton.Text = "Taken";
+            this._addDateSortButton.Text = "Added";
         }
 
         protected override void Dispose(bool disposing)
@@ -323,22 +323,22 @@ namespace PicSum.UIComponent.Contents.FileList
 
             if (disposing)
             {
-                this.viewButton.Dispose();
-                this.thumbnailSizeSlider.Dispose();
-                this.viewMenu.Dispose();
-                this.directoryMenuItem.Dispose();
-                this.imageFileMenuItem.Dispose();
-                this.otherFileMenuItem.Dispose();
-                this.toolStripSeparator1.Dispose();
-                this.fileNameMenuItem.Dispose();
-                this.movePreviewButton.Dispose();
-                this.moveNextButton.Dispose();
-                this.nameSortButton.Dispose();
-                this.pathSortButton.Dispose();
-                this.createDateSortButton.Dispose();
-                this.updateDateSortButton.Dispose();
-                this.takenDateSortButton.Dispose();
-                this.addDateSortButton.Dispose();
+                this._viewButton.Dispose();
+                this._thumbnailSizeSlider.Dispose();
+                this._viewMenu.Dispose();
+                this._directoryMenuItem.Dispose();
+                this._imageFileMenuItem.Dispose();
+                this._otherFileMenuItem.Dispose();
+                this._toolStripSeparator1.Dispose();
+                this._fileNameMenuItem.Dispose();
+                this._movePreviewButton.Dispose();
+                this._moveNextButton.Dispose();
+                this._nameSortButton.Dispose();
+                this._pathSortButton.Dispose();
+                this._createDateSortButton.Dispose();
+                this._updateDateSortButton.Dispose();
+                this._takenDateSortButton.Dispose();
+                this._addDateSortButton.Dispose();
             }
 
             this._disposed = true;
@@ -356,13 +356,13 @@ namespace PicSum.UIComponent.Contents.FileList
             if (this._isShowingViewButtonDropDown)
             {
                 this._isShowingViewButtonDropDown = false;
-                this.viewMenu.Close();
+                this._viewMenu.Close();
             }
             else
             {
                 this._isShowingViewButtonDropDown = true;
-                this.viewMenu.Show(
-                    this, new Point(this.viewButton.Left, this.viewButton.Bottom));
+                this._viewMenu.Show(
+                    this, new Point(this._viewButton.Left, this._viewButton.Bottom));
             }
         }
 

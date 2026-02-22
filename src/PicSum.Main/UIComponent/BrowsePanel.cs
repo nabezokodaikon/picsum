@@ -95,7 +95,7 @@ namespace PicSum.Main.UIComponent
         {
             get
             {
-                return this.tabSwitch.TabCount;
+                return this._tabSwitch.TabCount;
             }
         }
 
@@ -103,62 +103,62 @@ namespace PicSum.Main.UIComponent
         {
             get
             {
-                return this.tabSwitch.IsBeginTabDragOperation;
+                return this._tabSwitch.IsBeginTabDragOperation;
             }
         }
 
         public BrowsePanel()
         {
-            this.pageContainer = new PageContainer();
-            this.infoPanel = new InfoPanel();
-            this.tabSwitch = new TabSwitch();
-            this.toolPanel = new Control();
-            this.reloadToolButton = new BaseIconButton();
-            this.nextPageHistoryButton = new BaseIconButton();
-            this.previewPageHistoryButton = new BaseIconButton();
-            this.showInfoToolButton = new BaseIconButton();
-            this.addressBar = new AddressBar();
-            this.searchBookmarkToolButton = new BaseIconButton();
-            this.historyToolButton = new BaseIconButton();
-            this.tagDropToolButton = new WideDropToolButton();
-            this.homeToolButton = new BaseIconButton();
-            this.searchRatingToolButton = new BaseIconButton();
-            this.toolPanel2 = new ToolPanel();
+            this._pageContainer = new PageContainer();
+            this._infoPanel = new InfoPanel();
+            this._tabSwitch = new TabSwitch();
+            this._toolPanel = new Control();
+            this._reloadToolButton = new BaseIconButton();
+            this._nextPageHistoryButton = new BaseIconButton();
+            this._previewPageHistoryButton = new BaseIconButton();
+            this._showInfoToolButton = new BaseIconButton();
+            this._addressBar = new AddressBar();
+            this._searchBookmarkToolButton = new BaseIconButton();
+            this._historyToolButton = new BaseIconButton();
+            this._tagDropToolButton = new WideDropToolButton();
+            this._homeToolButton = new BaseIconButton();
+            this._searchRatingToolButton = new BaseIconButton();
+            this._toolPanel2 = new ToolPanel();
 
-            this.toolPanel.SuspendLayout();
-            this.toolPanel2.SuspendLayout();
+            this._toolPanel.SuspendLayout();
+            this._toolPanel2.SuspendLayout();
             this.SuspendLayout();
 
             this.InitializeComponent();
 
-            this.previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
-            this.nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
-            this.reloadToolButton.Image = ResourceFiles.ReloadIcon.Value;
-            this.showInfoToolButton.Image = ResourceFiles.InfoIcon.Value;
+            this._previewPageHistoryButton.Image = ResourceFiles.GoBackIcon.Value;
+            this._nextPageHistoryButton.Image = ResourceFiles.GoNextIcon.Value;
+            this._reloadToolButton.Image = ResourceFiles.ReloadIcon.Value;
+            this._showInfoToolButton.Image = ResourceFiles.InfoIcon.Value;
 
-            this.homeToolButton.Image = ResourceFiles.HomeIcon.Value;
-            this.tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
-            this.tagDropToolButton.Icon = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
-            this.searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
-            this.searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
-            this.historyToolButton.Image = ResourceFiles.HistoryIcon.Value;
+            this._homeToolButton.Image = ResourceFiles.HomeIcon.Value;
+            this._tagDropToolButton.Image = ResourceFiles.TagIcon.Value;
+            this._tagDropToolButton.Icon = SkiaUtil.ToSKImage(ResourceFiles.TagIcon.Value);
+            this._searchRatingToolButton.Image = ResourceFiles.ActiveRatingIcon.Value;
+            this._searchBookmarkToolButton.Image = ResourceFiles.BookmarkIcon.Value;
+            this._historyToolButton.Image = ResourceFiles.HistoryIcon.Value;
 
-            this.infoPanel.Visible = false;
+            this._infoPanel.Visible = false;
 
             this.Controls.AddRange(
                 [
-                    this.tabSwitch,
-                        this.toolPanel,
-                        this.toolPanel2,
-                        this.infoPanel,
-                        this.pageContainer,
+                    this._tabSwitch,
+                        this._toolPanel,
+                        this._toolPanel2,
+                        this._infoPanel,
+                        this._pageContainer,
                     ]);
 
-            this.infoPanel.BringToFront();
-            this.pageContainer.BringToFront();
+            this._infoPanel.BringToFront();
+            this._pageContainer.BringToFront();
 
-            this.toolPanel.ResumeLayout(false);
-            this.toolPanel2.ResumeLayout(false);
+            this._toolPanel.ResumeLayout(false);
+            this._toolPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
@@ -166,178 +166,178 @@ namespace PicSum.Main.UIComponent
         {
             using (Measuring.Time(true, "BrowsePanel.SetControlsBounds"))
             {
-                this.toolPanel.SuspendLayout();
-                this.toolPanel2.SuspendLayout();
-                this.infoPanel.SuspendLayout();
+                this._toolPanel.SuspendLayout();
+                this._toolPanel2.SuspendLayout();
+                this._infoPanel.SuspendLayout();
                 this.SuspendLayout();
 
                 var baseWidth = this.Width - 16;
 
-                this.tabSwitch.Anchor
+                this._tabSwitch.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Right;
-                this.tabSwitch.SetBounds(
+                this._tabSwitch.SetBounds(
                     TAB_SWITCH_DEFAULT_BOUNDS.X,
                     TAB_SWITCH_DEFAULT_BOUNDS.Y,
                     baseWidth,
                     (int)(TAB_SWITCH_DEFAULT_BOUNDS.Height * scale));
 
-                this.toolPanel.Anchor
+                this._toolPanel.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Right;
-                this.toolPanel.SetBounds(
+                this._toolPanel.SetBounds(
                     0,
                     (int)(TOOL_PANEL_DEFAULT_BOUNDS.Y * scale),
                     baseWidth,
                     (int)(TOOL_PANEL_DEFAULT_BOUNDS.Height * scale));
 
-                this.toolPanel2.Anchor
+                this._toolPanel2.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Bottom;
-                this.toolPanel2.SetBounds(
+                this._toolPanel2.SetBounds(
                     0,
-                    this.toolPanel.Bottom,
+                    this._toolPanel.Bottom,
                     (int)(TOOL_PANEL2_DEFAULT_BOUNDS.Width * scale),
-                    this.Height - this.toolPanel.Bottom);
-                this.toolPanel2.VerticalTopMargin = (int)(TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN * scale);
+                    this.Height - this._toolPanel.Bottom);
+                this._toolPanel2.VerticalTopMargin = (int)(TOOLPANEL2_VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
-                this.infoPanel.Anchor
+                this._infoPanel.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Right
                     | AnchorStyles.Bottom;
-                this.infoPanel.SetBounds(
+                this._infoPanel.SetBounds(
                     (int)(baseWidth - INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
-                    this.toolPanel.Bottom,
+                    this._toolPanel.Bottom,
                     (int)(INFO_PANEL_DEFAULT_BOUNDS.Width * scale),
-                    this.Height - this.toolPanel.Bottom);
+                    this.Height - this._toolPanel.Bottom);
 
-                this.pageContainer.Anchor
+                this._pageContainer.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Right
                     | AnchorStyles.Bottom;
-                if (this.infoPanel.Visible)
+                if (this._infoPanel.Visible)
                 {
-                    this.pageContainer.SetBounds(
-                        this.toolPanel2.Right,
-                        this.toolPanel.Bottom,
-                        baseWidth - this.toolPanel2.Right - this.infoPanel.Width,
-                        this.Height - this.toolPanel.Bottom);
+                    this._pageContainer.SetBounds(
+                        this._toolPanel2.Right,
+                        this._toolPanel.Bottom,
+                        baseWidth - this._toolPanel2.Right - this._infoPanel.Width,
+                        this.Height - this._toolPanel.Bottom);
                 }
                 else
                 {
-                    this.pageContainer.SetBounds(
-                        this.toolPanel2.Right,
-                        this.toolPanel.Bottom,
-                        baseWidth - this.toolPanel2.Right,
-                        this.Height - this.toolPanel.Bottom);
+                    this._pageContainer.SetBounds(
+                        this._toolPanel2.Right,
+                        this._toolPanel.Bottom,
+                        baseWidth - this._toolPanel2.Right,
+                        this.Height - this._toolPanel.Bottom);
                 }
 
-                this.previewPageHistoryButton.Anchor
+                this._previewPageHistoryButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.previewPageHistoryButton.SetBounds(
+                this._previewPageHistoryButton.SetBounds(
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.X * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Y * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Width * scale),
                     (int)(PREVIEW_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-                this.nextPageHistoryButton.Anchor
+                this._nextPageHistoryButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.nextPageHistoryButton.SetBounds(
-                    this.previewPageHistoryButton.Left * 2 + this.previewPageHistoryButton.Width,
-                    this.previewPageHistoryButton.Top,
-                    this.previewPageHistoryButton.Width,
-                    this.previewPageHistoryButton.Height);
+                this._nextPageHistoryButton.SetBounds(
+                    this._previewPageHistoryButton.Left * 2 + this._previewPageHistoryButton.Width,
+                    this._previewPageHistoryButton.Top,
+                    this._previewPageHistoryButton.Width,
+                    this._previewPageHistoryButton.Height);
 
-                this.reloadToolButton.Anchor
+                this._reloadToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.reloadToolButton.SetBounds(
-                    this.previewPageHistoryButton.Left * 3 + this.previewPageHistoryButton.Width * 2,
-                    this.previewPageHistoryButton.Top,
-                    this.previewPageHistoryButton.Width,
-                    this.previewPageHistoryButton.Height);
+                this._reloadToolButton.SetBounds(
+                    this._previewPageHistoryButton.Left * 3 + this._previewPageHistoryButton.Width * 2,
+                    this._previewPageHistoryButton.Top,
+                    this._previewPageHistoryButton.Width,
+                    this._previewPageHistoryButton.Height);
 
-                this.addressBar.Anchor
+                this._addressBar.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left
                     | AnchorStyles.Right;
-                this.addressBar.SetBounds(
-                    this.previewPageHistoryButton.Left * 4 + this.previewPageHistoryButton.Width * 3,
-                    this.previewPageHistoryButton.Top,
-                    this.toolPanel.Width - this.previewPageHistoryButton.Left * 6 - this.previewPageHistoryButton.Width * 4,
-                    this.previewPageHistoryButton.Height);
+                this._addressBar.SetBounds(
+                    this._previewPageHistoryButton.Left * 4 + this._previewPageHistoryButton.Width * 3,
+                    this._previewPageHistoryButton.Top,
+                    this._toolPanel.Width - this._previewPageHistoryButton.Left * 6 - this._previewPageHistoryButton.Width * 4,
+                    this._previewPageHistoryButton.Height);
 
-                this.showInfoToolButton.Anchor
+                this._showInfoToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Right;
-                this.showInfoToolButton.SetBounds(
-                    this.addressBar.Right + this.previewPageHistoryButton.Left,
-                    this.previewPageHistoryButton.Top,
-                    this.previewPageHistoryButton.Width,
-                    this.previewPageHistoryButton.Height);
+                this._showInfoToolButton.SetBounds(
+                    this._addressBar.Right + this._previewPageHistoryButton.Left,
+                    this._previewPageHistoryButton.Top,
+                    this._previewPageHistoryButton.Width,
+                    this._previewPageHistoryButton.Height);
 
-                this.homeToolButton.Anchor
+                this._homeToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.homeToolButton.SetBounds(
+                this._homeToolButton.SetBounds(
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.X * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Y * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Width * scale),
                     (int)(HOME_BUTTON_DEFAULT_BOUNDS.Height * scale));
 
-                this.tagDropToolButton.Anchor
+                this._tagDropToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.tagDropToolButton.SetBounds(
-                    this.homeToolButton.Left,
-                    this.homeToolButton.Top * 2 + this.homeToolButton.Height,
-                    this.homeToolButton.Width,
-                    this.homeToolButton.Height);
+                this._tagDropToolButton.SetBounds(
+                    this._homeToolButton.Left,
+                    this._homeToolButton.Top * 2 + this._homeToolButton.Height,
+                    this._homeToolButton.Width,
+                    this._homeToolButton.Height);
 
-                this.searchRatingToolButton.Anchor
+                this._searchRatingToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.searchRatingToolButton.SetBounds(
-                    this.homeToolButton.Left,
-                    this.homeToolButton.Top * 3 + this.homeToolButton.Height * 2,
-                    this.homeToolButton.Width,
-                    this.homeToolButton.Height);
+                this._searchRatingToolButton.SetBounds(
+                    this._homeToolButton.Left,
+                    this._homeToolButton.Top * 3 + this._homeToolButton.Height * 2,
+                    this._homeToolButton.Width,
+                    this._homeToolButton.Height);
 
-                this.searchBookmarkToolButton.Anchor
+                this._searchBookmarkToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.searchBookmarkToolButton.SetBounds(
-                    this.homeToolButton.Left,
-                    this.homeToolButton.Top * 4 + this.homeToolButton.Height * 3,
-                    this.homeToolButton.Width,
-                    this.homeToolButton.Height);
+                this._searchBookmarkToolButton.SetBounds(
+                    this._homeToolButton.Left,
+                    this._homeToolButton.Top * 4 + this._homeToolButton.Height * 3,
+                    this._homeToolButton.Width,
+                    this._homeToolButton.Height);
 
-                this.historyToolButton.Anchor
+                this._historyToolButton.Anchor
                     = AnchorStyles.Top
                     | AnchorStyles.Left;
-                this.historyToolButton.SetBounds(
-                    this.homeToolButton.Left,
-                    this.homeToolButton.Top * 4 + this.homeToolButton.Height * 4,
-                    this.homeToolButton.Width,
-                    this.homeToolButton.Height);
+                this._historyToolButton.SetBounds(
+                    this._homeToolButton.Left,
+                    this._homeToolButton.Top * 4 + this._homeToolButton.Height * 4,
+                    this._homeToolButton.Width,
+                    this._homeToolButton.Height);
 
-                this.infoPanel.SetControlsBounds(scale);
+                this._infoPanel.SetControlsBounds(scale);
 
-                if (this.tabSwitch.ActiveTab != null)
+                if (this._tabSwitch.ActiveTab != null)
                 {
-                    var page = this.tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
+                    var page = this._tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
                     page.RedrawPage(scale);
                 }
 
-                this.infoPanel.ResumeLayout(false);
-                this.toolPanel.ResumeLayout(false);
-                this.toolPanel2.ResumeLayout(false);
+                this._infoPanel.ResumeLayout(false);
+                this._toolPanel.ResumeLayout(false);
+                this._toolPanel2.ResumeLayout(false);
                 this.ResumeLayout(false);
             }
         }
@@ -366,14 +366,14 @@ namespace PicSum.Main.UIComponent
             ArgumentNullException.ThrowIfNull(tab, nameof(tab));
 
             this.AddPageEventHandler(tab.GetPage<AbstractBrowsePage>());
-            this.tabSwitch.AddTab(tab);
+            this._tabSwitch.AddTab(tab);
         }
 
         public void AddTab(IPageParameter param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
 
-            this.AddPageEventHandler(this.tabSwitch.AddTab<AbstractBrowsePage>(param));
+            this.AddPageEventHandler(this._tabSwitch.AddTab<AbstractBrowsePage>(param));
         }
 
         public void AddFavoriteDirectoryListTab()
@@ -391,63 +391,63 @@ namespace PicSum.Main.UIComponent
 
         public void Reload()
         {
-            if (this.tabSwitch.ActiveTab == null)
+            if (this._tabSwitch.ActiveTab == null)
             {
                 return;
             }
 
-            if (!this.tabSwitch.ActiveTab.HasPage)
+            if (!this._tabSwitch.ActiveTab.HasPage)
             {
                 return;
             }
 
-            this.AddPageEventHandler(this.tabSwitch.CloneCurrentPage<AbstractBrowsePage>());
+            this.AddPageEventHandler(this._tabSwitch.CloneCurrentPage<AbstractBrowsePage>());
         }
 
         public void RemoveActiveTab()
         {
-            this.tabSwitch.RemoveActiveTab();
+            this._tabSwitch.RemoveActiveTab();
         }
 
         public void MovePreviewPage()
         {
-            if (!this.previewPageHistoryButton.Enabled)
+            if (!this._previewPageHistoryButton.Enabled)
             {
                 return;
             }
 
-            if (this.tabSwitch.ActiveTab == null)
+            if (this._tabSwitch.ActiveTab == null)
             {
                 throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
-            this.AddPageEventHandler(this.tabSwitch.SetPreviewHistory<AbstractBrowsePage>());
+            this.AddPageEventHandler(this._tabSwitch.SetPreviewHistory<AbstractBrowsePage>());
             this.SetPageHistoryButtonEnabled();
         }
 
         public void MoveNextPage()
         {
-            if (!this.nextPageHistoryButton.Enabled)
+            if (!this._nextPageHistoryButton.Enabled)
             {
                 return;
             }
 
-            if (this.tabSwitch.ActiveTab == null)
+            if (this._tabSwitch.ActiveTab == null)
             {
                 throw new InvalidOperationException("アクティブなタブが存在しません。");
             }
 
-            this.AddPageEventHandler(this.tabSwitch.SetNextPageHistory<AbstractBrowsePage>());
+            this.AddPageEventHandler(this._tabSwitch.SetNextPageHistory<AbstractBrowsePage>());
             this.SetPageHistoryButtonEnabled();
         }
 
         public void RedrawPage(float scale)
         {
-            if (this.tabSwitch.ActiveTab != null)
+            if (this._tabSwitch.ActiveTab != null)
             {
                 using (Measuring.Time(true, "BrowsePanel.RedrawPage"))
                 {
-                    var page = this.tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
+                    var page = this._tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
                     page.RedrawPage(scale);
                 }
             }
@@ -462,22 +462,22 @@ namespace PicSum.Main.UIComponent
 
             if (disposing)
             {
-                this.pageContainer.Dispose();
-                this.infoPanel.Dispose();
-                this.tabSwitch.Dispose();
-                this.toolPanel.Dispose();
-                this.toolPanel2.Dispose();
-                this.showInfoToolButton.Dispose();
-                this.addressBar.Dispose();
-                this.nextPageHistoryButton.Dispose();
-                this.previewPageHistoryButton.Dispose();
-                this.homeToolButton.Dispose();
-                this.searchRatingToolButton.Dispose();
-                this.tagDropToolButton.Dispose();
-                this.reloadToolButton.Dispose();
-                this.searchBookmarkToolButton.Dispose();
+                this._pageContainer.Dispose();
+                this._infoPanel.Dispose();
+                this._tabSwitch.Dispose();
+                this._toolPanel.Dispose();
+                this._toolPanel2.Dispose();
+                this._showInfoToolButton.Dispose();
+                this._addressBar.Dispose();
+                this._nextPageHistoryButton.Dispose();
+                this._previewPageHistoryButton.Dispose();
+                this._homeToolButton.Dispose();
+                this._searchRatingToolButton.Dispose();
+                this._tagDropToolButton.Dispose();
+                this._reloadToolButton.Dispose();
+                this._searchBookmarkToolButton.Dispose();
 
-                this.tagDropToolButton.Icon.Dispose();
+                this._tagDropToolButton.Icon.Dispose();
             }
 
             this._disposed = true;
@@ -487,7 +487,7 @@ namespace PicSum.Main.UIComponent
 
         private void BrowsePanel_Loaded(object sender, EventArgs e)
         {
-            this.addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
+            this._addressBar.SetAddress(FileUtil.ROOT_DIRECTORY_PATH);
         }
 
         private void RemovePageEventHandler(AbstractBrowsePage page)
@@ -499,15 +499,15 @@ namespace PicSum.Main.UIComponent
 
         private void SetPageHistoryButtonEnabled()
         {
-            if (this.tabSwitch.ActiveTab != null)
+            if (this._tabSwitch.ActiveTab != null)
             {
-                this.previewPageHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasPreviewPage;
-                this.nextPageHistoryButton.Enabled = this.tabSwitch.ActiveTab.HasNextPage;
+                this._previewPageHistoryButton.Enabled = this._tabSwitch.ActiveTab.HasPreviewPage;
+                this._nextPageHistoryButton.Enabled = this._tabSwitch.ActiveTab.HasNextPage;
             }
             else
             {
-                this.previewPageHistoryButton.Enabled = false;
-                this.nextPageHistoryButton.Enabled = false;
+                this._previewPageHistoryButton.Enabled = false;
+                this._nextPageHistoryButton.Enabled = false;
             }
         }
 
@@ -517,22 +517,22 @@ namespace PicSum.Main.UIComponent
             {
                 if (openMode == PageOpenMode.OverlapTab)
                 {
-                    this.AddPageEventHandler(this.tabSwitch.OverwriteTab<AbstractBrowsePage>(param));
+                    this.AddPageEventHandler(this._tabSwitch.OverwriteTab<AbstractBrowsePage>(param));
                     this.SetPageHistoryButtonEnabled();
                 }
                 else if (openMode == PageOpenMode.AddHome)
                 {
-                    this.AddPageEventHandler(this.tabSwitch.AddTab<AbstractBrowsePage>(param));
+                    this.AddPageEventHandler(this._tabSwitch.AddTab<AbstractBrowsePage>(param));
                 }
                 else if (openMode == PageOpenMode.AddTab)
                 {
-                    if (this.tabSwitch.ActiveTabIndex < 0)
+                    if (this._tabSwitch.ActiveTabIndex < 0)
                     {
-                        this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(0, param));
+                        this.AddPageEventHandler(this._tabSwitch.InsertTab<AbstractBrowsePage>(0, param));
                     }
                     else
                     {
-                        this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(this.tabSwitch.ActiveTabIndex + 1, param));
+                        this.AddPageEventHandler(this._tabSwitch.InsertTab<AbstractBrowsePage>(this._tabSwitch.ActiveTabIndex + 1, param));
                     }
                 }
                 else if (openMode == PageOpenMode.NewWindow)
@@ -548,7 +548,7 @@ namespace PicSum.Main.UIComponent
 
         private void InsertPage(IPageParameter param, int tabIndex)
         {
-            this.AddPageEventHandler(this.tabSwitch.InsertTab<AbstractBrowsePage>(tabIndex, param));
+            this.AddPageEventHandler(this._tabSwitch.InsertTab<AbstractBrowsePage>(tabIndex, param));
         }
 
         private void OverlapPage(DragParameter dragData)
@@ -671,11 +671,11 @@ namespace PicSum.Main.UIComponent
 
         private void GetTagListJob_Callback(ListResult<string> e)
         {
-            this.tagDropToolButton.SetItems([.. e]);
+            this._tagDropToolButton.SetItems([.. e]);
 
-            if (!string.IsNullOrEmpty(this.tagDropToolButton.SelectedItem))
+            if (!string.IsNullOrEmpty(this._tagDropToolButton.SelectedItem))
             {
-                this.tagDropToolButton.SelectItem(this.tagDropToolButton.SelectedItem);
+                this._tagDropToolButton.SelectItem(this._tagDropToolButton.SelectedItem);
             }
         }
 
@@ -684,11 +684,11 @@ namespace PicSum.Main.UIComponent
         {
             if (e.FilePathList.Length > 0)
             {
-                this.addressBar.SetAddress(e.FilePathList[0]);
+                this._addressBar.SetAddress(e.FilePathList[0]);
             }
 
-            this.infoPanel.SetFileInfo(e.FilePathList);
-            this.tabSwitch.InvalidateHeaderWithAnimation();
+            this._infoPanel.SetFileInfo(e.FilePathList);
+            this._tabSwitch.InvalidateHeaderWithAnimation();
         }
 
         private void Page_OpenPage(object sender, BrowsePageEventArgs e)
@@ -719,20 +719,20 @@ namespace PicSum.Main.UIComponent
         {
             this.SetPageHistoryButtonEnabled();
 
-            if (this.tabSwitch.ActiveTab != null)
+            if (this._tabSwitch.ActiveTab != null)
             {
-                foreach (var tab in this.tabSwitch.GetInactiveTabs())
+                foreach (var tab in this._tabSwitch.GetInactiveTabs())
                 {
                     var p = tab.GetPage<AbstractBrowsePage>();
                     p.StopPageDraw();
                 }
 
-                var page = this.tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
+                var page = this._tabSwitch.ActiveTab.GetPage<AbstractBrowsePage>();
                 var selectedFilePath = page.SelectedFilePath;
                 if (!string.IsNullOrEmpty(selectedFilePath))
                 {
-                    this.addressBar.SetAddress(selectedFilePath);
-                    this.infoPanel.SetFileInfo(page.GetSelectedFiles());
+                    this._addressBar.SetAddress(selectedFilePath);
+                    this._infoPanel.SetFileInfo(page.GetSelectedFiles());
                     var scale = WindowUtil.GetCurrentWindowScale(this);
                     page.RedrawPage(scale);
                 }
@@ -741,11 +741,11 @@ namespace PicSum.Main.UIComponent
 
         private void TabSwitch_TabCloseButtonClick(object sender, TabEventArgs e)
         {
-            this.tabSwitch.RemoveTab(e.Tab);
+            this._tabSwitch.RemoveTab(e.Tab);
 
             e.Tab.Close();
 
-            if (!this.tabSwitch.HasTab)
+            if (!this._tabSwitch.HasTab)
             {
                 this.OnClose(EventArgs.Empty);
             }
@@ -765,7 +765,7 @@ namespace PicSum.Main.UIComponent
                 this.OnTabDropouted(e);
             }
 
-            if (!this.tabSwitch.HasTab)
+            if (!this._tabSwitch.HasTab)
             {
                 //this.FindForm().Opacity = 0;
                 this.OnClose(EventArgs.Empty);
@@ -826,13 +826,13 @@ namespace PicSum.Main.UIComponent
 
         private void ShowInfoToolButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if (this.infoPanel.Visible)
+            if (this._infoPanel.Visible)
             {
-                this.infoPanel.Visible = false;
+                this._infoPanel.Visible = false;
             }
             else
             {
-                this.infoPanel.Visible = true;
+                this._infoPanel.Visible = true;
             }
 
             var scale = WindowUtil.GetCurrentWindowScale(this);
@@ -868,13 +868,13 @@ namespace PicSum.Main.UIComponent
 
         private void PageContainer_DragDrop(object sender, DragEventArgs e)
         {
-            if (this.tabSwitch.ActiveTabIndex < 0)
+            if (this._tabSwitch.ActiveTabIndex < 0)
             {
                 this.DragDrop(new TabAreaDragEventArgs(true, 0, e));
             }
             else
             {
-                this.DragDrop(new TabAreaDragEventArgs(true, this.tabSwitch.ActiveTabIndex, e));
+                this.DragDrop(new TabAreaDragEventArgs(true, this._tabSwitch.ActiveTabIndex, e));
             }
         }
 

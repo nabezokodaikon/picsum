@@ -42,15 +42,15 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.InitializeComponent();
 
-            this.inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;
+            this._inputTextBox.MouseEnter += this.InputTextBox_MouseEnter;
 
-            this.arrowPictureBox.DefaultBrush = new(Color.White);
-            this.arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
-            this.arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
-            this.arrowPictureBox.LostFocus += this.ArrowPictureBox_LostFocus;
+            this._arrowPictureBox.DefaultBrush = new(Color.White);
+            this._arrowPictureBox.Image = ResourceFiles.SmallArrowDownIcon.Value;
+            this._arrowPictureBox.MouseClick += this.ArrowPictureBox_MouseClick;
+            this._arrowPictureBox.LostFocus += this.ArrowPictureBox_LostFocus;
 
-            this.addButton.Image = ResourceFiles.TagIcon.Value;
-            this.addButton.MouseEnter += this.AddButton_MouseEnter;
+            this._addButton.Image = ResourceFiles.TagIcon.Value;
+            this._addButton.MouseEnter += this.AddButton_MouseEnter;
 
             this._dropDownList = new(this);
             this._dropDownList.IsClickAndClose = true;
@@ -72,36 +72,36 @@ namespace SWF.UIComponent.WideDropDown
         {
             this.SuspendLayout();
 
-            this.inputTextBox.SetBounds(
+            this._inputTextBox.SetBounds(
                 INPUT_TEXT_BOX_DEFAULT_BOUNDS.X,
                 INPUT_TEXT_BOX_DEFAULT_BOUNDS.Y,
                 (int)(this.Width - (ARROW_PICTURE_BOX_DEFAULT_BOUNDS.Width + ADD_BUTTON_DEFAULT_BOUNDS.Width + 1) * scale),
                 this.Height - INPUT_TEXT_BOX_DEFAULT_BOUNDS.Y * 2);
 
-            this.arrowPictureBox.SetBounds(
-                (int)(this.inputTextBox.Right),
-                this.inputTextBox.Top,
+            this._arrowPictureBox.SetBounds(
+                (int)(this._inputTextBox.Right),
+                this._inputTextBox.Top,
                 (int)(ARROW_PICTURE_BOX_DEFAULT_BOUNDS.Width * scale),
-                this.inputTextBox.Height);
+                this._inputTextBox.Height);
 
-            this.addButton.SetBounds(
-                this.arrowPictureBox.Right + (int)(1 * scale),
+            this._addButton.SetBounds(
+                this._arrowPictureBox.Right + (int)(1 * scale),
                 ADD_BUTTON_DEFAULT_BOUNDS.Top,
                 (int)(ADD_BUTTON_DEFAULT_BOUNDS.Width * scale),
                 this.Height);
 
-            this.inputTextBox.Anchor
+            this._inputTextBox.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.arrowPictureBox.Anchor
+            this._arrowPictureBox.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Right;
 
-            this.addButton.Anchor
+            this._addButton.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Bottom
                 | AnchorStyles.Right;
@@ -118,7 +118,7 @@ namespace SWF.UIComponent.WideDropDown
 
         public void SelectItem()
         {
-            var item = this.inputTextBox.Text;
+            var item = this._inputTextBox.Text;
             if (string.IsNullOrEmpty(item))
             {
                 return;
@@ -129,7 +129,7 @@ namespace SWF.UIComponent.WideDropDown
 
         private void WideComboBox_Paint(object sender, PaintEventArgs e)
         {
-            var w = this.arrowPictureBox.Right;
+            var w = this._arrowPictureBox.Right;
             var h = this.Height - 1f;
 
             e.Graphics.DrawRectangle(Pens.LightGray, 0, 0, w, h);
@@ -151,7 +151,7 @@ namespace SWF.UIComponent.WideDropDown
 
             e.Handled = true;
 
-            if (string.IsNullOrEmpty(this.inputTextBox.Text))
+            if (string.IsNullOrEmpty(this._inputTextBox.Text))
             {
                 return;
             }
@@ -161,7 +161,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            var item = this.inputTextBox.Text.Trim();
+            var item = this._inputTextBox.Text.Trim();
             var args = new AddItemEventArgs(item);
             this.AddItem(this, args);
         }
@@ -173,7 +173,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            if (string.IsNullOrEmpty(this.inputTextBox.Text))
+            if (string.IsNullOrEmpty(this._inputTextBox.Text))
             {
                 return;
             }
@@ -183,7 +183,7 @@ namespace SWF.UIComponent.WideDropDown
                 return;
             }
 
-            var item = this.inputTextBox.Text.Trim();
+            var item = this._inputTextBox.Text.Trim();
             var args = new AddItemEventArgs(item);
             this.AddItem(this, args);
         }
@@ -215,8 +215,8 @@ namespace SWF.UIComponent.WideDropDown
 
                 this._dropDownList.Show(
                     this, new Point(
-                        this.arrowPictureBox.Right - this._dropDownList.Size.Width,
-                        this.arrowPictureBox.Bottom));
+                        this._arrowPictureBox.Right - this._dropDownList.Size.Width,
+                        this._arrowPictureBox.Bottom));
 
                 this._isShowingDropDown = true;
             }
@@ -236,9 +236,9 @@ namespace SWF.UIComponent.WideDropDown
 
         private void DropDownList_ItemMouseClick(object sender, ItemMouseClickEventArgs e)
         {
-            this.inputTextBox.Text = e.Item;
-            this.inputTextBox.SelectionStart = this.inputTextBox.Text.Length;
-            this.inputTextBox.Focus();
+            this._inputTextBox.Text = e.Item;
+            this._inputTextBox.SelectionStart = this._inputTextBox.Text.Length;
+            this._inputTextBox.Focus();
         }
     }
 }

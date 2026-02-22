@@ -31,8 +31,8 @@ namespace PicSum.UIComponent.Contents.FileList
             this.Title = "Home";
             this.Icon = ResourceFiles.HomeIcon.Value;
             this.IsMoveControlVisible = false;
-            this.fileContextMenu.VisibleRemoveFromListMenuItem = true;
-            base.toolBar.AddDateSortButtonEnabled = false;
+            this._fileContextMenu.VisibleRemoveFromListMenuItem = true;
+            base._toolBar.AddDateSortButtonEnabled = false;
 
             this.Loaded += this.FavoriteDirectoryListPage_Loaded;
             this.DrawTabPage += this.FavoriteDirectoryListPage_DrawTabPage;
@@ -138,8 +138,8 @@ namespace PicSum.UIComponent.Contents.FileList
             var filePathList = this.GetSelectedFiles();
             if (filePathList.Length > 0)
             {
-                this.fileContextMenu.SetFile(filePathList);
-                this.fileContextMenu.VisibleBookmarkMenuItem = false;
+                this._fileContextMenu.SetFile(filePathList);
+                this._fileContextMenu.VisibleBookmarkMenuItem = false;
             }
             else
             {

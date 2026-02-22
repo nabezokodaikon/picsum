@@ -131,70 +131,70 @@ namespace PicSum.UIComponent.InfoPanel
         {
             this.SuspendLayout();
 
-            this.thumbnailPictureBox.Anchor
+            this._thumbnailPictureBox.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.fileInfoLabel.Anchor
+            this._fileInfoLabel.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.ratingBar.Anchor
+            this._ratingBar.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.wideComboBox.Anchor
+            this._wideComboBox.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right;
 
-            this.tagFlowList.Anchor
+            this._tagFlowList.Anchor
                 = AnchorStyles.Top
                 | AnchorStyles.Left
                 | AnchorStyles.Right
                 | AnchorStyles.Bottom;
 
-            this.thumbnailPictureBox.SetBounds(
+            this._thumbnailPictureBox.SetBounds(
                 THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.X,
                 THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.Y,
                 this.Width - THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.X * 2,
                 (int)(THUMBNAIL_PICTURE_BOX_DEFAULT_BOUNDS.Height * scale));
 
-            this.fileInfoLabel.SetBounds(
-                this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top + this.thumbnailPictureBox.Bottom,
-                this.thumbnailPictureBox.Width,
+            this._fileInfoLabel.SetBounds(
+                this._thumbnailPictureBox.Left,
+                this._thumbnailPictureBox.Top + this._thumbnailPictureBox.Bottom,
+                this._thumbnailPictureBox.Width,
                 (int)(FILE_INFO_LABEL_DEFAULT_BOUNDS.Height * scale));
 
-            this.ratingBar.SetBounds(
-                this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top + this.fileInfoLabel.Bottom,
-                this.thumbnailPictureBox.Width,
+            this._ratingBar.SetBounds(
+                this._thumbnailPictureBox.Left,
+                this._thumbnailPictureBox.Top + this._fileInfoLabel.Bottom,
+                this._thumbnailPictureBox.Width,
                 (int)(RATING_BAR_DEFAULT_BOUNDS.Height * scale));
 
-            this.ratingBar.SetControlsBounds(scale);
+            this._ratingBar.SetControlsBounds(scale);
 
-            this.wideComboBox.SetBounds(
-                this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top + this.ratingBar.Bottom,
-                this.thumbnailPictureBox.Width,
+            this._wideComboBox.SetBounds(
+                this._thumbnailPictureBox.Left,
+                this._thumbnailPictureBox.Top + this._ratingBar.Bottom,
+                this._thumbnailPictureBox.Width,
                 (int)(WIDE_COMBO_BOX_DEFAULT_BOUNDS.Height * scale));
 
-            this.wideComboBox.SetControlsBounds(scale);
+            this._wideComboBox.SetControlsBounds(scale);
 
-            this.tagFlowList.SetBounds(
-                this.thumbnailPictureBox.Left,
-                this.thumbnailPictureBox.Top + this.wideComboBox.Bottom,
-                this.thumbnailPictureBox.Width,
-                (int)(this.Height - (this.thumbnailPictureBox.Top + this.wideComboBox.Bottom) - 9 * scale));
+            this._tagFlowList.SetBounds(
+                this._thumbnailPictureBox.Left,
+                this._thumbnailPictureBox.Top + this._wideComboBox.Bottom,
+                this._thumbnailPictureBox.Width,
+                (int)(this.Height - (this._thumbnailPictureBox.Top + this._wideComboBox.Bottom) - 9 * scale));
 
             this.VerticalTopMargin = (int)(VERTICAL_DEFAULT_TOP_MARGIN * scale);
 
             this._tagIcon = InfoPanelResources.GetTagIcon(scale);
-            this.tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
+            this._tagFlowList.ItemHeight = (int)(TAG_FLOW_LIST_DEFAULT_ITEM_HEIGHT * scale);
 
             this.ResumeLayout(false);
         }
@@ -258,9 +258,9 @@ namespace PicSum.UIComponent.InfoPanel
             else
             {
                 this.ClearInfo();
-                this.fileInfoLabel.Invalidate();
-                this.ratingBar.Invalidate();
-                this.thumbnailPictureBox.Invalidate();
+                this._fileInfoLabel.Invalidate();
+                this._ratingBar.Invalidate();
+                this._thumbnailPictureBox.Invalidate();
             }
         }
 
@@ -273,7 +273,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             if (disposing)
             {
-                this.wideComboBox.Icon.Dispose();
+                this._wideComboBox.Icon.Dispose();
             }
 
             this.disposed = true;
@@ -296,19 +296,19 @@ namespace PicSum.UIComponent.InfoPanel
 
             this._fileInfoSource = FileDeepInfoGetResult.EMPTY;
 
-            this.fileInfoLabel.FileName = string.Empty;
-            this.fileInfoLabel.FileType = string.Empty;
-            this.fileInfoLabel.FileSize = string.Empty;
-            this.fileInfoLabel.FilesAndDirectoriesCount = string.Empty;
-            this.fileInfoLabel.CreateDate = string.Empty;
-            this.fileInfoLabel.UpdateDate = string.Empty;
-            this.fileInfoLabel.TakenDate = string.Empty;
+            this._fileInfoLabel.FileName = string.Empty;
+            this._fileInfoLabel.FileType = string.Empty;
+            this._fileInfoLabel.FileSize = string.Empty;
+            this._fileInfoLabel.FilesAndDirectoriesCount = string.Empty;
+            this._fileInfoLabel.CreateDate = string.Empty;
+            this._fileInfoLabel.UpdateDate = string.Empty;
+            this._fileInfoLabel.TakenDate = string.Empty;
 
-            this.ratingBar.SetValue(0);
-            this.tagFlowList.ItemCount = 0;
+            this._ratingBar.SetValue(0);
+            this._tagFlowList.ItemCount = 0;
 
             this._contextMenuOperationTag = string.Empty;
-            this.tagContextMenuStrip.Close();
+            this._tagContextMenuStrip.Close();
         }
 
         private SKFont GetTagFont(FileTagInfoEntity tagInfo, float scale)
@@ -353,7 +353,7 @@ namespace PicSum.UIComponent.InfoPanel
             if (!tagInfo.IsEmpty)
             {
                 tagInfo.IsAll = true;
-                this.tagFlowList.Invalidate();
+                this._tagFlowList.Invalidate();
             }
             else
             {
@@ -364,7 +364,7 @@ namespace PicSum.UIComponent.InfoPanel
                 };
                 this.TagList.Add(tagInfo);
                 this.TagList.Sort(static (x, y) => NaturalStringComparer.WINDOWS.Compare(x.Tag, y.Tag));
-                this.tagFlowList.ItemCount = this.TagList.Count;
+                this._tagFlowList.ItemCount = this.TagList.Count;
             }
         }
 
@@ -394,7 +394,7 @@ namespace PicSum.UIComponent.InfoPanel
 
             var tagInfo = this.TagList.Find(t => t.Tag.Equals(tag, StringComparison.Ordinal));
             this.TagList.Remove(tagInfo);
-            this.tagFlowList.ItemCount = this.TagList.Count;
+            this._tagFlowList.ItemCount = this.TagList.Count;
         }
 
         private void GetFileInfoJob_Callback(FileDeepInfoGetResult result)
@@ -406,59 +406,59 @@ namespace PicSum.UIComponent.InfoPanel
             if (!this.FileInfo.IsEmpty
                 && !this.FileInfo.IsError)
             {
-                this.fileInfoLabel.FileName = this.FileInfo.FileName;
-                this.fileInfoLabel.FileType = this.FileInfo.FileType;
+                this._fileInfoLabel.FileName = this.FileInfo.FileName;
+                this._fileInfoLabel.FileType = this.FileInfo.FileType;
 
                 if (this.FileInfo.IsFile)
                 {
-                    this.fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize);
+                    this._fileInfoLabel.FileSize = FileUtil.ToSizeUnitString(this.FileInfo.FileSize);
                     if (this.FileInfo.ImageSize != ImageUtil.EMPTY_SIZE)
                     {
-                        this.fileInfoLabel.FileSize
+                        this._fileInfoLabel.FileSize
                             += $"  ({this.FileInfo.ImageSize.Width} x {this.FileInfo.ImageSize.Height})";
                     }
                 }
                 else if (!FileUtil.IsSystemRoot(this.FileInfo.FilePath) && !this.FileInfo.FilesAndDirectoriesCount.IsEmpty)
                 {
-                    this.fileInfoLabel.FilesAndDirectoriesCount
+                    this._fileInfoLabel.FilesAndDirectoriesCount
                         += $"Files {this.FileInfo.FilesAndDirectoriesCount.FilesCount}, Folders {this.FileInfo.FilesAndDirectoriesCount.DirectoriesCount}";
                 }
 
                 if (!this.FileInfo.CreateDate.IsEmpty())
                 {
-                    this.fileInfoLabel.CreateDate
+                    this._fileInfoLabel.CreateDate
                         = $"{this.FileInfo.CreateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
                 if (!this.FileInfo.UpdateDate.IsEmpty())
                 {
-                    this.fileInfoLabel.UpdateDate
+                    this._fileInfoLabel.UpdateDate
                         = $"{this.FileInfo.UpdateDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
                 if (!this.FileInfo.TakenDate.IsEmpty())
                 {
-                    this.fileInfoLabel.TakenDate
+                    this._fileInfoLabel.TakenDate
                         = $"{this.FileInfo.TakenDate:yyyy/MM/dd HH:mm:ss}";
                 }
 
-                this.ratingBar.SetValue(this.FileInfo.Rating);
+                this._ratingBar.SetValue(this.FileInfo.Rating);
             }
 
             if (this.TagList != null)
             {
-                this.tagFlowList.ItemCount = this.TagList.Count;
+                this._tagFlowList.ItemCount = this.TagList.Count;
             }
 
-            this.fileInfoLabel.Invalidate();
-            this.ratingBar.Invalidate();
-            this.thumbnailPictureBox.Invalidate();
+            this._fileInfoLabel.Invalidate();
+            this._ratingBar.Invalidate();
+            this._thumbnailPictureBox.Invalidate();
         }
 
         private void GetTagListJob_Callback(ListResult<string> result)
         {
-            this.wideComboBox.SetItems([.. result]);
-            this.wideComboBox.SelectItem();
+            this._wideComboBox.SetItems([.. result]);
+            this._wideComboBox.SelectItem();
         }
 
         private void ThumbnailPictureBox_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -470,8 +470,8 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = SKRect.Create(
                     0,
                     0,
-                    this.thumbnailPictureBox.Width,
-                    this.thumbnailPictureBox.Height);
+                    this._thumbnailPictureBox.Width,
+                    this._thumbnailPictureBox.Height);
                 var text = $"Failed to load file";
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
@@ -482,10 +482,10 @@ namespace PicSum.UIComponent.InfoPanel
                 && !this.Thumbnail.ThumbnailImage.IsEmpry)
             {
                 var size = Math.Min(
-                    this.thumbnailPictureBox.Width,
-                    this.thumbnailPictureBox.Height);
-                var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
-                var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
+                    this._thumbnailPictureBox.Width,
+                    this._thumbnailPictureBox.Height);
+                var x = (int)((this._thumbnailPictureBox.Width - size) / 2f);
+                var y = (int)((this._thumbnailPictureBox.Height - size) / 2f);
                 var rect = SKRectI.Create(x, y, size, size);
                 if (this.FileInfo.IsFile)
                 {
@@ -532,10 +532,10 @@ namespace PicSum.UIComponent.InfoPanel
             {
                 const int margin = 32;
                 var size = Math.Min(
-                    this.thumbnailPictureBox.Width - margin,
-                    this.thumbnailPictureBox.Height - margin);
-                var x = (int)((this.thumbnailPictureBox.Width - size) / 2f);
-                var y = (int)((this.thumbnailPictureBox.Height - size) / 2f);
+                    this._thumbnailPictureBox.Width - margin,
+                    this._thumbnailPictureBox.Height - margin);
+                var x = (int)((this._thumbnailPictureBox.Width - size) / 2f);
+                var y = (int)((this._thumbnailPictureBox.Height - size) / 2f);
                 var rect = SKRectI.Create(x, y, size, size);
                 var icon = new IconImage((Bitmap)this.FileInfo.FileIcon);
                 icon.Draw(e.Surface.Canvas, InfoPanelResources.IMAGE_PAINT, rect);
@@ -546,8 +546,8 @@ namespace PicSum.UIComponent.InfoPanel
                 var rect = SKRect.Create(
                     0,
                     0,
-                    this.thumbnailPictureBox.Width,
-                    this.thumbnailPictureBox.Height);
+                    this._thumbnailPictureBox.Width,
+                    this._thumbnailPictureBox.Height);
                 var font = FontCacher.GetRegularSKFont(
                     FontCacher.Size.Large,
                     WindowUtil.GetCurrentWindowScale(this));
@@ -578,7 +578,7 @@ namespace PicSum.UIComponent.InfoPanel
             var iconSizeMargin = 8 * scale;
             var iconSize = Math.Min(this._tagIcon.Width, e.ItemRectangle.Height) - iconSizeMargin * 2;
 
-            var iconPoint = (this.tagFlowList.ItemHeight - iconSize) / 2f;
+            var iconPoint = (this._tagFlowList.ItemHeight - iconSize) / 2f;
 
             var iconRect = SKRect.Create(e.ItemRectangle.Left + iconPoint,
                                           e.ItemRectangle.Top + iconPoint,
@@ -617,15 +617,15 @@ namespace PicSum.UIComponent.InfoPanel
             var param = new FileRatingUpdateParameter
             {
                 FilePathList = this._fileInfoSource.FilePathList,
-                RatingValue = this.ratingBar.Value
+                RatingValue = this._ratingBar.Value
             };
             Instance<JobCaller>.Value.EnqueueFileRatingUpdateJob(this, param);
         }
 
         private void TagContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            var p = this.tagFlowList.PointToClient(Cursor.Position);
-            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this._tagFlowList.PointToClient(Cursor.Position);
+            var index = this._tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 e.Cancel = true;
@@ -633,7 +633,7 @@ namespace PicSum.UIComponent.InfoPanel
             }
 
             var tagInfo = this.TagList[index];
-            this.tagToAllEntryMenuItem.Visible = !tagInfo.IsAll;
+            this._tagToAllEntryMenuItem.Visible = !tagInfo.IsAll;
             this._contextMenuOperationTag = tagInfo.Tag;
         }
 
@@ -659,8 +659,8 @@ namespace PicSum.UIComponent.InfoPanel
 
         private void TagFlowList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var p = this.tagFlowList.PointToClient(Cursor.Position);
-            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this._tagFlowList.PointToClient(Cursor.Position);
+            var index = this._tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 return;
@@ -677,8 +677,8 @@ namespace PicSum.UIComponent.InfoPanel
                 return;
             }
 
-            var p = this.tagFlowList.PointToClient(Cursor.Position);
-            var index = this.tagFlowList.IndexFromPoint(p.X, p.Y);
+            var p = this._tagFlowList.PointToClient(Cursor.Position);
+            var index = this._tagFlowList.IndexFromPoint(p.X, p.Y);
             if (index < 0)
             {
                 return;
