@@ -203,6 +203,11 @@ namespace PicSum.Main.UIComponent
 
         private void BrowseForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (this.IsBeginTabDragOperation())
+            {
+                return;
+            }
+
             if (this._isKeyDown)
             {
                 return;
