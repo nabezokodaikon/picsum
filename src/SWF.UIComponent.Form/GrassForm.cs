@@ -233,7 +233,7 @@ namespace SWF.UIComponent.Form
             }
         }
 
-        protected virtual bool CanDragOperation()
+        protected virtual bool IsBeginTabDragOperation()
         {
             throw new NotImplementedException();
         }
@@ -284,7 +284,7 @@ namespace SWF.UIComponent.Form
             SetDefaultCrusor(this);
             SetDefaultCrusor(control);
 
-            if (!this.CanDragOperation())
+            if (this.IsBeginTabDragOperation())
             {
                 return;
             }
@@ -344,7 +344,7 @@ namespace SWF.UIComponent.Form
 
         private void ChildMouseDownHandler(object sender, MouseEventArgs e)
         {
-            if (!this.CanDragOperation())
+            if (this.IsBeginTabDragOperation())
             {
                 return;
             }

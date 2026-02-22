@@ -105,9 +105,9 @@ namespace PicSum.Main.UIComponent
             }
         }
 
-        protected override bool CanDragOperation()
+        protected override bool IsBeginTabDragOperation()
         {
-            return !this.BrowsePanel.IsBeginTabDragOperation;
+            return this.BrowsePanel.IsBeginTabDragOperation;
         }
 
         private void BrowseForm_HandleCreated(object sender, EventArgs e)
